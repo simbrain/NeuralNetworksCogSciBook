@@ -1,0 +1,78 @@
+\chapter{Cerbellum}
+\chapterauthor{Chelsea Gordon, Jeff Yoshimi}
+
+\section{Anatomy and Basic Circuit}
+
+% TODO: Integrate the Akeiylah/Brandon's model	
+% This is also useful. Do some PID stuff...
+% https://www.cs.cmu.edu/afs/cs/academic/class/15883-f15/slides/cerebellum-controller.pdf
+
+% TODO: Write up glossary items. Before doing so reconsider what should or should not be a glossary item. If something is only briefly discussed, either demote it from glossary, or add more information.
+
+The cerebellum is a large neural structure located above the brainstem, underneath the occipital and temporal lobes of the brain. It looks like a small version of the whole brain; hence it's name, \emph{cerebellum}, which translates roughly to ``little brain'' in Latin. Like the cerebral cortex, the cerebellum has a cortical layer. This outer layer is called the \glossary{cerebellar cortex}. It is very densely packed, and is estimated to contain more than half of the brain's total neurons.
+
+% TODO: Insert Pam's anatomy picture. 
+
+% For reference on what we have in mind  see https://docs.google.com/document/d/1Ns15q8W7Ls6KtDT1zszrDaJwZaVrzg-iaVTZG9gi0wk/edit
+
+\subsection{Basic Circuit}
+ 
+The cerebellum contains a highly regular synaptic circuit that can be thought of as (roughly) a feed-forward neural network. The circuit is shown in Fig. 2. Information from the cortex, spinal cord, and surrounding regions is sent to the 
+\glossary{mossy fibers}, which connect to the \glossary{granule cells}. The axons of the granule cells are called \glossary{parallel fibers}. These parallel fibers stretch out (as their name implies) in parallel tracts through the cerebellar cortex.\footnote{Also known as ?beams?. Cf. Bower ?Parallel Fiber Beams: what do they do??.}  The parallel fibers connect with the large dendrites of  \glossary{Purkinje cells}, which are perpendicular to the parallel fibers. Purkinje neurons are relatively large; they populate the entire top layer of cerebellar cortex, and each neuron contains a large dendritic tree which the parallel fibers connect to. This perpendicular arrangement of Purkinje cells relative to the parallel fibers allows each Purkinje cell to receive input from many parallel fibers, and each parallel fiber to project to many Purkinje cells.
+ 
+Purkinje cells also receive extensive input from \glossary{climbing fibers} from the \glossary{inferior olive} that wrap around the Purkinje dendritic tree. Each climbing fiber projects to very few Purkinje cells many times, synapsing to a large number of each cell's dendrites. This may correspond to a kind of teaching signal, relaying error signals for motor commands.\footnote{For instance, by relaying the motor error signal mentioned in the forward model below, causing long-term depression (LTD) in synaptic connections from mossy and parallel fibers to Purkinje cells; Ito, 1989).}
+ 
+ % TODO: Insert Pam's circuit picture. If it does not exist start on it with her. 
+
+Purkinje cells also produce the main output from the cerebellum. The Purkinje cell axons connect to the \glossary{deep cerebellar nuclei} (DCN) via inhibitory connections. Neurons from DCN connect to many places in the brain, including back to the cortex, and the \glossary{red nucleus}, which in turn relays information to motor neurons on the spinal cord, and to the inferior olive.
+
+This synaptic circuit is modulated by several other cell types. Inhibitory Golgi cells, basket cells, and stellate cells serve to reduce overall activation in the system.
+
+% TODO Jeff. Expand on function of inhibitory cells. Refer to inhibition and WTA labs and chapters. Integrate material from ``Inhibition And Orthogonal Inputs" in the google doc.
+
+% TODO Jeff. If a memory palace is used, this is probably where to do it.
+ 
+\subsection{Functional Subdivisions}
+ 
+The cerebellum can be divided into three functional subdivisions. The \glossary{vestibulocerebellum} is the oldest and smallest region of the cerebellum and receives input from a sensory nerve called the vestibular nerve. This area also communicates with the brainstem and is involved in postural stability and eye movements, as we will see below. 
+
+The  \glossary{spinocerebellum} receives most of its input from the spinal cord, which sends information from the muscles and from cortex. This region is particularly important for coordination through its role in integrating motor commands and sensory information. 
+
+Finally, the  \glossary{cerebrocerebellum} is the largest subdivision, and receives extensive input from the cerebral cortex and relays output to the thalamus. This region plays a large role in motor learning or procedural learning, and has been considered to have a role in some more cognitive functions as well, including timing. 
+
+% TODO: Possibly insert Pam's Functional Zones pictures
+ 
+\section{Function of Cerebellum}
+ 
+An important role of the vestibulocerebellum is in maintaining what is called the \glossary{vestibulo-ocular reflex} (VOR). The VOR is how we stabilize images by allowing smooth eye movements that counteract any turning of the head. Try staring at a point on the wall in front of you while you turn your head from side to side: this is your VOR allowing you to maintain this gaze. The vestibulocerebellum is also involved in the \glossary{optokinetic response} (OKR), which is the mechanism that allows our eyes to smoothly follow along with moving images. Both of these abilities are disrupted in individuals with damage to the vestibulocerebellum (Kawato \& Gomi, 1992).\footnote{This paper also describes computational models of VOR/OKR based on long term depression or LTD (cf. Neuroscience chapter).}  Also impaired by vestibulocerebellar lesions is balance and postural stability---individuals in studies with lesions to this region have trouble maintaining an upright posture while sitting or standing and might frequently fall while walking or standing (Morton \& Bastian, 2004).
+
+The spinocerebellum is important in coordination of the body and limbs and integrating sensory and proprioceptive information in order to anticipate future sensory input. Lesions to this region result in \glossary{ataxia}, which is a loss of smooth control of movement. When patients with ataxia reach for a point, as they near the goal they will clumsily oscillate between overshooting and undershooting the target. This region of cerebellum is affected by alcohol\footnote{It is thought that this effect of alcohol is through an increase in output of GABA from the Golgi cells, which leads to increased GABAergic inhibition of cerebellar granule cells (Carta, Mameli, Valenzuela, 2004).} and is also what is being tested when police officer gives a sobriety test; if asked to touch one's nose, someone who has had alcohol will oscillate a bit around the tip of the nose. 
+
+Finally, the cerebrocerebellum (also referred to as the \emph{neocerebellum}), receiving extensive input from many parts of the cerebral cortex, is involved in motor planning, motor learning, and motor timing, and is also recently suggested to play a role in many higher cognitive functions (Buckner, 2013). This region of the cerebellum is very important for \glossary{procedural learning} of motor skills, such as learning to ride a bike. Damage to the cerebrocerebellum can result in severe impairments on procedural learning tasks. 
+
+% TODO-Jeff. Possibly use the cerebellum.bsh script here to expand on an example of motor learning. // Illustrate idea that that action sequences in cortex can be offloaded to cerebellum and to work on anatomy. BUT requires some brief discussion of Basal Ganglia. So either point to that chapter, or consider integrating that chapter in to this one. // The model being here also consolidates the anatomy material from above. BUT if it's to be used, I need to go back through it and clarify to myself how it all works (if I do that use that as an opportunity to improve the script).
+ 
+\section{Cerebellum as Forward Model}
+ 
+ % TODO: Email discussion about Simbrain controller model: (1) How parts of the diagram we use map to the nodes / parts of our circuit diagram. (2) How the model should work. Chelsea has suggestions about this.
+ 
+ % TODO: Put in an appropriate circuit diagram. Draw on Wolpert and Kawato diagrams.
+ 
+The  cerebellum is thought to encode an internal \glossary{forward model} for movement. This model generates temporally precise sensory predictions that allow smooth movements, such as swinging a baseball bat or picking up a coffee mug (and that are missing when someone is drunk or suffering from ataxia). Forward models have been hypothesized to play a role in many regions of the brain. Some propose that the whole brain is just forward models! 
+
+According to this view, the cerebral cortex (especially motor cortex) is a \glossary{controller} that produces output sequences which achieve a desired state in a system usually called the \glossary{plant}, which in this case is the body. A thermostat is a controller that maintains a house (the plant) at a certain temperature by turning on the heater and air conditioner until the temperature reaches the set point. Another example is a cruise control system, which maintains the speed of an automobile (the plant) at a desired level.
+
+ Here the plant is the body, and the motor cortex is the controller. Motor commands descend from the motor cortex to the motor neurons in the spinal cord via an \glossary{efferent signal}. A copy of this motor command, called the \glossary{efference copy}, is sent to the cerebellum. The cerebellum predicts the sensory consequences of the motor command. This prediction can then be compared to the actual sensory input that results. If there is a mismatch between the prediction and the actual sensory input, then a corresponding \glossary{error signal} is computed. Let's consider an example, using a reaching movement toward a cup. You want to move your hand toward your coffee cup. A motor command is generated and a copy of this is received by the cerebellum. As your hand is beginning to move, prior to receiving sensory feedback, the forward model predicts your hand in the next moment will be an inch to the right of the coffee cup. The model outputs a sensory prediction error corresponding to this mismatch. The error is used in two ways: 
+
+(1) to make online error corrections, and (2) to improve the internal model. Below are more details on these two uses of the error signal.
+ 
+(1) At a fast timescale (milliseconds), outgoing projections from the cerebellum back to the cerebral cortex act as a feedback controller, and attempt to nudge the observed activity back towards the prediction. This is the smoothing function of cerebellum. From this standpoint, the cortex is a controller, that issues motor commands and then, when the cerebellum predicts those commands will be off, the cortical controller ``fixes'' those movements. In our reaching example, this would result in an adjustment to your hand movement to the left one inch to reach the cup.
+
+(2) At a longer timescale (on the scale of minutes) the same sensory prediction errors can be used for supervised updates to the prediction model. This may happen via the climbing fibers. Referring back to our reaching action, this means learning to adjust your aim slightly to the left, in order to avoid errors like this in the future.
+
+Imagine you are trying to control an aircraft using a joystick. You are the controller in this example. Imagine there is a  forward model. When you push the joystick to the right, the airplane should move right. The forward model predicts where the airplane will be when it turns right. If it predicts one thing, but the aircraft does something else that makes the airplane start to jerk, the error can be used to automatically produce a compensating motion that smoothes out the flight. The error can also be used to update the forward model. 
+
+%http://neuroscience.uth.tmc.edu/s3/chapter05.html
+
+%Chelsea notes that some people would still argue for inverse models to... so we should include at least some mention
+

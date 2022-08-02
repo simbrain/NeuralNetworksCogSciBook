@@ -1,0 +1,108 @@
+%
+% Master book document
+% 
+% Copy this and modify the \input commands at the bottom to create a custom book,
+% or to create a file to compile a single chapter
+%
+
+\documentclass[oneside]{book}
+\usepackage[pdftex]{graphicx}
+\usepackage{setspace,amssymb,amsmath,epstopdf,natbib,amsthm}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{pifont}
+\usepackage{xr}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}  % Likes to be the last class loaded
+\hypersetup{bookmarksdepth=2}
+\externaldocument[A-]{Book_master}
+
+\def\ie{{\it i.e. }}
+\def\eg{{\it e.g. }}
+\newcommand{\code}{\texttt}
+
+%
+% Use this command to indicate glossary entries. Be sure some entry of the same name
+% exists in Glossary.txt
+%
+\def\glossary{\textbf}
+
+%
+% extref is a reference to a label that may or may not exist in the current subdocument. 
+% If it does, a regular reference is produced. If it is not found in the current subdocument,
+% a reference to the label in the master document is given, and a * is added to indicate this.
+% Note that this only works if the master document has been compiled
+%
+% Example (cf. Chapter \extef{ch_intro}) compiles to:
+% (cf. Chapter 1) 	If the chapter is in the subdocument
+% (cf. Chapter 1*) 	If the chapter is not in the subdocument
+%
+\makeatletter
+\newcommand{\extref}[1]{\@ifundefined{r@#1}{\ref{A-#1}$^*$}{\ref{#1}}}
+\makeatother
+
+%
+% Use this command to designate chapter authors. An optional second command indicates 
+% their relative contribution to the chapter. 
+%
+% Example: \chapterauthor{Scott Hotton, Chelsea Gordon, Jeff Yoshimi}{.5,.3,2}
+%
+% If the second argument is not used, it is assumed all chapter authors contributed equally. 
+%
+\makeatletter
+\newcommand{\chapterauthor}[2]{%
+  {\parindent0pt\vspace*{-25pt}%
+  \linespread{1.1}\large\scshape#1%
+  \par\nobreak\vspace*{35pt}}
+  \@afterheading%
+}
+\makeatother
+
+% Renaming ``List of Figures'' to  ``Figure Attributions''
+\renewcommand*\listfigurename{Figure Attributions}
+
+\setlength{\textwidth=6.5in}
+\setlength{\textheight=9.0in}
+\hoffset=-0.80in
+\voffset=-1.00in
+
+\begin{document}
+
+\title{Neural Networks in Cognitive Science}
+% Author line below is automatically set using create_authorship_order.py
+\author{Jeff Yoshimi, Scott Hotton, Zo\"e Tosi, Chelsea Gordon}
+\maketitle
+
+\tableofcontents
+
+% Choose which chapters to include here
+\input{Preface}
+\input{Intro}
+\input{History}
+\input{Neuroscience}
+\input{ActivationFunctions}
+\input{ActivationFunctionExercises}
+\input{LinearAlgebra}
+\input{LinearAlgebraExercises}
+\input{UnsupervisedLearning}
+\input{DynamicalSystems}
+\input{UnsupervisedRecurrent}
+\input{DataScienceBasics}
+\input{SupervisedLearning}
+\input{SupervisedFF}
+\input{SupervisedRecurrent}
+\input{SpikingNeurons}
+\input{ReservoirNetworks}
+\input{Glossary} %When using custom glossary replace this with \input{CustomGlossary}
+
+% Makes sure figure attributions are listed in table of contents
+\phantomsection 
+\addcontentsline{toc}{chapter}{Figure Attributions} 
+\listoffigures
+
+% Makes sure references are listed in table of contents
+\phantomsection 
+\addcontentsline{toc}{chapter}{References} 
+\bibliography{NeuralNetworksCogsci}{}
+\bibliographystyle{plain}
+
+\end{document}
