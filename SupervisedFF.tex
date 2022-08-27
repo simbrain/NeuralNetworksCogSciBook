@@ -245,7 +245,7 @@ As we saw, two-layer networks with linear units cannot solve this type of proble
 
 The way backprop achieves this is by \emph{re-mapping} the linearly inseparable problem in the input space to a linearly separable problem in the hidden unit space, as is shown in Fig. \ref{xor_remapping}. The crucial thing the hidden layer did was transform the input layer representation into a new internal representation, which includes a representation of ``only one unit is on'' and another representation of ``both units are in the same state.''  These two states are now linearly separable, and the output layer can easily separate them. The solution shown in the figure was produced by training a 2-2-1 network using backprop. Other solutions (corresponding to other minima in the error surface) can also be found. You are encouraged to try the experiment yourself in Simbrain. Train a backprop network on XOR, get it to a minimum on the error surface, and then check to see what hidden layer activations occur for each input.
 
-\section{Deep Networks}
+\section{Deep Networks}\label{deepNets}
 
 % Glossary items for bold faced items in this section.
 % Discuss deep fakes and GANs
@@ -274,7 +274,7 @@ Note that this edge detector is not programmed in. Consistently with the emphasi
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.4]{./images/deepNetCloseup.png}
-\caption[Closeup from a creative commons image by Aphex34 at \url{https://commons.wikimedia.org/wiki/File:Typical_cnn.png} ]{Closeup of deep neural network in chapter \extref{ch_intro} figure \extref{deep_net} showing how a set of convolutional filters like the one in \ref{cnn_filter} produce a set of feature maps. This set of feature maps is like an array of matrices, which is also known  as a tensor.}
+\caption[Closeup from a creative commons image by Aphex34 at \url{https://commons.wikimedia.org/wiki/File:Typical_cnn.png} ]{Closeup of deep neural network in chapter \extref{ch_intro} figure \extref{deep_net} showing how a set of convolutional filters like the one in \ref{cnn_filter} produce a set of feature maps. This set of feature maps is like an array of matrices, which is also known as a tensor.}
 \label{deep_net_closeup}
 \end{figure}
 
