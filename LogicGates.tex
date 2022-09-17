@@ -1,10 +1,10 @@
 \chapter{Logic Gates in Neural Networks}\label{ch_logicgates}
 \chapterauthor{Jeff Yoshimi}
 
-% Say more about relation to computers. Languages are compiled down to machine language which operates on bits and the computers ultimately just use these kinds of operations.
+% Say more about relation to computers and perhaps Turing machines. Languages are compiled down to machine language which operates on bits and the computers ultimately just use these kinds of operations.
 % See Fausett section 1.6
 
-We opened the book by noting that neural networks are very different from classical computers. They are trained, not programmed, they transform data using weight matrices rather than explicit rules, they gracefully degrade and do well with noisy inputs. We made the contrast by comparing neural networks with Turing Machines, a simple type of machine that captures the kinds of things classical computers do. One thing classical computers do is simple logical computations.In fact, all the incredible things computers do can be boiled down to a bunch of simple logical computations. \textbf{Logic gates} are fundamental components of the circuits that make up digital computers. If a neural network could do the same thing, it would show that neural networks could, at least in principle, do anything a digital computer could do.
+We opened the book by noting that neural networks are very different from classical computers. They are trained, not programmed, they transform data using weight matrices rather than explicit rules, they gracefully degrade, and they are can easily handle noisy inputs. We made the contrast by comparing neural networks with Turing Machines, a simple type of machine that captures the kinds of things classical computers do. One thing classical computers do is simple logical computations.  In fact, all the incredible things computers do can be boiled down to a bunch of simple logical computations. \textbf{Logic gates} are fundamental components of the circuits that make up digital computers. If a neural network could do the same thing, it would show that neural networks could, at least in principle, do anything a digital computer could do.
 
 This problem occupied McCulloch and Pitts, the early pioneers of neural networks: how to make neural networks do logical computations, and implement logic gates. It turns out, they can do this  (and thus, neural networks are as powerful as digital computers!) \cite{mcculloch1943logical}. Understanding these logic functions and how neural networks can compute them is the goal of this section.
 
@@ -17,7 +17,7 @@ We will consider 4 kinds of logic gate: NOT, AND, OR, and XOR. We can think of t
 \item P XOR Q is true if one of P or Q is True, but not both.
 \end{itemize}
 
-To implement these on a neural network (and see in more detail how they work), we  can map True to the number 1 and False to the number 0, and then think of these as vector-valued functions that take vectors of binary values as inputs and produce a single 0 or 1 as an output. It is standard in logic to represent boolean functions with \textbf{truth tables}, which are basically the tables we have been using to represent vector-valued functions in neural networks. Here is a truth table which represents the logic of AND:
+To implement these on a neural network (and see in more detail how they work), we  can map True to the number 1 and False to the number 0, and then think of these as vector-valued functions that take vectors of binary values as inputs and produce a single 0 or 1 as an output. It is standard in logic to represent boolean functions with \textbf{truth tables}, which are basically the tables we have been using to represent vector-valued functions in neural networks. Here is a truth table that represents the logic of AND:
 
 \begin{center}
 \begin{tabular}{| c | c || c | }
@@ -35,7 +35,10 @@ To implement these on a neural network (and see in more detail how they work), w
 \end{tabular}
 \end{center}
 
-In this table,  P and Q can be interpreted as the truth values of sentences. We can replace P and Q with any sentence that can be true or false. For example P could stand for ``I ate pizza'' and Q could stand for ``I drank soda.''  The four rows of the table then show all possible combinations of truth values for these two statements. It could be that I didn't eat  pizza or drink soda (row 4), that I drank soda and ate pizza (row 1), that I only ate pizza (row 2), etc. The third column shows us the output of the boolean function for each of these combinations of truth values. For example, focusing on row 1: if I did eat pizza (P) and drink soda (Q), then it's also true that I ate pizza and drank soda (P AND Q). 
+
+In this table,  P and Q can be interpreted as the truth values of \glossary{proposition}s. We can replace P and Q with any sentence. A proposition (also known as a statement or sentence) is an expression that can be true or false. For example, P could stand for ``I ate pizza'' and Q could stand for ``I drank soda.''  In response to a proposition you can say ``I agree, that's true'' or ``I disagree, that's false''. Questions, commands, exclamations, and fragments of sentences (like words by themselves) are not propositions. These are propositions: ``2+2 = 4'', ``The moon is made of Swiss cheese'', ``The mind is distinct from the brain''.  These are not propositions: ``What time is it?'', ``Swiss cheese'',``Ouch!'', ``Pass the salt.'' Notice that it's odd to say ``I agree'' or ``I disagree'' to the non-propositions, but that it is fine to say that to the propositions.
+
+The four rows of the table then show all possible combinations of truth values for  two propositions. It could be that I didn't eat  pizza or drink soda (row 4), that I drank soda and ate pizza (row 1), that I only ate pizza (row 2), etc. The third column shows us the output of the boolean function for each of these combinations of truth values. For example, focusing on row 1: if I did eat pizza (P) and drink soda (Q), then it's also true that I ate pizza and drank soda (P AND Q). 
 
 NOT is also a boolean function, from one input to one output, that basically reverses the truth value of the input when it produces its output:
 
@@ -73,7 +76,7 @@ Here is a combined truth table showing several other two-valued boolean function
 
 We can implement any of these functions in a neural network. The input layers will have two nodes, and the output layer will have one node. For example, a network to compute AND would only produce an output of 1 if both input nodes were set to 1. In all other cases of binary inputs the output would be 0. Using binary output functions and appropriate weights and thresholds, it is not so hard to make AND and OR gates. 
 
-NOT would just have two nodes. A 0 would produce a 1 and a 1 would produce a 0. This can be done using a binary output node with a bias (so that it is on, by default, above threshold), and a negative weight.
+NOT would just have two nodes. A 0 would produce a 1, and a 1 would produce a 0. This can be done using a binary output node with a bias (so that it is on, by default, above threshold), and a negative weight.
 
 XOR is harder because it requires a few layers of nodes (a point that is important when we talk about supervised learning), but basically it involves combining an OR gate to the output and an intermediate AND gate that inhibits the output. Examples of these are shown in Fig. \ref{logic_gates}.
 
@@ -84,7 +87,7 @@ XOR is harder because it requires a few layers of nodes (a point that is importa
 \label{logic_gates}
 \end{figure}
 
-Boolean functions can also be combined, to produce things like (P AND (Q OR NOT R)). To see what the truth table looks like for this type of network, you can try an online resource like \url{http://web.stanford.edu/class/cs103/tools/truth-table-tool/}. Neural networks to implement this type of function are also not too difficult to make, by combining together the other networks, e.g the output of an OR network is one of the two inputs to the AND network, to make (P AND (Q OR NOT R)).
+Boolean functions can also be combined, to produce things like (P AND (Q OR NOT R)). To see what the truth table looks like for this type of network, you can try an online resource like \url{http://web.stanford.edu/class/cs103/tools/truth-table-tool/}. Neural networks to implement this type of function are also not too difficult to make by combining together the other networks, e.g the output of an OR network is one of the two inputs to the AND network, to make (P AND (Q OR NOT R)).
 
 A complex example, in which sample sentences have been used instead of the boring propositional variables P, Q, R etc., is shown in Fig. \ref{logic_gates_ex}.
 
@@ -94,4 +97,3 @@ A complex example, in which sample sentences have been used instead of the borin
 \caption[Simbrain screenshot]{Network to implement a more complex boolean function.}
 \label{logic_gates_ex}
 \end{figure}
-
