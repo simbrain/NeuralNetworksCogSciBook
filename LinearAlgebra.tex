@@ -7,12 +7,12 @@
 
 % Identity matrix
 
-   In this chapter we review some basic concepts of linear algebra with an 
+In this chapter, we review some basic concepts of linear algebra with an 
 emphasis on how they can be applied to the study of neural networks. This can be viewed as a transition from the formal structure of single nodes and weights, to the formal 
 structure of \emph{lists} and \emph{tables} of nodes and weights. In particular, we  consider vectors and matrices, which allow us to describe the behavior of groups of nodes 
 and weights in a compact way.
 
-Linear algebra also facilitates a powerful geometric framework for \emph{visualizing} the structure and dynamics of a neural network. The properties of a set of inputs and whether they can be properly classified is an example of something that is  more intuitively understandable when the input vectors are visualized as points in a space. In chapter \extref{ch_act_functions} it was  noted that whenever the ``play''  button \includegraphics[scale=.5]{./images/Play.png} is pressed in Simbrain that some dynamical process is simulated. The framework of linear algebra makes it possible to visualize the changing activations of a set of nodes, or the changing strengths of a set of weights, as a moving point in a space. This approach to thinking about neural networks uses \emph{dynamical systems theory}, discussed in chapter \extref{ch_dst}, and can be used to think about many features of neural network models in an intuitive way.\footnote{For a quick demonstration of this way of visualizing network dynamics try running the simulation \emph{highDimensionalProjection.bsh}. The dynamics of the network is visible in the projection component.}  
+Linear algebra also facilitates a powerful geometric framework for \emph{visualizing} the structure and dynamics of a neural network. The properties of a set of inputs and whether they can be properly classified is an example of something that is  more intuitively understandable when the input vectors are visualized as points in a space. Chapter \extref{ch_act_functions} notes that whenever the ``play''  button \includegraphics[scale=.5]{./images/Play.png} is pressed in Simbrain, some dynamical process is simulated. The framework of linear algebra makes it possible to visualize the changing activations of a set of nodes, or the changing strengths of a set of weights, as a moving point in a space. This approach to thinking about neural networks uses \emph{dynamical systems theory}, discussed in chapter \extref{ch_dst}, and can be used to think about many features of neural network models in an intuitive way.\footnote{For a quick demonstration of this way of visualizing network dynamics try running the simulation \emph{highDimensionalProjection.bsh}. The dynamics of the network is visible in the projection component.}  
 
 \section{Vectors and Vector Spaces}
 
@@ -25,11 +25,9 @@ operations that we can perform with the vectors.\footnote{You may have heard
 that vectors are geometric objects that have a magnitude and a direction or you 
 may have seen them represented by an arrow or directed line segment. These 
 different points of view on vectors supplement rather than contradict each 
-other.}  For instance we can add two vectors together. There is also a type of 
-multiplication that can be performed between a vector and a \glossary{scalar}, which is just a single number like $2$. 
-For instance adding a vector to itself is the same as multiplying the vector by 
-$2$. The term ``scalar'' is used for those numbers that are allowed to be 
-multiplied with a vector. If the scalars are the set of real numbers then the 
+other.}  For instance, we can add two vectors together to get another vector. There is also a type of 
+multiplication that can be performed between a vector and a \glossary{scalar}. The term ``scalar'' is used for those numbers that are allowed to be 
+multiplied with a vector. We will focus on the case where scalars are real numbers, like $2$, $-1.2$, or $5.9$. If the scalars are the set of real numbers then the 
 vector space is called a {\em real vector space}. We will only work with real
 vector spaces. A more formal definition for a vector space is discussed in 
 Sect. \ref{S:LinearAlgebraAppendix}. 
@@ -42,18 +40,18 @@ list with $n$ components is called an {\em $n$-tuple}. We can refer to the
 members of a vector in this sense  as its ``first component'',  ``second component'', etc.
 A vector in the sense of an $n$-tuple is often 
 written out as a comma-separated list of numbers surrounded by parenthesis. 
-For example here are four vectors:
+For example, here are four vectors:
 \begin{equation*}
     (0,0) \quad (0,1) \quad (1,0) \quad (1,1) 
 \end{equation*}
 When the components of a vector are written horizontally, from left to right,
 it is called a {\em row vector}. The ordered pairs shown above are row 
-vectors. Occasionally the components are written out vertically, from top to 
-bottom, in which case it is called a {\em column vector}.\footnote{The choice of whether
+vectors. The components can also be written out vertically, from top to 
+bottom, in which case the vector is called a {\em column vector}.\footnote{The choice of whether
 to use a row or a column vector to represent an abstract vector is primarily a matter of 
-convenience or convention.}    Commas are usually 
+convenience or convention.} Commas are usually 
 not written in column vectors because it is clear what the components are. For 
-example here are four column vectors:
+example, here are four column vectors:
 \begin{small}
 \begin{equation*}
 \begin{pmatrix}
@@ -80,7 +78,7 @@ example here are four column vectors:
 The number of components in a vector can be any positive integer. If there is
 only one component then the vector is essentially just a scalar.
 
-   For any positive integer $n$ the set of all $n$-tuples forms a vector space.
+   For any positive integer $n$, the set of all $n$-tuples forms a vector space.
 The integer $n$ is called the {\em dimension} of the vector space. For 
 example, the set of all of ordered pairs of real numbers is a 2 dimensional 
 real vector space. The set of all ordered triples is a 3 dimensional real 
@@ -89,12 +87,11 @@ vector space.
    The components of a vector can be thought of as the coordinates of a point
 in Euclidean geometry. The components of a vector can be used to locate a
 point by starting at the origin and moving parallel to each axis by the 
-amount specified by the corresponding component, just like we did in high 
-school math classes. To locate the point corresponding to the vector 
+amount specified by the corresponding component. To locate the point corresponding to the vector 
 $(3,4)$, for example, we move $3$ units to the right along the 
 horizontal axis and $4$ units upwards along the vertical axis. In this way a 
 2 dimensional real vector space can be thought of as an Euclidean plane (see 
-Fig. \ref{2d}).\footnote{There is a legend (probably fabricated, but pedagogically useful nonetheless) 
+figure \ref{2d}).\footnote{There is a legend (probably fabricated, but pedagogically useful nonetheless) 
 that the philosopher Ren{\'{e}} Descartes 
  came up with his proof that given a point in the plane there are unique coordinates for that 
  point (and given a pair of coordinates there is a unique point in the plane) 
@@ -103,7 +100,7 @@ that the philosopher Ren{\'{e}} Descartes
  superimposing a kind of grid on the ceiling---for example: there's a fly at 
  $(3,4)$, 3 units to the right, and 4 units up; there's a fly at 
  $(-2,-1)$, 2 units to the left, and 1 unit down; and there's another at 
- $(4,-2)$, 4 units to the right, and two units down (see Fig. \ref{2d}).} 
+ $(4,-2)$, 4 units to the right, and two units down (see figure \ref{2d}).} 
 
 \begin{figure}[h]
 \centering
@@ -116,14 +113,13 @@ $(4,-2)$.}
 \end{figure}
 
    The number of dimensions of the vector spaces that arise in the study of 
-neural networks can be much larger than 3. We can also think of these spaces 
-geometrically but we can not see them directly. To work mathematically in 
-these spaces it is helpful to keep in mind that our starting point is the 
-$n$-tuples, basically just lists of numbers. From this standpoint the 4 
+neural networks can be much larger than 3. We we can not geometrically visualize these higher-dimensional spaces directly. To work mathematically in 
+these spaces, it is helpful to keep in mind that our starting point is the 
+$n$-tuples, which are just lists of numbers. From this standpoint, the 4 
 dimensional real vector space we work with is just the set of all $4$-tuples of
-real numbers and the 5 dimensional real vector space we work with is just the 
+real numbers, and the 5 dimensional real vector space we work with is just the 
 set of all $5$-tuples of real numbers. Here are some vectors in a 5 
-dimensional vector space
+dimensional vector space:
 \begin{equation*}
     (0,-1, 1, 0.4, 9)  \qquad
     (-1, 2, 4, -3, 9)  \qquad 
@@ -158,27 +154,25 @@ for the network) that correspond to that point.}
 \end{figure}
 
   The activations of a neural network's $n$ nodes can be described by an \glossary{activation 
-vector} with $n$ components, one for each activation value. For example, if we index the nodes of the feed-forward network in Fig. \ref{ffRecurrent} (Left) from the bottom to the top and left to right (as in Fig \ref{labelledNets}), then that networks' activation vector is $(-0.3,0.6,-0.3,0.5,-0.2,0.6,0.2)$. This 
+vector} with $n$ components, one for each activation value. For example, if we index the nodes of the feed-forward network in figure \ref{ffRecurrent} (Left) from the bottom to the top and left to right (as in figure \ref{labelledNets}), then that networks' activation vector is $(-0.3,0.6,-0.3,0.5,-0.2,0.6,0.2)$. This 
 is a vector in a 7 dimensional vector space. A vector space of activation 
-vectors is called an \glossary{activation space}. The feed-forward network in Fig. \ref{ffRecurrent} (Left)  network has a 7 dimensional activation space.
+vectors is called an \glossary{activation space}. The feed-forward network in figure \ref{ffRecurrent} (Left)  network has a 7 dimensional activation space.
 
-Activation spaces are especially useful in studying recurrent networks that have interesting dynamics.
-If we index the nodes of the recurrent network in Fig. 
-\ref{ffRecurrent} (Right) from top to bottom (as in Fig. \ref{labelledNets}) then it's activation vector is $(0.8,-0.7)$. This is a vector in a 2 dimensional activation
+Activation spaces are especially useful in studying recurrent networks. If we index the nodes of the recurrent network in figure \ref{ffRecurrent} (Right) from top to bottom (as in figure \ref{labelledNets}) then its activation vector is $(0.8,-0.7)$. This is a vector in a 2 dimensional activation
 space. As the network changes, its  activations change and so we have a changing activation vector. We can picture  this as a moving point in in a 2 dimensional space. 
 
 % Promote hidden unit space to glossary / bold
-In addition to describing the state of all of a network's nodes by an activation vector, we can describe certain {\em subsets} of its nodes using activation vectors. In the feed-forward network in Fig. \ref{ffRecurrent} (Left), for example, we can describe the activations of the input nodes as an  \emph{input vector}  $(-0.3,0.6)$  in a 2 dimensional \glossary{input space}. We can describe the activations of the hidden nodes as a vector $(-0.3,0.5,-0.2)$ in a 3 dimensional 
-\emph{hidden unit space}. We can describe activations of the output nodes as an \emph{output vector} $(-0.6,-0.2)$ in a 2 dimensional \glossary{output space}. Recall from chapter \extref{ch_intro} that a table of data is a simple environment for a neural network. This table will sometimes contain a set of input vectors, which can be thought of as a set of points in the input space of a network. It can also contain a set of training vectors, which describes how we want the network to respond to input vectors. These are points in the output space. Many problems in neural network theory can be understood in terms of properties of the input and output space.
+In addition to describing the state of all of a network's nodes by an activation vector, we can describe certain {\em subsets} of its nodes using activation vectors. In the feed-forward network in figure \ref{ffRecurrent} (Left), for example, we can describe the activations of the input nodes as an  \emph{input vector}  $(-0.3,0.6)$  in a 2 dimensional \glossary{input space}. We can describe the activations of the hidden nodes as a vector $(-0.3,0.5,-0.2)$ in a 3 dimensional 
+\emph{hidden unit space}. We can describe activations of the output nodes as an \emph{output vector} $(-0.6,-0.2)$ in a 2 dimensional \glossary{output space}. Recall from chapter \extref{ch_intro} that a table of data is a simple environment for a neural network. This table will sometimes contain a set of input vectors, which can be thought of as a set of points in the input space of a network. It can also contain a set of training vectors, which describes how we want the network to respond to input vectors, by producing specific points in the output space. Many problems in neural network theory can be understood in terms of properties of the input and output space.
  
-We can also talk about vectors of weights, or \glossary{weight vectors} which exist in \glossary{weight spaces}. The feed-forward network in Fig. \ref{ffRecurrent} has 12 weights. The strengths of those weights is given by the vector 
+We can also talk about vectors of weights, or \glossary{weight vectors}, which exist in \glossary{weight spaces}. The feed-forward network in figure \ref{ffRecurrent} has 12 weights. The strengths of those weights is given by the vector 
 \begin{equation*}
 (-2, 1, -1, 0.9, -1, -1.2, 1, -2, 0.7, -1, 2, 2.1)
 \end{equation*}
-in a 12 dimensional weight space (see Fig. \ref{labelledNets}). The recurrent network has 4 weights whose current strengths is given by the vector $(1.1,\; 2,\; 1,-2)$ in a 4 dimensional weight space. In the chapters on supervised and unsupervised learning (chapters \extref{ch_supervised} and \extref{ch_unsupervised}) we will see that it can be helpful to think of learning in terms of movement in a weight space. As the weights of a network are changed or ``trained'' we have a moving point in weight space. Points in weight space can be associated with an error value, which makes it possible to define an \emph{error surface} over a weight space. Supervised learning can often be understood as finding low points on this error surface.
+in a 12 dimensional weight space (see figure \ref{labelledNets}). The recurrent network has 4 weights whose current strengths is given by the vector $(1.1,\; 2,\; 1,-2)$ in a 4 dimensional weight space. In the chapters on supervised and unsupervised learning (chapters \extref{ch_supervised} and \extref{ch_unsupervised}), we will see that it can be helpful to think of learning in terms of movement in a weight space. As the weights of a network are changed or ``trained'' we have a moving point in weight space. Points in weight space can be associated with an error value, which makes it possible to define an \emph{error surface} over a weight space. Supervised learning can often be understood as finding low points on this error surface.
 % Low priority discussion item: do we need an indexing system for weights such that we can consistently define weight vectors, including fan-in and fan-out weight vectors?   
 
-It can also be useful to talk about a \glossary{fan-in weight vector} (the list of weight strengths for the set of weights attaching to a node), and a \glossary{fan-out weight vector} (the list of weight strengths for the set of weights exiting a node). A version of the networks in Fig. \ref{ffRecurrent} with zeroed out activations, labeled node indices, and weight strengths  is shown in Fig. \ref{labelledNets} below. Some sample weight vectors for these networks are:
+It can also be useful to talk about a \glossary{fan-in weight vector} (the list of weight strengths for the set of weights attaching to a node), and a \glossary{fan-out weight vector} (the list of weight strengths for the set of weights exiting a node). A version of the networks in figure \ref{ffRecurrent} with zeroed out activations, labeled node indices, and weight strengths  is shown in figure \ref{labelledNets} below. Some sample weight vectors for these networks are:
 \begin{eqnarray*}
 \mbox{Feed forward network, neuron 3 fan-in} \;  \;  \;  (1,-2) \\
 \mbox{Feed forward network, neuron 3 fan-out} \; \; \; (-2,0.9) \\
@@ -210,7 +204,7 @@ example here are nine vectors in a 6 dimensional space:
 \end{array}
 \end{eqnarray*}
 We can't directly visualize these vectors since we only live in a 3 dimensional 
-world but we can project them down to a lower dimension. Fig. 
+world but we can project them down to a lower dimension. Figure
 \ref{F:projection} shows the projection of these vectors down to 2 dimensions.
 Each vector above corresponds to one point in the figure. Notice that by 
 visualizing the points we can immediately see a structure that is very hard if 
@@ -226,7 +220,7 @@ what kind of projection we use we get different distortions, but even so, we
 get a sense of what of the objects' shapes are. The geometric relationship between 
 various regions in 3 dimensional space can be seen by just looking at a 2 
 dimensional map. For example, in a standard Mercator projection of the Earth 
-(Fig. \ref{Mercator}), Antarctica and Greenland look huge, and things are 
+(figure \ref{Mercator}), Antarctica and Greenland look huge, and things are 
 especially distorted at the two poles, farthest away from the equator.
 %Metrically the continents are different but you can tell which is which by the shape (book?)
 
@@ -257,7 +251,7 @@ properties of the Earth's surface--that is, properties involving
 continuity--are preserved by the projection. For example when we see on the 
 map that Los Angeles and San Francisco are on the same coast then we know we 
 can sail along the coast to get from one city to the other. San Francisco is
-closer to Merced than it is to Los Angeles but when we see on the map that 
+closer to Merced than it is to Los Angeles, but when we see on the map that 
 Merced is not on the coast then we know that we can not sail from San Francisco 
 to Merced. Even though distances on the map have been distorted slightly we 
 can still use it to make travel plans. 
@@ -266,14 +260,14 @@ can still use it to make travel plans.
 
    We can use the method of projection to visualize even higher dimensional 
 spaces that can not be seen by human eyes. A somewhat exotic example is shown 
-on the right of Fig. \ref{F:projection}. This is the projection of a 2 
+on the right of figure \ref{F:projection}. This is the projection of a 2 
 dimensional surface in a 4 dimensional space down to a 3 dimensional space. 
 The 4 dimensional space is the state space for a spherical pendulum and the 
 surface is the set of all states of the pendulum that have the same energy and 
 angular momentum. We can see it resembles the surface of a donut with a groove
 along the side. 
 
-   Another example is shown on the left of Fig. \ref{F:projection}. It 
+   Another example is shown on the left of figure \ref{F:projection}. It 
 consists of three circles that intersect at a single point (called a ``bouquet 
 of three circles''). In this example the three circles are perfectly round and 
 lie in three mutually perpendicular planes but we can not see this bouquet of 
@@ -313,8 +307,8 @@ formally known as the ``scalar product.'' The scalar product gets its name from
 the fact that its value is a scalar. The scalar product is a member 
 of a general class of functions known as ``inner products''. Inner products 
 are used to express geometric relationships between vectors.}  The dot 
-product is different from scalar multiplication. The dot product is a
-function of two vectors whereas scalar multiplication is a function of a vector
+product is different from scalar multiplication (scalar multiplication and the scalar product are defined in section \ref{S:LinearAlgebraAppendix}). The dot product is a
+function of two vectors, whereas scalar multiplication is a function of a vector
 and a scalar. The dot product gets its name from the fact it is represented by 
 a large dot: $\bullet$. It is also common to say that we are ``dotting'' one 
 vector with another.
@@ -326,7 +320,7 @@ vector with another.
 \end{figure}
 
    The dot product is computed by multiplying each of the corresponding 
-components of a pair vectors and summing the resulting products. For example
+components of a pair vectors, and summing the resulting products. For example
 \begin{eqnarray*}
 &(1,2,3)  \bullet  (4,5,6)& = \quad 1 \cdot 4 + 2 \cdot 5 + 3 \cdot 6 = 32   \\
 &(0,0,0)  \bullet  (4,5,6)& = \quad 0 \cdot 4 + 0 \cdot 5 + 0 \cdot 6 = 0    \\
@@ -336,18 +330,17 @@ components of a pair vectors and summing the resulting products. For example
 \end{eqnarray*}
 
    Clearly the product of any vector with the zero vector (the vector whose
-components are all $0$) is $0$. However the dot product of two non-zero 
-vectors can be $0$. It turns out that if the dot product of two non-zero 
+components are all $0$) is $0$. However, the dot product of two non-zero 
+vectors can also be $0$. It turns out that if the dot product of two non-zero 
 vectors is $0$ then the vectors are {\em orthogonal} (perpendicular) to each 
 other. It might be hard to tell right away that the vectors 
-$(2,-1,1,-3,1,1)$, $(1,2,3,1,1,-1)$ are orthogonal but a quick calculation 
+$(2,-1,1,-3,1,1)$, $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation 
 shows us
 \begin{eqnarray*}
  (2,-1,1,-3,1,1) \bullet (1,2,3,1,1,-1)& = 0
 \end{eqnarray*}
-so they must be orthogonal. The dot product can be used to uncover other
-geometric properties in high dimensional spaces but we will not need to do
-that here.
+so they must be orthogonal. 
+%The dot product can also be used to uncover other geometric properties in high dimensional spaces.
 
  Notice that we can concisely represent the weighted input (see chapter \extref{ch_act_functions})
 to a node using the dot product. The weighted input is just the dot product of
@@ -369,7 +362,7 @@ n_4 = (-1,-1,1) \bullet (\; -1,\; -4,\; 5) = 1 + 4 +5 = 10
 \section{Matrices}\label{S:Matrices}
 
    Another object studied in linear algebra is a \glossary{matrix}, which is a 
-rectangular array of numbers arranged in rows and columns; basically a table of 
+rectangular array of numbers arranged into rows and columns: basically a table of 
 values. Here is an example of a matrix:
 \[
 \begin{pmatrix}
@@ -381,7 +374,7 @@ values. Here is an example of a matrix:
 \]
 It is conventional to describe matrices by stating the number of rows and 
 columns they have, in that order. The example above is a $4 \times 3$ 
-matrix because it has 4 rows and 3 columns.\footnote{The notation for vectors typically includes a comma separated list of the vector's components. The notation for matrices typically does contain not commas. A  matrix's components are only aligned into rows and columns without any extra characters to separate them. Otherwise we think of vectors as special cases of matrices. A vector with $n$ components can be represented as either a $1 \times n$ matrix or as an $n \times 1$ matrix. So far we have been representing vectors as $1 \times n$ matrices.}  Each row of a matrix is called a \glossary{row vector} and each column is called a \glossary{column vector}. The matrix above has four row vectors and 
+matrix because it has 4 rows and 3 columns.\footnote{The notation for vectors typically includes a comma-separated list of the vector's components. The notation for matrices typically does contain not commas. A  matrix's components are only aligned into rows and columns without any extra characters to separate them. Otherwise we think of vectors as special cases of matrices. A vector with $n$ components can be represented as either a $1 \times n$ matrix or as an $n \times 1$ matrix. So far we have been representing vectors as $1 \times n$ matrices.}  Each row of a matrix is called a \glossary{row vector} and each column is called a \glossary{column vector}. The matrix above has four row vectors and 
 three column vectors.\footnote{Note that vectors  are matrices and matrices are vectors!  As already noted, vectors are a special kind of a matrix, 
 a matrix with one row or one column. Conversely, matrices are technically a 
 kind of vector, since they satisfy the formal definition of a vector (they 
@@ -392,23 +385,23 @@ exist in vector spaces called ``matrix spaces''). However, it will be easier for
 \raisebox{-0.5\height}{\includegraphics[scale=.4]{./images/ff_labelled.png}}
 \hspace*{.7in}
 \raisebox{-0.5\height}{\includegraphics[scale=.3]{./images/recurrent_labelled.png}}
-\caption[Simbrain screenshots modified by Jeff Yoshimi.]{The feed forward and recurrent network shown in Fig. \ref{ffRecurrent} with zeroed out activations, labeled nodes, and weight strengths shown. This makes it possible to see how weights in a network can be linked to values in a matrix.}
+\caption[Simbrain screenshots modified by Jeff Yoshimi.]{The feed forward and recurrent network shown in figure \ref{ffRecurrent} with zeroed out activations, labeled nodes, and weight strengths shown. This makes it possible to see how weights in a network can be linked to values in a matrix.}
 \label{labelledNets}
 \end{figure}
 
-Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix.\footnote{\label{sourceTarget} This is a somewhat unconventional way of representing weight matrices. It can be called a ``source-target'' representation because rows are associated with source neurons and columns are associated with target neurons. It is more common to use a ``target-source'' representation where rows are associated with target neurons and columns are associated with source neurons. This is related to the choice to represent the weight from node $j$ to $k$ with $w_{j,k}$, a ``source-target'' indexing scheme, rather than $w_{k,j}$. These changes in convention make the formalism more intuitive to learn, but again they are non-standard. Further discussion is in note \ref{leftRightConvention}.}
+Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix.\footnote{\label{sourceTarget} This is a somewhat unconventional way of representing weight matrices. It can be called a ``source-target'' representation, because rows are associated with source neurons and columns are associated with target neurons. It is more common in neural network texts to use a ``target-source'' representation, where rows are associated with target neurons and columns are associated with source neurons. This is related to the choice to represent the weight from node $j$ to $k$ with $w_{j,k}$, a ``source-target'' indexing scheme, rather than $w_{k,j}$. We made changes in convention in order to make the formalism easier to learn, but again they are non-standard. Further discussion is in note \ref{leftRightConvention}.}
 % I am thinking of moving to the more standard "target-source" ordering. I have a graphical way of making that clear that fits well with certain ideas in Simbrain 4. But this is a large scale change.
 
-Using this method, we can represent the weight matrix for the recurrent network in Fig. \ref{labelledNets} as:
+Using this method, we can represent the weight matrix for the recurrent network in figure \ref{labelledNets} as:
 \[
 \begin{pmatrix}
  2  &   1 \\
  1.1  & -2 
 \end{pmatrix}
 \]
-For example, the strength of the weight connecting node 2 to node 1 is $1.1$ and so that's the value in the second row, first column of the matrix. Notice that the connections from a node directly back to itself are the diagonal components of this kind of weight matrix. Also note that if a weight does not exist, it is represented by a $0$ in the corresponding matrix. In the recurrent network in Fig. \ref{labelledNets} (Right)  if there were no self-connections then the diagonal of the matrix would have zeros in it: there would be no weight from node 1 to 1 or from node 2 to 2. There are a lot of zeros in the full weight matrix for the feed-forward network in Fig. \ref{labelledNets}. For example, there is no weight from node 1 to 2, so there is a $0$ in the first row, second column, of that network's full weight matrix.
+For example, the strength of the weight connecting node 2 to node 1 is $1.1$, so that's the value in the second row, first column of the matrix. The connections from a node directly back to itself are the diagonal components of this kind of weight matrix. If a weight does not exist, it is represented by a $0$ in the corresponding matrix. In the recurrent network in figure \ref{labelledNets} (Right),  if there were no self-connections then the diagonal of the matrix would have zeros in it: there would be no weight from node 1 to 1 or from node 2 to 2. There are a lot of zeros in the full weight matrix for the feed-forward network in figure \ref{labelledNets}. For example, there is no weight from node 1 to 2, so there is a $0$ in the first row, second column, of that network's full weight matrix.
 
-For the feed-forward network in Fig. \ref{labelledNets}, we can begin with a matrix for the full network, which illustrates some of its structure.
+For the feed-forward network in figure \ref{labelledNets}, we can begin with a matrix for the full network, which illustrates some of its structure:
 \begin{equation*}
    \left( 
    \begin{array} {c|c|c}
@@ -426,11 +419,11 @@ For the feed-forward network in Fig. \ref{labelledNets}, we can begin with a mat
    \end{array}
    \right)
 \end{equation*}
-This is a ``block matrix'' containing two blocks of non-zero values (corresponding to the layers that are connected), and 7 blocks of zeros (corresponding to possible layer-to-layer weight matrices that don't exist for this network, e.g. a recurrent layer from the hidden layer to itself or a direct layer from the input to the output  layer). 
+This is a ``block matrix'' containing two blocks of non-zero values (corresponding to the layers that are connected), and 7 blocks of zeros (corresponding to possible layer-to-layer weight matrices that don't exist for this network, e.g. a recurrent layer from the hidden layer to itself, or a direct layer from the input to the output  layer). 
 % Above add ``input'', ''hidden'', ''target'' layer names to "block portions" on left and top. If possible also add row and column labels
 
 % Add a picture of just the input and hidden layers, where the nodes are relabelled 1,2 and 1,2,3 and indicate that some node-relabeling like that generally happens when we focus on a single-layer of weights  This way the indexes  of the elements of the matrix corresponds to their position in the matrix: first row correspond to first node in the input layer, etc. 
-However in practice it is natural to focus on the non-zero blocks, and to treat each set of connections between a pair of layers as its own matrix. For example, for the input to the hidden layer in  Fig. \ref{labelledNets} (Left):, we focus on this block of weights:
+However, in practice it is natural to focus on the non-zero blocks, and to treat each set of connections between a pair of layers as its own matrix. That is, each weight layer of a feed-forward network can be represented by its own weight matrix. For example, for the weight layer connecting the input node layer to the hidden node layer in  figure \ref{labelledNets} (Left), we focus on this block of weights:
 \[
 \begin{pmatrix}
  1  &   0.7  & 2  \\
@@ -438,14 +431,15 @@ However in practice it is natural to focus on the non-zero blocks, and to treat 
 \end{pmatrix}
 \]
 Given the way we are representing weight matrices, this can be thought of as a sequence of column vectors, one for each fan-in weight vector of the three hidden layer nodes. We can also think of it as a sequence of row vectors, one for each fan-out weight vector of the three input layer nodes. 
+% A picture of some kind would help here.
 
 \section{Matrix Product}
 
-We can use these matrix representations of weights to facilitate the computation of weighted inputs (see chapter \extref{ch_act_functions}), which in the case of a linear activation function with no bias just is the activation. Consider the feed-forward network in Fig. \ref{labelledNets}. Given an input vector to that network, we can compute the hidden unit vector using \emph{matrix multiplication}, which we will not elaborate in detail here. Instead, we will simply describe a special case of it, where we multiply an activation vector on the left times a weight matrix on the right.\footnote{\label{leftRightConvention} We are presenting the computation as a row vector on the left times a weight matrix on the right, which is required by the ``source-target'' representation (see note \ref{sourceTarget}). It is also easy to think about in terms of the operations involved in updating a neural network: an activation vector is ``passed through'' a weight matrix to produce another activation vector, in this case a hidden unit vector. However, this is non-standard. In linear algebra and most applications this operation would usually be represented with the matrix on the left and a column vector on the right. This is because a matrix is often thought of as a function that operates or acts on a vector, transforming inputs to outputs.}   That is, we multiply the input vector by the intervening weight matrix to obtain the hidden unit vector. We can then multiply the hidden unit vector by the hidden-to-output layer weight matrix to get the output vector. We can continue to do this for all the layers of a feed-forward network. So for linear network pretty much all we do when updating the network is use matrix products (and even for non-linear networks, we use the matrix product to compute vectors of weighted inputs, which are then transformed by, for example, sigmoid functions).
+We can use matrix representations of weights to facilitate the computation of weighted inputs (see chapter \extref{ch_act_functions}). Consider the feed-forward network in figure \ref{labelledNets}, which uses linear activation functions without bias (we are also ignoring clipping), so that node activations just are weighted inputs. Given an input vector to that network, we can compute the hidden unit vector using \emph{matrix multiplication}. We will not give a general definition of matrix multiplication here, but will instead describe a special case of it, where we multiply an activation vector on the left times a weight matrix on the right.\footnote{\label{leftRightConvention} We are presenting the computation as a row vector on the left times a weight matrix on the right, which is required by the ``source-target'' representation (see note \ref{sourceTarget}). It is also easy to think about in terms of the operations involved in updating a neural network: an activation vector is ``passed through'' a weight matrix to produce another activation vector, in this case a hidden unit vector. However, this is non-standard. In linear algebra and most applications this operation would usually be represented with the matrix on the left and a column vector on the right. This is because a matrix is often thought of as a function that operates or acts on a vector, transforming inputs to outputs.}   That is, we multiply the input vector by the intervening weight matrix to obtain the hidden unit vector. We can then multiply the hidden unit vector by the hidden-to-output layer weight matrix to get the output vector. We can continue to do this for all the layers of a feed-forward network. So, for linear networks, pretty much all we do when updating the network is use matrix products (and even for non-linear networks, we use the matrix product to compute vectors of weighted inputs, which are then transformed by, for example, sigmoid functions).
 
-We will not give a formal definition of the matrix product, but here is an informal description of how to multiply a vector on the left by a matrix on the right. To do this, simply take the dot product of the vector on the left and each column vector in the  matrix. Do this for each of the $m$ columns of the matrix, and the resulting set of numbers is the matrix product. Intuitively it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.
+Here is an informal description of how to multiply a vector on the left by a matrix on the right: take the dot product of the vector on the left and the first column vector in the matrix. The resulting number is the first component of a row vector, which will be the result of this operation. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.
 
-Consider an example. Suppose the feed-forward network in Fig. \ref{labelledNets} has linear activation functions and 0 bias, and its input activation vector is $(1,2)$. To compute the hidden layer activation vector, we compute the dot product between the input vector and each of the three column vectors:
+Consider an example. Suppose the feed-forward network in figure \ref{labelledNets} has linear activation functions and 0 bias, and its input activation vector is $(1,2)$. To compute the hidden layer activation vector, we compute the dot product between the input vector and each of the three column vectors:
 \[
   \begin{matrix}\begin{pmatrix}1 & 2\end{pmatrix}\\\mbox{}\end{matrix}
   \begin{pmatrix} 1 & 0.7 & 2 \\ -2 & -1 & 2.1 \end{pmatrix} 
@@ -454,7 +448,7 @@ Consider an example. Suppose the feed-forward network in Fig. \ref{labelledNets}
   =
   \begin{pmatrix}  -3 \;\; -1.3 \;\;\; 6.2  \end{pmatrix}
 \]
-This can be visualized by imagining that the input vector is being ``dotted'' with the fan-in weight vectors of each of the three units at the next layer, to produce the weighted input to each of them 
+This can be visualized by imagining that an input activation vector is being combined (``dotted'') with the fan-in weight vectors of each of the three nodes at the next layer, to produce the weighted input to each of them and thus the next layer's activation vector. 
 
 % 1,2 as input confusing because it overlaps indices in video. Change?
 We can do the same kind of thing with the recurrent network, but in this case we will be determining its activations at successive time steps (the output at a given time becomes the new input). Suppose the recurrent network has an initial activation vector of $(1,2)$. What is its activation vector at the next time step?  We can compute this as follows:
