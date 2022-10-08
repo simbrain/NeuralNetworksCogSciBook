@@ -62,7 +62,9 @@ towards a given attractor.
 
 \item[Chaotic dynamical system] a type of dynamical system in which the future behavior of the system is hard to predict. Such systems have sensitive dependence on initial conditions. Compare the ``butterfly effect.''
 
-\item[Clamped node] a node that does not change during updating.
+\item[Clamped node] a node that does not change during updating. Any activation function associated with the node is ignored, and its activation stays the same.
+
+\item[Clamped weight] a weight that does not change during updating. Any local learning rule associated with the weight is ignored, and its strength stays the same.
 
 \item[Classification task] a supervised learning task in which each input vector is associated with one or more discrete  categories. An example would be classifying images of faces as male or female. When classification associates each input with one category only, a one-hot encoding is often used on the output layer.
 
@@ -179,6 +181,8 @@ towards a given attractor.
 %\item[Izhikevich model]
 
 \item[Labeled dataset] a conjunction of two datasets, an input dataset with input vectors, and a target dataset with target vectors or ``labels''. And input-target dataset. Used for supervised learning tasks. The term ``label'' is associated with classification tasks but ``labeled dataset'' is a better name than ``input-target'' dataset.
+
+\item[Learning rate] A value which controls how much parameters are update each time a learning rule is applied. Lower values lead to slower learning; larger values to faster learning.
 
 \item[Learning rule] (in neural networks) a rule for updating the weights of a neural network. Application of this rule is sometimes called ``training.''
 
