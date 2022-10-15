@@ -2,6 +2,10 @@
 
 Latex files and other scripts that can be used to compile a book about neural networks, especially as they are used in cognitive science. As noted in the preface (which also gives a sense of the contents of the book and the philosophy used when writing it), the book can be customized for different teaching purposes, by producing custom "container documents".
 
+# Versions
+
+Calendar based versioning is used in the format `year.major.minor`.  New public releases are created tagged at `major` version updated but not at `minor` version updates (though the PDF should be updated with every release).
+
 # How To Use This Book
 
 This folder contains a master document (`Book_master.tex`) that compiles every chapter. The master document is a container document with all of the chapters.
