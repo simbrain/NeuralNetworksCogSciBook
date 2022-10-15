@@ -10,13 +10,13 @@ adjusting the output node as appropriate. The 3 input nodes must be clamped.\foo
 \noindent
 {\bf \theActFunctionCounter.}  Consider the network shown in Fig. \ref{F:simplenet1}. We want to determine the weighted 
 input to node 4 shown on the right-hand side of the network, \ie we want the
-value of $n_4$. First we identify the values for the activations of the input 
+value of $n_4$. First, we identify the values for the activations of the input 
 nodes, the weights, and the bias on node 4. \\ \\
 \indent \qquad\qquad The activations on the input nodes: $(a_1,a_2,a_3) = 
 (-1,-4,5)$ \\
 \indent \qquad\qquad The weights: $(w_{1,4}, w_{2,4}, w_{3,4}) = (-1,1,1)$ \\
 \indent \qquad\qquad The bias: $b_4 = 0$ \\ \\
-Next we substitute these values into the formula for weighted input:
+Next, we substitute these values into the formula for weighted input:
 \begin{eqnarray*}
 n_4 = \sum_{j=1}^{3}  a_j  w_{j,4} + b_4 
     =  a_1 \cdot w_{1,4} + a_2 \cdot w_{2,4} + a_3 \cdot w_{3,4} + b_4 
@@ -38,7 +38,7 @@ nodes, the weights, and the bias on node 4. \\ \\
 (-1,-4,5)$ \\
 \indent \qquad\qquad The weights: $(w_{1,4}, w_{2,4}, w_{3,4}) = (-1,1,1)$ \\
 \indent \qquad\qquad The bias: $b_4 = 0$ \\ \\
-Next we substitute these values into the formula for weighted input:
+Next, we substitute these values into the formula for weighted input:
 \begin{eqnarray*}
 n_4 = \sum_{j=1}^{3}  a_j  w_{j,4} + b_4 
     =  a_1 \cdot w_{1,4} + a_2 \cdot w_{2,4} + a_3 \cdot w_{3,4} + b_4 
@@ -52,7 +52,7 @@ The weighted input to node 4 is $2$, {\bf Answer:} $n_4=2$.
 \stepcounter{ActFunctionCounter}
 \noindent
 
-{\bf \theActFunctionCounter.} Suppose we have the same network as in exercise \ref{actFunctEx1}  except 
+{\bf \theActFunctionCounter.} Suppose we have the same network as in exercise \ref{actFunctEx1}, except 
 $b_4 = 1$. What is the weighted input to node 4? {\bf Answer:} $n_4=3$.
 
 \bigskip
@@ -146,13 +146,13 @@ two input nodes (labeled 1 and 2) connected to a third node (labeled 3). \\ \\
 \indent \qquad\qquad The weights: $(w_{1,3}, w_{2,3}) = (-1,1)$ \\
 \indent \qquad\qquad The bias: $b_3 = 1$ \\ \\
 And suppose node 3 has a linear activation function with $m=3$. What is the 
-activation of node 3?  First we compute the weighted input to node 3:
+activation of node 3?  First, we compute the weighted input to node 3:
 \begin{eqnarray*}
 n_3 = a_1 \cdot w_{1,3}  + a_2 \cdot w_{2,3} + b_{3} 
     =     (1)(-1)        +     (-1)(1)       + 1     
     = -1 -1 + 1 = -1
 \end{eqnarray*}
-Next we compute the activation from the weighted input.
+Next, we compute the activation from the weighted input.
 \begin{eqnarray*}
 a_3 = m \cdot n_3  = (3)(-1) = -3
 \end{eqnarray*}
@@ -167,7 +167,7 @@ a_3 = m \cdot n_3  = (3)(-1) = -3
 \indent \qquad\qquad The weights: $(w_{1,3}, w_{2,3}) = (0,.5)$ \\
 \indent \qquad\qquad The bias: $b_3 = 0$ \\ \\
 And suppose node 3 has a piecewise linear activation function with $(u,\ell,m) = (1,-1,2)$ What is the 
-activation of node 3?  First we compute the weighted input to node 3:
+activation of node 3?  First, we compute the weighted input to node 3:
 \begin{eqnarray*}
 n_3 =  (-1)(0)        +     (1)(.5)       + 0 = .5
 \end{eqnarray*}
@@ -208,9 +208,9 @@ consider three possible values for the weighted input, \ie $n_k=0$, $n_k = 2$, a
 $n_k=2.5$. How can we design the sigmoid activation function so that the 
 activation for $n_k=0$ is $0.5$ while the activation for $n_k = 2$ and 
 $n_k=2.5$ is far below $1$?  The key idea is to decrease the slope of the 
-sigmoid function thereby ``stretching out'' the S shape. First we let $u=1$ 
+sigmoid function thereby ``stretching out'' the S shape. First, we let $u=1$ 
 and $\ell=0$. This forces the activation to be $0.5$ when $n_k=0$ regardless 
-of the slope $m$. Next we set $m=0.0001$. The activation in response to 
+of the slope $m$. Next, we set $m=0.0001$. The activation in response to 
 $n_k=2$ is around $0.50020$ and in response to $n_k=2.5$ is around $0.50025$, 
 both of which are far below $1$.
 
