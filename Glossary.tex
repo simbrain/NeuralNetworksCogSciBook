@@ -86,6 +86,8 @@ towards a given attractor.
 
 \item[Data cleaning] removing, fixing, replacing, or otherwise dealing with bad data. Includes subsetting data, i.e. extracting rows or columns or removing rows or columns. One stage of data wrangling.
 
+\item[Data science]  An area of science and practice concerned with managing and analyzing datasets, often using tools of machine learning, including neural networks.
+
 \item[Data wrangling] (Synonyms: data munging, pre-processing) the process of transforming data in to a form usable by a neural network. Encompasses obtaining, cleaning, imputing, coding, and rescaling data. 
 
 \item[Dataset] any table of numerical values that is used by a neural network, or that will be used by a neural network after pre-processing. (This is not a standard definition, but one stipulated in this text). Input, output, target, and training datasets are specific types of tables used in specific ways by neural networks.
@@ -104,7 +106,7 @@ towards a given attractor.
 
 \item[Dimensionality reduction] A technique for transforming an $n$-dimensional vector space in to another vector space with $m<n$ dimensions. A way of visualizing higher than 3-dimensional data that would otherwise be impossible to visualize.
 
-%\item[Discrimination]
+\item[Discriminative model] A model that associates feature vectors, which are often distributed representations, with discrete categories (e.g. one-hot localist vectors).  Categories can be discriminated from distributed feature vectors. This is a non-standard, informal definition. The formal definition is that a discriminative model is a model of the conditional probability of categorical outputs given inputs. Contrasted with generative models.
 
 \item[Distributed representation] a representation scheme where patterns of activation across groups of neurons indicate the presence of an object. 
 
@@ -123,6 +125,8 @@ towards a given attractor.
 \item[Example] (Synonyms: instances, cases) rows of a dataset. Used in phrases like input example, training example, etc., depending on which dataset we are considering.
 
 \item[Excitatory synapses] synapses where an action potential in a presynaptic neuron triggers the release of neurotransmitters that then increase the likelihood of an action potential occurring in the postsynaptic neuron.
+
+\item[Evolutionary algorithm] an algorithm that creates a model based on simulated evolution. In the context of neural networks, or ``evolved neural networks'', a set of randomly generated neural networks is created and they are used to perform some task.  Those that perform best are kept, and combined with other top performers, and the resulting networks are used to perform the same task. The process is repeated over many generations. Closely related to genetic algorithms.
 
 \item[Fan-in weight vector] the weight vector for all of the inputs to a node in a neural network.
 
@@ -144,7 +148,7 @@ towards a given attractor.
 
 \item[Generalization] the ability of a neural network to perform tasks that were not included in its training dataset. An example would be a network that was trained to identify 10 faces as male, and 10 as female, being able to perform well on (or ``generalize to'') new faces it has not seen before.
 
-%\item[Generative Models]
+\item[Generative Model] A model that can be used to generate prototypical features associated with some category, for example, associating a localist category label with a distributed feature vector. This is a non-standard definition. The formal definition is that it is a model of the joint probability distribution over a set of inputs and outputs. Contrasted with discriminative models. 
 
 \item[Graceful degradation] a property of systems whereby decrease in performance is proportional to damage sustained. The contrast is with brittle systems, in which a small amount of damage can lead to complete failure.
 
@@ -182,6 +186,8 @@ towards a given attractor.
 
 \item[Labeled dataset] a conjunction of two datasets, an input dataset with input vectors, and a target dataset with target vectors or ``labels''. And input-target dataset. Used for supervised learning tasks. The term ``label'' is associated with classification tasks but ``labeled dataset'' is a better name than ``input-target'' dataset.
 
+\item[Learning] In a neural network, a process of updating synaptic weights so that the network improves at producing some desired vector-valued function (for a feed-forward network) or dynamical system (for a recurrent network), or otherwise behaves in some way deemed useful by its designer.
+
 \item[Learning rate] A value which controls how much parameters are update each time a learning rule is applied. Lower values lead to slower learning; larger values to faster learning.
 
 \item[Learning rule] (in neural networks) a rule for updating the weights of a neural network. Application of this rule is sometimes called ``training.''
@@ -201,7 +207,7 @@ dependent is linearly independent.
 
 \item[Logic gates] Devices that compute Boolean functions. For example, an AND gate has two inputs and one output. When both inputs are set to ``True'' the gate produces a ``True'' as output; otherwise the gate produces a ``False'' as output. Simple neural networks can implement logic gates.
 
-\item[Local representation] a representation scheme where activation of individual neurons indicate the presence of an object. Example: activation of neuron 25 indicates the presence of my grandmother.
+\item[Localist representation] a representation scheme where activation of individual neurons indicate the presence of an object. Example: activation of neuron 25 indicates the presence of my grandmother.
 
 \item[Long Term Depression] (LTD) a  process by which the efficacy of a synapse is decreased after repeated use.
 
@@ -246,6 +252,8 @@ weights of a neural network.
 \item[Output node] (Synonyms: actuator, effector) a node which provides information to an external environment. 
 
 \item[Output space] The vector space associated with the output layer of a neural network. The set of all possible output vectors for a neural network.
+
+\item[Parallel processing] Processing many items at once, concurrently. Contrasted with serial processing, where items are processed one at a time.  Neural networks are known for processing items in parallel, whereas classical computer process items in serial.
 
 \item[Parameter] A quantity for a dynamical system that is fixed as the system runs but can be adjusted and run again with a different value. Used in the description of bifurcations. In a neural network, the parameters we  update are usually its weights and biases. This concept is also used in machine learning when treating a neural network as a trainable model, whose parameters (weights and biases) are updated using optimization techniques.
 
@@ -395,7 +403,7 @@ weights of a neural network.
 
 \item[Weight] (Synonyms: connection, artificial synapse) a simulated synapse or synapse-like element in a neural network. 
 
-%\item[Weighted Inputs] (Synonyms: net input)  Dot product of an input vector and a fan-in weight vector, plus a bias term.
+\item[Weighted Input] (Synonym: net input)  Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
 
 \item[Weight space] the set of possible weight vectors for a given neural network.
 
@@ -406,14 +414,3 @@ weights of a neural network.
 \item[Zero vector] a vector whose components are all $0$. Adding the zero vector to any vector gives the same vector.
 
 \end{description}
-
-% Sharai - Some terms I'm debating adding are:
-%\item[Classical computation] or \item[Classical computer]
-%\item[Clustering]
-%\item[fMRI]
-%\item[Neuromodulator]
-%\item[Parallel processing]
-%\item[Phenomenology]
-%\item[Psychopharmacology]
-%\item[Serial processing]
-% These terms might either be too common knowledge (for students coming in from COGS 001 or PSY 001), too self-explanatory, the main topic of a chapter, not "feeling" quite right, too complex to explain in a glossary entry, or not appear in the book often enough to warrant adding. Might have to read through more of the book before we can decide.
