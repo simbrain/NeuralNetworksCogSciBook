@@ -109,7 +109,7 @@ Having coded all data as numerical, additional work often remains to be done, in
 \end{figure}
 % Rescale the one-hot data instead
 
-\section{Datasets for Neural Networks}
+\section{Datasets for Neural Networks}\label{datasets}
 
 When we train a neural network, we update its parameters--its weights and biases--so that it can learn to do useful things. This is what our brains do when we learn, updating synaptic strengths in order to function more effectively. As we will see, for unsupervised learning, we take an input dataset and train it to pick up statistical features of the data. For supervised learning, we take ``target data'' or ``labeled data'' and use it to train a network to do some desired thing.\footnote{Note that the term ``label'' is associated specifically with classification tasks, where an input is sorted into one of a finite set of categories. Think of labeling images as cat vs. dog. But not all training tasks are like that; regression tasks for example associate inputs with real-valued targets. ``Target data''  is thus a more general term. However, the terminology of ``labeled data''  has become standard, and  is snappier than ``input-target dataset''. We will use both terminologies interchangeably.}
 % Reference to classification / regression discussion once that's done
@@ -141,7 +141,7 @@ A \glossary{labeled dataset} (also \emph{labeled data} or \emph{input-target dat
 \label{datasetTypes}
 \end{figure}
 
-\section{Generalization and Testing Data }
+\section{Generalization and Testing Data }\label{generalization}
 
 % Mention car network from videos and how we can train it then use it to predict new data
 One attractive feature of neural networks is that even if they have been trained on a specific dataset, they will tend to generalize well to new patterns they weren't trained on. This is easy to see with the 3-object detector in Simbrain, discussed in section \extref{intro_comp_nn}. Try plugging in inputs it has not seen before, and it will still do well. This is a psychologically realistic property of neural networks. Suppose I have only ever seen two pineapples. My neural network was trained on only two pineapples. But I manage to correctly classify many other pineapples that I've never seen, even though they produce slightly different patterns on my eye. Our neural networks are good at \glossary{generalization}, at extrapolating from what they have seen to new things they have not seen.
