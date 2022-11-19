@@ -1,7 +1,5 @@
 \chapter{Supervised Learning in Feed Forward Networks}\label{ch_supervised_ff}
 \chapterauthor{Jeff Yoshimi}
-
-% Add stochastic gradient descent, batch, etc. here? If so, link to row errors vs. overall error.
 	
 Having introduced supervised learning in chapter \extref{ch_supervised}, in this chapter we consider several supervised learning algorithms for feedforward networks in depth, and consider their implications for cognitive science. First, an early form of supervised learning called the ``Least Mean Squares rule'' or ``LMS rule''. Second, backpropagation, which adds a powerful method of learning \emph{internal representations} in a neural network. Third, we briefly discuss deep learning networks, which take backprop and apply it to networks with many layers off processing units. Finally, we show how even though these networks were mainly developed in engineering contexts, they have been used in connectionism  and computational cognitive science  to study the  kinds of representations that humans develop to do things like recognize faces.
 
@@ -130,6 +128,30 @@ As you can see, applying this rule leads to SSE getting lower and lower, and the
 (5) SSE$' = (5.6-5)^2 = .36$
 \bigskip
 
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = -1 ,w_{1,2} = 1, t = -2 ,\epsilon = .25$, what are $a_2$, $SSE$, $w_{1,2}'$, $a_2'$, and SSE$'$? \\
+{\bf Answer:} \\
+(1) $a_2 = -1$ \\
+(2) SSE $= 1$ \\
+(3) $w_{1,2}' = 1 + (.25 \cdot -1 \cdot (-2-(-1))) = 1 + .25 = 1.25$ \\
+(4) $a_2' = -1.25$ \\
+(5) SSE$' = (-2 - (-1.25))^2 = .56$
+\bigskip
+
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = 3 ,w_{1,2} = -.5, t = .8 ,\epsilon = .1$, what are $a_2$, $SSE$, $w_{1,2}'$, $a_2'$, and SSE$'$? \\
+{\bf Answer:} \\
+(1) $a_2 = -1.5$ \\
+(2) SSE $= 5.29$ \\
+(3) $w_{1,2}' = .69$ \\
+(4) $a_2' = .57$ \\
+(5) SSE$' = (-2 - (-1.25))^2 = .053$
+\bigskip
+
+% Add some questions involving multiple inputs, and changing biases
+
 \section{Linearly Separable and Inseparable Problems}
 \label{linearlySeparable}
 
@@ -158,7 +180,7 @@ To understand what linear separability (and inseparability) are, recall that a c
 If a classification task can be solved using a decision boundary which is a line (or, in more than 2-dimensions, a plane or hyperplane), the classification problem is called a \glossary{linearly separable} problem. Figure \ref{F:decisionBoundaries} (Middle) shows a linearly separable problem. When we cannot properly separate the categories with a line (or hyperplane), as in figure \ref{F:decisionBoundaries} (Right), the problem is \glossary{linearly inseparable}, there is no way to draw a line which separates the 0's and 1's in that example. There is no linear decision boundary for that problem (though there are non-linear decision boundaries that perfectly separate the classes, like the wavy curve shown in the figure).\footnote{First, note that in the case shown, we could still fit a line to the problem and we'd just have some error. Second, we will see that while LMS cannot solve this task, since it uses linear decision boundaries, other supervised classification algorithms like backprop exist that can solve these types of non-linearly separable classification task}
 
 The goal of supervised learning of classification tasks is to set the weights of a network so that the decision boundary properly separates the two classes. The values of the weights and the output bias are like knobs that, when turned, will change where the decision boundary is: it can be rotated around and moved up and down. We want to turn the knobs so that they two  classes are properly separated.\footnote{Doing this amounts to minimizing error. When the decision boundary properly separates the two classes, SSE will be 0. If not, as in Fig. \ref{F:decisionBoundaries} (Right), there will be some error. What will SEE be in that case?}  However, LMS only allows linear decision boundaries. Other algorithms have more knobs, and can be used to create more complex decision boundaries and decision regions.
-% Footnote on more complex decision regions here, or somewhere else? And the interesting material on how with more layers we get more complex regions. See the code comments at the end of this section.
+% Footnote on more complex decision regions here, or somewhere else? And the interesting material on how with more layers we get more complex regions. See the code comments at the end of this section. Also see the videos on this, which contain useful summary. References to Lipman and to Bishop chapter 4, e.g. figure 4. I feel I have written this up before so I may have it in notes.
   
 Logic gates provide a convenient and historically important class of tasks that can be used to further illustrate these ideas. In appendix \extref{ch_logicgates} it is shown that logic gates can be represented as 2-1 feed-forward neural networks. Pairs of input nodes corresponding to statements P and Q connect to output nodes representing boolean combinations of truth values (0 for false, and 1 for true): P AND Q (true when both are true), P OR Q (true when at least one is true), and P XOR Q (true only when one is true). These can be depicted using the same kinds of classification plots as above (here using open dots for 0, and filled dots for 1). Fig. \ref{boolean_inputspace} shows the input space for the AND, OR and XOR logic gates. Note that AND and OR are linearly separable, and that XOR is not.
 
@@ -169,8 +191,7 @@ Logic gates provide a convenient and historically important class of tasks that 
 \label{boolean_inputspace}
 \end{figure}
 
-% References to various accounts of the dark years. Not all thought it was "disastrous". If I unpack this in the history chapter refer back to that
-Now we get to the major problem affecting two layer networks trained using LMS: \emph{they cannot solve linearly inseparable classification tasks}, like XOR. That two-layer linear networks cannot solve these problems was a major issue in the early history of connectionism. In 1969 Marvin Minsky and Seymour Papert published a book called {\em Perceptrons} (perceptrons are a kind of 2-layer network trained by a variant of the LMS technique). In this book Minsky and Papert showed that such networks could not solve linearly inseparable problems \cite{minsky1969perceptrons}. This had a disastrous impact on neural network research in the following decade, during the ``dark ages'' of neural networks (see chapter \extref{ch_history}). As Rumelhart and McClelland recall:
+Now we get to the major problem affecting two layer networks trained using LMS: \emph{they cannot solve linearly inseparable classification tasks}, like XOR. That two-layer linear networks cannot solve these problems was a major issue in the early history of connectionism. In 1969 Marvin Minsky and Seymour Papert published a book called {\em Perceptrons} (perceptrons are a kind of 2-layer network trained by a variant of the LMS technique). In this book Minsky and Papert showed that such networks could not solve linearly inseparable problems \cite{minsky1969perceptrons}. This had a disastrous impact on neural network research in the following decade, during the ``dark ages'' of neural networks (see section \extref{dark_ages}). As Rumelhart and McClelland recall:
 
 \begin{quote}
 Minsky and Papert's analysis of the limitations of the one-layer perceptron\footnote{They are referring to a single weight layer connecting two layers of nodes. So what Rumelhart and McClelland call a ``one-layer'' network is what we have called a ``2-layer'' network}, coupled with some of the early successes of the symbolic processing approach in artificial intelligence, was enough to suggest to a large number of workers in the field that there was no future in perceptron-like computational devices for artificial intelligence and cognitive psychology (PDP 1, p. 112) \cite{rumelhart1986parallel}.
@@ -245,7 +266,7 @@ As we saw, two-layer networks with linear units cannot solve this type of proble
 
 The key to backprop's superior performance is the way it \emph{re-maps} the linearly inseparable problem in the input space to a linearly separable problem in the hidden unit space, as shown in figure \ref{xor_remapping}. The crucial thing the hidden layer did was transform the input layer representation into a new internal representation, which includes a representation of ``only one unit is on'' and another representation of ``both units are in the same state.''  These two states are now linearly separable, and the output layer can easily separate them. The solution shown in the figure was produced by training a 2-2-1 network using backprop. Other solutions (corresponding to other minima in the error surface) can also be found. You are encouraged to try the experiment yourself in Simbrain. Train a backprop network on XOR, get it to a minimum on the error surface, and then check to see what hidden layer activations occur for each input.
 
-\section{Internal Representations and Psychological Applications}
+\section{Internal Representations and Psychological Applications}\label{internalRepsFF}
 
 % Work back in both chapter 1 themes: IAC (but  more for recurrent) and Triangle model. Definitely Spivey and JTrace  stuff with  continuous time-courses. See  Magnusson MTS talk. Quasi-regularity in language.
 % Should this be it's own chapter?
@@ -255,13 +276,14 @@ We have seen that multilayer feed-forward networks trained by supervised learnin
 
 The idea that feed-forward networks trained by supervised learning methods learn to remap an input space and develop  psychologically realistic internal representations was the basis of much of the connectionists' work showing that neural networks could shed light on human perception and cognition. In this section, we focus on a few connectionist ideas that illustrate much of the work that came out of the first big wave of connectionism (the resurgence of interest in the 1980s and 1990s associated with the PDP group at UCSD). 
 
-% Citation to \footnote{The Pictures of Facial Affect database.} 
+% Citation to POFA database (see Figure 1a) (Ekman & Friesen, 1976). \cite{ekman1976pictures} Note Ekman, also at UCSD, is a famous psychoogist who used this dataset used to argue for universality of basic emotions. "Through a series of studies, Ekman found a high agreement across members of diverse Western and Eastern literate cultures on selecting emotional labels that fit facial expressions. Expressions he found to be universal included those indicating wrath, grossness, fear, joy, loneliness, and shock", "This data set contains photos of 14 actors portraying expressions that are reliably classified as happy, sad, afraid, angry, surprised, or disgusted by naive observers"
+% Were the individual faces useful to know about? Since this comes after the xor case where "both on" and "both off" are useful to know about, it would be nice if that were the case here too. So wait, 14*6 = 84. So it could almost just build up a rep of every face in the dataset. Maybe that's ok?
 An example is Gary Cottrell's  emotion recognition model, EMPATH, shown in figure \ref{face_net}.\footnote{See \url{http://authors.library.caltech.edu/6983/1/DAIjcn02.pdf} \cite{dailey2002empath}.} This network was trained using multiple images of multiple people, each of whom made different facial expressions. The network had several hidden layers, including a layer of edge detectors (outputs of Gabor filters), and a layer that used principle components analysis or PCA, which is similar to Oja's rule (see chapter \extref{ch_unsupervised}) to do a dimensionality reduction of the previous layer, pulling out the most significant features of that layer. The second-to-last node layer of the network was called a ``Gestalt layer''. It produced responses similar to face-detectors in the ventral stream of the human visual system  (see chapter \extref{ch_neuro}). The output layer has a one-hot encoding of six basic emotions \cite{dailey2002empath}. 
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{images/face_network.png}
-\caption[From Adolphs, Cottrell, Dailey and Padgett, 2002  \cite{dailey2002empath}.]{Structure of Cottrell's EMPATH emotion recognition network. On the left is a grid of nodes that respond directly to an image. The image inputs are then processed using a layer of weights (``Gabor filtering'') that produce responses in the ``perceptual level'' nodes similar to responses of edge detector neurons in the visual cortex. Another layer of weights performs PCA to reduce the perceptual level to a ``gestalt level'' that produces responses similar to responses in the ventral steam of the human visual system. The final layer does the actual classification in to different emotion categories, using least mean squares. }
+\caption[From Adolphs, Cottrell, Dailey and Padgett, 2002  \cite{dailey2002empath}.]{Structure of Cottrell's EMPATH emotion recognition network. On the left is a grid of nodes that respond directly to an image. This layer contains over 40,000 nodes. The image inputs are then processed using a layer of weights (``Gabor filtering'') that produce responses in the ``perceptual level'' nodes similar to responses of edge detector neurons in the visual cortex. Another layer of weights performs PCA to reduce the perceptual level to a ``gestalt'' layer of 50 nodes, that produces responses similar to responses in the ventral steam of the human visual system. The final layer of 6 nodes does the actual classification into different emotion categories, using least mean squares. }
 \label{face_net}
 \end{figure}
 
@@ -278,10 +300,11 @@ One thing you can do with this kind of network is visualize the internal represe
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.3\textwidth]{images/holon.png}
-\caption[From \url{http://cseweb.ucsd.edu/\~gary/258a/Backprop.pdf}.]{Optimal input pattern for a hidden layer face node. Shows what kinds of inputs the unit will respond to.}
+\caption[From \url{http://cseweb.ucsd.edu/\~gary/258a/Backprop.pdf}.]{Optimal input pattern for a hidden (``Gestalt'') layer face node. Shows what kinds of inputs the unit will respond to.}
 \label{holon}
 \end{figure}
 
+% A model of phonetics
 Another case where a feed-forward network trained using backprop finds psychologically interesting internal representations is NETtalk, a model of reading English words aloud, created by Terrence Sejnowski and Charles Rosenberg in 1987 \cite{sejnowski1987parallel}. It is one of the most famous early examples of a connectionist network, that is, a neural network used to shed light on human psychology, in this case the structure of language processing.
 
 The network is a three layer feed-forward network with the structure shown in figure \ref{net_talk}.  The network was trained to speak aloud. It was presented with written letters in English and was trained to pronounce those letters. The input layer codes for a moving window of letters, one of which is taken to be the current input and the rest of which provide the network with information about neighboring letters.\footnote{Each letter is coded by a 29-dimensional vector (involving one-hot, one-of-29 representations of particular letters, with three additional nodes representing punctuation and word boundaries). The letters surrounding a letter in a word (3 before and 3 after) are coded to provide context which can be used to  correctly pronounce a letter. Thus there were $29 \times 7 = 203$ input units. This kind of moving window is a way of approximating temporal processes in a static feed-forward network.} The output layer contains 26 units encoding different features of phonemes (components of spoken letters), including voicing and vowel height. The hidden layer has 80 hidden units \cite{sejnowski1987parallel}. 
