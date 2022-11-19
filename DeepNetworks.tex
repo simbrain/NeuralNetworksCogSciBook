@@ -1,7 +1,5 @@
-\chapter{Deep Learning}\label{deepNets}
+\chapter{Deep Networks}\label{deepNets}
 \chapterauthor{Jeff Yoshimi}
-
-% Replace deepNets with deepLearning and cohere with back references
 
 % Other topics: pooling, strides, or padding (mention in footnote)
 % Discuss engineering, connectionism, CCN, and comp neuro. Maybe make that a final section
@@ -29,6 +27,7 @@ To understand how a convolutional  layer works we can begin with the concept of 
 \label{cnn_filter}
 \end{figure}
 
+% Receiptive field is a "patch".  
 The idea is illustrated in figure \ref{cnn_filter}. A $3 \times 3$ filter is passed over a small image, from left to right and top to bottom. At each moment during this scanning process the dot product (see chapter \extref{ch_linear_algebra}) is computed between the kernel and its ``receptive field'' in the source matrix (the part of the image the filter is on top of). The product involves multiplying each weight in the filter times a corresponding in the receptive field and adding these products up. The resulting scalar is used to populate one activation in the target layer, which is called a \glossary{feature map}. In the example, the filter is an edge detector, that detects edges at a $-45^\circ$ angle, that is, edges shaped like a backslash `\textbackslash'. In the resulting feature map, notice that the highest activation is on the left side of the input image's smile. In that region the dot product of the filter with the receptive field is 2 or 3. The dot product in other parts of the image is 0 or 1. Thus the feature map shows where this kind of edge occurs in the input image.
 
 Note that this edge detector is not programmed in. This is a neural network after all, and neural networks are trained, not programmed (section \extref{intro_comp_nn}), usually using a form of gradient descent (section \extref{sect_gradient_descent}). There is a performance advantage to these convolutional layers. All that must be trained is (in the example shown in figure \ref{cnn_filter}) $3 \times 3=9$ weights, rather than the $100 \times 100 = 10,000$ weights that would be required in a fully connected dense layer from the input layer to the feature map. This is a huge performance gain and part of what  made it possible with deep learning to train such large networks.
@@ -65,7 +64,8 @@ Second, these networks developing meaningful representations with training; the 
 
 In a full deep network many convolutional layers and regular ``dense'' weight layers are combined, sometimes as many as 100 or more! This allows the network to learn to identify not just simple features like edges or curves, but also \emph{features of features}, like combinations of curves which make more complex shapes, and then combinations of these shapes. 
 
-As can be seen in figure \ref{deep_net2}, there are other kinds of layers besides convolutional layers. Subsampling refers to methods where the size of a representation is reduced, often by scanning over the input layer, and then averaging or finding the largest value in each window (``max pooling''). 
+% Improve discussion of location invariance
+As can be seen in figure \ref{deep_net2}, there are other kinds of layers besides convolutional layers. Subsampling refers to methods where the size of a representation is reduced, often by scanning over the input layer, and then averaging or finding the largest value in each window (``max pooling'').  This is also called downsampling.  Also, feature maps learn to respond to specific regions of an image, it helps to have layers that are invariant to location. 
 
 The final layers of a deep network are often more conventional fully-connected dense layers. The idea is to start with layers that learn these complex features, then to compress these representations with subsampling, and finally to present the results to the final layers, which are basically familiar backprop networks presented with the results of a whole lot of convolving and subsampling.
 
