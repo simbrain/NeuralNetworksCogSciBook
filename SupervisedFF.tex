@@ -39,7 +39,6 @@ Applying the rule involves two stages at each iteration. First, a ``forward pass
 
 % Talk about how divergence looks in this kind of case. And add some practice examples that show it happening. E.g. Given a1 = -3, w12=4, t = 0, epsilon = 1, what is w12'?
 
-
 \subsection{Example}\label{lms_example}
 
 In this example and in subsequent practice questions, assume we have a  simple 1-1 feed-forward network  (as in the left panel of figure \extref{tables_nets}), and that the slope of the output node is 1 and bias is 0. So we have two nodes, with activations $a_1$ and $a_2$, and a weight $w_{1,2}$. We also assume a very simple labeled dataset with a single row: one input value and one corresponding target value. That is:
@@ -104,6 +103,8 @@ As you can see, applying this rule leads to SSE getting lower and lower, and the
 
 \subsection{Practice Questions}
 
+% Consider adding the deltas too, as a separate question
+
 \newcounter{LMSCounter}
 
 \noindent
@@ -122,10 +123,10 @@ As you can see, applying this rule leads to SSE getting lower and lower, and the
 {\bf \theLMSCounter.}  Given $a_1 = 2 ,w_{1,2} = 3, t = 5 ,\epsilon = .1$, what are $a_2$, $SSE$, $w_{1,2}'$, $a_2'$, and SSE$'$? \\
 {\bf Answer:} \\
 (1) $a_2 = 2 \cdot 3 = 6$ \\
-(2) SSE $= (6-5)^2 = (-1)^2 = 1$ \\
-(3) $w_{1,2}' = 3 + (.1 \cdot 2 \cdot (6-5)) = 3 + (-.2) = 2.8$ \\
+(2) SSE $= (5-6)^2 = (-1)^2 = 1$ \\
+(3) $w_{1,2}' = 3 + (.1 \cdot 2 \cdot (5-6)) = 3 + (-.2) = 2.8$ \\
 (4) $a_2' = 2 \cdot 2.8= 5.6$ \\
-(5) SSE$' = (5.6-5)^2 = .36$
+(5) SSE$' = (5-5.6)^2 = .36$
 \bigskip
 
 \noindent
@@ -145,7 +146,7 @@ As you can see, applying this rule leads to SSE getting lower and lower, and the
 {\bf Answer:} \\
 (1) $a_2 = -1.5$ \\
 (2) SSE $= 5.29$ \\
-(3) $w_{1,2}' = .69$ \\
+(3) $w_{1,2}' = .19$ \\
 (4) $a_2' = .57$ \\
 (5) SSE$' = .053$
 \bigskip

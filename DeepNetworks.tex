@@ -1,7 +1,6 @@
 \chapter{Deep Networks}\label{deepNets}
 \chapterauthor{Jeff Yoshimi}
 
-% Other topics: pooling, strides, or padding (mention in footnote)
 % Discuss engineering, connectionism, CCN, and comp neuro. Maybe make that a final section
 % Discuss deep fakes and GANs
 
@@ -16,9 +15,14 @@ The topic of deep networks and deep learning are quite involved (this is a preli
 
 \section{Convolutional Layers}
 
-The key idea is to use a special type of weight layer called a \glossary{convolutional layer} to efficiently learn to recognize features in a previous layer.\footnote{An outstanding visual discussion of the concept of a convolutions is at \url{https://youtu.be/KuXjwB4LzSA}} A convolutional layer is a special kind of weight layer where a special set of weights is ``scanned'' or ``passed'' over source layer's activations to produce activations in a target layer. Until now we've been dealing with weight layers that connect all the nodes in a source layer to all the nodes in a weight layer; these are sometimes called ``dense layers'' to contrast them with convolutional layers (another kind of layer is a sparse layer, but we won't discuss that). 
+The key idea is to use a special type of weight layer called a \glossary{convolutional layer} to efficiently learn to recognize features in a previous layer.\footnote{An outstanding visual discussion of the concept of a convolutions is at \url{https://youtu.be/KuXjwB4LzSA}} A convolutional layer is a special kind of weight layer where a set of weights is ``scanned'' or ``passed'' over source layer's activations to produce activations in a target layer. Until now we've been dealing with weight layers that connect all the nodes in a source layer to all the nodes in a weight layer; these are sometimes called ``dense layers'' or ``fully connected'' layers to contrast them with convolutional layers (another kind of layer is a sparse layer, but we won't discuss that).  Convolutions are so important to deep networks that the term ``convolutional neural network'' or CNN is sometimes used (on analogy with ANN for artificial neural network and RNN for recursive neural network, etc.)
 
-To understand how a convolutional  layer works we can begin with the concept of a \glossary{filter} or \textbf{kernel}, which is a matrix of values that is scanned over an input vector, where by ``scanning'' I mean that it is multiplied by each of a moving sequence of subsets of the source activations. To see how this works videos are extremely helpful. A good place  to start is with the first animated gif here: \url{https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks}.\footnote{This link also introduces some of the concepts we are not discussing here, such strides, and padding, which are used to specify how the scanning operation of a filter works, and pooling, which combines the results of a convolutional layer into a smaller  condensed representation that is more manageable for other layers to deal with. Again, this video is also great: \url{https://youtu.be/KuXjwB4LzSA}.} Note that this is totally different from the weights we have been studying throughout the book: there are no fixed connections at all. Instead it is like there is a little floating scanner that gets passed over input node activations to produce output node activatios.
+To understand how a convolutional  layer works we can begin with the concept of a \glossary{filter} or \textbf{kernel}, which is the set of weights that is scanned over the source layer. The source layer of a convolutional layer is often itself a 2d array, prototypically an input image or a transformation of such an image, and so we can think of the source layer activations as pixels and the source layer as a pixel array (even when the input is not an image this language is useful).  The filter is generally moved from left to right and top to bottom of the pixel array. At each stage of the scanning operation, it is multiplied by the patch of the pixel array it is on top of. The multiplication is a dot product (see chapter \extref{ch_linear_algebra}),  where each weight in the filter is multiplied by the corresponding activation of the pixel array. The resulting scalar is used to populate one activation in the target layer. Thus, the convolutional layer computes a kind of \emph{sliding dot product} with the source activations.\footnote{The number of pixels the filter moves at each step is called the \emph{stride}. One issue that comes up is the edges, which the filter can't be passed over. To handle this \emph{padding} can be added, in the form of extra zeros around the edges of the pixel array.}
+% More on why padding is needed
+
+The idea is illustrated in figure \ref{cnn_filter}. A $3 \times 3$ filter is passed over a small image, from left to right and top to bottom. At each moment during this scanning process the dot product is computed between the filter and its ``receptive field'' in the source matrix (the part of the image the filter is on top of). 
+
+The output or target layer of a convolutional layer is called a \glossary{feature map}. In the example, the filter is an edge detector, that detects edges at a $-45^\circ$ angle, that is, edges shaped like a backslash `\textbackslash'. In the resulting feature map, notice that the highest activation is on the left side, where the filter was passed over the input image's smile. Suppose the input image is binary, with 1 where the face is painted and 0 elsewhere. In the region of the smile, the dot product of the filter with the receptive field is 2 or 3. The dot product in other parts of the image is 0 or 1. Thus, the feature map shows where this kind of edge occurs in the input image. It itself a new node layer, a new pixel array, a ``convolution'' of the previous one, that emphasizes the edges in the input image.
 
 \begin{figure}[h]
 \centering
@@ -26,14 +30,16 @@ To understand how a convolutional  layer works we can begin with the concept of 
 \caption[User Cecbur, \url{https://commons.wikimedia.org/wiki/File:Convolutional_Neural_Network_NeuralNetworkFilter.gif}, with labels added by Jeff Yoshimi.]{From left to right: an input image, a 3x3 convolutional filter (which detects edges with a $-45^\circ$ angle), and the resulting feature map. The filter is scanned across the image. At each stage of this scanning process, the dot product of the filtter's receptive field in the input image is computed and used to populate the feature map. This whole process is known as a convolution and a layer like this is a convolutional layer.}
 \label{cnn_filter}
 \end{figure}
+% TODO: Redraw the image so that the coloring is clearly associated with numbers so that the dot product computations are clear.
 
-% Receiptive field is a "patch".  
-The idea is illustrated in figure \ref{cnn_filter}. A $3 \times 3$ filter is passed over a small image, from left to right and top to bottom. At each moment during this scanning process the dot product (see chapter \extref{ch_linear_algebra}) is computed between the kernel and its ``receptive field'' in the source matrix (the part of the image the filter is on top of). The product involves multiplying each weight in the filter times a corresponding in the receptive field and adding these products up. The resulting scalar is used to populate one activation in the target layer, which is called a \glossary{feature map}. In the example, the filter is an edge detector, that detects edges at a $-45^\circ$ angle, that is, edges shaped like a backslash `\textbackslash'. In the resulting feature map, notice that the highest activation is on the left side of the input image's smile. In that region the dot product of the filter with the receptive field is 2 or 3. The dot product in other parts of the image is 0 or 1. Thus the feature map shows where this kind of edge occurs in the input image.
+To get a better feel for how this works videos are  helpful. A good place  to start is with the first animated gif here: \url{https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks}.\footnote{This link also introduces some of the concepts we are not discussing here, such strides, and padding, which are used to specify how the scanning operation of a filter works, and pooling, which combines the results of a convolutional layer into a smaller  condensed representation that is more manageable for other layers to deal with. Again, this video is also great: \url{https://youtu.be/KuXjwB4LzSA}.} Note that this is totally different from the weights we have been studying throughout the book: there are no fixed connections at all. Instead it is like there is a little floating scanner that gets passed over source layer activations to produce output activations.
 
 Note that this edge detector is not programmed in. This is a neural network after all, and neural networks are trained, not programmed (section \extref{intro_comp_nn}), usually using a form of gradient descent (section \extref{sect_gradient_descent}). There is a performance advantage to these convolutional layers. All that must be trained is (in the example shown in figure \ref{cnn_filter}) $3 \times 3=9$ weights, rather than the $100 \times 100 = 10,000$ weights that would be required in a fully connected dense layer from the input layer to the feature map. This is a huge performance gain and part of what  made it possible with deep learning to train such large networks.
 
-% This is a bit of new idea though, so think about it. It's the same template of supervised learning. The result is not a random weight matrix mapping, but a set of filters that are used to pass over an input. FOR NEXT SECTION?
 
+\section{Feature Maps and tensors}
+
+The magic really starts to happen when we train a \emph{set of filters}, each of which produces a separate feature map.  Figure \ref{deep_net2} illustrates the idea. Note how several of the node layers say ``Feature maps'' plural, or "F.maps''. Each feature map in one of these sets is a response to a different filter, for example, edges of different orientation. This is exactly how primary visual cortex reacts to images, so this is a nice model of the brain, hence an example of computational  neuroscience. However, these networks are best known for the engineering benefits, since they are powerful pattern recognition systems.
 
 
 \begin{figure}[h]
@@ -42,17 +48,6 @@ Note that this edge detector is not programmed in. This is a neural network afte
 \caption[Adapted from a creative commons image by Aphex34 at \url{https://commons.wikimedia.org/wiki/File:Typical_cnn.png} ]{A deep neural network, trained to recognize images. The convolutional layers scan over the inputs they are linked to. }
 \label{deep_net2}
 \end{figure}
-
-%\begin{figure}[h]
-%\centering
-%\includegraphics[scale=.4]{./images/deepNetCloseup.png}
-%\caption[Closeup from a creative commons image by Aphex34 at \url{https://commons.wikimedia.org/wiki/File:Typical_cnn.png} ]{Closeup of deep neural network in chapter \extref{ch_intro} figure \extref{deep_net} showing how a set of convolutional filters like the one in \ref{cnn_filter} produce a set of feature maps. This set of feature maps is like an array of matrices, which is also known as a tensor.}
-%\label{deep_net_closeup}
-%\end{figure}
-
-\section{Feature Maps and tensors}
-
-The magic really starts to happen when we train a \emph{set of filters}, each of which produces a separate feature map.  Figure \ref{deep_net2} illustrates the idea. Note how several of the node layers say ``Feature maps'' plural, or "F.maps''. Each feature map in one of these sets is a response to a different filter, for example, edges of different orientation. This is exactly how primary visual cortex reacts to images, so this is a nice model of the brain, hence an example of computational  neuroscience. However, these networks are best known for the engineering benefits, since they are powerful pattern recognition systems.
 
 A few things to note here.
 
@@ -65,7 +60,9 @@ Second, these networks developing meaningful representations with training; the 
 In a full deep network many convolutional layers and regular ``dense'' weight layers are combined, sometimes as many as 100 or more! This allows the network to learn to identify not just simple features like edges or curves, but also \emph{features of features}, like combinations of curves which make more complex shapes, and then combinations of these shapes. 
 
 % Improve discussion of location invariance
-As can be seen in figure \ref{deep_net2}, there are other kinds of layers besides convolutional layers. Subsampling refers to methods where the size of a representation is reduced, often by scanning over the input layer, and then averaging or finding the largest value in each window (``max pooling'').  This is also called downsampling.  Also, feature maps learn to respond to specific regions of an image, it helps to have layers that are invariant to location. 
+As can be seen in figure \ref{deep_net2}, there are other kinds of layers besides convolutional layers. Subsampling refers to methods where the size of a representation is reduced, often by scanning over the source layer, and then averaging or finding the largest value in each window (\emph{average pooling}, \emph{max pooling}, etc.').  This is also called downsampling.  
+% More on value of downsampling / subsampling
+% Mention flattening, which is just a shape change required to link the ``pixel array'' layers (matrices in rank 3 tensors) to a classical backprop style network.
 
 The final layers of a deep network are often more conventional fully-connected dense layers. The idea is to start with layers that learn these complex features, then to compress these representations with subsampling, and finally to present the results to the final layers, which are basically familiar backprop networks presented with the results of a whole lot of convolving and subsampling.
 
