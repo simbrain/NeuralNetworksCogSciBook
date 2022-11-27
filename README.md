@@ -40,3 +40,5 @@ You can make your own container document that contain only the chapters of inter
 - Use `\cite` command and update `NeuralNetworksCogsci.bib` as usual.
 
 - When using `\caption` in the figure environment, be sure to include a bracketed sentence to be used in the figure attribution list.
+
+- For code references use `\texttt`
