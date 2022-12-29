@@ -55,6 +55,8 @@ To get a general sense of how datasets are used with neural networks, see Fig \r
 \end{figure}
 
 \section{Data Wrangling (or Preprocessing)}\label{wrangling}
+% Possibly expand feature engineering into a new section
+% Word embedding should itself be its own discussion, with forward refs to Supervised recurrent. The importance of representing words with a similarity space.
 
 Raw data isn't usually ready to be fed to a neural network. Sometimes a dataset contains strings of text, images, sound files, and other structures that must be converted into a numerical format. Neural networks want \emph{numbers}, and they often want those numbers to be a certain way. So we have to pre-process the data in various ways. Our ultimate goal is typically to have a table all of whose cells contain numbers that lie within a fairly small range, like between -1 and 1 or between 0 and 1.\footnote{At that point our dataset has the form of a matrix (cf. Chapter \extref{ch_linear_algebra}), and mathematical operations of linear algebra can be applied to it.} That is, we want to end up with a dataset where each row is an input vector that can be fed to the input nodes of a neural network.
 
@@ -84,13 +86,15 @@ Here are some examples of feature extraction in this fairly broad sense.
 \begin{itemize}
 \item Taking a feature like the model of a car, state of residence, or gender, and converting it into a vector of binary values. There are several ways to do this, but the most common is using a \glossary{One-hot} or ``one-of-$k$'' encoding, which is a type of coding that converts categorical data to binary vectors.\footnote{See \url{https://en.wikipedia.org/wiki/One-hot}.} If we have three categories--Fish, Swiss, and Gouda--then we can use a one-of-three encoding to represent Fish as $(1,0,0)$, Swiss as $(0,1,0)$, and Gouda as $(0,0,1)$. In a bank of nodes, this corresponds to one node being active (``hot'') and the other nodes being inactive, hence ``one-hot'' encoding. One is hot, and the other is not. For example, in the cars dataset, we can represent 4-cylinder, 6-cylinder, and 8-cylinder by a one-hot (in this case one-of-3) encoding, as in Fig. \ref{cars_onehot}. Notice that the cylinder column in Fig. \ref{cars_dataset} has been  replaced by three columns. The column that has a ``1'' in it indicates whether the car is 4, 6, or 8 cylinders. These are also called dummy or indicator variables in psychology. They are also a form of localist as contrasted with distributed representation (see chapter \extref{ch_intro}).
 \item Taking a matrix and ``flattening'' it into a vector that can be treated as a row of a dataset. This is often done with images. Sometimes an even more complex object, a \emph{tensor}, must be flattened.\footnote{A tensor is like a generalized matrix, a multi-dimensional array. A vector is a rank 1 tensor, a matrix is a rank 2 tensor, a set of matrices is a rank 3 tensor, a rank 4 tensor is a set of these sets, etc. See \url{https://en.wikipedia.org/wiki/Tensor}.}  Color images are often represented as three separate pixel  images, corresponding to red, green, and blue channels. So we have three matrices that must be flattened and concatenated to produce one long vector, which is then a proper row of a dataset that can be fed to a network.
-\item Converting strings of texts to vectors. Thus, the word ``red'' might become the vector $(1,0,1,0,1,1)$. Techniques for converting linguistic data to vectors are sometimes referred to as methods of \emph{word embedding}. Word embedding is a major area of research in its own right.\footnote{ See \url{https://en.wikipedia.org/wiki/Word_embedding}. A famous algorithm for word embedding is word2vec. See \url{https://www.tensorflow.org/tutorials/word2vec}.}
+\item Converting strings of texts to vectors. Thus, the word ``red'' might become the vector $(1,0,1,0,1,1)$. Techniques for converting linguistic data to vectors are sometimes referred to as methods of \emph{word embedding}. Word embedding is a major area of research in its own right.\footnote{See \url{https://en.wikipedia.org/wiki/Word_embedding}. A famous algorithm for word embedding is word2vec. See \url{https://www.tensorflow.org/tutorials/word2vec}.}
 \item Dividing a sound file into smaller time windows and converting those ``clips'' of audio into vectors, often using signal processing techniques like Fourier analysis.
 \item Hand coding video or audio data in some way, e.g. counting how many times a participant in a videotaped experiment hits a doll, or how many questions a participant asks. This kind of technique is often used in experimental settings, e.g. in psychology.\footnote{See \url{https://en.wikipedia.org/wiki/Coding_(social_sciences)}.}
 \end{itemize}
 % Representation / representation learning from deep learning book. How data is represented is the first step in a machine learning 
 % Chris Kello quote. ``It all depends on your representation. You win or lose based on that.''
 % E.g. the old https://en.wikipedia.org/wiki/Wickelphone stuff
+% Tensor footnote redundant with deep nets. Consolidate
+% Positional encodings in transfers is a nice case of feature engineering, because it allowed an entirely new architecture: a way to allow sequential inputs to recurrent networks to be replaced by parallel inputs, by tagging vector embedded tokens with positional information.
 
 \begin{figure}[h]
 \centering
@@ -113,6 +117,7 @@ Having coded all data as numerical, additional work often remains to be done, in
 
 When we train a neural network, we update its parameters--its weights and biases--so that it can learn to do useful things. This is what our brains do when we learn, updating synaptic strengths in order to function more effectively. As we will see, for unsupervised learning, we take an input dataset and train it to pick up statistical features of the data. For supervised learning, we take ``target data'' or ``labeled data'' and use it to train a network to do some desired thing.\footnote{Note that the term ``label'' is associated specifically with classification tasks, where an input is sorted into one of a finite set of categories. Think of labeling images as cat vs. dog. But not all training tasks are like that; regression tasks for example associate inputs with real-valued targets. ``Target data''  is thus a more general term. However, the terminology of ``labeled data''  has become standard, and  is snappier than ``input-target dataset''. We will use both terminologies interchangeably.}
 % Reference to classification / regression discussion once that's done
+% Note clever tricks to get labels, like auto-regressive to predict next token (forward ref Elman and SRN discussion), or GANs where all you need is images, or first part of wiki article from the rest of it.
 
 To support these tasks, we must define several standard types of datasets:
 \begin{itemize}
@@ -158,7 +163,7 @@ A \glossary{training subset} or \emph{training dataset} or \emph{training data} 
 
 A  \glossary{testing subset} or \emph{testing dataset} or \emph{testing data} is a subset of a labeled dataset used for testing your model on new inputs. This is data that is held out to see how well a model generalizes. 
 
-The idea is illustrated in Fig. \ref{trainTest}. The idea is that we first train the network using training data, and then validate it using testing data.\footnote{In a machine learning context, we might also distinguish working from production data. Working data includes all the data mentioned above, used to train and test and validate a machine learning model. Production data is then data the machine learning model encounters in the "real world" when it has been deployed and is being used.} 
+The idea is illustrated in Fig. \ref{trainTest}. The idea is that we first train the network using training data, and then validate it using testing data.\footnote{In a machine learning context, we might also distinguish working from production data. Working data includes all the data mentioned above, used to train and test and validate a machine learning model. Production data is then data the machine learning model encounters in the ``real world'' when it has been deployed and is being used.} 
 
 \begin{figure}[h]
 \centering
@@ -175,6 +180,8 @@ In practice, even more complex ways of partitioning labeled data into training a
 % There is much more to say about this topic. In particular, when a neural network or other model overfits--performing well on the training subset but poorly on the testing subset--\emph{regularlization} methods are used to address the problem.\footnote{See \url{http://neuralnetworksanddeeplearning.com/chap3.html}} But we will not discuss these topics further here.
 
 \section{Supervised vs. Unsupervised Learning}
+
+% Add semi-supervised
 
 We can distinguish two general ways of training a feed-forward neural network: supervised methods, where we tell the network what it should do with each input, and unsupervised methods, where we don't tell the network what we want it to do, but it figures out on its own (without a ``supervisor'') what to do. These concepts apply to recurrent networks as well, but we'll focus on feed-forward networks for now.
 

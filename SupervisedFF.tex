@@ -204,7 +204,7 @@ So multi-layer feed-forward networks can solve linearly inseparable problems. Gr
 
 Once algorithms were discovered that could be used to train multi-layer networks, it became possible to have networks learn solutions to linearly inseparable classification tasks (by finding non-linear decision boundaries) and to deal with much more complex problems than had previously been possible. The most famous algorithm of this type was backprop, which we turn to now.
 
-\section{Backprop}
+\section{Backprop}\label{backprop}
 
 In this section we cover what was (at least until recently) the best known form of supervised learning: \glossary{backpropagation} ( or ``backprop''). Backpropagation is a powerful extension of the Least Mean Square  technique. As we saw, LMS only works for two-layer networks with linear activation functions. Backprop works for a much broader class of networks, in particular networks with non-linear (in particular, sigmoidal) activation functions and one or more hidden layers. As we will see, these hidden layers allow a network to transform inputs into different types of representation, and in doing so makes them quite powerful, and also psychologically interesting. 
 %They do so by developing complex internal representations that map the input vectors (points in the input space) to hidden unit vectors (points in the hidden unit space). 

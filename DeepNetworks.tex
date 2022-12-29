@@ -12,7 +12,7 @@ In terms of engineering, these many-layered networks have been associated with h
 
 The topic of deep networks and deep learning are quite involved and the field is active and continues to grow (this is a preliminary chapter on the topic; it will be expanded in the future). Here we will describe some of the main concepts and some of their applications to neuroscience and psychology.
 
-\section{Convolutional Layers}
+\section{Convolutional Layers}\label{convolutionalLayer}
 
 % Mention that images are usually associated with several channels of information, hence the input image is really a tensor. Not sure where best to introduce that.
 % Terminology: source layer, source image, pixel array
@@ -46,7 +46,7 @@ Again, note that this is totally different from the weights we have been studyin
 
 Also note that this edge detector is not programmed in. This is a neural network after all, and neural networks are trained, not programmed (section \extref{intro_comp_nn}), usually using a form of gradient descent (section \extref{sect_gradient_descent}). There is a performance advantage to these convolutional layers. All that must be trained is (in the example shown in figure \ref{cnn_filter}) $3 \times 3=9$ weights, rather than the $100 \times 100 = 10,000$ weights that would be required in a fully connected dense layer from the input layer to the feature map. This is a huge performance gain and part of what  made it possible with deep learning to train such large networks.
 
-\section{Feature Maps and tensors}
+\section{Feature Maps and Tensors}
 
 The magic really starts to happen when we train a \emph{set of filters}, each of which produces a separate feature map.  Figure \ref{deep_net2} illustrates the idea. Note how several of the node layers say ``Feature maps'' plural, or ``F.maps.'' Each feature map in one of these sets is a response to a different filter, for example, edges of different orientation. This is exactly how primary visual cortex reacts to images, so this is a nice model of the brain, hence an example of computational  neuroscience. However, these networks are best known for the engineering benefits, since they are powerful pattern recognition systems.
 
@@ -61,6 +61,7 @@ The magic really starts to happen when we train a \emph{set of filters}, each of
 A few things to note here.
 
 First, a set of feature maps can be thought of as corresponding to a new kind of node layer. It is not just a  single set of nodes, but rather is itself a whole array of matrices. It's like a stack of pancakes, if each pancake is a matrix.  An array of matrices is a special kind of \glossary{tensor} (a generalization of the vectors and matrices we discussed in chapter \extref{ch_linear_algebra} to more complex numerical structures), and so computations in deep networks often involve the use of tensor mathematics.\footnote{Technically numbers and vectors and matrices are also tensors. The rank of a  tensor is the number of indices it takes to specify an ``entry'' in the tensor. A number is rank 0 because it requires no indices. Recall that a vector is like a list of numbers. A vector is rank 1 because it takes one index to specify an entry in a vector. A matrix is rank 2 because it takes two numbers to specify an entry (a row and column). A set of matrices is rank 3, because it takes 3 indices to specify an entry: one to specify a location in the array, and then a row and column index.}  
+% Redundant with data science discussion
 
 Second, these networks developing meaningful representations with training; the representations are not programmed in. This is kind of remarkable to ponder. We did not tell the network we want it to learn to respond to edges. All we focus on in training a network is inputs and outputs, using a labeled data set.  In the case shown in the figure, the training data involve images paired with numbers. The network is given nothing else but these training examples: if you see this picture, it's a 2; this picture is an 8, etc. Then the network adjusts all its parameters (all the weights in its convolutional layers), in such a way as to reduce error.  Edge detectors were learned by training, not programmed in. This is an old connectionist theme. In Nettalk (section \extref{internalRepsFF}), phonetic categories like consonant and vowel were not programmed in, but emerged with training. With simple recurrent networks  (section \extref{internalRepsRecurrent}), grammatical categories like verb and noun were not programmed in but  emerged with training.
 
@@ -78,7 +79,8 @@ The final layers of a deep network are often more conventional fully-connected d
 \section{Applications of Deep Learning}
 
 % This section obviously needs to be developed
-
+% What do convolutional layers correspond to in the brain?
+ 
 As discussed in section \extref{deep_revolution}, deep networks and deep learning led to a revolution in neural networks beginning in the 2010s. The revolution was in engineering initially, but the history of deep networks shows that they have applications across all the domains of neural network research: engineering, computational neuroscience, connectionism, and computational cognitive neuroscience. 
 
 Deep network models originate in  computational neuroscience models of vision that were developed in the 1970s and 1980s \cite{fukushima1982neocognitron}.  These ideas were later used to engineer pattern recognition networks. A famous early application was recognizing zip codes written on envelopes \cite{lecun1989backpropagation}. As deep networks became mainstream based on technical improvements (big data, GPU and hardware acceleration, better architectures and training algorithms), scientists began using them, for example, to model the response profile of neurons in the visual system (recall the discussion of figure \extref{deepLearning_Vision} in chapter \extref{ch_neuro}). 
