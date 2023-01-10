@@ -1,5 +1,5 @@
 \chapter{Basic Neuroscience}\label{ch_neuro}
-\chapterauthor{Jeff Yoshimi, Chelsea Gordon}
+\chapterauthor{Jeff Yoshimi, Chelsea Gordon, Dave Noelle}{.4,.4,.2}
 
 % Talk about inhibitory/excitatory ratios.   Esp since the sparse connectivity thing.  Also http://www.scholarpedia.org/article/Balance_of_excitation_and_inhibition which has this line, which begins to resolve the mystery a bit; “The possibility of excitation and inhibition having a comparable strength might seem implausible at first, since interneurons comprise only 15% - 25% of the population of cortical neurons. However, the synaptic strength and firing rates of inhibitory interneurons are substantially higher than in excitatory neurons, thus inhibitory interneurons have an impact disproportionate to their relatively small number.”
 
@@ -38,10 +38,13 @@ The \glossary{axon} is another extension growing out of the cell body. Axons can
 Communication between neurons happens at a \glossary{synapse}, which is a junction where the axon of the \emph{pre-synaptic} neuron almost touches the dendrite of the \emph{post-synaptic neuron}, often at a protrusion called a \emph{dendritic spine}. See Fig. \ref{f:synapse}.\footnote{There are two types of synapses, electrical synapses and chemical synapses. Electrical synapses, instead of having a cleft between the post- and pre-synaptic neurons, have a much smaller space called a \emph{gap junction}, which connects the pre-synaptic neuron directly with the post-synaptic neuron, allowing for electrical communication. These synapses allow neurons to fire in synchrony and are important for quick communication between neurons. However, most communication happens via chemical synapses, which transmit much stronger signals and have more permanent effects. The main text focuses on chemical synapses.}  When an action potential reaches the axon terminal of the pre-synaptic neuron, chemicals called \glossary{neurotransmitters} are released into the synaptic cleft. These neurotransmitters are housed in water-balloon-like containers called \emph{vesicles}. The vesicles fuse into the pre-synaptic cell membrane when an action potential occurs, releasing their neurotransmitters into the synaptic cleft. The neurotransmitters then bind to \glossary{receptors} on the post-synaptic neuron. This is like a key being fit into a keyhole--the neurotransmitters are the keys and the receptors are the keyholes which, when opened, let ions (charged particles) flow in to the post-synaptic dendrite. These ions are negatively or positively charged, and the balance between the total charge of these ions on either side of the cell membrane is what is called the \glossary{membrane potential}.\footnote{This charge is maintained by ion channels that selectively let some ions travel into and out of the cell. Some of these ion channels are called \emph{passive ion channels}, which stay open and allow the constant light flow of Na$^+$ and K$^+$ ions through the cell membrane. There are also \emph{gated ion channels}, which are those that open during an action potential and cause a much larger exchange of ions. When these open, the ions released cause changes in the membrane potential of the post-synaptic neuron.}
 % [Merge to main text and footnote] The membrane potential has an average resting state, usually around -70 mV, which is the difference between the electrical charge inside and outside of the membrane when a neuron is at rest. When the membrane potential is lowered, or \emph{depolarized} enough by the incoming ions (if the potential approaches -40 mV), the neuron will fire its action potential. This causes the opening of gated ion channels in the cell and an inflow of many Na+ ions, which leads to the membrane potential quickly rising all to way to roughly 40 mV. At this point the membrane potential is said to be \emph{hyperpolarized}. A gated ion channel allowing the (slower) outflow of K$^+$ ion channels opens a short time after the Na$^+$ channel, which brings down the membrane potential again. Because these K$^+$ channels stay open a little while after the membrane potential has reached its resting threshold, the membrane potential reaches a little below its original resting state of -70 mV. This short period where the membrane potential falls below the resting state is referred to as the \emph{refractory period}, during which time the neuron is unable to fire again. 
 
+% If chloride [inhibitory] channels are open when excitation (e.g., opening sodium channels) arrives, the inhibition will certainly make it more difficult for the cell to fire. The membrane potential doesn't have to actually rise to see an effect of inhibition. It’s just that the inhibitory (and leak) currents push the membrane potential toward -70 mV, but not lower. If there is a lot of inhibition when excitation arrives, more excitation will be needed to pull the membrane potential up from this floor.
+% Think of a graduated cylinder with some water in it but a small hole near the base. Water leaks out. This rate of leak is compensated by a little tube pouring more water into the cylinder, exactly balancing out the leak. This is the cell at rest, with the little tube capturing the metabolically active sodium/potassium pump. Excitation would involve adding another stream of input water, which would cause the water level to rise — not rise and then dip. 
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=.5\textwidth]{./images/synaptic_cleft.png}
-\caption[Pamela Payne.]{Some structures associated with synapses.}
+\includegraphics[width=.45\textwidth]{./images/synaptic_cleft.png}
+\caption[Pamela Payne.]{Some structures associated with a synapse.}
 \label{f:synapse}
 \end{figure}
 
@@ -49,9 +52,8 @@ There are different kinds of synapses. The pre-synaptic neurons of  \glossary{ex
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.3]{./images/membranePotential.png}
-\label{synapse}
-\caption[Pamela Payne.]{(Left) Two successive inhibitory inputs reduce the neuron's membrane potential. (Right) Two successive excitatory inputs increase the neuron's membrane potential beyond the threshold potential, and it fires an action potential.}
+\includegraphics[scale=1.5]{./images/membranePotential.png}
+\caption[Adapted from original work by Pamela Payne.]{(Left) Two successive excitatory inputs increase the neuron's membrane potential beyond the threshold potential, after which  it fires an action potential. (Right) Two successive inhibitory inputs reduce the neuron's membrane potential below an excited level of -58mv. }
 \label{membranePotential}
 \end{figure}
 % Make clear where the events happen (Anali). Demarcate inhibitory current 1, inhibitory current 2, excitatory current 1, excitatory current 2
@@ -61,6 +63,15 @@ There are different kinds of synapses. The pre-synaptic neurons of  \glossary{ex
 % Clarify and emphasize that each axon only releases one kind of signal. This is unlike in connectionism.
 % Mention currents, EPSP and IPSP? Not sure the detail is needed though.
 A neuron can receive both excitatory and inhibitory signals. As different axons attaching to a neuron release excitatory neurotransmitters (like glutamate) and inhibitory neurotransmitters (like GABA), the binding of neurotransmitters to receptors on the post-synaptic neuron causes ion channels to open and close, letting different ions in and out. As a result, the neuron's voltage goes up and down. When the voltage at the axon hillock passes a specific membrane potential called the \glossary{threshold potential}, an action potential is fired. The process is illustrated in Fig. \ref{membranePotential}. In the left panel, two inhibitory synapses are activated successively,  and the membrane potential is reduced each time and then begins to approach the resting potential again.\footnote{Notice that though the inhibitory signals occur at spatially distinct dendrites and at different points in time, and that they have a cumulative effect on the membrane potential at the soma. This is known as \emph{spatial and temporal summation}.}  In the right panel, two excitatory synapses are activated successively, which raises the membrane potential above threshold, and an action potential is fired.\footnote{These processes can be explored in the Simbrain workspace \emph{spikingNeuronTwoInputs.zip}.}
+
+
+% Integrate this back in after talking to Dave again
+%\begin{figure}[h]
+%\centering
+%\includegraphics[scale=1.5]{./images/membranePotential2.png}
+%\caption[Adapted from original work by Pamela Payne.]{A neuron receives an excitatory input followed by an inhibitory input which ``shunts'' the voltage, effectively negating the exictatory input.}
+%\label{shunting}
+%\end{figure}
 
 As more excitatory signals are received, action potentials will begin to occur more frequently. Thus we can represent the overall activity of a cell in terms of its \glossary{firing rate}, which is measured in number of spikes per unit time, usually spikes per second.\footnote{More accurately, it is average number of spikes per unit time, during a the time in which a neuron is measured.}   A highly ``active'' neuron is one that produces many spikes per second (e.g. 200 Hertz, which is 200 times per second), while a more dormant or quiescent neuron might only produce a few spikes per second (e.g. 2 Hertz). This is the basis of ``rate-coding'' models. In these models, the number in a node represents or is proportional to a neural firing rate. Many neural network models explicitly or implicitly use rate-coding.
 
