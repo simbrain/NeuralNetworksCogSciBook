@@ -3,6 +3,8 @@
 
 % Add glossary items for BPTT, SRN, auto-regression task, vanishing gradient, transformer, self-attention, etc.
 % Better distinguish ChatGPT and GPT-3
+% https://www.youtube.com/watch?v=fMiYNrjDPyI
+% https://youtu.be/sznZ78HquPc <- Nice QVP images
 
 In chapter \extref{ch_intro}, we introduced the distinction between feed-forward and recurrent networks, and used that distinction to organize much of this book. Feed-forward networks have historically been a focus of research activity and applications. They are easy to analyze as function approximators or pattern associators which  associate vectors with vectors, and powerful methods like backprop (and the variants used to train deep networks) have emerged to allow them to approximate arbitrary functions (chapter \extref{ch_supervised_ff}). They also produce interesting representations in their hidden layers. As a result they have often dominated the conversation.
 
@@ -142,7 +144,7 @@ Each of the unrolled networks is then responsible for a specific moment in time.
 
 %The unrolled network is on the right. It involves a copy-paste of the same network three times, with the recurrent weights presented as the left-to-right arrows in the middle. Time flows from left to right and each ``column'' (each 2 or 3 layer feed-forward network)  represents one time step. It is being trained on a sequence of three input-target pairs. We present the first input to the first network, compute the output at time 1, then present the second input to the second layer \emph{and also add the activations from the hidden layer at the previous time step}.\footnote{Again, this is a lot like an SRN, since in both cases the hidden layer is receiving a ``visible'' input as well as the hidden layer's previous activation as a second invisible input.}  The output at time 2 then reflects both past inputs: it knows about context. We keep doing this until we reach the end. We have three time steps here, but we can use as many as we have computer memory to handle. Then we train the whole thing with backpropagation. But note, the various arrows on the right side correspond to a bunch of copies of the same weight matrices. So when a pass of training is done, they all get added back together and what we end up with is just the network on the left.
 
-\section{Langauge Models}
+\section{Language Models}
 
 %https://amatriain.net/blog/transformer-models-an-introduction-and-catalog-2d1e9039f376/
 
