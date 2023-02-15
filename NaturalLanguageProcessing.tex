@@ -1,0 +1,88 @@
+\chapter{Natural Language Processing}\label{ch_nlp}
+\chapterauthor{Jeff Yoshimi}
+
+\textit{Some introduction.}
+
+\section{Distributional Semantics Theory}
+Harris, Firth, Wittgenstein.
+Know a word by the company it keeps.
+Few examples illustrating it.
+\textit{Brunila \& LaViolette's paper revisiting the idea of distributional semantics: \url{https://arxiv.org/pdf/2205.07750.pdf} (URL for now \dots)}
+
+\section{Word Embeddings and Co-occurrence Matrices}
+Preprocessing, normalization.
+More basic NLP, though may have overlap with data science chapter. 
+
+See Lenci review paper.
+Walkthrough of the different steps: tokenization, co-occurrences (window size, skip-gram, stop-word filtering), PPMI transform, etc.
+\textit{Should we reference the functions from SimBrain?}
+
+Point about corpus quality.
+
+\subsection{Evaluation}
+Different gold standards of evaluation (SimLex, SimVerb, etc.).
+Similarity vs assocaition vs relatedness.
+
+\subsection{Different spins}
+Paragram embeddings.
+Counterfitting / retrofitted embeddings.
+Multilingual embeddings.
+Different associative models (e.g., Mike Jones' BEAGLE).
+Co-occurrence vs next-word prediction.
+
+\section{Applications}
+Word similarity -> cosine similarity.
+Discourse tracking.
+Machine translation.
+Sentiment analysis.
+Language change (HistWords).
+
+\section{Shortcomings}
+Polysemy and context.
+Dimensionality of representations.
+
+\section{Theoretical implications?}
+Points from Boleda paper: semantic change, polysemy and composition, and the grammar-semantics interface.
+\textit{Separate from shortcomings or combine these two?}
+
+\section{Trajectory of the field}
+Improvements over the years (skip-gram, counterfitting, etc.).
+Transition to Language Models?
+
+\section{Exercises}
+
+\textit{Should have some brief intro before the questions\dots}
+
+\subsection{Basic NLP}
+
+\begin{enumerate}
+\item Walkthrough a simple example of counting co-occurrences.
+\item How does window size impact the embeddings?
+\item What is potential motivation for using the \textit{skip-gram} setting?
+\item Calculate the similarity between these words: [list of words]. 
+\item Something about the PPMI transformation?
+\end{enumerate}
+
+\subsection{Geometric thinking}
+
+\begin{enumerate}
+\item What does it mean for a word embedding to be n-dimensional?
+\item Why is cosine similarity used over other distance functions, like traditional euclidean distance?
+\item Something where they perform clustering?
+\end{enumerate}
+
+\subsection{Corpus quality}
+
+\begin{enumerate}
+\item With the limited (demo) training corpus, how well do you think it captures the actual meaning of the words?
+\item Does corpus size or quality matter? (Too basic of a question.)
+\item Something with a corpus that deals with polysemy (financial institution \& geographic texts)
+\end{enumerate}
+
+\subsection{Neural Networks and other advances}
+
+\begin{enumerate}
+\item SRNs?
+\item Next-word prediction?
+\item Text generation?
+\end{enumerate}
