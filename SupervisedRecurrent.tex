@@ -206,9 +206,13 @@ As of this writing it is late 2022, and progress remains rapid, with GPT-4 soon 
 \section{The Transformer Architecture}
 
 % TODO: Talk about how connectionist and comp neuro of this barely discussed
+% Given its prominence, there are now lots of sources
 % https://benlevinstein.substack.com/p/a-conceptual-guide-to-transformers?sd=pf
 % Watch the whole karpathy thing
-%https://www.youtube.com/watch?v=fMiYNrjDPyI
+% https://www.youtube.com/watch?v=fMiYNrjDPyI
+%!TEX encoding = UTF-8 Unicode https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/
+%    The one above is great for unpacking next word pred. (And the remarkable thing is that when ChatGPT does something like write an essay what it’s essentially doing is just asking over and over again “given the text so far, what should the next word be?”—and each time adding a word. (More precisely, as I’ll explain, it’s adding a “token”, which could be just a part of a word, which is why it can sometimes “make up new words”.)
+% It's like a massive average over human output.  (Cf. the jpeg analogy)
 
 Recurrent networks trained using backprop through time (like Karpathy's) are impressive but not perfect. The main theoretical problem they run into is that they favor recent context over earlier context.  But oftentimes it is important to be more sensitive to information much earlier in a sequence than more recent information, and as a result recurrent networks have a hard time capturing larger temporal structures,  like the plot of a story or the overall theme of a musical performance. There are also technical problems, like the the problem of vanishing gradients: as error is backpropagated through the weights of a network (section \extref{backprop}), the amount weights are changed further back in time gets smaller and smaller. Another problem is that this type of network does not lend itself to parallel computing hardware like GPUs on fancy graphics cards. This can be dealt with using some tricks, like truncating how far back the ``window'' of backprop goes (``truncated'' backprop through time), but this only takes us so far.
 % In fact they bear some resemblance to those who suffer from antero-grade amnesia (cf. the piano performances of someone like Clive Wearing, who can create beautiful music but can no longer produce long pieces). Better develop this point with citations. 
