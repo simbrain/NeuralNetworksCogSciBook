@@ -1,23 +1,25 @@
 \chapter{Natural Language Processing}\label{ch_nlp}
-\chapterauthor{Jeff Yoshimi}
+\chapterauthor{Ellis Cain}
 
 \textit{Some introduction.}
 
 Some very simple approaches used historically:
-- Manual feature vectors.  Example: the 6 bit vectors in Elman's "Finding structure in time"
-- One-hot codings as a very simple approach. Example: the 31 bit vectors  in Elman's "Finding structure in time"
+- Manual feature vectors.  Example: the 6 bit vectors in Elman's ``Finding structure in time''
+- One-hot codings as a very simple approach. Example: the 31 bit vectors  in Elman's ``Finding structure in time''
+- TF-IDF (term frequency-inverse document frequency)
+- Bag of words
+- LSA
+- \textbf{Rewrite:} WordNet, a lexical database of English constructed by linguists, where words are organized into synsets (cognitive synonyms or groups of words). Similarity is calculated using the Wu-Palmer path similarity function which is based on the number of jumps between synsets.
 
-Bag of words
-LSA
-
-To begin to get a feel for some of this see
-
-http://vectors.nlpl.eu/explore/embeddings/en/
+To begin to get a feel for some of this see: http://vectors.nlpl.eu/explore/embeddings/en/
 
 \section{Distributional Semantics Theory}
-Harris, Firth, Wittgenstein.
+\textbf{Rewrite:} Theory of distributional semantics (Firth, 1957; Harris, 1954) and other usage-based theories of language (Wittgenstein, 1953), where our usage of words reflects their meaning, and information about the meaning of words is embedded in linguistic context and the statistical properties of language usage. 
+
 Know a word by the company it keeps.
 Few examples illustrating it.
+
+\textbf{Rewrite:} Building on this, algorithms like Word2Vec (Mikolov et al., 2013) can be used to track the linguistic context and word co-occurrences to ``embed'' words into a semantic space, much like our own semantic space (Lewis et al., 2019), where the words can be tracked and compared. 
 
 \textit{Brunila \& LaViolette's paper revisiting the idea of distributional semantics: \url{https://arxiv.org/pdf/2205.07750.pdf} (URL for now \dots)}
 
@@ -29,13 +31,18 @@ More basic NLP, though may have overlap with data science chapter.
 
 See Lenci review paper.
 Walkthrough of the different steps: tokenization, co-occurrences (window size, skip-gram, stop-word filtering), PPMI transform, etc.
-\textit{Should we reference the functions from SimBrain?}
 
 Point about corpus quality.
 
 \subsection{Evaluation}
+\textbf{Rewrite:} There are plenty of gold-standards for evaluating similarity performance of distributional semantics models, such as WordSim-353 or MEN, which contemporary models have either reached or surpassed human performance (Hill et al., 2014) \dots 
+
+\textbf{Rewrite:} SimLex-999 (Hill et al., 2014), and the follow-up paper SimVerb-3500 (Gerz et al., 2016), both aim at evaluating previous standards and establishing a new gold-standard that can be used to guide research. There are two main innovations with these papers; they contain adjective, verb, and noun concept pairs that vary for concreteness, and both use specific instructions to tease out similarity (car and bike) rather than association (car and gasoline), as previous standards used the terms interchangeably.
+
 Different gold standards of evaluation (SimLex, SimVerb, etc.).
 Similarity vs assocaition vs relatedness.
+
+\textbf{Rewrite:} Research on word similarity and relatedness (Gerz et al., 2016; Hill et al., 2015; Finkelstein et al. 2002) has shown that directly asking for relatedness judgements can accurately capture word relations.
 
 \subsection{Different spins}
 Paragram embeddings.
