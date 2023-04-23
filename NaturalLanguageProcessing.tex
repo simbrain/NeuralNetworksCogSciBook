@@ -1,9 +1,10 @@
 \chapter{Natural Language Processing}\label{ch_nlp}
 \chapterauthor{Ellis Cain}
 
-\textit{Some introduction.}
+\textit{Some introduction: Natural language processing has seen an increase in public attention with the recent batch of advanced large language models (LLMs), with the release of GPT4 and LLaMA(?)\footnote{These will probably be surpassed soon.}. It is helpful to first understand the history and context of the field, before moving on to more complex models.}
 
-Some very simple approaches used historically:
+\textit{Description of the question of the field: how can we process text to extract meaningful information from it? Given a set of documents, how can we find the most relevant search term? How can we computationally evaluate or measure the semantics of words?}
+Early on, there were some simple approaches that were manual or math-based(?).
 - Manual feature vectors.  Example: the 6 bit vectors in Elman's ``Finding structure in time''
 - One-hot codings as a very simple approach. Example: the 31 bit vectors  in Elman's ``Finding structure in time''
 - TF-IDF (term frequency-inverse document frequency)
@@ -14,23 +15,45 @@ Some very simple approaches used historically:
 To begin to get a feel for some of this see: http://vectors.nlpl.eu/explore/embeddings/en/
 
 \section{Distributional Semantics Theory}
+
+Methods mentioned above deal more with a surface-level analysis of language from text; term analysis, etc.
+
+Semantics: within linguistics, this refers to the study of meaning in language, which can be at a variety of levels (i.e., words, phrases, sentences). \textit{See \url{https://en.wikipedia.org/wiki/Semantics#Linguistics} for more.}
+
 \textbf{Rewrite:} Theory of distributional semantics (Firth, 1957; Harris, 1954) and other usage-based theories of language (Wittgenstein, 1953), where our usage of words reflects their meaning, and information about the meaning of words is embedded in linguistic context and the statistical properties of language usage. 
 
-Know a word by the company it keeps.
-Few examples illustrating it.
+Often illustrated with Firth's quote: ``You shall know a word by the company it keeps.''
+For example, when someone talks about a \textit{river}, they may also mention \textit{water} or \textit{bank} (as in river bank).
 
 \textbf{Rewrite:} Building on this, algorithms like Word2Vec (Mikolov et al., 2013) can be used to track the linguistic context and word co-occurrences to ``embed'' words into a semantic space, much like our own semantic space (Lewis et al., 2019), where the words can be tracked and compared. 
 
-\textit{Brunila \& LaViolette's paper revisiting the idea of distributional semantics: \url{https://arxiv.org/pdf/2205.07750.pdf} (URL for now \dots)}
+% \textit{Brunila \& LaViolette's paper revisiting the idea of distributional semantics: \url{https://arxiv.org/pdf/2205.07750.pdf} (URL for now \dots)}
 
 \section{Word Embeddings and Co-occurrence Matrices}
 
-Preprocessing, normalization.
+Similar to the data wrangling chapter, text has to be preprocessed before the analysis. \textit{More basic NLP, though may have overlap with data science chapter. }
 
-More basic NLP, though may have overlap with data science chapter. 
+Example: ``Footsteps shuffled on the stair. Under the firelight, under the brush, her hair spread out in fiery points glowed into words, then would be savagely still.''
 
-See Lenci review paper.
-Walkthrough of the different steps: tokenization, co-occurrences (window size, skip-gram, stop-word filtering), PPMI transform, etc.
+NLP generally follows this pipeline: sentence segmentation, word tokenization, normalization and filtering, then the main analysis.
+For sentence segmentation, the paragraph or document is segmented into sentences. This step is particularly important when using text that has been scanned using OCR, where errors might occur.
+Once the document has been segmented into sentences, a tokenizer is used to split each sentence into the comprising words. 
+Following tokenization, the words/tokens are generally normalized to remove capitalization or certain punctuation marks, such that the words are consistenly in the same form.
+Here, stopwords (words that are deemed insignificant; usually function words) can also be filtered out.
+In the above steps, the exact implementation will differ based on your research goal.
+
+After segmentation and tokenization: [[footsteps,shuffled,on,the,stair], [under,the,firelight,under,the,brush,her,hair,spread,out,in,fiery,points,glowed,into,words,then,would,be,savagely,still]] \textit{Formatting?}
+
+Once the text has been preprocessed, the main analysis can proceed. For a very basic word embedding algorithm, the label-context pair co-occurrences are tracked in a co-occurrence matrix.
+Each word is iterated as the `label', while the surrounding words serve as the `context'. A window size is defined, which designates how many words to include in the `context'. Skip-gram models will include context both before and after a given label.
+From our example, we may start out with ``footsteps'' as the label, then if we have a window size of two, the co-occurring label-context pairs would be [footsteps, shuffled] and [footsteps, on].
+
+Once the document has been processed, the result is a co-occurrence matrix where each cell represents the raw co-occurrence counts for a given label-context pair.
+\textit{Make an example}.
+Not every word is used with the same frequency, so some determiners (`the', `a') may be over-represented and skew the co-occurrence matrix. Therefore, a positive-pointwise mutual information transform is often used to weight the matrix. 
+\textit{Add explanation.}
+
+\textit{See Lenci review paper.}
 
 Point about corpus quality.
 
@@ -50,6 +73,7 @@ Counterfitting / retrofitted embeddings.
 Multilingual embeddings.
 Different associative models (e.g., Mike Jones' BEAGLE).
 Co-occurrence vs next-word prediction.
+Multimodality.
 
 \section{Applications}
 Word similarity -> cosine similarity.
@@ -71,8 +95,6 @@ Improvements over the years (skip-gram, counterfitting, etc.).
 Transition to Language Models?
 
 \section{Exercises}
-
-\textit{Should have some brief intro before the questions\dots}
 
 \subsection{Basic NLP}
 
