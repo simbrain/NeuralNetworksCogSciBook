@@ -294,7 +294,7 @@ its symmetry.}
 
 There are many different methods for projecting data from high dimensional spaces to lower dimensional spaces, and the field as a whole is called ``dimensionality reduction''. Each projection method has its pros and cons, and each one introduces different forms of distortion. But by using several such projections one can often get a good sense of the structure of some high dimensional data.\footnote{The three methods used in Simbrain are described here: \url{http://hisee.sourceforge.net/about.html}. Other methods of projection are available in this free Matlab toolbox: \url{http://homepage.tudelft.nl/19j49/Matlab_Toolbox_for_Dimensionality_Reduction.html}.}
 
-\section{The Dot Product}
+\section{The Dot Product}\label{dotProduct}
 
 % Nice visualization: http://www.falstad.com/dotproduct/
 % Include discussion of orthogonality and closeness from NeuralNets.txt
@@ -356,6 +356,9 @@ n_4 = (-1,-1,1) \bullet (\; -1,\; -4,\; 5) = 1 + 4 +5 = 10
 %\begin{equation*}
 %n_k = (w_{1,n},w_{2,n}, \dots, w_{m,n}) \bullet (a_1,a_2, \dots ,a_m) + b_n
 %\end{equation*}
+
+% Glossary for cosine similarity
+The normalized dot product between two vectors, also known as the cosine similarity, calculates the angle between two vectors such that the similarity calculation is not impacted by magnitude. Bounded between $[-1, 1]$, such that $\cos = -1$ indicates opposite vectors, $\cos = 0$ indicates orthogonal vectors, and $\cos = 1$ are proportional vectors. Some implementations are bounded between $[0,1]$. Occasionally, cosine distance is used, which is $1 - \cos$, in which case proportional or highly similar vectors will have a cosine distance of 0, while dissimilar vectors will have a cosine distance of 1.
 
 % Add some exercises to the end.
 
