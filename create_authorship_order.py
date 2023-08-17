@@ -63,11 +63,11 @@ for chapter in included_chapters:
 #
 # Sort author list by sum of their weighted contribution
 #
-# factor=1.0/sum(book_authors.itervalues())
+# factor=1.0/sum(book_authors.values())
 # for author in book_authors:
 #   book_authors[author] = book_authors[author]*factor
 sorted_authors = sorted(book_authors.items(), key=operator.itemgetter(1), reverse=True)
-print("Ordering:" + str(sorted_authors).strip("[]"))
+print("Ordering:", str(sorted_authors).strip("[]"))
 sorted_authors = [i[0] for i in sorted_authors]
 author_string = ', '.join(sorted_authors)
 

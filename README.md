@@ -16,9 +16,17 @@ You can make your own container document that contain only the chapters of inter
 
 - It is requested that you include `Preface.tex` which credits those involved in the broader project, information about the nature of the document, and information useful to readers such as an explanation of the *-notation for external citations.*
 
-- Set author attribution for your container document using: `python create_authorship_order.py <container document>.tex`. The author order will automatically be set in the container document. (Assumes Python 2)
+- Set author attribution for your container document using: 
+```
+python create_authorship_order.py <container document>.tex
+```
+The author order will automatically be set in the container document.
 
-- If you wish, compile a custom glossary for the container document using: `python create_custom_glossary <container document>.tex`. Then include `CustomGlossary.tex` in your container document.
+- If you wish, compile a custom glossary for the container document using: 
+```
+python create_custom_glossary.py <container document>.tex
+```
+Then include `CustomGlossary.tex` in your container document.
 
 - If you wish, add a bibliography using:
 ```latex
