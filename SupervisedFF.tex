@@ -1,7 +1,7 @@
 \chapter{Supervised Learning in Feed Forward Networks}\label{ch_supervised_ff}
 \chapterauthor{Jeff Yoshimi}
 	
-Having introduced supervised learning in chapter \extref{ch_supervised}, in this chapter we consider several supervised learning algorithms for feedforward networks in depth, and consider their implications for cognitive science. First, an early form of supervised learning called the ``Least Mean Squares rule'' or ``LMS rule''. Second, backpropagation, which adds a powerful method of learning \emph{internal representations} in a neural network. Third, we briefly discuss deep learning networks, which take backprop and apply it to networks with many layers off processing units. Finally, we show how even though these networks were mainly developed in engineering contexts, they have been used in connectionism  and computational cognitive science  to study the  kinds of representations that humans develop to do things like recognize faces.
+Having introduced supervised learning in chapter \extref{ch_supervised}, in this chapter we consider several supervised learning algorithms for feedforward networks in depth, and consider their implications for cognitive science. First, an early form of supervised learning called the ``Least Mean Squares rule'' or ``LMS rule''. Second, backpropagation, which adds a powerful method of learning \emph{internal representations} in a neural network. Finally, we show how even though these networks were mainly developed in engineering contexts, they have been used in connectionism  and computational cognitive science to study the  kinds of representations that humans develop to do things like recognize faces.
 
 \section{Least Mean Squares Rule}\label{lms_rule}
 
@@ -20,7 +20,7 @@ Intuitively, the algorithm works like this (for positive valued inputs). If the 
  
 \subsection{The Algorithm}
 
-Now we can formally define the LMS rule, and verify that it causes the weights to change a such a way that the sum of squared errors (SSE) gets lower over time.\footnote{We will not formally derive it, or state the algorithm in its full generality. However, the derivation is not too difficult: the key step involves taking the derivative of the error function with respect to a weight (how much is error changing as a function of that particular weight). A brief derivation is at \url{https://en.wikipedia.org/wiki/Delta_rule} and a more detailed discussion is at \url{http://uni-obuda.hu/users/fuller.robert/delta.pdf}.}
+Now we can describe the LMS rule, and verify that it causes the weights to change a such a way that the sum of squared errors (SSE) gets lower over time.\footnote{We will not formally derive it, or state the algorithm in its full generality. However, the derivation is not too difficult: the key step involves taking the derivative of the error function with respect to a weight (how much is error changing as a function of that particular weight). A brief derivation is at \url{https://en.wikipedia.org/wiki/Delta_rule} and a more detailed discussion is at \url{http://uni-obuda.hu/users/fuller.robert/delta.pdf}.}
 
 % It's like Hebb but instead of target node we have error on target node. 
 When applying the rule, a change in a weight $w_{i,j}$ is equal to the product of a learning rate $\epsilon$, the activation of the input node to that weight, $a_i$, and the difference between a desired and actual activation ($t_j - a_j$) for that node:
