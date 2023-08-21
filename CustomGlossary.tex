@@ -2,26 +2,36 @@
 \begin{description}
 
 \item[Activation] value associated with a node. Has different interpretations depending on the context. It can, for example, represent the firing rate of a neuron, or the presence of an item in working memory.
-\item[Artificial neural network] (Acronym: ANN) a collection of interconnected units which processes information in a brain-like way.
+\item[Artificial neural network] (Acronym: ANN) a collection of interconnected units, which processes information in a brain-like way.
 \item[Biological neural network] a set of interconnected neurons in an animal brain.
-\item[Computational cognitive neuroscience] the use of neural networks to study psychology and neuroscience simultaneously.
+\item[Clamped node] a node that does not change during updating. Any activation function associated with the node is ignored, and its activation stays the same.
+\item[Classification task] a supervised learning task in which each input vector is associated with one or more discrete  categories. An example would be classifying images of faces as male or female. When classification associates each input with one category only, a one-hot encoding is often used on the output layer.
+\item[Computational cognitive neuroscience] the use of neural networks to simultaneously model psychological and neural processes.
 \item[Computational neuroscience] the study of the brain using computer models.
 \item[Connectionism] the study of psychological phenomena using artificial neural networks.
+\item[Convolutional layer] a special kind of weight layer where a set of weights (a ``filter'') is passed over a source node layer to produce activations in a target layer, in the sense of being multiplied by each of a moving sequence of subsets of the input activations. This is related to the mathematical operation of convolution.
 \item[Deep network] A neural network with a large number of successive layers of nodes mediating between inputs and outputs. Deep networks are trained using \emph{deep learning} techniques.
+\item[Distributed representation] a representation scheme where patterns of activation across groups of neurons indicate the presence of an object. 
 \item[Environment] a structure that influences the input nodes of a neural network or is influenced by the output nodes of a network, or both.
-\item[Feed-forward network] a network comprised of a sequence layers where all neurons in any layer (besides the last layer) are connected to all neurons in the next layer. Contains no recurrent connections.
-\item[Input node] (Synonym: sensor) a node which takes in information from an external environment. 
+\item[Feed-forward network] a network comprised of a sequence of layers where all neurons in any layer (besides the last layer) are connected to all neurons in the next layer. Contains no recurrent connections.
+\item[Generalization] the ability of a neural network to perform tasks that were not included in its training dataset. An example would be a network that was trained to identify 10 faces as male, and 10 as female, being able to perform well on (or ``generalize to'') new faces it has not seen before.
+\item[Graceful degradation] a property of systems whereby decrease in performance is proportional to damage sustained. The contrast is with brittle systems, in which a small amount of damage can lead to complete failure.
+\item[Input node] (Synonym: sensor) a node that takes in information from an external environment. 
+\item[Learning] In a neural network, a process of updating synaptic weights so that the network improves at producing some desired behavior relative to an error function or other objective function.
+\item[Localist representation] a representation scheme where activation of individual neurons indicate the presence of an object. Example: activation of neuron 25 indicates the presence of my grandmother.
 \item[Machine learning] the use of statistical techniques to produce artificial intelligence. Uses of neural networks as engineering devices are a kind of machine learning.
 \item[Node] (Synonyms: unit, artificial neuron) a simulated neuron or neuron-like element in an artificial neural network. 
-\item[Output node] (Synonyms: actuator, effector) a node which provides information to an external environment. 
+\item[Node Layer] A collection of nodes that are treated as a group. For example, in a feed-forward network every node in one layer can be connected to every node in another layer. The activations in a node layer can be represented with an activatoin vector. Without qualification, ``layer'' means node layer.
+\item[Output node] (Synonyms: actuator, effector) a node that provides information to an external environment. 
+\item[Parallel processing] Processing many items at once, concurrently. Contrasted with serial processing, where items are processed one at a time.  Neural networks are known for processing items in parallel, whereas classical computer process items in serial.
+\item[Performance] Consideration of how a network responds to inputs, while keeping its weights fixed.  Often the term is also used to consider how well it is doing relative to an error function or objective function.
 \item[Recurrent network] a network whose nodes are interconnected in such a way that activity can flow in repeating cycles.
-\item[Spike] A discrete event which models the action potential for a neuron.
+\item[Spike] A discrete event that models the action potential for a neuron.
 \item[Strength] A value associated with a weight. Has different interpretations depending on the context. It can, for example, represent the efficacy of a synapse, or an association between items in memory.
 \item[Supervised learning] a learning rule in which weights are adjusted using an explicit representation of desired outputs.
 \item[Synaptic efficacy] The degree to which a pre-synaptic spike increases the probability of a post-snyaptic spike at a synapse.
 \item[Topology] the way the nodes and weights of a network are wired together. A network's ``architecture.''
 \item[Unsupervised learning] a learning rule in which weights are adjusted without an explicit representation of desired outputs.
 \item[Weight] (Synonyms: connection, artificial synapse) a simulated synapse or synapse-like element in a neural network. 
-\item[Weighted inputs] (Synonym: net input) the sum of incoming activations to a node times intermediate weights, plus bias. Intuitively, it is the overall level of input a node is receiving.
-%\item[Weighted Inputs] (Synonyms: net input)  Dot product of an input vector and a fan-in weight vector, plus a bias term.
+\item[Weight layer] A set of weights treated as a group. Often they are the collection of weights connecting one node layer to another, which can in turn be represented by a weight matrix.
 \end{description}
