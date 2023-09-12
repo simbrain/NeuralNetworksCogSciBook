@@ -15,7 +15,7 @@ The smaller units of study are generally straightforward for analysis, looking a
 \subsection{Early word embeddings}
 
 % TODO: Check and fix
-One early approach was to simply manually create feature vectors based on linguistic attributes.  For example, in Elman's ``Finding structure in time'' \cite{elman1990finding}, each of 6 words was associated with a 31-bit vector. 
+One early approach was to simply manually create feature vectors based on linguistic attributes.  For example, in Elman's ``Finding structure in time''~\cite{elman1990finding}, each of 6 words was associated with a 31-bit vector. 
 
 TF-IDF (term frequency-inverse document frequency) is used to calculate the importance of a specific term for a (set of) related document(s), which offsets how frequently a term appears (term frequency) by the number of other documents that also contain the term. This allows it to focus on meaningful terms and not those that generally appear frequently. 
 
@@ -62,10 +62,10 @@ Take this sentence, for example: ``Footsteps shuffled on the stair. Under the fi
 Data preparation and processing in NLP generally follows this pipeline: 
 
 \begin{enumerate}
-\item sentence segmentation
-\item word tokenization
-\item normalization and filtering
-\item main analysis
+\item Sentence segmentation
+\item Word tokenization
+\item Normalization and filtering
+\item Main analysis
 \end{enumerate}
 
 For sentence segmentation, the paragraph or document is segmented into sentences. This step is particularly important when using text that has been scanned using OCR, where errors might occur.
@@ -125,16 +125,6 @@ Therefore, Hill and colleagues set out to create a gold standard that separates 
 
 For example, ``car'' and ``tire'' would be considered associated but not similar, ``glasses'' and ``spectacles'' would be considered similar. See Hill et al., 2014 for an in-depth discussion.
 
-\subsection{Different spins}
-
-Paragram embeddings.
-Counterfitting / retrofitted embeddings.
-Multilingual embeddings.
-Different associative models (e.g., Mike Jones' BEAGLE).
-Co-occurrence vs next-word prediction.
-Multimodality.
-Context-dependent transformer models.
-
 \subsection{Corpus quality}
 
 While different algorithms may improve the model performance and similarity to our own semantic representations, the corpus quality also has an impact on model performance.
@@ -143,24 +133,18 @@ GloVe embeddings are trained on various trainint corpora, varying from 1 billion
 
 Beside the amount or size of the training corpora, the type of documents is also important; training solely on works of fiction would lead to different embeddings than a model trained on non-fiction, and so on. It is important to consider the meaning you are trying to capture (generalized or specific to a field, such as medical documents).
 
-\section{Applications}
-Word similarity -> cosine similarity.
-Discourse tracking.
-Machine translation.
-Sentiment analysis.
-Language change (HistWords).
+\section{Relation to neual networks}
+Above mentioned methods mainly track co-occurrence frequencies, which reflect statistical learning theories (SL citations), where learners track label-object co-occurrence statistics.
+There is also another line of theory in linguistics called predictive processing, where individuals predict future input. This has been used to combat Chomsky's argument about negative evidence (citation), since through disconfirmed predictions, individuals can ``create'' their own negative evidence to learn from (citation for further discussion?).
 
-\section{Shortcomings}
-Polysemy and context.
-Dimensionality of representations.
+% Alternative training method using neural networks
+In a similar fashion, neural networks have also been used to generate word embeddings.
 
-\section{Theoretical implications?}
-Points from Boleda paper: semantic change, polysemy and composition, and the grammar-semantics interface.
-\textit{Separate from shortcomings or combine these two?}
 
-\section{Trajectory of the field}
-Improvements over the years (skip-gram, counterfitting, etc.).
-Transition to Language Models?
+% Data processing using neural networks
+
+
+% Large language models, reference other chapter
 
 \section{Exercises}
 
