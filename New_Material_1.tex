@@ -1,9 +1,9 @@
 \chapter{New Material}
 \chapterauthor{Jeff Yoshimi}
 
-% For anyone reading this, it is very very rough; don't quote me! Just a repository, a quick place to deposit notes for a revision that should come out around the time Simbrain 4 is making it past beta.
-
 % This document is broken into two parts, since I am assigning it to a few students in two stages. The first document is the material that is ready to go now.  The second is the material that I am still developing.
+
+This document contains notes for additions that will eventually be made to the book, in particular to supplement changes and new features in Simbrain 4. Chapter and section headings correspond to where in the book the new material will be placed. This material is very rough. Corrections. and comments welcome.
 
 \section{New Material for Linear Algebra Chapter}
 
@@ -42,7 +42,7 @@ The first thing to do is get clear on the shape of the matrix. Remember, we are 
 Figure \ref{linalgToSimbrain} is an effort to bridge this gap. On the left is a standard matrix product, $\mathbf{W} \mathbf{x} = \mathbf{y}$.  This is how forward propagation of an input vector through a weight matrix is usually understood. The weight matrix is $\mathbf{W}$, the input is $\mathbf{x}$, and the output is $\mathbf{y}$. We think of the matrix as operating on the column vector to produce a new column vector.   
 
 % need a transpose section
-Here is how I suggest you think about this to connect it up to intuitions about neural networks.  Think the column vector $\mathbf{x}$ as being rotated 90 degrees or transposed to become a row vector (imagine grabbing the vector by the $1$ and pulling it up and to the right). Now mentally take this row and move it to the bottom of the weight matrix, as in the middle panel of  \ref{linalgToSimbrain}. The weight matrix and the output vector stay in the same orientation.  The fan-out weight vectors from the input are shown as vertical lines, and the fan-in weight vectors to the output are shown as horizontal lines. Now we can easily ``follow'' the activations upwards as activity is propagated. 
+Here is how I suggest you think about this to connect it up to intuitions about neural networks.  Think of the column vector $\mathbf{x}$ as being rotated 90 degrees or transposed to become a row vector (imagine grabbing the vector by the $1$ and pulling it up and to the right). Now mentally take this row and move it to the bottom of the weight matrix, as in the middle panel of  \ref{linalgToSimbrain}. The weight matrix and the output vector stay in the same orientation.  The fan-out weight vectors from the input are shown as vertical lines, and the fan-in weight vectors to the output are shown as horizontal lines. Now we can easily ``follow'' the activations upwards as activity is propagated. 
 % The bridge is pretty close to the new simbrain rep. Show that?
 % Note there are other reps too, like the points in a space rep.
 
@@ -58,4 +58,388 @@ In Simbrain 4.0, we have designed the representation of activation vectors and w
 \caption[Jeff Yoshimi.]{Graphical conventions for activation vectors and weight matrices in Simbrain 4. }
 \label{simbrain4_ff23}
 \end{figure}
+%
+%Also just a thought on how to think about the weight matrices. Their shape is target-source, or output-input. So if we have a 3-5-2-1 network in terms of node layers, we have three weight matrices. Their shapes are:
+%
+%5x3
+%2x5
+%1x2
+%
+%So you would pass a list of the form [5x3, 2x5, 1x2] to your function. Remember, weight matrices on the left are multiplied by input and activations vectors on the right.I find this pretty counter-intuitive and takes me a lot of practice to think in this “output-input” way.  I want to read left-to-right input-to-output but the standard conventions with matrix product reverse this...
+
+
+
+\subsection{Tensors}
+
+A tensor is a generalization of the concept of a vector that encompasses numbers, arrays of numbers, matrices (2d arrays of numbers), arrays of matrices, arrays of these arrays, etc. The rank of a  tensor is the number of indices it takes to specify an ``entry'' in it. These are sometimes called ndarrays.  
+
+A number is rank 0 because it requires no indices.  The number 42 is a rank 0 tensor, but nobody talks about it that way. 
+
+A vector is rank 1 because it takes one index to specify an entry in a vector.  The vector $(0,1,0)$ is a rank 1 tensor, because it takes one index to specify entries, but people usually just call it a vector. A 1D array of numbers..
+
+A matrix is rank 2, because it takes two numbers to specify an entry (a row and column). A 2D array of numbers. We've seen lots of examples of this.
+
+An array of matrices is rank 3, because it takes 3 indices to specify an entry. A 3D array. A common example of this is the representation of an image, which requires several channels of 2d information, several ``copies'' of a pixel array.  For example, an RGB color image that is 20 pixels wide (20 columns) and 40 pixels tall (40 rows) is represented by three matrices (red, green, and blue) of shape $40 \times 20$.  Thus the whole image is represented by a tensor with shape $(3,40,20)$. Channel by width by height.  Another example here is a set of feature maps in a convolutional networks. Each one represents the input layer in a different way, and the whole layer is a set of these features maps, a rank 3 tensor. Occasionally a rank 3 tensor is also thought of as a ``volume'' (imagine a stack of matrices, a prism).
+ 
+ A rank 4 tensor is an array of arrays of matrices, a 4D array of numbers.  For example, consider a batch of 100 RGB images, that will be used to train a model. That is, a set of 100 images. That would be a rank 4 tensor with shape $(100,3,20,40)$. It takes 4 indices to get a single number out of the tensor.   But we can also pull out individual images, rows or columns of these individual images, etc.
+ 
+ % Rank 5 tensor examples: batch size x time steps x height x width x channels.  Brain scan. Each brain scan is 3d and it's color so there are channels. So a batch of thos.  
+ 
+ I'm not sure if this is standard, but it's tempting to think of the indices as batch-number, channel number, row number, column number. Just use the standard applications.
+ % GPT: Different deep learning frameworks might have different default orderings. For example, TensorFlow typically uses the "channels-last" format you described, whereas PyTorch and some other frameworks use a "channels-first" format: batch size x channels x height x width. Always check the documentation or conventions for the specific framework you're using.
+
+People also say 3d tensor, 4d tensor etc.  That refers to the shape of the data structure, not the data itself.  Like we can imagine a 1d tensor arranged on a 1d line, and a 2d tensor arranged in a plane, and a 3d tensor arranged in space (poor Pitt went crazy at the end of his life working these out to describe the brain).  But this is not the same as the dimensionality of the data itself. Like (1,2,1,0) is a point in a 4d space, but a 1d tensor or 1d array of numbers.
+
+
+\section{New Material for LMS / Backprop Chapter}
+
+There are a lot of great technical discussions of this (citations). But the goal here in this book is intuition, trying to get a \emph{feel} for these things, so you can reason about them and think about how they might apply to cognitive science. 
+
+\subsection{Historical notes}
+
+Our goal in this chapter is the backprop model. That's the crown jewel. All other models can be thought of as instances of that one model. It is used to train feed forward networks using gradient descent. From Rosenblatt up to GPT 3, all models are variants on it. It's a big class. But here is some of the history.
+
+The earliest model, Rosenblatt's perceptron (link) has one main weight layer, with binary outputs, focused on classification tasks. This involves a customized learning rule, the perception learning algorithm, which has an if-then condition which, when true (that is, when the model mis-classifies a sample), applied something like standard form of gradient descent algorithm (in fact, if sigmoids with a steep slope are used then a one-weight layer backprop network  approaches the perception as a limiting case). The next class of models, associated with Widroff and Hoff, allowed continuous valued outputs and could solve regression tasks. This was also known as the delta rule or adalines or madalines (there are some differences here, but they are pretty close). This is pretty much the same as backprop, but for one weight layer. The next major advance was allowing for multiple layers, as discussed in the main text, and that is what we now know as backprop. 
+% See existing lms discussion which is not bad on this
+
+\subsection{The Algorithm}
+
+Now we can describe the LMS rule, and verify that it causes the weights to change a such a way that the sum of squared errors (SSE) gets lower over time.
+
+% TODO: But no activation function yet
+When applying the rule, a change in a weight $w_{i,j}$ is equal to the product of a learning rate $\epsilon$, the activation of the input node to that weight, $a_i$, and the difference between a desired and actual activation ($t_j - a_j$) for that node:
+\begin{eqnarray*}
+\Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
+\end{eqnarray*}
+Since $(t_j - a_j)$ is row error  (with a small ``e''), the rule says that the change in a weight is equal to a learning rate times the activation of the input node for that weight, times the error. This should make some intuitive sense. As we saw above in the goldilocks discussion, for positive inputs weights should be changed in the direction of row error. The input scales things so they work for positive or negative inputs and so that changes are bigger for bigger inputs, and the learning rate allows us to control how quickly learning happens. 
+
+LMS also changes the bias $b_j$ of an output node $j$ as follows: 
+\begin{eqnarray*}
+\Delta b_j  =  \epsilon (t_j - a_j)
+\end{eqnarray*}
+That is, the change in a bias for a node $j$ is just the learning rate times the error on output node $j$.\footnote{Note that this is really the same as the weight change rule, if we think of the bias in terms another input neuron, clamped at 1, and attached to this output neuron by a modifiable weight (which is in effect the bias).}
+
+Applying the rule involves two stages at each iteration. First, a ``forward pass'', where we compute the output of the network for a given input pattern. This is the normal activation update we've been talking about in past chapters, for a feed-forward network. We set the inputs, and apply the update rules to get the output activations. In our simple case here the main thing we are getting is just the activations $a_j$.  With multi-layer  networks we will propagate through many layers to get all the hidden activations and finally the output activation. 
+
+% Backward refs
+Second, a ``parameter update'' pass. At this point we have an  input-output pair, an ``output dataset'' with one row.  This allows us to compare the actual output with the target value, and compute what we called row error. We can then use the row error $ (t_j - a_j)$ to apply the rule and get weight and bias update values, which we then apply to all the parameters, all the weights and biases.\footnote{With one weight layer networks using LMS this is simple, but later with many layered networks there is a bit more involved, and in fact there is a process of multiplying the row errors backwards through the weights, which is a kind of ``backward pass'' and where the name ``backpropagation'' comes from.}
+
+We are in the scalar case of one output node, and just considering one input-output pair. But the full algorithm involves changing many output nodes, and doing it for many output pairs.  We have also not considered what happens when the output activation function is something besides unbounded linear. We'll add these cases step by step in the chapter, but it's helpful to start off simple.
+
+% Talk about how divergence looks in this kind of case. And add some practice examples that show it happening. E.g. Given a1 = -3, w12=4, t = 0, epsilon = 1, what is w12'?
+
+\subsection{The Algorithm: Intuition}
+
+The plan here will be to give an intuitive feel for the algorithm in a simple case, and then to derive it, and then to add in the details (bias and activation functions) as optional sections, and then to do it for the vector case.
+
+We start with scalar values, the case of a single target. We have a bunch of data, saying what the network did (outputs) and what we wanted it to do (targets). So we have row error, but where the rows have one column for output and one for target. So our row error is just one value. The row error is target value minus the actual output, $e = t-a$. These errors are the main thing to think about at first. 
+
+Think of this as a  {\bf Goldilocks principle}: just as someone might keep heating and cooling porridge until it is just right--way too hot, cool it a bunch, oh now a bit too cold, heat it a bit, ahh now just right. stop changing things... we increase and decrease parameters until overall error is just right.\footnote{A useful picture showing how this method leads to a decision boundary that correctly classifies all training examples is here: \url{https://commons.wikimedia.org/wiki/File:Perceptron_example.svg}.} The math ends up making this work.
+
+%Intuitively, the algorithm works like this (for positive valued inputs). If the output is too high, the error is negative. For example, if I wanted 4 but got 5, row error is $4-5 = -1$. I have to make the weights and bias a little bit lower to make the output lower. On the other hand, if the output is too low, the error is positive. For example, if I wanted 5 but got 4, error is $5-4 = 1$. I have to make the weights and bias a little larger. (Notice that multiplying the weights by the row error would send us in the right direction, and that larger errors will lead to larger weight changes). If the output is just right, don't change anything. By incrementally changing the weights and biases in this way, the network slowly learns to produce the correct response to all inputs.
+ 
+Recall the rule:
+\begin{eqnarray*}
+\Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
+\end{eqnarray*}
+Since $(t_j - a_j)$ is row error  (with a small ``e''), the rule says that the change in a weight is equal to a learning rate times the activation of the input node for that weight, times the error. This should make some intuitive sense in Goldilocks terms. Let's consider each factor of this rule: the row error and the source activation, separately.
+
+% Wait, cohere this with the fact that we go opposite the gradient. It's in the derivation sectio but cohere it here.
+First, the error tells us what direction to change the parameters in, which makes sense:
+\begin{enumerate}
+\item Positive error. Example target is 2 and output is 1. Error is $2-1 = 1$. The output is too low, so we need to make the weight larger. The porridge was too cold, so we need to make it hotter. 
+\item Negative error. Example target is 0 and output is 1. Error is $0-1 = -1$. The output is too large, so we need to make the weight smaller. The porridge was too hot, so we need to make it cooler. 
+\end{enumerate}
+
+But we also end up multiplying by the source value? Why? Well, think about it, again in the two cases.
+\begin{enumerate}
+\item Large source activation. This is making a big change in the output. So we want any change to be proportional. The output was too high, and this source activation is large, so we want to make the change in the weight also large, to compensate for the big activation
+\item Small source activation. The output was too high, but this source activation was not big, so we just change things a bit. It's contributing less to the problem.
+\end{enumerate}
+Also, negative source activations will make the weight change change sign as well, so that we make changes in the right direction. % TODO: Examples
+
+This is like a variant on the Hebb rule. Hebb said, just change the weight based on the product of source and target. Fire together wire together. That has use for detecting patterns of correlation between input and output. Make the output reflect those correlations. But now we say something different. We change weight based on the product of source activation and the error. We in a sense correlate with the error, which reduces the error, until the error is close to 0.
+
+One last way to think of this is in terms of statistical concepts. We can think of LMS as repeatedly testing the network and correcting for false positives (the output is too high; a ``type 1'' error) and false negatives (the output is too low; a ``type 2'' error) until the error rate is as low as possible. This analysis makes mmost sense for classification tasks with binary variables.
+ 
+\subsection{Example}\label{lms_example}
+
+In this example and in subsequent practice questions, assume we have a  simple 1-1 feed-forward network (as in the left panel of figure \extref{tables_nets}), and that the slope of the output node is 1 and bias is 0. So we have two nodes, with activations $a_1$ and $a_2$, and a weight $w_{1,2}$. We also assume a very simple labeled dataset with a single row: one input value and one corresponding target value. That is:
+\begin{center}
+\begin{tabular}{| c || c | }
+\cline{1-2}
+\multicolumn{1}{| c || }{inputs}
+ & \multicolumn{1}{c|}{targets} \\
+\hline
+  1 & 2  \\
+\hline
+\end{tabular}
+\end{center}
+We label the target value $t$. We will not consider updates to the bias term. As in the discussion of the Hebb rule (chapter \extref{ch_unsupervised}), we use the prime symbol $'$ to indicate a variable after a delta term has been applied.
+
+% Explicitly explain that a prime means next time step, for all variables
+We can now work out a complete example, and in the process see how LMS implements gradient descent. Suppose we are given:
+\begin{eqnarray*}
+& a_1 = 1 \\
+& w_{1,2} = 1.5 \\
+& b_2 = 0 \\
+& t = 2  \\
+& \epsilon = .5  \\
+\end{eqnarray*}
+With this information we can determine: (1) the output activation $a_2$ of the network (our ``forward pass''), (2) SSE, (3) the updated weight value at the next time step, which we designate $w_{1,2}'$, (4) the output activation $a_2'$, and (5) error at the next time step, SSE$'$. We can then repeat these steps and check to see that SSE is reduced over time, which moves us down the error surface for this task, which is shown in Fig. \ref{error_lms}.
+
+(1) The network will produce a $1.5$ in response to an input of $1$, since the input activation is $1$, the weight is $1.5$, and $1 \cdot 1.5 = 1.5$ (we are, again, assuming output bias of 0 and slope of 1). 
+
+(2) SSE for these simple networks and labeled datasets is very easy, since there is just one row, one target value, and one output value. That is,  SSE $= (t - a_2)^2$ or in this case $(2-1.5)^2 = .5^2 = .25$. Notice that this puts us at the point $(1.5,.25)$ in the graph in Fig. \ref{error_lms}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{images/error_lms.png}
+\caption[Jeff Yoshimi.]{Gradient descent on the error surface for the LMS example discussed in Section. \ref{lms_example}. As the LMS rule is applied the weight strength changes in a way that minimizes sum squared error.}
+\label{error_lms}
+\end{figure}
+
+(3) Applying the formula above
+\begin{eqnarray*}
+\Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
+\end{eqnarray*}
+we get
+\begin{eqnarray*}
+\Delta w_{1,2}  =  .5 \cdot 1 \cdot (2- 1.5) = .25
+\end{eqnarray*}
+We then use $\Delta w$ to update the weight value from its old value of 1.5, so that
+\begin{eqnarray*}
+w_{1,2}' = w_{1,2} + \Delta w_{1,2}  = 1.5 +.25  = 1.75
+\end{eqnarray*}
+So our new weight value is 1.75. 
+
+(4) With this new weight, the network produces an output  $a_2' = 1 \cdot 1.75 = 1.75$. 
+
+(5) The squared error is now $(2-1.75)^2=.25^2=.0625$, whereas before it was $.25$. So we have moved to the point $(1.75,.0625)$ in the graph  of the error surface in Fig. \ref{error_lms}. An improvement!  We have moved lower on the error curve; we have descended the error gradient.
+
+In subsequent time steps we get:
+
+\begin{eqnarray*}
+w_{1,2}'' = 1.75 + .5 \cdot 1 \cdot (2 - 1.75) = 1.875 \\
+w_{1,2}''' = 1.875 + .5 \cdot 1 \cdot (2 - 1.875) = 1. 9375 \\
+\end{eqnarray*}
+As you can see, applying this rule leads to SSE getting lower and lower, and the output getting closer and closer to the desired output of 2. Ten successive points on the error curve are shown in figure \ref{error_lms}.
+
+%\subsection{Example}
+%
+%Ok to understand this better, let's work an example:
+%
+%\begin{eqnarray*}
+%& a_1 = 1 \\
+%& w_{1,2} = 1.5 \\
+%& t = 2  \\
+%& b_2 = 0 \\
+%& \epsilon = .5  \\
+%\end{eqnarray*}
+%
+%% We have a function sse(training-data, weights, biases). It goes through and computes error for each row of the training data, and sums it. What we can do to make plots is set a weight, and then consider all the biases, or set a bias, and consider all weights. Or allow both weights and biases to vary
+%
+%Assume a linear unbounded activation function, i.e activation is just net input. We'll come back to this throughout this chapter.
+
+\subsection{Computing error surfaces}
+
+A brief interlude to discuss these error surfaces, like the one in \ref{error_lms} and how the algorithm ends up going down the gradient. It may help to think about how that was created? Since we were only looking at a single target value and error relative to a single weight, it can actually be computed by hand. In the example, squared error is
+
+\begin{eqnarray*}
+(t - a_2)^2 =  (t - (a_1 w_{1,2} + b_2))^2 = (t - a_1 w_{1,2})^2  
+\end{eqnarray*}
+We can ignore bias because bias is 0.
+
+Now think about all possible values for the weights. Remember, we want to find a value for the weight that will minimize our error. So we can just substitute the actual output activation $a_j$ above with the expression for it, which is source activation times weight, or  $a_1 w_{1,2}$.
+
+\begin{eqnarray*}
+(t_j - a_1 w_{1,2})^2
+\end{eqnarray*}
+
+So now we can substitute in the values from our example:
+
+\begin{eqnarray*}
+(2 - 1 * w_{1,2})^2 = \\
+(2 - w_{1,2}) (2 - w_{1,2} ) =  \\
+4-4w_{1,2}+w_{1,2}^2
+\end{eqnarray*}
+This tells us, for any given value of $w$, what the squared error will be. That is what is plotted in the figure. Gradient descent using the LMS rule will find the weight value that minimizes the error.
+
+However, computing this all by hand can be  a pain, especially as we consider more parameters and a larger training set, so you can also make a little computer program to do it.  Here is the idea. Make a function
+
+\subsection{Code for an error function}
+
+(These subsections put the code in a separate place. Rather than psuedocode, we'll use python code, which is like executable pseudocode)
+
+Rather than working out an equations like this every time imagine we have a function that take an output dataset, a weight, and bias, and returns the sum of the squared error. Here is some python code that does that, for a case where the output dataset just has one input per row, where 0 is the index for the first column (inputs) and 1 is the index for the second column (targets):
+
+\begin{center}
+\begin{minipage}{0.5\textwidth}
+\begin{verbatim}
+def sse(dataset, weight, bias):
+    error = 0
+    for row in dataset:
+        aj = row[0] * weight + bias
+        tj = row[1]
+        row_error = tj - aj
+        error += row_error * row_error
+    return error
+\end{verbatim}
+\end{minipage}
+\end{center}
+
+You can use this code with a fixed weight value and an array of bias values to produce an error surface for biases, or a fixed bias value and an array of weight values to produce an error surface for weights (that is what we did above for a bias of 0), or pass in an array of both weights and biases and then plot a 2d error surface for weights and biases both.
+
+%	Exercises
+%	- Mod the script so that it shows how error changes with training set. Try to find a set where min error is not 0
+%	- Mod it again to show error on a 2d surface
+%	- Mod it again to show error with respect to bias (add in the bias discussion and note how simple it is)
+
+\subsection{Bias intuition}
+
+Here is the bias update rule again. Change the bias $b_j$ of an output node $j$ as follows: 
+\begin{eqnarray*}
+\Delta b_j  =  \epsilon (t_j - a_j)
+\end{eqnarray*}
+That is, the change in a bias for a node $j$ is just the learning rate times the error on output node $j$.\footnote{Note that this is really the same as the weight change rule, if we think of the bias as another input neuron, clamped at 1, and attached to this output neuron by a modifiable weight (which is in effect the bias).}
+
+This one really makes sense in terms of Goldilocks. If the output is too high, make the bias smaller, if it is too low, make the bias higher. It does not respond to inputs, so you can't usually train a network on bias alone, but it does get the adjustments right. An exercise you can do is trying to update the bias only, the weights only, and then both (as the algorithm does), just by coding this all up and then commenting out the bias update line and the weight update line in your code. See how it does in each case.
+
+\subsection{Deriving the rule with calculus}
+
+All this can be shown with calculus. It's really kind of amazing to turn the crank on the calculus, and see how it all works out giving us the rule above,  with all the intuitive meaning. Run through the calculus, and we get our rule, which we saw above makes sense!
+
+Conceptually, we are using the derivative of the error space. Since it's multi-dimensional, we call the derivative a gradient in this case. The gradient is a vector that points in the direction of change. 
+
+We want to change the weight so that error is reduced. Let's leave the bias out for now. Then we are taking this derivative:
+
+\begin{eqnarray*}
+\frac{dE}{dw_{1,2}} (t - a_2)^2
+\end{eqnarray*}
+
+Unpacking $a_2$, we get
+\begin{eqnarray*}
+\frac{dE}{dw_{1,2}} (t - ( a_1 w_{1,2} + b_2))^2 
+\end{eqnarray*}
+
+Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), we get
+
+\begin{eqnarray*}
+\frac{dE}{dw_{1,2}} = 2 (t - a_1 w_{1,2} - b_2) (-a_1) = -2 a_1 (t - a_2)
+\end{eqnarray*}
+
+And since $t - a_2$ is row error $e$ we get
+
+\begin{eqnarray*}
+\frac{dE}{dw_{1,2}} = -2 e a_1
+\end{eqnarray*}
+
+This says that the change in error with respect to the weight is given by error time source activation times a constant. The 2 can be ignored, since we can think of as being absorbed into the learning rate. Also, this gradient points up in the direction of error getting bigger. But we want to go in the opposite direction, where it gets smaller. So we multiply this gradient by $-1$, changing its sign. And so our learning rule is 
+
+\begin{eqnarray*}
+\Delta w_{1,2}  =  \epsilon a_1 e  = \epsilon a_1 (t - a_2)
+\end{eqnarray*} 
+
+Of course this generalizes, and so our general learning rule for weights is:
+\begin{eqnarray*}
+\Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
+\end{eqnarray*} 
+
+As an exercise, try deriving the rule for bias. The setup is
+
+\begin{eqnarray*}
+\frac{dE}{db_{2}} (t - ( a_1 w_{1,2} + b_2))^2 
+\end{eqnarray*}
+
+Now let's add in the activation function $f$ and derive the weight-update rule.  This involves a few applications of the chain rule:
+
+\begin{eqnarray*}
+\frac{dE}{dw_{1,2}} (t - f(a_1w_{1,2} + b_2))^2   = 2 (t - f(a_1w_{1,2} + b_2)) f'(a_1w_{1,2} + b_2) a_1 
+\end{eqnarray*}
+Note that the derivative of the activation function $f'$ is like a free parameter here. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. BUT some derivatives have problems, like being undefined or 0, which effectively turns off update.
+
+Subbing in $a_2 = f(a_1w_{1,2} + b_2))$, and recalling $n_2 = w_{1,2} + b_2$ 
+
+\begin{eqnarray*}
+\frac{dE}{dw_{1,2}} (t - a_2)^2   = 2 (t - a_2) f'(n_2) a_1 
+\end{eqnarray*}
+
+So the learning rule for weights is:
+\begin{eqnarray*}
+\Delta w_{i,j}  =  \epsilon a_i (t_j - a_j) f'(n_j)
+\end{eqnarray*} 
+
+This is the same as before, but multiplied by with the derivative of the activation function applied to to the net input (the weighted input to the node). We discuss this more below.
+
+Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less.  It doesn't matter as much.  Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all.  Agai see below.
+
+\section{Vector approach to LMS}
+
+% TODO: Write some new material just for the new representation
+
+In the scalar approach to LMS we multiply a single output error (target - output) by source activation. Now we have a vector of errors times a vector of source activations. But how to deal with indexing?  The algorithm is ultimately a variant on Hebb, so we already have a template for thinking about it.
+
+The error part itself is easy, first we do target - output using elementwise subtraction: $\mathbf{t} - \mathbf{a}_{\text{out}}$.  To multiply these errors times source activations, we do the same thing as in Hebb: we multiply an $m \times  1$ column output errors times a $1 \times  n$ row of source activations to get an $m \times n$ matrix of weight deltas.  Then we scale that by learning rate, and add to the weight matrix.  (There remains the issue of the bias, and any activation functions on the output, but we're starting simple.) So, the vectorized rule is
+\begin{eqnarray*}
+\Delta \mathbf{w}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) \mathbf{a}_{\text{in}}^T
+\end{eqnarray*}
+Remember, by default all vectors in bold face are column vectors.  So this is a column vector (the error $\mathbf{t} - \mathbf{a}_{\text{out}}$) times a row vector (the input activations) which produces a matrix in the same shape as the weight matrix.
+
+Consider the network shown in figure \ref{lms_vector_pre}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\textwidth]{images/vectorLMSBeforeTrain.png}
+\caption[Jeff Yoshimi.]{A network with empty weights. We want it to learn to associate $(0,1)$ input to $(1,0,1)$}
+\label{lms_vector_pre}
+\end{figure}
+
+Remember, the weight matrix is a 3x2 matrix  (``target-source''), which we are treating as all zero in this example. Each row is a fan-in of an output node, and the columns are fan-outs of input nodes. Our template for thinking about this is to imagine inputs coming up from the bottom, and dotting with the fan-in weight vectors to produce outputs (really net-inputs, to which bias is added and an activation function applied)
+
+Our values are
+\begin{equation*}
+\epsilon = 1 \; \; \\
+\mathbf{a}_{\text{in}} = \begin{bmatrix} 0 \\ 1 \end{bmatrix} \\
+\mathbf{t} = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}
+\mathbf{a}_{\text{out}} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}
+\end{equation*}
+
+Then the equation is learning rate times error times input transposed:
+
+\begin{align*}
+\Delta \mathbf{w}  = 1
+\begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} 
+\begin{bmatrix} 0 & 1 \end{bmatrix} 
+= \begin{bmatrix} 1 \cdot 0 & 1 \cdot 1 \\ 0 \cdot 0 & 0 \cdot 1 \\ 1 \cdot 0 & 1 \cdot 1 \end{bmatrix} 
+= \begin{bmatrix} 0 & 1 \\ 0 & 0 \\  0 & 1  \end{bmatrix}
+\end{align*}
+
+So we get
+
+\begin{align*}
+\mathbf{w} + \Delta \mathbf{w}  =
+\begin{bmatrix} 0 & 0 \\ 0 & 0 \\  0  & 0  \end{bmatrix} +
+\begin{bmatrix} 0 & 1 \\ 0 & 0 \\  0  & 1  \end{bmatrix} =
+\begin{bmatrix} 0 & 1 \\ 0 & 0 \\  0  & 1  \end{bmatrix}
+\end{align*}
+
+And again, keeping in mind that rows are fan-in of output and columns are fan-out of input we get figure \ref{lms_vector_2}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\textwidth]{images/vectorLMSAfterTrain.png}
+\caption[Jeff Yoshimi.]{The network after training}
+\label{lms_vector_2}
+\end{figure}
+
+We can now check that it works. Remember, think of the column vector on the right as ``entering'' from below, and dotting with each fan-in weight vector (each row of the matrix) to produce the output.  SSE has gone to 0 in a single time step.
+
+\begin{align*}
+\begin{bmatrix} 0 & 1 \\ 0 & 0 \\  0  & 1  \end{bmatrix}
+\begin{bmatrix} 0 \\ 1 \end{bmatrix}
+= \begin{bmatrix} 1 \\ 0 \\ 1  \end{bmatrix}
+\end{align*}
+
+% Add exercizes here, use Mak and David examples.
+So now I suggest you try some examples of your own.  Come up with your own training set, apply the rule and see if you can run this a few times.  
 
