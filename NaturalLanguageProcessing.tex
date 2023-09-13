@@ -3,6 +3,8 @@
 
 This chapter introduces natural language processing, with an emphasis on techniques that can be used in conjunction with neural networks. A dominant theme throughout the chapter is the concept of a word embedding (section \extref{wrangling}), where words in a corpus are associated with vectors that capture important characteristics. This makes it possible to associated words and texts with activations that can be processed in a neural network. These techniques have a long history in linguistics and in the study of neural networks, but have become especially prominent in recent years with the advent of large language models like GPT (section \extref{transformers}). We will also see that pre-processing (section \extref{wrangling}) is important with linguistic data, shedding further light on the general topic of wrangling data before it is used in a neural networks.
 
+% Formally a word embedding  is a function from a set of tokens to a set of vectors in an n-d space. 
+
 \section{Background and History}
 
 \subsection{Linguistics}
@@ -12,16 +14,67 @@ Linguistics is the study of language, which can be organized by the different as
 
 The smaller units of study are generally straightforward for analysis, looking at phonemes (smallest unit of sound, /t/ or /p/) or morphemes (smallest word unit of meaning, ``luck'' in ``unlucky''), as you increase the scope of analysis it increasingly becomes more difficult to (automatically) analyze. For syntax, there are treebanks and dependency analyzers that have to be trained on lots of example hand-annotated data to be able to analyze new sentences. There are also reasonable limits per word (for syntactic analysis), a word usually has one or two parts of speech (noun, verb, determiner, etc.), and there are constructed rules for how to derive dependency trees. What about meaning for semantics? There isn't a clear unit of ``meaning'' for words, a meaning is more broad, it can be abstract or concrete (``justice'' vs ``cup''), it can be flexible and change based on the context (``bass'' as the fish or instrument). How could we automate the analysis of semantic information?
 
+% Something about computational linguistics and tools? WordNet is a lexical database of English constructed by linguists, where words are organized into ``synsets'' (cognitive synonyms or groups of words). Similarity is calculated using the Wu-Palmer path similarity function which is based on the number of jumps between synsets.
+
+
 \subsection{Early word embeddings}
 
 % TODO: Check and fix
-One early approach was to simply manually create feature vectors based on linguistic attributes.  For example, in Elman's ``Finding structure in time''~\cite{elman1990finding}, each of 6 words was associated with a 31-bit vector. 
+One early approach was to simply manually create feature vectors based on linguistic attributes.  For example, in Elman's ``Finding structure in time''~\cite{elman1990finding}, each of 6 words was associated with a 31-bit vector.  Some examples are shown in figure \ref{elmanWordEmbeddings}.
 
-TF-IDF (term frequency-inverse document frequency) is used to calculate the importance of a specific term for a (set of) related document(s), which offsets how frequently a term appears (term frequency) by the number of other documents that also contain the term. This allows it to focus on meaningful terms and not those that generally appear frequently. 
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5]{./images/elmanWordEmbeddings.png}
+\caption[From \cite{elman1990finding}.]{Some of Elman's word embeddings. }
+\label{elmanWordEmbeddings}
+\end{figure}
 
-Bag of words just captures the term frequency without any grammatical structure, i.e., a sentence is converted to a ``bag of words'' that only contain terms and frequency (``The bass fish played the bass'' would be {``the'': 2, ``bass'': 2, ``fish'': 1, ``played'': 1}).
+These early embeddings were hand-crafted based on the scientist's intuitions or using other simple techniques to ensure certain similarity structures. However, automated forms of word embedding are also available. These automated approaches take documents and use the information in them to produce word embeddings.
 
-WordNet is a lexical database of English constructed by linguists, where words are organized into ``synsets'' (cognitive synonyms or groups of words). Similarity is calculated using the Wu-Palmer path similarity function which is based on the number of jumps between synsets.
+% There is a historical trajectory from document level down to word level. 
+
+One simple idea in the background of many word embeddings is the \glossary{Bag of words} approach, which associates documents with vectors of word frequencies. This approach ignores grammatical structure and just looks at how often different tokens occur in different documents. We take our document, put each token in the document in a bag, and count up how many tokens occur in each bag.  Consider the following documents
+
+\begin{description}
+\item[Document 1]  ``The bass fish played the bass''
+\item[Document 2]  ``The fish played fish with the fish monger''
+\end{description}
+
+Bag of words will associate these as follows
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|c|}
+    \hline
+    Document & the & bass & fish & played & with & monger \\
+    \hline
+    Document 1 & 2 & 2 & 1 & 1 & 0 & 0 \\
+    Document 2 & 3 & 0 & 3 & 1 & 1 & 1 \\
+    \hline
+    \end{tabular}
+    \caption{Bag of words representation}
+\end{table}
+
+A slightly more complex document level embedding is TF-IDF (term frequency-inverse document frequency), which is used to calculate the importance of a specific term for a (set of) related document(s), which offsets how frequently a term appears (term frequency) by the number of other documents that also contain the term. This allows it to focus on meaningful terms and not those that generally appear frequently. 
+
+
+% Dictionary representation. (``The bass fish played the bass'' would be {``the'': 2, ``bass'': 2, ``fish'': 1, ``played'': 1}).
+
+This document term frequency approach. We pass a sliding window over the terms of a document and do the same procedure as bag of words but where the ``document'' is a term and the vector is the frequency count in the window around that term, which can be thought of as a co-occurrence vector.  In the example above suppose window size is 1.  Then we scan across the two documents and see that ``the'' co-occurs twice with ``bass'',  twice with ``fish'', once with ``played'', and once with ``with''.  The full set of word embeddings is:
+
+% TODO
+%\begin{table}[h]
+%    \centering
+%    \begin{tabular}{|l|c|c|c|c|c|c|}
+%    \hline
+%    Term & the & bass & fish & played & with & monger \\
+%    \hline
+%    the 1 & 2 & 2 & 1 & 1 & 0 & 0 \\
+%    Document 2 & 3 & 0 & 3 & 1 & 1 & 1 \\
+%    \hline
+%    \end{tabular}
+%    \caption{Word Occurrence Frequencies}
+%\end{table}
 
 To begin to get a feel for some of this ideas see \url{http://vectors.nlpl.eu/explore/embeddings/en/}
  
@@ -47,7 +100,7 @@ Algorithms like Word2Vec (Mikolov et al., 2013) are used to track the linguistic
 \begin{figure}[h]
     \centering
     \includegraphics[scale=.2]{./images/Word_vector_illustration.jpg}
-    \caption[Example of word embeddings in a semantic space.]{A hypothetical embedding for the four words ``king'', ``queen'', ``man'', and ``woman''.  The embedding makes sense because we would expect that the representation of ``king'' to be closer to ``man'' than to ``woman'', ``queen'' should be closer to ``woman'' than to ``man'', and the distance between ``man'' and ``king'' should be the same as that between ``queen'' and ``woman''.    }
+    \caption[From \url{https://en.wikipedia.org/wiki/Word2vec\#/media/File:Word_vector_illustration.jpg}.]{Example of word embeddings in a semantic space. A hypothetical embedding for the four words ``king'', ``queen'', ``man'', and ``woman''.  The embedding makes sense because we would expect that the representation of ``king'' to be closer to ``man'' than to ``woman'', ``queen'' should be closer to ``woman'' than to ``man'', and the distance between ``man'' and ``king'' should be the same as that between ``queen'' and ``woman''.    }
  \label{f:kingQueenExample}
 \end{figure}
 
