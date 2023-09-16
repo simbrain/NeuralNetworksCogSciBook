@@ -67,8 +67,6 @@ In Simbrain 4.0, we have designed the representation of activation vectors and w
 %
 %So you would pass a list of the form [5x3, 2x5, 1x2] to your function. Remember, weight matrices on the left are multiplied by input and activations vectors on the right.I find this pretty counter-intuitive and takes me a lot of practice to think in this “output-input” way.  I want to read left-to-right input-to-output but the standard conventions with matrix product reverse this...
 
-
-
 \subsection{Tensors}
 
 A tensor is a generalization of the concept of a vector that encompasses numbers, arrays of numbers, matrices (2d arrays of numbers), arrays of matrices, arrays of these arrays, etc. The rank of a  tensor is the number of indices it takes to specify an ``entry'' in it. These are sometimes called ndarrays.  
@@ -90,7 +88,6 @@ An array of matrices is rank 3, because it takes 3 indices to specify an entry. 
 
 People also say 3d tensor, 4d tensor etc.  That refers to the shape of the data structure, not the data itself.  Like we can imagine a 1d tensor arranged on a 1d line, and a 2d tensor arranged in a plane, and a 3d tensor arranged in space (poor Pitt went crazy at the end of his life working these out to describe the brain).  But this is not the same as the dimensionality of the data itself. Like (1,2,1,0) is a point in a 4d space, but a 1d tensor or 1d array of numbers.
 
-
 \section{New Material for LMS / Backprop Chapter}
 
 There are a lot of great technical discussions of this (citations). But the goal here in this book is intuition, trying to get a \emph{feel} for these things, so you can reason about them and think about how they might apply to cognitive science. 
@@ -99,8 +96,7 @@ There are a lot of great technical discussions of this (citations). But the goal
 
 Our goal in this chapter is the backprop model. That's the crown jewel. All other models can be thought of as instances of that one model. It is used to train feed forward networks using gradient descent. From Rosenblatt up to GPT 3, all models are variants on it. It's a big class. But here is some of the history.
 
-The earliest model, Rosenblatt's perceptron (link) has one main weight layer, with binary outputs, focused on classification tasks. This involves a customized learning rule, the perception learning algorithm, which has an if-then condition which, when true (that is, when the model mis-classifies a sample), applied something like standard form of gradient descent algorithm (in fact, if sigmoids with a steep slope are used then a one-weight layer backprop network  approaches the perception as a limiting case). The next class of models, associated with Widroff and Hoff, allowed continuous valued outputs and could solve regression tasks. This was also known as the delta rule or adalines or madalines (there are some differences here, but they are pretty close). This is pretty much the same as backprop, but for one weight layer. The next major advance was allowing for multiple layers, as discussed in the main text, and that is what we now know as backprop. 
-% See existing lms discussion which is not bad on this
+The earliest model, Rosenblatt's perceptron (link) is one main weight layer, with binary outputs, focused on classification tasks. This involves a customized learning rule, the perception learning algorithm, which has an if-then condition which, when true (that is, when the model mis-classifies a sample), applies something like standard form of gradient descent algorithm (in fact, if sigmoids with a steep slope are used then a one-weight layer backprop network  approaches the perception as a limiting case). The next class of models, associated with Widroff and Hoff, allowed continuous valued outputs and could solve regression tasks. This was also known as the delta rule or adalines or madalines (there are some differences here, but they are pretty close). This is pretty much the same as backprop, but for one weight layer. The next major advance was allowing for multiple layers, as discussed in the main text, and that is what we now know as backprop. Still, 
 
 \subsection{The Algorithm}
 
@@ -371,7 +367,7 @@ So the learning rule for weights is:
 
 This is the same as before, but multiplied by with the derivative of the activation function applied to to the net input (the weighted input to the node). We discuss this more below.
 
-Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less.  It doesn't matter as much.  Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all.  Agai see below.
+Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less.  It doesn't matter as much.  Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all.  Again see below.
 
 \section{Vector approach to LMS}
 
@@ -443,3 +439,63 @@ We can now check that it works. Remember, think of the column vector on the righ
 % Add exercizes here, use Mak and David examples.
 So now I suggest you try some examples of your own.  Come up with your own training set, apply the rule and see if you can run this a few times.  
 
+\subsection{Bias}
+
+To add bias updates in, we just vectorize the bias update rule, which has the same form as the scalar rule, since it's just elementwise.
+
+\begin{eqnarray*}
+\Delta \mathbf{b}  =  \epsilon (\mathbf{t} - \mathbf{a}_{out})
+\end{eqnarray*}
+
+So at each iteration, we change the bias vector just in the direction of the row error vector. Remember goldilocks.  When things are too hot, cool them down. Etc.
+
+\subsection{Activation functions}
+
+(This material can also be added to the scalar case)
+
+
+The full LMS rule also involves a derivative on the activation function.  These derivatives can be understood pretty intuitively if we look at those again. See figure \ref{derivativesActFunctions}.  The derivative for the threshold function is 0 everywhere except at the threshold where it is undefined (this was a problem for Rosenblatt). The derivative for the piecewise linear is 0 above and below the upper and lower bounds and the slope (usually 1) of the function in between those bounds. For the sigmoid it's close to what it is for piecewise linear, approaching 1 as net input is large or small and the slope at the inflection point in the middle, but we do need a formula for it.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{images/graph_binary4.pdf}
+\caption[Jeff Yoshimi.]{The activation functions. The derivative is either 0 or the slope or close to the slope in most cases. }
+\label{derivativesActFunctions}
+\end{figure}
+
+So how to work this into the LMS error update?
+
+First, recall from chapter \extref{ch_act_functions} that the weighted input to a node $j$ is denoted $n_j$. This is the same as the activation of a linear unit. Its weights times input activations plus a bias.  An activation function $f$ then transformed this weighted inputs, so that $a_j = f(n_j)$.  When we incorporate activation functions we have to keep $a_j$ and $n_j$ separate so just get that clear before moving on.
+
+Ok, and recall from the derivation that error update with an activation function involves the same as before multiplied by with the derivative of the activation function applied to to the net inpu.  Intuitively it's like we scale the error that we use to scale the weights and biases with a factor corresponding to how much the activation function changes things.\footnote{This is a problem with RELU, known as the ``dying Relu" problem.}  It's also why Rosenbatt's perception was limited; binary are 0 derivative everywhere so their weights never change using this rule, and so he had to come up with a kind of ad hoc solution.
+
+So  the full rule for weights is
+
+\begin{eqnarray*}
+\Delta w_{i,j}  =  \epsilon a_i (t_j - a_j) f' (n_j)
+\end{eqnarray*}
+
+And the full rule for biases is 
+
+\begin{eqnarray*}
+\Delta b_{j}  =  \epsilon b_j (t_j - a_j) f' (n_j)
+\end{eqnarray*}
+
+Do both of these at each time step to update the network.
+
+
+\subsection{The Full Vectorized LMS rule}
+
+Putting it all together, thevectorized rule is
+
+\begin{eqnarray*}
+\Delta \mathbf{w}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) f'( \mathbf{n}_{\text{out}}) \mathbf{a}_{\text{in}}^T
+\end{eqnarray*}
+
+We take a column of errors (targets - outputs), and scale each component by the derivative of the activation function applied to the weighted inputs. Remember, weighted inputs is just one more quantity that each node has. When it's updated, it must compute that, and then use that to compute the activation value. So the node has both values, and so we can easily get components of this column vector: we have the target, the output activation, and the net input at any time, and that is enough to get us the column vector. We then matrix multiply that by a row of source activations and the result is a matrix of weight deltas with the right shape.
+
+\begin{eqnarray*}
+\Delta \mathbf{b}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) f'( \mathbf{n}_{\text{out}})
+\end{eqnarray*}
+
+All of these vector operations should be familiar. For the application of $f$, it's just a matter of apply it to each component of the vector.  For example, if $f(x) = x+1$ then $f(1,2) = (2,3)$. $f'$ is just a function so it can be applied in this way to a vector.
