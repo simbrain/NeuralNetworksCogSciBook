@@ -33,7 +33,7 @@ linear, and sigmoid.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.130]{./images/graph_binary4.pdf}
+\includegraphics[scale=0.130]{./images/graph_binary.pdf}
 \caption[Scott Hotton.]{The graphs for three activation functions. In each of the graphs, the 
 horizontal axis is the weighted input, $n_k$, and the vertical axis is the 
 activation, $a_k$. Left: A threshold activation function with $(u,\ell,\theta)
@@ -128,8 +128,8 @@ $u$.
 \begin{eqnarray*}
     a_k = f(n_k) =  \left\{
         \begin{array}{lc}
-        \ell & {\rm if} \; n_k \leq \theta \\
-        u  & {\rm if} \;  n_k >  \theta
+        \ell & {\rm if} \; n_k < \theta \\
+        u  & {\rm if} \;  n_k \geq \theta
     \end{array} 
     \right.
 \end{eqnarray*}
@@ -170,22 +170,21 @@ A piecewise linear function is basically a clipped or truncated linear function.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.4]{./images/relu.png}
-\caption[Scott Hotton.]{Graph for the rectified linear or ``relu'' activation function.}
+\caption[Scott Hotton.]{Graph for the rectified linear or ``ReLU'' activation function.}
 \label{relu}
 \end{figure}
-% Redo figure
 
-A special case of a piecewise linear activation function is a \emph{rectified linear unit} or \glossary{relu activation function}. The terminology comes from electronics where rectifiers are often used to truncate the negative part of an alternating current to produce a direct current. They cut off all negative values, replacing them with a 0, and leave the weighted input unchanged otherwise (see figure \ref{relu}).\footnote{The rule can be more concisely stated as the maximum value between 0 and $n_k$, or $\mbox{max}(0,n_k)$.} Thus, they are a piecewise linear function with no upper bound:
+A special case of a piecewise linear activation function is a \emph{rectified linear unit} or \glossary{ReLU activation function}. The terminology comes from electronics where rectifiers are often used to truncate the negative part of an alternating current to produce a direct current. They cut off all negative values, replacing them with a 0, and leave the weighted input unchanged otherwise (see figure \ref{relu}).\footnote{The rule can be even more concisely stated as the maximum value between 0 and $n_k$, or $\mbox{max}(0,n_k)$.} Thus, they are a piecewise linear function with no upper bound:
 \begin{eqnarray*}
 a_k = f(n_k) =  
 \left\{
       \begin{array}{clc}
-                  0      & {\rm if} &   n_k\; <= \; 0          \\  
+                  0      & {\rm if} &   n_k\; \leq \; 0          \\  
               n_k  &  &  \mbox{otherwise}	
       \end{array} 
 \right.
 \end{eqnarray*}
-This can be useful because it removes all negative activations, making overall activation in a large network more sparse. The function also has a simple derivative\footnote{The derivative is $0$ for $n_k <= 0$, and $1$ otherwise, except at $0$ (the point of discontinuity), where the derivative is not defined.}, and other mathematical properties that have made it extremely popular, especially for deep networks. In fact, multiple varieties of relu function are now available, like ``gelu''. In Simbrain, a relu unit can be approximated with a linear activation function whose \emph{lower bound} is 0 and whose \emph{upper bound} is a large number.
+ReLU has a number of useful properties that have made it extremely popular since the deep learning revolution of the 2010s (section \extref{deep_revolution}). To fully appreciate these advantages it helps to compare it to the piecewise linear activation function, which is in turn similar to the sigmoid activation function, discussed below. Piecewise linear and sigmoid activation functions are only really responsive to inputs between their upper and lower bounds. For large weighted inputs, they just max out at some number, like 1, limiting their expressive power. Whatever large input you throw at them, they always just output $1$. But ReLU can take on \emph{any} positive value, which gives it greater representational power. This in turns makes it more useful in training deep networks.\footnote{The derivative goes to 0 for large values of sigmoids, and that makes the derivative drop to  0, which prevents that node from contributing to learning due to the way errors are ``back-propagated.''  See chapter \extref{ch_supervised_ff} and the discussing of vanishing gradients. Also, the derivative is $0$ for $n_k <= 0$, and $1$ otherwise, except at $0$ (the point of discontinuity), where the derivative is not defined.  A helpful discussion from Leo Dirac that outlines other virtues of ReLU is here: \url{https://youtu.be/S27pHKBEp30?t=1165}. }  On the other hand, the clipping at $0$ is nice, because it maintains a non-linearity (many layers of unclipped linear nodes are mathematically equivalent to one layer of linear nodes, so additional layers don't help). The clipping also removes all negative activations, making overall activation in a large network more sparse, so that different inputs produce nicely distinct activation patterns. In fact, multiple varieties of ReLU function are now available, in particular ``GeLU'', which allows some representation of negative values, is also easy to compute, and has well-defined derivative for every weighted input.  In Simbrain, a ReLU unit can be approximated with a linear activation function whose \emph{lower bound} is 0 and whose \emph{upper bound} is a large number.
 
 \section{Sigmoid Activation Functions}
 
@@ -197,7 +196,7 @@ A \glossary{sigmoid activation function} can be thought of as a smoothed version
   Sigmoid functions can be used to describe natural processes that involve a continuous increase from one value to another. Suppose a bacterium is placed in a Petri dish and we observe how quickly bacteria grow in the dish. At first, the population grows slowly. It then rapidly expands in a neighborhood of the inflection point. As the population begins to fill the dish, the population size levels off, or plateaus. Something similar happens to the firing rate of a neuron as it receives more input currents. The firing rate rises slowly, then rapidly, and then approaches a maximum value.
  % Add more details and references?  Put a bacterium in a petri dish. Close to low value, far from high value. Not much in first hour. Doubling time of 5 minutes. Dividing every 10 minutes. Early stage corresponds to exponential growth. After inflection point exponential decay. // Scott chose  fruit example because the curves are _really_ well modeled by Sigmoid. The bacteria case is more famous but has a bit of noise in there once the dish gets filled up.
 
-Sigmoid activation functions are notable for being differentiable everywhere. If you have not taken calculus, this intuitively means that the function smoothly changes everywhere; there are no discontinuous breaks or hard edges. Notice that the threshold and piecewise linear activation functions in figure \ref{activationFunctions} are not differentiable everywhere. The threshold function has a discontinuity at the threshold value, and the piecewise linear function does not change smoothly at the truncation points $(u,u)$ and $(\ell,\ell)$. The relu function is discontinuous at $(0,0)$. The differentiability of the function means that the derivative can be used, which in turn allows certain operations to be performed on sigmoidal nodes that would not otherwise be possible. This led to one of the major innovations in the history of neural networks: the move from linear networks (networks of nodes using linear activation functions) to networks using sigmoidal nodes, which could be trained using backpropagation. This in turn led to an increase in the use of neural networks in the 1980s (see chapter \extref{ch_history}). 
+Sigmoid activation functions are notable for being differentiable everywhere. If you have not taken calculus, this intuitively means that the function smoothly changes everywhere; there are no discontinuous breaks or hard edges. Notice that the threshold and piecewise linear activation functions in figure \ref{activationFunctions} are not differentiable everywhere. The threshold function has a discontinuity at the threshold value, and the piecewise linear function does not change smoothly at the truncation points $(u,u)$ and $(\ell,\ell)$. The ReLU function is discontinuous at $(0,0)$. The differentiability of the function means that the derivative can be used, which in turn allows certain operations to be performed on sigmoidal nodes that would not otherwise be possible. This led to one of the major innovations in the history of neural networks: the move from linear networks (networks of nodes using linear activation functions) to networks using sigmoidal nodes, which could be trained using backpropagation. This in turn led to an increase in the use of neural networks in the 1980s (see chapter \extref{ch_history}). 
 
    We will not focus on how to compute a sigmoid function here (the function can be computed in several different ways). We focus on 
 the qualitative properties of sigmoid functions. However, to give a flavor of 
