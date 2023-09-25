@@ -1,13 +1,13 @@
 \chapter{Linear Algebra and Neural Networks}\label{ch_linear_algebra}
 \chapterauthor{Jeff Yoshimi, Scott Hotton}
 
-% Add discussion of tensors and rank to set up deep net discussion. Currently there is some discussion in Supervised_FF which can be moved here.
+% * Add bold faced notation activation vectors and weight matrices and run it through.
 
-% Adding weight matrices. Comes up in recurrent supervised. Implicit here but make it explicit. 
+% Add discussion of tensors and rank to set up deep net discussion. Currently there is some discussion in Supervised_FF which can be moved here.
 
 % Identity matrix
 
-% NN discovers faster matrix product: https://www.nature.com/articles/s41586-022-05172-4
+% NN discovers faster matrix product: https://www.nature.com/articles/s41586-022-05172-4. Oddly meta.
 
 In this chapter, we review some basic concepts of linear algebra with an 
 emphasis on how they can be applied to the study of neural networks. This can be viewed as a transition from the formal structure of single nodes and weights, to the formal 
@@ -385,24 +385,177 @@ exist in vector spaces called ``matrix spaces''). However, it will be easier for
 
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.4]{./images/ff_labelled.png}}
+\raisebox{-0.5\height}{\includegraphics[scale=.45]{./images/ff_labelled.png}}
 \hspace*{.7in}
-\raisebox{-0.5\height}{\includegraphics[scale=.3]{./images/recurrent_labelled.png}}
-\caption[Simbrain screenshots modified by Jeff Yoshimi.]{The feed forward and recurrent network shown in figure \ref{ffRecurrent} with zeroed out activations, labeled nodes, and weight strengths shown. This makes it possible to see how weights in a network can be linked to values in a matrix.}
+\raisebox{-0.5\height}{\includegraphics[scale=.2]{./images/recurrent_labelled.png}}
+\caption[Simbrain screenshots modified by Jeff Yoshimi.]{Feedforward and recurrent networks with nodes labelled, and weight strengths shown. Each weight layer of the feedforward network and the weights of the recurrent network can be associated with weight matrices. }
 \label{labelledNets}
 \end{figure}
 
-Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix.\footnote{\label{sourceTarget} This is a somewhat unconventional way of representing weight matrices. It can be called a ``source-target'' representation, because rows are associated with source neurons and columns are associated with target neurons. It is more common in neural network texts to use a ``target-source'' representation, where rows are associated with target neurons and columns are associated with source neurons. This is related to the choice to represent the weight from node $j$ to $k$ with $w_{j,k}$, a ``source-target'' indexing scheme, rather than $w_{k,j}$. We made changes in convention in order to make the formalism easier to learn, but again they are non-standard. Further discussion is in note \ref{leftRightConvention}.}
-% I am thinking of moving to the more standard "target-source" ordering. I have a graphical way of making that clear that fits well with certain ideas in Simbrain 4. But this is a large scale change.
+\section{Weight Matrices}
 
-Using this method, we can represent the weight matrix for the recurrent network in figure \ref{labelledNets} as:
+Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix.\footnote{\label{sourceTarget} This is a somewhat unconventional way of representing weight matrices. It can be called a ``source-target'' representation, because rows are associated with source neurons and columns are associated with target neurons. It is more common in neural network texts to use a ``target-source'' representation, where rows are associated with target neurons and columns are associated with source neurons. This is related to the choice to represent the weight from node $j$ to $k$ with $w_{j,k}$, a ``source-target'' indexing scheme, rather than $w_{k,j}$. We made changes in convention in order to make the formalism easier to learn, but again they are non-standard. Further discussion is in note \ref{leftRightConvention}.} This implies that a source-target weight matrix representation of a set of weights will have as many rows as source neurons and as many columns as target neurons.
+
+We first consider weight layers in feedforward networks. Each weight layer of a feedforward network can be represented by its own weight matrix $\textbf{W}_{i,j}$ where $i$ is the source node layer and $j$ is the target layer. For example, for the weight layer $\textbf{W}_{1,2}$ or $\textbf{W}_{input,hidden}$connecting the input node layer to the hidden node layer on the left of figure \ref{labelledNets}.  The column and row headings are shown in bold text and match the node labels in \ref{labelledNets}. Notice that there are as many rows as input neurons and as many columns as hidden layer neurons. You can see, for example, that the weight $w_{2,4}$ from node 2 in the input layer to node 4 in the weight layer is in the row labeled 2 and the column labeled 4: -1. On the right is a more standard matrix representation of $\textbf{W}_{1,2}$.
+
+\begin{minipage}{0.5\textwidth}
+\centering
+\[
+\begin{array}{|c|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{} & \textbf{3} & \textbf{4} & \textbf{5} \\
+\hline
+\textbf{1} & 1 & 0.7 & 2 \\
+\hline
+\textbf{2} & -2 & -1 & 2.1 \\
+\hline
+\end{array}
+\]
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\centering
 \[
 \begin{pmatrix}
- 2  &   1 \\
- 1.1  & -2 
+1 & 0.7 & 2 \\
+-2 & -1 & 2.1 \\
 \end{pmatrix}
 \]
-For example, the strength of the weight connecting node 2 to node 1 is $1.1$, so that's the value in the second row, first column of the matrix. The connections from a node directly back to itself are the diagonal components of this kind of weight matrix. If a weight does not exist, it is represented by a $0$ in the corresponding matrix. In the recurrent network in figure \ref{labelledNets} (Right), if there were no self-connections the diagonal of the matrix would have zeros in it: there would be no weight from node 1 to 1 or from node 2 to 2. There are a lot of zeros in the full weight matrix for the feed-forward network in figure \ref{labelledNets}. For example, there is no weight from node 1 to 2, so there is a $0$ in the first row, second column, of that network's full weight matrix.
+\end{minipage}
+\vspace*{.1cm} 
+
+\noindent Notice that columns of the weight matrix correspond to fan-in weight vectors for the hidden layer (rows correspond to fan-out). This implies that you can compute weighted inputs at the hidden layer by the dot product of an input vector and each column, a topic we discuss next. Regardless convince yourself you can see the link between fan-in weight vectors and columns. 
+
+As an exercise, see if you can produce the weight matrix representation for $\textbf{W}_{2,3}$ or $\textbf{W}_{hidden,output}$. Hint, it has 3 rows and 2 columns. 
+
+Now the recurrent case, starting with the recurrent network shown in figure \ref{labelledNets}. Here the source and target neurons are the same and so the weight matrix, which we can call $\textbf{W}_{recurrent}$, is square: it has as many rows as columns.  To fill it out we follow the same procedure, going from source label to target label and finding the corresponding entry.  For example, $w_{1,2}$ is the weight from node 1 to 2, and is thus in the first row, second column of the matrix. Confirm the values match up:
+
+\begin{minipage}{0.5\textwidth}
+\centering
+\[
+\begin{array}{|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{} & \textbf{1} & \textbf{2} \\
+\hline
+\textbf{1} & 2 & -.5 \\
+\hline
+\textbf{2} & -1 & 1.2 \\
+\hline
+\end{array}
+\]
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\centering
+\[
+\begin{pmatrix}
+ 2  &  -.5 \\
+ -1  & 1.2 
+\end{pmatrix}
+\]
+\end{minipage}
+\vspace*{.1cm} 
+
+\noindent In a weight matrix for a recurrent network diagonal entries correspond to connections from a node back to itself. Also note that fan-in weight vectors still correspond to columns.  The first node has fan-in weights of -2 and 1, the second has fan-in weights of .5 and 1.2.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{./images/sparseRecurrent.png}
+\caption[Jeff Yoshimi.]{A sparse recurrent network, where most of the possible connections do not exist, so that in its matrix representation most entries will be 0. In this network red weights have a strength of 1 and blue weights have a strength of -1.} 
+\label{sparseRecurrent}
+\end{figure}
+
+Figure \ref{sparseRecurrent} shows another example, that shows what we do when some links are missing. If a weight does not exist, it is represented by a $0$ in the corresponding matrix. Here is its representation:
+
+\begin{minipage}{0.5\textwidth}
+\centering
+\[
+\begin{array}{|c|c|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{} & \textbf{1} & \textbf{2}  & \textbf{3} & \textbf{4} \\
+\hline
+\textbf{1} & 0 & 0 & 0 & 1 \\
+\hline
+\textbf{2} & -1 & 0 & 0 & 0 \\
+\hline
+\textbf{3} & 1 & 0 & 0 & 0 \\
+\hline
+\textbf{4} & 0 & 0 & 0 & -1 \\
+\hline
+\end{array}
+\]
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\centering
+\[
+\begin{pmatrix}
+0 & 0 & 0 & 1 \\
+-1 & 0 & 0 & 0 \\
+1 & 0 & 0 & 0 \\
+0 & 0 & 0 & -1
+\end{pmatrix}
+\]
+\end{minipage}
+\vspace*{.1cm} 
+
+\noindent Now let's check your understanding: there are 4 nodes and thus the matrix is 4-by-4. There are two positive weights and two negative weights, and there are two positive entries and two negative entries in the table. Node 4 is one self-connected node and the fourth diagonal entry is non-zero. Nodes 1 and 4 have two weights in their fan-in and those two columns have two entries.
+
+% Add link to NLP chapter when it's ready
+In the special case where most of the possible entries in a weight matrix are 0, the matrix is called a \glossary{sparse matrix}. The matrix  in figure \ref{sparseRecurrent} is sparse. Sparse weight matrices represent sparsely connected networks, which are common in the brain (sparse matrices also come up in other areas related to neural networks, for example in representing text corpora). The are contrasted with dense matrices and dense connectivity. The term ``dense'' connection is often used to refer to ``all-to-all'' connections between weight layers.
+
+\section{Vector-Matrix Product}
+
+The power of matrices in neural networks is our ability to use them to represent weights and transformations of activation vectors as they propagate.  We are splitting the topic into two parts. For the intro version of the course the book currently focuses on, we only consider one case: a vector-matrix product. We can understand this in a simplified way using mainly just the dot product.  But this is just a specially curated case, and the full story is more complex and involves more cases.\footnote{\label{leftRightConvention}  We will not give a general definition of matrix multiplication here. Instead, we will describe a special case of it: ``vector-matrix'' multiplication, which involves multiplying an activation vector on the left times a weight matrix on the right.We are presenting the computation as a row vector on the left times a weight matrix on the right, which is required by the ``source-target'' representation (see note \ref{sourceTarget}). It is also easy to think about in terms of the operations involved in updating a neural network: an activation vector is ``passed through'' a weight matrix to produce another activation vector, in this case a hidden unit vector. However, this is non-standard. In linear algebra and most applications this operation would usually be represented with the matrix on the left and a column vector on the right. This is because a matrix is often thought of as a function that operates or acts on a vector, transforming inputs to outputs.}  But we're starting simple.
+
+So the way we do things here, we focus on taking an input vector, and dotting it with columns of a weight matrix, which (in the source-target format) represent fan-in weight vectors. In this way we produce a new output vector.  Each of these dot products is a weighted inputs (see chapter \extref{ch_act_functions}). Assuming a default unbounded linear activation function, this can be used to represent weight  propagation. We consider the feed-forward case first, then the recurrent case.
+
+Feed-forward. Consider the feed-forward network in figure \ref{labelledNets}, which uses linear activation functions without bias (we are also ignoring clipping) so that node activations just are weighted inputs.  That is, we multiply the input vector by the intervening weight matrix to obtain the hidden unit vector:  $\textbf{a}_{hidden} = \textbf{a}_{input} \textbf{W}_{input,hidden}$. We can then multiply the hidden unit vector by the hidden-to-output layer weight matrix to get the output vector. We can continue to do this for all the layers of a feed-forward network. So, for linear networks, pretty much all we do when updating the network is use matrix products (and even for non-linear networks, we use the matrix product to compute vectors of weighted inputs, which are then transformed by, for example, sigmoid functions).
+
+Here is an informal description of how to multiply a vector on the left by a matrix on the right: take the dot product of the vector on the left and the first column vector in the matrix. The resulting number is the first component of a row vector, which will be the result of this operation. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.
+
+Consider an example. Suppose the feed-forward network in figure \ref{labelledNets} has linear activation functions and 0 bias, and its input activation vector is $\textbf{a}_{input} = (1,2)$. To compute the hidden layer activation vector, we compute the dot product between the input vector and each of the three column vectors:
+\[
+  \begin{matrix}\begin{pmatrix}1 & 2\end{pmatrix}\\\mbox{}\end{matrix}
+  \begin{pmatrix} 1 & 0.7 & 2 \\ -2 & -1 & 2.1 \end{pmatrix} 
+  =
+  \bigg( (1)(1) + (2)(-2) ,\;\; (1)(0.7) + (2)(-1) ,\;\; (1)(2)+ (2)(2.1) \bigg)
+  =
+  \begin{pmatrix}  -3 \;\; -1.3 \;\;\; 6.2  \end{pmatrix}
+\]
+\vspace*{.1cm} 
+
+This can be visualized by imagining that an input activation vector is being combined (``dotted'') with the fan-in weight vectors of each of the three nodes at the next layer, to produce the weighted input to each of them and thus the next layer's activation vector. 
+
+% 1,2 as input confusing because it overlaps indices in video. Change?
+Now for the recurrent case. We can do the same kind of thing with the sparse recurrent network in figure \ref{sparseRecurrent}, but in this case we will be determining its activations at successive time steps. This is because with a recurrent network, the output can always be fed right back into the network as input, which gives these networks their dynamic properties. Let the weight matrix be  $\textbf{W}_{r}$ then a sequence of activation vectors $\textbf{a}(1), \textbf{a}(2), \textbf{a}(3), \dots$ (with time in parentheses) is given by $\textbf{a}(2) = \textbf{a}(1) \textbf{W}_{r}$, $\textbf{a}(3) = \textbf{a}(2) \textbf{W}_{r}$, etc.  
+
+This is easy to see by exmaples. Suppose we have activated node 2 of the network in figure \ref{sparseRecurrent} and we start iterating. Since the activations and weights are all whole numbers, it's not too hard to compute this out for a few time steps. Again just dot the input vector by the columns to write out the first output, where we get the activation vector at time 2 by multiplying the initial activation vector by the weight matrix (that is, $\textbf{a}(1) \textbf{W}_{r} = \textbf{a}(2)$):
+\[
+\begin{pmatrix}
+0 & 1 & 0 & 0  
+\end{pmatrix} 
+\begin{pmatrix}
+0 & 0 & 0 & 1 \\
+-1 & 0 & 0 & 0 \\
+1 & 0 & 0 & 0 \\
+0 & 0 & 0 & -1
+\end{pmatrix}
+=
+\begin{pmatrix}
+-1 & 0 & 0 & 0
+\end{pmatrix} 
+\]
+\vspace*{.1cm} 
+
+\noindent Try to do it in your head, dotting the $(-1, 0,0,0)$ with the four columns of the matrix and thereby writing out the output vector.  In the next iteration you will get $(0,0,0,-1)$, then $(0,0,0,1)$. If we keep going we get the following sequence of states from the initial state $(0,1,0,0$):
+\begin{equation*}
+(0,1,0,0),\; (-1,0,0,0),\; (0,0,0,-1),\; (0,0,0,1),\;  (0,0,0,-1)\; \dots
+\end{equation*}
+You can easily set this up in Simbrain and confirm this is what happens.  We will see in the dynamical systems chapter \extref{ch_dst} that this is one \emph{orbit} in the network's activation space. In this case, the network has started to oscillate between two states, and it will do that forever, and that behavior is basically encoded in the weight matrix.
+ 
+
+%The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.
+
+
+\section{Block Matrix Representations}
 
 For the feed-forward network in figure \ref{labelledNets}, we can begin with a matrix for the full network, which illustrates some of its structure:
 \begin{equation*}
@@ -424,65 +577,6 @@ For the feed-forward network in figure \ref{labelledNets}, we can begin with a m
 \end{equation*}
 This is a ``block matrix'' containing two blocks of non-zero values (corresponding to the layers that are connected), and 7 blocks of zeros (corresponding to possible layer-to-layer weight matrices that don't exist for this network, e.g. a recurrent layer from the hidden layer to itself, or a direct layer from the input to the output  layer). 
 % Above add ``input'', ''hidden'', ''target'' layer names to "block portions" on left and top. If possible also add row and column labels
-
-% Add a picture of just the input and hidden layers, where the nodes are relabelled 1,2 and 1,2,3 and indicate that some node-relabeling like that generally happens when we focus on a single-layer of weights  This way the indexes  of the elements of the matrix corresponds to their position in the matrix: first row correspond to first node in the input layer, etc. 
-However, in practice it is natural to focus on the non-zero blocks, and to treat each set of connections between a pair of layers as its own matrix. That is, each weight layer of a feed-forward network can be represented by its own weight matrix. For example, for the weight layer connecting the input node layer to the hidden node layer in  figure \ref{labelledNets} (Left), we focus on this block of weights:
-\[
-\begin{pmatrix}
- 1  &   0.7  & 2  \\
- -2  &   -1  & 2.1
-\end{pmatrix}
-\]
-Given the way we are representing weight matrices, this can be thought of as a sequence of column vectors, one for each fan-in weight vector of the three hidden layer nodes. We can also think of it as a sequence of row vectors, one for each fan-out weight vector of the three input layer nodes. 
-% A picture of some kind would help here.
-
-\section{Matrix Product}
-
-We can use matrix representations of weights to facilitate the computation of weighted inputs (see chapter \extref{ch_act_functions}). Consider the feed-forward network in figure \ref{labelledNets}, which uses linear activation functions without bias (we are also ignoring clipping) so that node activations just are weighted inputs. Given an input vector to that network, we can compute the hidden unit vector using \emph{matrix multiplication}. We will not give a general definition of matrix multiplication here. Instead, we will describe a special case of it: ``vector-matrix'' multiplication, which involves multiplying an activation vector on the left times a weight matrix on the right.\footnote{\label{leftRightConvention} We are presenting the computation as a row vector on the left times a weight matrix on the right, which is required by the ``source-target'' representation (see note \ref{sourceTarget}). It is also easy to think about in terms of the operations involved in updating a neural network: an activation vector is ``passed through'' a weight matrix to produce another activation vector, in this case a hidden unit vector. However, this is non-standard. In linear algebra and most applications this operation would usually be represented with the matrix on the left and a column vector on the right. This is because a matrix is often thought of as a function that operates or acts on a vector, transforming inputs to outputs.}   That is, we multiply the input vector by the intervening weight matrix to obtain the hidden unit vector. We can then multiply the hidden unit vector by the hidden-to-output layer weight matrix to get the output vector. We can continue to do this for all the layers of a feed-forward network. So, for linear networks, pretty much all we do when updating the network is use matrix products (and even for non-linear networks, we use the matrix product to compute vectors of weighted inputs, which are then transformed by, for example, sigmoid functions).
-
-Here is an informal description of how to multiply a vector on the left by a matrix on the right: take the dot product of the vector on the left and the first column vector in the matrix. The resulting number is the first component of a row vector, which will be the result of this operation. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.
-
-Consider an example. Suppose the feed-forward network in figure \ref{labelledNets} has linear activation functions and 0 bias, and its input activation vector is $(1,2)$. To compute the hidden layer activation vector, we compute the dot product between the input vector and each of the three column vectors:
-\[
-  \begin{matrix}\begin{pmatrix}1 & 2\end{pmatrix}\\\mbox{}\end{matrix}
-  \begin{pmatrix} 1 & 0.7 & 2 \\ -2 & -1 & 2.1 \end{pmatrix} 
-  =
-  \bigg( (1)(1) + (2)(-2) ,\;\; (1)(0.7) + (2)(-1) ,\;\; (1)(2)+ (2)(2.1) \bigg)
-  =
-  \begin{pmatrix}  -3 \;\; -1.3 \;\;\; 6.2  \end{pmatrix}
-\]
-This can be visualized by imagining that an input activation vector is being combined (``dotted'') with the fan-in weight vectors of each of the three nodes at the next layer, to produce the weighted input to each of them and thus the next layer's activation vector. 
-
-% 1,2 as input confusing because it overlaps indices in video. Change?
-We can do the same kind of thing with the recurrent network, but in this case we will be determining its activations at successive time steps (the output at a given time becomes the new input). Suppose the recurrent network has an initial activation vector of $(1,2)$. What is its activation vector at the next time step?  We can compute this as follows:
-\[
-  \begin{matrix}\begin{pmatrix}1 & 2\end{pmatrix}\\\mbox{}\end{matrix}
-  \begin{pmatrix}  2  &   1 \\  1.1  & -2  \end{pmatrix} 
-  =
-  \big((1)(2) + (2)(1.1) ,\; (1)(1) + (2)(-2)\big)
-  =
-  \begin{pmatrix}  4.2 \;\; -3 \end{pmatrix}
-\]
-We can now repeat this process, using the network's previous output as its new input:
-\[
-  \begin{matrix}\begin{pmatrix}4.2 & -3\end{pmatrix}\\\mbox{}\end{matrix}
-  \begin{pmatrix}  2  &   1 \\  1.1  & -2  \end{pmatrix} 
-  =
-  \begin{pmatrix} (4.2)(2)+( -3)(1.1) ,\;(4.2)(1) + (-3)(-2)\end{pmatrix}
-  =
-  \begin{pmatrix}  5.1 \;\;\; 10.2 \end{pmatrix}
-\]
-If we continue this process (and thereby simulate a ``run'' of this recurrent network) we will get activation vectors 
-\begin{equation*}
-(21.42, -15.3 ),\; (26.01,  52.02),\; (109.24,  -78.03 ),\; (132.65,  265.30), 
-\; (557.13, -397.95 ), \; \dots
-\end{equation*}
-We will see in chapter \extref{ch_dst} that this is one \emph{orbit} in the network's activation space.
-
- Clearly the activations of this network are blowing up!  The orbit is heading off to infinity. If we were to use a piecewise linear, threshold, or sigmoid activation function, then these  activations would be contained in the interval $[\ell,u]$ (see chapter \extref{ch_act_functions}).
-
-%The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.
-
 \section{Appendix: Vector Operations}\label{S:LinearAlgebraAppendix}
 
 % Possibly add discussions of orthogonality, orthonormality, and norms.
