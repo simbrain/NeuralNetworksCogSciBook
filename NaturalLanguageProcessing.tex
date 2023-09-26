@@ -9,15 +9,14 @@ This chapter introduces natural language processing, with an emphasis on techniq
 
 \subsection{Linguistics}
 
-Linguistics is the study of language, which can be organized by the different aspects of language, going from smallest to largest unit of study: \textbf{phonetics} and \textbf{phonology} as the study of speech sounds, \textbf{morphology} as the study of words and form, \textbf{syntax} as the study of the structure or grammar (usually at the sentence level), \textbf{semantics} as the study of meaning, which can be at a variety of levels (words, phrases, sentences), \textbf{pragmatics} as the study of intentional meaning or implied meaning (think Gricean maxims and rules of conversations). 
-% TODO: Convert the above into glossary items, or unboldface
+Linguistics is the study of language, which can be organized by the different aspects of language, going from smallest to largest unit of study: phonetics and phonology as the study of speech sounds, morphology as the study of words and form, syntax as the study of the structure or grammar (usually at the sentence level), semantics as the study of meaning, which can be at a variety of levels (words, phrases, sentences), pragmatics as the study of intentional meaning or implied meaning (think Gricean maxims and rules of conversations). 
 
-The smaller units of study are generally straightforward for analysis, looking at phonemes (smallest unit of sound, /t/ or /p/) or morphemes (smallest word unit of meaning, ``luck'' in ``unlucky''), as you increase the scope of analysis it increasingly becomes more difficult to (automatically) analyze. For syntax, there are treebanks and dependency analyzers that have to be trained on lots of example hand-annotated data to be able to analyze new sentences. There are also reasonable limits per word (for syntactic analysis), a word usually has one or two parts of speech (noun, verb, determiner, etc.), and there are constructed rules for how to derive dependency trees. What about meaning for semantics? There isn't a clear unit of ``meaning'' for words, a meaning is more broad, it can be abstract or concrete (``justice'' vs ``cup''), it can be flexible and change based on the context (``bass'' as the fish or instrument). How could we automate the analysis of semantic information?
+The smaller units of study are generally straightforward for analysis: for example, researchers often use spectrograms to analyze phonemes (smallest unit of sound, /t/ or /p/). As you increase the scope of analysis it increasingly becomes more difficult to (automatically) analyze. For syntax, there are treebanks and dependency analyzers that have to be trained on lots of example hand-annotated data to be able to analyze new sentences. There are also reasonable limits per word (for syntactic analysis), a word usually has one or two parts of speech (noun, verb, determiner, etc.), and there are constructed rules for how to derive dependency trees. What about meaning for semantics? There isn't a clear unit of ``meaning'' for words: meaning is more broad and nebulous. The meaning of a word can be abstract or concrete (``justice'' vs ``cup'') and is often context dependent (``bass'' as the fish or instrument). How could we automate the analysis of semantic information?
 
 % Something about computational linguistics and tools? WordNet is a lexical database of English constructed by linguists, where words are organized into ``synsets'' (cognitive synonyms or groups of words). Similarity is calculated using the Wu-Palmer path similarity function which is based on the number of jumps between synsets.
 
 
-\subsection{Early word embeddings}
+\subsection{Early text embeddings}
 
 % TODO: Check and fix
 One early approach was to simply manually create feature vectors based on linguistic attributes.  For example, in Elman's ``Finding structure in time''~\cite{elman1990finding}, each of 6 words was associated with a 31-bit vector.  Some examples are shown in figure \ref{elmanWordEmbeddings}.
@@ -29,38 +28,47 @@ One early approach was to simply manually create feature vectors based on lingui
 \label{elmanWordEmbeddings}
 \end{figure}
 
-These early embeddings were hand-crafted based on the scientist's intuitions or using other simple techniques to ensure certain similarity structures. However, automated forms of word embedding are also available. These automated approaches take documents and use the information in them to produce word embeddings.
+These early embeddings were hand-crafted based on the scientist's intuitions or using other simple techniques to ensure certain similarity structures. Besides these hand-crafted methods, automated forms of meaning analysis were developed. These automated approaches take documents and use the information in them to produce ``text'' embeddings.
 
 % There is a historical trajectory from document level down to word level. 
 
-One simple idea in the background of many word embeddings is the \glossary{Bag of words} approach, which associates documents with vectors of word frequencies. This approach ignores grammatical structure and just looks at how often different tokens occur in different documents. We take our document, put each token in the document in a bag, and count up how many tokens occur in each bag.  Consider the following documents
+\subsection{Document-level embeddings}
+
+One simple idea in the background of many ``text'' embeddings is the \glossary{Bag of words} approach, which associates documents with vectors of word frequencies. This approach ignores grammatical structure and just looks at how often different tokens occur in different documents. 
+Simply put, we take each document and put the associated tokens into a bag, and count up how many tokens occur in each bag. Consider the following documents
 
 \begin{description}
 \item[Document 1]  ``The bass fish played the bass''
 \item[Document 2]  ``The fish played fish with the fish monger''
 \end{description}
 
-Bag of words will associate these as follows
+Each document will be associated with the following bag of words
 
 \begin{table}[h]
     \centering
     \begin{tabular}{|l|c|c|c|c|c|c|}
     \hline
-    Document & the & bass & fish & played & with & monger \\
+    Bag of words & the & bass & fish & played & with & monger \\
     \hline
     Document 1 & 2 & 2 & 1 & 1 & 0 & 0 \\
-    Document 2 & 3 & 0 & 3 & 1 & 1 & 1 \\
+    Document 2 & 2 & 0 & 3 & 1 & 1 & 1 \\
     \hline
     \end{tabular}
     \caption{Bag of words representation}
 \end{table}
 
-A slightly more complex document level embedding is TF-IDF (term frequency-inverse document frequency), which is used to calculate the importance of a specific term for a (set of) related document(s), which offsets how frequently a term appears (term frequency) by the number of other documents that also contain the term. This allows it to focus on meaningful terms and not those that generally appear frequently. 
-
+Besides ignoring syntax, these basic document-level bag of words ``text'' embeddings will also be influenced by the uneven distribution of certain terms in language \cite{piantadosi2014zipf, zipf1945meaning}.
+To counteract this, we can use TF-IDF (term frequency-inverse document frequency) to calculate the importance of a specific term for a (set of) related document(s), which offsets how frequently a term appears (term frequency) by the number of other documents that also contain the term. This allows it to focus on meaningful terms and not those that generally appear frequently (`the', `a', etc.). 
 
 % Dictionary representation. (``The bass fish played the bass'' would be {``the'': 2, ``bass'': 2, ``fish'': 1, ``played'': 1}).
 
-This document term frequency approach. We pass a sliding window over the terms of a document and do the same procedure as bag of words but where the ``document'' is a term and the vector is the frequency count in the window around that term, which can be thought of as a co-occurrence vector.  In the example above suppose window size is 1.  Then we scan across the two documents and see that ``the'' co-occurs twice with ``bass'',  twice with ``fish'', once with ``played'', and once with ``with''.  The full set of word embeddings is:
+LSA (latent semantic analysis) is used with a body (set) of documents to analyze semantic information and calculate document similarity. The body of documents are represented using a document term matrix, where each row corresponds to a document, and each column is the frequency of a given term in each document. Then, singular value decomposition (SVD) is used for dimensionality reduction, resulting in a numeric vector for each document (based on term usage/frequency) which can be compared using cosine similarity (section \extref{dotProduct}) to get document similarity.
+
+These above methods are calculated at the document level: calculating term frequencies in a given document or set of documents. Then, by comparing the associated ``text'' embeddings, we could calculate document similarity, as in LSA.
+As we will see in the next section below, these methods can also be adjusted and applied to the sentence and word level as well, allowing us to quantify word meaning as word embeddings.
+To begin to get a feel what word embeddings are before we discuss the details, see \url{http://vectors.nlpl.eu/explore/embeddings/en/}.
+
+% This document term frequency approach. We pass a sliding window over the terms of a document and do the same procedure as bag of words but where the ``document'' is a term and the vector is the frequency count in the window around that term, which can be thought of as a co-occurrence vector.  In the example above suppose window size is 1.  Then we scan across the two documents and see that ``the'' co-occurs twice with ``bass'',  twice with ``fish'', once with ``played'', and once with ``with''.  The full set of word embeddings is:
 
 % TODO
 %\begin{table}[h]
@@ -76,32 +84,33 @@ This document term frequency approach. We pass a sliding window over the terms o
 %    \caption{Word Occurrence Frequencies}
 %\end{table}
 
-To begin to get a feel for some of this ideas see \url{http://vectors.nlpl.eu/explore/embeddings/en/}
+
  
 \section{Distributional Semantics Theory}
 
-% Methods mentioned above deal more with a surface-level analysis of language from text; term analysis, etc.
+% TODO Make/fix bibtex entries
+The theory of distributional semantics \cite{harris1954distributional, firth1957synopsis} and other usage-based theories of language \cite{wittgenstein1953philosophical} posit that the usage of words reflects their meaning, and information about the meaning of words is embedded in linguistic context and the statistical properties of language usage.
 
-% TODO Make bibtex entries
-The theory of distributional semantics (Firth, 1957; Harris, 1954) and other usage-based theories of language (Wittgenstein, 1953) posit that the usage of words reflects their meaning, and information about the meaning of words is embedded in linguistic context and the statistical properties of language usage.
-
-This is often illustrated with the following quote, due to John First: ``You shall know a word by the company it keeps.'' For example, when someone talks about a \textit{river}, they may also mention \textit{water} or \textit{bank} (as in river bank), helping the listener correctly decode the intended meaning.
+This is often illustrated with the following quote, attributed to John Firth: ``You shall know a word by the company it keeps.'' For example, when someone talks about a \textit{river}, they may also mention \textit{water} or \textit{bank} (as in river bank), helping the listener correctly decode the intended meaning.
 
 By connecting usage to meaning, this allows for an approximation or representation of meaning that is derived from usage in a text corpora. Instead of analyzing large corpora by hand, computational algorithms can be used to generate numeric representations.
-
-\subsection{Document-level semantic analysis}
-
-LSA (latent semantic analysis): used with a body (set) of documents to analyze semantic information and calculate document similarity. The body of documents are represented using a document term matrix, where each row corresponds to a document, and each column is the frequency of a given term in each document. Then, singular value decomposition (SVD) is used for dimensionality reduction, resulting in a numeric vector for each document (based on term usage/frequency) which can be compared using cosine similarity (section \extref{dotProduct}) to get document similarity.
 
 \subsection{Word-level semantic analysis}
 
 Algorithms like Word2Vec (Mikolov et al., 2013) are used to track the linguistic context and word co-occurrences to ``embed'' words into a semantic space, much like our own semantic space (Lewis et al., 2019), where the words can be tracked and compared. 
 
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[scale=.2]{./images/Word_vector_illustration.jpg}
+%     \caption[From \url{https://en.wikipedia.org/wiki/Word2vec\#/media/File:Word_vector_illustration.jpg}.]{Example of word embeddings in a semantic space. A hypothetical embedding for the four words ``king'', ``queen'', ``man'', and ``woman''.  The embedding makes sense because we would expect that the representation of ``king'' to be closer to ``man'' than to ``woman'', ``queen'' should be closer to ``woman'' than to ``man'', and the distance between ``man'' and ``king'' should be the same as that between ``queen'' and ``woman''.    }
+%  \label{f:kingQueenExample}
+% \end{figure}
+
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=.2]{./images/Word_vector_illustration.jpg}
-    \caption[From \url{https://en.wikipedia.org/wiki/Word2vec\#/media/File:Word_vector_illustration.jpg}.]{Example of word embeddings in a semantic space. A hypothetical embedding for the four words ``king'', ``queen'', ``man'', and ``woman''.  The embedding makes sense because we would expect that the representation of ``king'' to be closer to ``man'' than to ``woman'', ``queen'' should be closer to ``woman'' than to ``man'', and the distance between ``man'' and ``king'' should be the same as that between ``queen'' and ``woman''.    }
- \label{f:kingQueenExample}
+    \includegraphics[scale=.5]{./images/Word_vector_demo.jpg}
+    \caption[Generated using \url{http://vectors.nlpl.eu/explore/embeddings/en/}.]{Example of word embeddings in a semantic space. An embedding space for the seven words: ``book'', ``author'', ``critic'', ``music'', ``composer'', ``painter'', ``painting''. The embeddings demonstrate how the creator of a medium would be close to the medium or composition. Interestingly, ``critic'' is closest to ``author'', perhaps due to most critics \textit{writing} their criticism.}
+ \label{f:writerPainterExample}
 \end{figure}
 
 % \textit{Brunila \& LaViolette's paper revisiting the idea of distributional semantics: \url{https://arxiv.org/pdf/2205.07750.pdf} (URL for now \dots)}
@@ -122,13 +131,10 @@ Data preparation and processing in NLP generally follows this pipeline:
 \end{enumerate}
 
 For sentence segmentation, the paragraph or document is segmented into sentences. This step is particularly important when using text that has been scanned using OCR, where errors might occur.
-
 Once the document has been segmented into sentences, a tokenizer is used to split each sentence into the comprising words. 
 
 Following tokenization, the words/tokens are generally normalized to remove capitalization or certain punctuation marks, such that the words are consistently in the same form.
-
 In this step, ``stopwords'' (words that are deemed insignificant; usually function words) can also be filtered out.
-
 Depending on your research goal, the exact implementation of this pipeline will differ.
 
 % After segmentation and tokenization: 
@@ -137,7 +143,7 @@ Depending on your research goal, the exact implementation of this pipeline will 
 % spread,out,in,fiery,points,glowed,into,words,
 % then,would,be,savagely,still]] \textit{Formatting?}
 
-After segmentation and tokenization: 
+After segmentation and tokenization, we would have: 
 \begin{quote}
 [[footsteps, shuffled, on, the, stair], 
 [under, the, firelight, \dots, savagely, still]]
@@ -152,37 +158,29 @@ Then, when we get to ``on'' as the label, the label-context pairs would include 
 
 Once the document has been processed, the result is a co-occurrence matrix where each cell represents the raw co-occurrence counts for a given label-context pair.
 
-\subsection{Example}
+% TODO create an example? point to simbrain?
 
-Not every word is used with the same frequency, so some determiners (`the', `a') may be over-represented and skew the co-occurrence matrix. If these type of stopwords were not removed, we can change the weight of different contexts. Therefore, a positive-pointwise mutual information transform is often used to weight the matrix. 
+Not every word is used with the same frequency, so some determiners (`the', `a') may be over-represented and skew the co-occurrence matrix. If these type of stopwords were not removed, we can change the weight of different contexts. Therefore, a positive-pointwise mutual information (PPMI) transform is often used to weight the matrix. 
 
-\textbf{From simbrain documentation:} Weights the co-occurrence values to avoid word-frequency-bias in embeddings. Words like ``the'' and ``a'' that should not be considered meaningful in terms of co-occurrence are down-weighted. Less frequent words on the other, like ``platitude'' or ``espresso'', that are more meaningful in terms of co-occurrences, are up-weighted.
+In other words, PPMI weights the co-occurrence values to avoid word-frequency-bias in embeddings. Words like ``the'' and ``a'' that should not be considered meaningful in terms of co-occurrence are down-weighted. Less frequent words on the other, like ``platitude'' or ``espresso'', that are more meaningful in terms of co-occurrences, are up-weighted. The result is a set of \textit{n}-dimensional vectors for a set of words, which are referred to as ``word embeddings.'' For a more in-depth explanation and discussion of word embeddings and distributional semantics, see \cite{lenci2018distributional}.
 
-\textbf{Quote from Lenci:} PPMI measures how much the probability of a target-context pair estimated in the training corpus is higher than the probability we should expect if the target and the context occurred independently of one another. (Lenci, 2018)
-
-\textit{See Lenci review paper for in-depth explanation and discussion.}
-
-The result is a set of \textit{n}-dimensional vectors for a set of words, which are referred to as ``word embeddings.''
+% \textbf{Quote from Lenci:} PPMI measures how much the probability of a target-context pair estimated in the training corpus is higher than the probability we should expect if the target and the context occurred independently of one another. (Lenci, 2018)
 
 \subsection{Evaluation}
 
-How then should these embeddings be evaluated? 
-
-Previous research on word similarity and relatedness has shown that directly asking for relatedness judgements can accurately capture word relations (Finkelstein et al. 2002).
+How then should these embeddings be evaluated? Previous research on word similarity and relatedness has shown that directly asking for relatedness judgements can accurately capture word relations (Finkelstein et al. 2002).
 
 Therefore, the general method of evaluation is by collecting a set of human judgements, which theoretically serve as the ceiling of model of model performance. \textit{Check paper that reviewer mentioned? https://aclanthology.org/2022.bionlp-1.26/}
-
 There are a variety of gold standards that have been used across the field, such as WordSim-353 or MEN (citations), however, recent models have already reached or surpassed human performance on these tasks.
 
-Therefore, Hill and colleagues set out to create a gold standard that separates similarity from association, which previous standards had ignored the distinction.
-
+Due to this, Hill and colleagues (TODO: citation) set out to create a gold standard that separates similarity from association, which previous standards had ignored the distinction.
 For example, ``car'' and ``tire'' would be considered associated but not similar, ``glasses'' and ``spectacles'' would be considered similar. See Hill et al., 2014 for an in-depth discussion.
 
 \subsection{Corpus quality}
 
 While different algorithms may improve the model performance and similarity to our own semantic representations, the corpus quality also has an impact on model performance.
 Larger training corpora generally improve the quality of the derived embeddings. 
-GloVe embeddings are trained on various trainint corpora, varying from 1 billion tokens to 42 billion tokens (from the Common Crawl) \textit{Citations.}
+GloVe embeddings are trained on various training corpora, varying from 1 billion tokens to 42 billion tokens (from the Common Crawl) \textit{Citations.}
 
 Beside the amount or size of the training corpora, the type of documents is also important; training solely on works of fiction would lead to different embeddings than a model trained on non-fiction, and so on. It is important to consider the meaning you are trying to capture (generalized or specific to a field, such as medical documents).
 
@@ -190,14 +188,14 @@ Beside the amount or size of the training corpora, the type of documents is also
 Above mentioned methods mainly track co-occurrence frequencies, which reflect statistical learning theories (SL citations), where learners track label-object co-occurrence statistics.
 There is also another line of theory in linguistics called predictive processing, where individuals predict future input. This has been used to combat Chomsky's argument about negative evidence (citation), since through disconfirmed predictions, individuals can ``create'' their own negative evidence to learn from (citation for further discussion?).
 
-% Alternative training method using neural networks
+% TODO Alternative training method using neural networks
 In a similar fashion, neural networks have also been used to generate word embeddings.
 
 
-% Data processing using neural networks
+% TODO Data processing using neural networks
 
 
-% Large language models, reference other chapter
+% TODO Large language models, reference other chapter
 
 \section{Exercises}
 
