@@ -1,22 +1,26 @@
 \chapter{Natural Language Processing}\label{ch_nlp}
-\chapterauthor{Ellis Cain}
+\chapterauthor{Ellis Cain, Jeff Yoshimi}
 
-This chapter introduces natural language processing or NLP, with an emphasis on techniques that can be used in conjunction with neural networks. A dominant theme throughout the chapter is the concept of a word embedding (section \extref{wrangling}), where words in a corpus are associated with vectors that capture important characteristics. This makes it possible to associated words and texts with activations that can be processed in a neural network. These techniques have a long history in linguistics and in the study of neural networks, but have become especially prominent in recent years with the advent of large language models like GPT (section \extref{transformers}). We will also see that pre-processing (section \extref{wrangling}) is important with linguistic data, shedding further light on the general topic of wrangling data before it is used in a neural networks.
+This chapter introduces natural language processing or NLP, with an emphasis on techniques that can be used in conjunction with neural networks. A dominant theme throughout the chapter is the concept of a word embedding (also discussed in section \extref{wrangling}), where words in a corpus are associated with vectors that capture important characteristics.  In this way words and texts can be ``embedded'' in a vector space, associated with lists of numbers that can in turn processed in a neural network, and associated with points in a space. These techniques have a long history in linguistics and in the study of neural networks, but have become especially prominent in recent years with the advent of large language models like GPT (section \extref{transformers}). We will also see that pre-processing (section \extref{wrangling}) is important with linguistic data, shedding further light on the general topic of wrangling data before it is used in a neural networks.
 
-% Integrate
-% As noted in the discussion of data wrangling (section \extref{wrangling}), data must often be preprocessed before it can be used in a neural network. In the case of linguistic data this is an extremely important topic involving multiple steps.  
-% Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We use text embedding as a generic term covering both cases.
+This chapter is organized as follows, after giving some background on linguistics we build up to the concept of a word embedding in stages. First we discuss document embeddings (associating whole documents with vectors of numbers), which are simpler to understand and serve as a useful basis for understanding word embeddings.  Then we discuss word embeddings. Then we discuss the kind of pre-processing and workflow often involved in actually taking a text, creating an embedding, and feeding it to a neural network. Finally we give a brief summary of ways neural networks are used to process linguistic data that has been numerically coded with a text embedding.\footnote{Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We will use ``text embedding'' as a generic way to cover both cases.}
 
 \section{Background and History}
 
-\subsection{Linguistics}
-
-Linguistics is the study of language, which can be organized by the different aspects of language, going from smallest to largest unit of study: phonetics and phonology as the study of speech sounds, morphology as the study of words and form, syntax as the study of the structure or grammar (usually at the sentence level), semantics as the study of meaning, which can be at a variety of levels (words, phrases, sentences), pragmatics as the study of intentional meaning or implied meaning (think Gricean maxims and rules of conversations). 
+Linguistics is the study of language, which can be organized in terms of scale, going from smallest to largest unit of study: 
+\begin{enumerate}
+\item Phonetics and phonology: the study of speech sounds.
+\item Morphology: the study of words and word forms.
+\item Syntax: the study of the structure or grammar, usually at the sentence level.
+\item Semantics as the study of meaning, which can be at a variety of levels (words, phrases, sentences).
+\item Pragmatics as the study of intentional meaning or implied meaning, for exams implicit maxims and rules of conversations (Grice). 
+\end{enumerate}
 
 The smaller units of study are generally straightforward for analysis: for example, researchers often use spectrograms to analyze phonemes (smallest unit of sound, /t/ or /p/). As you increase the scope of analysis it increasingly becomes more difficult to (automatically) analyze. For syntax, there are treebanks and dependency analyzers that have to be trained on lots of example hand-annotated data to be able to analyze new sentences. There are also reasonable limits per word (for syntactic analysis), a word usually has one or two parts of speech (noun, verb, determiner, etc.), and there are constructed rules for how to derive dependency trees. What about meaning for semantics? There isn't a clear unit of ``meaning'' for words: meaning is more broad and nebulous. The meaning of a word can be abstract or concrete (``justice'' vs ``cup'') and is often context dependent (``bass'' as the fish or instrument). How could we automate the analysis of semantic information?
 
-% Something about computational linguistics and tools? WordNet is a lexical database of English constructed by linguists, where words are organized into ``synsets'' (cognitive synonyms or groups of words). Similarity is calculated using the Wu-Palmer path similarity function which is based on the number of jumps between synsets.
+Of course the history of linguistics is complex, but in the context of neural networks one particular strand, computational linguistics, is especially important. (More on history). 
 
+% Something about computational linguistics and tools? WordNet is a lexical database of English constructed by linguists, where words are organized into ``synsets'' (cognitive synonyms or groups of words). Similarity is calculated using the Wu-Palmer path similarity function which is based on the number of jumps between synsets.
 
 %% Commenting this out until structure of chapter is more clear
 %\subsection{Early text embeddings}
@@ -174,6 +178,7 @@ In a similar fashion, neural networks have also been used to generate word embed
 
 % TODO Large language models, reference other chapter
 
+% We can take these exercises and add them as ``suggested exercises'' in relevant sections.
 \section{Exercises}
 
 \subsection{Basic NLP}
