@@ -40,7 +40,7 @@ Of course the history of linguistics is complex, but in the context of neural ne
 
 \section{Document embeddings}
 
-One simple idea in the background of many text embeddings is the \glossary{Bag of words} approach, which associates documents with vectors of word frequencies. This approach ignores grammatical structure and just looks at how often different tokens occur in different documents.  Simply put, we take each document and put the associated tokens into a bag, and count up how many tokens occur in each bag. Consider the following documents
+One simple idea in the background of many text embeddings is the \glossary{bag of words} approach, which associates documents with vectors of word frequencies. This approach ignores grammatical structure and just looks at how often different tokens occur in different documents.  Simply put, we take each document and put the associated tokens into a bag, and count up how many tokens occur in each bag. Consider the following documents
 
 \begin{description}
 \item[Document 1]  ``The bass fish played the bass''
@@ -75,7 +75,7 @@ As we will see in the next section, these methods can also be adjusted and appli
 \section{Word embeddings}
 
 % History: document embeddings came first. 
-We now move from document embeddings to word embeddings.  Instead of associating documents with vectors, we associate words with vectors. To begin to get a feel what word embeddings are before we discuss the details, see \url{http://vectors.nlpl.eu/explore/embeddings/en/}. Word embeddings are very important in neural networks and machine learning. A well-known example is Word2Vec (Mikolov et al., 2013) are used to track the linguistic context and word co-occurrences to ``embed'' words into a semantic space. The general idea is that the generated embedding space is much like our own semantic space (Lewis et al., 2019), with the advantage that we can track and compare word meanings mathematically and visually, as in figure \ref{f:writerPainterExample}. 
+We now move from document embeddings to word embeddings.  Instead of associating documents with vectors, we associate words with vectors. To begin to get a feel what word embeddings are before we discuss the details, see \url{http://vectors.nlpl.eu/explore/embeddings/en/}. Word embeddings are very important in neural networks and machine learning. A well-known example is Word2Vec (Mikolov et al., 2013) which tracks the linguistic context and word co-occurrences to ``embed'' words into a semantic space. The general idea is that the generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually, as in figure \ref{f:writerPainterExample}. 
 
 \begin{figure}[h]
     \centering
@@ -88,24 +88,20 @@ We now move from document embeddings to word embeddings.  Instead of associating
  
 \subsection{Distributional Semantics Theory}
 
-Theoretical background for how word embeddings are computed is provided by the theory of distributional semantics \cite{harris1954distributional, firth1957synopsis} and other usage-based theories of language \cite{wittgenstein1953philosophical}, which posit that the usage of words reflects their meaning, and information about the meaning of words is embedded in linguistic context and the statistical properties of language usage.
+%% HERE: DS says not how, but why it should work
+Theoretical support for validity of this method of computing word embeddings (i.e., tracking co-occurences allows for a rough estimation of word meaning relative to other words) is provided by the theory of distributional semantics \cite{harris1954distributional, firth1957synopsis} and other usage-based theories of language \cite{wittgenstein1953philosophical}, which posit that the usage of words reflects their meaning, and information about the meaning of words is embedded in linguistic context and the statistical properties of language usage.
 
-This is often illustrated with the following quote, attributed to John Firth: ``You shall know a word by the company it keeps.'' For example, when someone talks about a \textit{river}, they may also mention \textit{water} or \textit{bank} (as in river bank), helping the listener correctly decode the intended meaning.
+This is often illustrated with the following quote, attributed to John Firth: ``You shall know a word by the company it keeps.'' For example, when someone talks about a \textit{river}, they may also mention \textit{water} or \textit{bank} (as in river bank), helping the listener correctly decode the intended meaning. Or, from the quote, you are able to interpret \textit{company} as referring to other words in the sentence, and not a \textit{business}, based on the earlier context.
 
 By connecting usage to meaning, this allows for an approximation or representation of meaning that is derived from usage in a text corpora. Instead of analyzing large corpora by hand, computational algorithms can be used to generate numeric representations.
 
 \subsection{Word Embeddings and Co-occurrence Matrices}
 
-Each word is iterated as the `label', while the surrounding words serve as the `context'. A window size is defined, which designates how many words to include in the `context'. Skip-gram models will include context both before and after a given label.
+%% HERE
+Broadly speaking, to construct a co-occurrence matrix, we must iterate across every sentence in the document or training corpora, where we iterate across each word and count the co-occurrences with the surrounding context. Each word is iterated as the `label' or `target', while the surrounding words serve as the `context'. A window size is defined, which designates how many words to include in the `context'. Skip-gram models will include context both before and after a given label. Once the whole training corpora has been processed, the result is a co-occurrence matrix where each cell represents the raw co-occurrence counts for a given label-context pair.
 
-From our example, we may start out with ``footsteps'' as the label, then if we have a window size of two, the co-occurring label-context pairs would be [footsteps, shuffled] and [footsteps, on].
-Then, when we get to ``on'' as the label, the label-context pairs would include [on, footsteps], [on, shuffled], [on, the], [on, stair].
-
-Once the document has been processed, the result is a co-occurrence matrix where each cell represents the raw co-occurrence counts for a given label-context pair.
-
-% TODO create an example? point to simbrain?
-
-Not every word is used with the same frequency, so some determiners (`the', `a') may be over-represented and skew the co-occurrence matrix. If these type of stopwords were not removed, we can change the weight of different contexts. Therefore, a positive-pointwise mutual information (PPMI) transform is often used to weight the matrix. 
+%% HERE
+Not every word is used with the same frequency. Similar to our document embeddings, some determiners (`the', `a') may be over-represented and skew the co-occurrence matrix. If these type of stopwords were not removed, we can change the weight of different contexts. Therefore, a positive-pointwise mutual information (PPMI) transform is often used to weight the matrix. 
 
 In other words, PPMI weights the co-occurrence values to avoid word-frequency-bias in embeddings. Words like ``the'' and ``a'' that should not be considered meaningful in terms of co-occurrence are down-weighted. Less frequent words on the other, like ``platitude'' or ``espresso'', that are more meaningful in terms of co-occurrences, are up-weighted. The result is a set of \textit{n}-dimensional vectors for a set of words, which are referred to as ``word embeddings.'' For a more in-depth explanation and discussion of word embeddings and distributional semantics, see \cite{lenci2018distributional}.
 
@@ -113,24 +109,25 @@ In other words, PPMI weights the co-occurrence values to avoid word-frequency-bi
 
 \subsection{Evaluation of word embedding}
 
-How should these embeddings be evaluated? Previous research on word similarity and relatedness has shown that directly asking for relatedness judgements can accurately capture word relations (Finkelstein et al. 2002).
+How should these embeddings be evaluated? Previous research on word similarity and relatedness has shown that directly asking for relatedness judgements can accurately capture word relations \cite{finkelstein2001placing}.
 
-Therefore, the general method of evaluation is by collecting a set of human judgements, which theoretically serve as the ceiling of model of model performance. \textit{Check paper that reviewer mentioned? https://aclanthology.org/2022.bionlp-1.26/}
-There are a variety of gold standards that have been used across the field, such as WordSim-353 or MEN (citations), however, recent models have already reached or surpassed human performance on these tasks.
+Therefore, the general method of evaluation is by collecting a set of human judgements, which theoretically serve as the ceiling of model of model performance, though there are recent discussions questioning this \cite{richie2022inter}.
+There are a variety of gold standards that have been used across the field, such as WordSim-353 \cite{finkelstein2001placing, agirre2009study}, however, recent models have already reached or surpassed human performance on these tasks.
 
-Due to this, Hill and colleagues (TODO: citation) set out to create a gold standard that separates similarity from association, which previous standards had ignored the distinction.
-For example, ``car'' and ``tire'' would be considered associated but not similar, ``glasses'' and ``spectacles'' would be considered similar. See Hill et al., 2014 for an in-depth discussion.
+Due to this, Hill and colleagues set out to create a gold standard that separates similarity from association, which previous standards had ignored the distinction \cite{hill2015simlex}.
+For example, ``car'' and ``tire'' would be considered associated but not similar, ``glasses'' and ``spectacles'' would be considered similar. See the original paper for an in-depth discussion.
 
 While different algorithms may improve the model performance and similarity to our own semantic representations, the corpus quality also has an impact on model performance.
 Larger training corpora generally improve the quality of the derived embeddings. 
-GloVe embeddings are trained on various training corpora, varying from 1 billion tokens to 42 billion tokens (from the Common Crawl) \textit{Citations.}
+GloVe embeddings are trained on various training corpora, varying from 1 billion tokens to 42 billion tokens \cite{pennington2014glove}.
 
 Beside the amount or size of the training corpora, the type of documents is also important; training solely on works of fiction would lead to different embeddings than a model trained on non-fiction, and so on. It is important to consider the meaning you are trying to capture (generalized or specific to a field, such as medical documents).
 
 \section{Workflow}
 
+%% HERE
 Now to get our hands dirty. In practice there are many steps involved in applying these ideas. 
-Here is a sample workflow. Let's start with an example sentence: ``Footsteps shuffled on the stair. Under the firelight, under the brush, her hair spread out in fiery points glowed into words, then would be savagely still.'' (From T. S. Eliot's \textit{The Waste Land})
+Here is a sample workflow. Let's start with an example document: ``\textit{My work is a matter of fundamental sounds, made as fully as possible. If people want to have headaches among the overtones, let them. And provide their own aspirin.}'' (Modified from a letter from Samuel Beckett to Alan Schneider, 1957)
 
 Data preparation and processing in NLP generally follows this pipeline: 
 
@@ -145,22 +142,46 @@ For sentence segmentation, the paragraph or document is segmented into sentences
 Once the document has been segmented into sentences, a tokenizer is used to split each sentence into the comprising words. 
 
 Following tokenization, the words/tokens are generally normalized to remove capitalization or certain punctuation marks, such that the words are consistently in the same form.
-In this step, ``stopwords'' (words that are deemed insignificant; usually function words) can also be filtered out.
+In this step, ``stopwords'' (words that are deemed insignificant; usually function words) can potentially also be filtered out.
 Depending on your research goal, the exact implementation of this pipeline will differ.
 
-% After segmentation and tokenization: 
-% [[footsteps,shuffled,on,the,stair], 
-% [under,the,firelight,under,the,brush,her,hair,
-% spread,out,in,fiery,points,glowed,into,words,
-% then,would,be,savagely,still]] \textit{Formatting?}
+%% HERE
+For our example document, it first would be segmented into three sentences (given we are segmenting just on periods):
 
-After segmentation and tokenization, we would have: 
-\begin{quote}
-[[footsteps, shuffled, on, the, stair], 
-[under, the, firelight, \dots, savagely, still]]
-\end{quote}
+\begin{enumerate}
+    \item \textit{My work is a matter of fundamental sounds, made as fully as possible.}
+    \item \textit{If people want to have headaches among the overtones, let them.}
+    \item \textit{And provide their own aspirin.}
+\end{enumerate}
 
-Once the text has been preprocessed, the main analysis can proceed. For a very basic word embedding algorithm, the label-context pair co-occurrences are tracked in a co-occurrence matrix.
+Then, after tokenization, we would have:
+
+\begin{enumerate}
+    \item \textit{my, work, is, a, matter, of, fundamental, sounds, made, as, fully, as, possible}
+    \item \textit{if, people, want, to, have, headaches, among, the, overtones, let, them}
+    \item \textit{and, provide, their, own aspirin}
+\end{enumerate}
+
+We will skip stopword filtering for our example. Since our text has been preprocessed, the main analysis can proceed. For a very basic word embedding algorithm, the label-context pair co-occurrences are tracked in a co-occurrence matrix.
+
+For the first sentence, we would start with ``my'' as the first target. Then, given a window size of 2, the surrounding context would be ``work'' and ``is''. Therefore, the co-occurrence pairs would be [my, work] and [my, is]. We would then create a co-occurrence matrix, with targets on the rows, and context on the columns.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|c|}
+    \hline
+    Targets & my & work & is & a & matter & \dots \\
+    \hline
+    my & 0 & 1 & 1 & 0 & 0 & 0 \\
+    \hline
+    \end{tabular}
+    \caption{Co-occurrence matrix}
+    \label{exampleCoocmat}
+\end{table}
+
+After processing the whole document and calculating a co-occurrence matrix, we would use PPMI to weight the vectors (especially important since we did not remove stopwords).
+
+%% TODO: integrate figure references.
 
 \section{Relation to neural networks}
 
