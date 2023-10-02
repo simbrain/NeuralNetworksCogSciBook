@@ -132,20 +132,20 @@ Here is a sample workflow. Let's start with an example document: ``\textit{My wo
 Data preparation and processing in NLP generally follows this pipeline: 
 
 \begin{enumerate}
-\item Sentence segmentation
+\item Sentence segmentation.
 \item Word tokenization
 \item Normalization and filtering
 \item Creation of word embeddings
 \end{enumerate}
 
 For sentence segmentation, the paragraph or document is segmented into sentences. This step is particularly important when using text that has been scanned using OCR, where errors might occur.
+
 Once the document has been segmented into sentences, a tokenizer is used to split each sentence into the comprising words. 
 
-Following tokenization, the words/tokens are generally normalized to remove capitalization or certain punctuation marks, such that the words are consistently in the same form.
-In this step, ``stopwords'' (words that are deemed insignificant; usually function words) can potentially also be filtered out.
+Following tokenization, the words/tokens are generally normalized to remove capitalization or certain punctuation marks, such that the words are consistently in the same form. In this step, ``stopwords'' (words that are deemed insignificant; usually function words) can potentially also be filtered out.
+
 Depending on your research goal, the exact implementation of this pipeline will differ.
 
-%% HERE
 For our example document, it first would be segmented into three sentences (given we are segmenting just on periods):
 
 \begin{enumerate}
@@ -185,53 +185,15 @@ After processing the whole document and calculating a co-occurrence matrix, we w
 
 \section{Relation to neural networks}
 
+% Elman: 
+
 % Todo: Elman vs. Chomsky (pull down the Elman commented out stuff here?), maybe Rachel's predictive processing stuff, maybe Bert / GPT 
 
-These methods mainly track co-occurrence frequencies, which reflect statistical learning theories (SL citations), where learners track label-object co-occurrence statistics.
-There is also another line of theory in linguistics called predictive processing, where individuals predict future input. This has been used to combat Chomsky's argument about negative evidence (citation), since through disconfirmed predictions, individuals can ``create'' their own negative evidence to learn from (citation for further discussion?).
+These methods mainly track co-occurrence frequencies, which reflect statistical learning theories (SL citations), where learners track label-object co-occurrence statistics. There is also another line of theory in linguistics called predictive processing, where individuals predict future input. This has been used to combat Chomsky's argument about negative evidence (citation), since through disconfirmed predictions, individuals can ``create'' their own negative evidence to learn from (citation for further discussion?). In a similar fashion, neural networks have also been used to generate word embeddings.
 
-% TODO Alternative training method using neural networks
-In a similar fashion, neural networks have also been used to generate word embeddings.
-
-
-% TODO Data processing using neural networks
+%Example of brackets: 
+%\begin{enumerate}
+%\item {\{``one", "two", "three"\}}
+%\end{enumerate}
 
 
-% TODO Large language models, reference other chapter
-
-% We can take these exercises and add them as ``suggested exercises'' in relevant sections.
-\section{Exercises}
-
-\subsection{Basic NLP}
-
-\begin{enumerate}
-\item Walkthrough a simple example of counting co-occurrences.
-\item How does window size impact the embeddings?
-\item What is potential motivation for using the \textit{skip-gram} setting?
-\item Calculate the similarity between these words: [list of words]. 
-\item Something about the PPMI transformation?
-\end{enumerate}
-
-\subsection{Geometric thinking}
-
-\begin{enumerate}
-\item What does it mean for a word embedding to be n-dimensional?
-\item Why is cosine similarity used over other distance functions, like traditional euclidean distance?
-\item Something where they perform clustering?
-\end{enumerate}
-
-\subsection{Corpus quality}
-
-\begin{enumerate}
-\item With the limited (demo) training corpus, how well do you think it captures the actual meaning of the words?
-\item Does corpus size or quality matter? (Too basic of a question.)
-\item Something with a corpus that deals with polysemy (financial institution \& geographic texts)
-\end{enumerate}
-
-\subsection{Neural Networks and other advances}
-
-\begin{enumerate}
-\item SRNs?
-\item Next-word prediction?
-\item Text generation?
-\end{enumerate}
