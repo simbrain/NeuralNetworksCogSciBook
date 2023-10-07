@@ -155,6 +155,7 @@ for the network) that correspond to that point.}
 \label{ffRecurrent}
 \end{figure}
 
+% TODO: Run the bold-faced notation through
   The activations of a neural network's $n$ nodes can be described by an \glossary{activation 
 vector} with $n$ components, one for each activation value. For example, if we index the nodes of the feed-forward network in figure \ref{ffRecurrent} (Left) from the bottom to the top and left to right (as in figure \ref{labelledNets}), then that networks' activation vector is $(-0.3,0.6,-0.3,0.5,-0.2,0.6,0.2)$. This 
 is a vector in a 7 dimensional vector space. A vector space of activation 
@@ -167,6 +168,8 @@ space. As the network changes, its activations change, and so we have a changing
 In addition to describing the state of all of a network's nodes by an activation vector, we can describe certain {\em subsets} of its nodes using activation vectors. In the feed-forward network in figure \ref{ffRecurrent} (Left), for example, we can describe the activations of the input nodes as an  \emph{input vector}  $(-0.3,0.6)$  in a 2 dimensional \glossary{input space}. We can describe the activations of the hidden nodes as a vector $(-0.3,0.5,-0.2)$ in a 3 dimensional 
 \emph{hidden unit space}. We can describe activations of the output nodes as an \emph{output vector} $(-0.6,-0.2)$ in a 2 dimensional \glossary{output space}. Recall from chapter \extref{ch_intro} that a table of data is a simple environment for a neural network. This table will sometimes contain a set of input vectors, which can be thought of as a set of points in the input space of a network. It can also contain a set of target vectors, which describes how we want the network to respond to input vectors by producing specific output vectors. Many problems in neural network theory can be understood in terms of properties of the input and output space.
  
+ Vectors and matrices are sometimes referred to in bold-faced letters, with a subscript indicating more information. So an input vector can be $\textbf{a}_{1}$ for node layer 1 or just $\textbf{a}_{input}$
+
 We can also talk about vectors of weights, or \glossary{weight vectors}, which exist in \glossary{weight spaces}. The feed-forward network in figure \ref{ffRecurrent} has 12 weights. The strengths of those weights is given by the vector 
 \begin{equation*}
 (-2, 1, -1, 0.9, -1, -1.2, 1, -2, 0.7, -1, 2, 2.1)
@@ -182,8 +185,7 @@ It can also be useful to talk about a \glossary{fan-in weight vector} (the list 
 \mbox{Recurrent network, neuron 2 fan-in} \; \; \; (1,-2) \\
 \end{eqnarray*}
 
-Some of these weight vectors live in 2 dimensional weight space, some live in a 3 dimensional weight space. Of course for larger networks, fan-in and fan-out vectors can be in higher dimensional weight spaces.\footnote{Notice that the fan-in weight vectors for the hidden units of the feed-forward network have the same number of dimensions as the input vectors. The input vectors and hidden layer fan-in weight vectors live in the same vector space. This fact is useful sometimes.}
-%Todo (Jeff). Improve the footnote discussion and motivate the need for the concepts of fan-in and fan-out better.
+Some of these weight vectors have 2 components, some have 3 components. Of course for larger networks, fan-in and fan-out vectors can be in higher dimensional weight spaces.\footnote{Notice that the fan-in weight vectors for the hidden units of the feed-forward network have the same number of dimensions as the input vectors. The input vectors and hidden layer fan-in weight vectors live in the same vector space. This fact is useful sometimes.}
 
 \section{Dimensionality Reduction}
 \label{S:dimred}
@@ -358,8 +360,7 @@ n_4 = (-1,-1,1) \bullet (\; -1,\; -4,\; 5) = 1 + 4 +5 = 10
 %\end{equation*}
 
 % Glossary for cosine similarity
-The normalized dot product between two vectors, also known as the cosine similarity, calculates the angle between two vectors such that the similarity calculation is not impacted by magnitude. Bounded between $[-1, 1]$, such that $\cos = -1$ indicates opposite vectors, $\cos = 0$ indicates orthogonal vectors, and $\cos = 1$ are proportional vectors. Some implementations are bounded between $[0,1]$. Occasionally, cosine distance is used, which is $1 - \cos$, in which case proportional or highly similar vectors will have a cosine distance of 0, while dissimilar vectors will have a cosine distance of 1.
-
+%The normalized dot product between two vectors, also known as the cosine similarity, calculates the angle between two vectors such that the similarity calculation is not impacted by magnitude. Bounded between $[-1, 1]$, such that $\cos = -1$ indicates opposite vectors, $\cos = 0$ indicates orthogonal vectors, and $\cos = 1$ are proportional vectors. Some implementations are bounded between $[0,1]$. Occasionally, cosine distance is used, which is $1 - \cos$, in which case proportional or highly similar vectors will have a cosine distance of 0, while dissimilar vectors will have a cosine distance of 1.
 % Add some exercises to the end.
 
 \section{Matrices}\label{S:Matrices}
@@ -396,7 +397,7 @@ exist in vector spaces called ``matrix spaces''). However, it will be easier for
 
 Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix.\footnote{\label{sourceTarget} This is a somewhat unconventional way of representing weight matrices. It can be called a ``source-target'' representation, because rows are associated with source neurons and columns are associated with target neurons. It is more common in neural network texts to use a ``target-source'' representation, where rows are associated with target neurons and columns are associated with source neurons. This is related to the choice to represent the weight from node $j$ to $k$ with $w_{j,k}$, a ``source-target'' indexing scheme, rather than $w_{k,j}$. We made changes in convention in order to make the formalism easier to learn, but again they are non-standard. Further discussion is in note \ref{leftRightConvention}.} This implies that a source-target weight matrix representation of a set of weights will have as many rows as source neurons and as many columns as target neurons.
 
-We first consider weight layers in feedforward networks. Each weight layer of a feedforward network can be represented by its own weight matrix $\textbf{W}_{i,j}$ where $i$ is the source node layer and $j$ is the target layer. For example, for the weight layer $\textbf{W}_{1,2}$ or $\textbf{W}_{input,hidden}$connecting the input node layer to the hidden node layer on the left of figure \ref{labelledNets}.  The column and row headings are shown in bold text and match the node labels in \ref{labelledNets}. Notice that there are as many rows as input neurons and as many columns as hidden layer neurons. You can see, for example, that the weight $w_{2,4}$ from node 2 in the input layer to node 4 in the weight layer is in the row labeled 2 and the column labeled 4: -1. On the right is a more standard matrix representation of $\textbf{W}_{1,2}$.
+We first consider weight layers in feedforward networks. Each weight layer of a feedforward network can be represented by its own weight matrix $\textbf{W}_{i,j}$ where $i$ is the source node layer and $j$ is the target layer. For example, $\textbf{W}_{1,2}$ or $\textbf{W}_{input,hidden}$ is the matrix connecting the input node layer to the hidden node layer on the left of figure \ref{labelledNets}.  The column and row headings are shown in bold text and match the node labels in \ref{labelledNets}. Notice that there are as many rows as input neurons and as many columns as hidden layer neurons. You can see, for example, that the weight $w_{2,4}$ from node 2 in the input layer to node 4 in the weight layer is in the row labeled 2 and the column labeled 4: -1. On the right is a more standard matrix representation of $\textbf{W}_{1,2}$.
 
 \begin{minipage}{0.5\textwidth}
 \centering
@@ -425,7 +426,7 @@ We first consider weight layers in feedforward networks. Each weight layer of a 
 
 \noindent Notice that columns of the weight matrix correspond to fan-in weight vectors for the hidden layer (rows correspond to fan-out). This implies that you can compute weighted inputs at the hidden layer by the dot product of an input vector and each column, a topic we discuss next. Regardless convince yourself you can see the link between fan-in weight vectors and columns. 
 
-As an exercise, see if you can produce the weight matrix representation for $\textbf{W}_{2,3}$ or $\textbf{W}_{hidden,output}$. Hint, it has 3 rows and 2 columns. 
+As an exercise, see if you can produce the weight matrix representation for $\textbf{W}_{2,3}$ or $\textbf{W}_{hidden,output}$. Hint: it has 3 rows and 2 columns. 
 
 Now the recurrent case, starting with the recurrent network shown in figure \ref{labelledNets}. Here the source and target neurons are the same and so the weight matrix, which we can call $\textbf{W}_{recurrent}$, is square: it has as many rows as columns.  To fill it out we follow the same procedure, going from source label to target label and finding the corresponding entry.  For example, $w_{1,2}$ is the weight from node 1 to 2, and is thus in the first row, second column of the matrix. Confirm the values match up:
 
@@ -496,7 +497,7 @@ Figure \ref{sparseRecurrent} shows another example, that shows what we do when s
 \end{minipage}
 \vspace*{.1cm} 
 
-\noindent Now let's check your understanding: there are 4 nodes and thus the matrix is 4-by-4. There are two positive weights and two negative weights, and there are two positive entries and two negative entries in the table. Node 4 is one self-connected node and the fourth diagonal entry is non-zero. Nodes 1 and 4 have two weights in their fan-in and those two columns have two entries.
+\noindent Now let's check your understanding: there are 4 nodes and thus the matrix is 4-by-4. There are two positive weights and two negative weights, and there are two positive entries and two negative entries in the table. Node 4 is self-connected and the fourth diagonal entry is non-zero. Nodes 1 and 4 have two weights in their fan-in and those two columns have two entries.
 
 % Add link to NLP chapter when it's ready
 In the special case where most of the possible entries in a weight matrix are 0, the matrix is called a \glossary{sparse matrix}. The matrix  in figure \ref{sparseRecurrent} is sparse. Sparse weight matrices represent sparsely connected networks, which are common in the brain (sparse matrices also come up in other areas related to neural networks, for example in representing text corpora). The are contrasted with dense matrices and dense connectivity. The term ``dense'' connection is often used to refer to ``all-to-all'' connections between weight layers.
@@ -555,7 +556,7 @@ You can easily set this up in Simbrain and confirm this is what happens.  We wil
 %The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.
 
 
-\section{Block Matrix Representations}
+\section{Appendix: Block Matrix Representations}
 
 For the feed-forward network in figure \ref{labelledNets}, we can begin with a matrix for the full network, which illustrates some of its structure:
 \begin{equation*}
