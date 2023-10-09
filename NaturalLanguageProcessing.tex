@@ -97,10 +97,10 @@ By connecting usage to meaning, this allows for an approximation or representati
 
 \subsection{Word Embeddings and Co-occurrence Matrices}
 
-%% HERE
-Broadly speaking, to construct a co-occurrence matrix, we must iterate across every sentence in the document or training corpora, where we iterate across each word and count the co-occurrences with the surrounding context. Each word is iterated as the `label' or `target', while the surrounding words serve as the `context'. A window size is defined, which designates how many words to include in the `context'. Skip-gram models will include context both before and after a given label. Once the whole training corpora has been processed, the result is a co-occurrence matrix where each cell represents the raw co-occurrence counts for a given label-context pair.
+%% skip-gram is similar to masked token prediction -- using the bi-directional context, predict the masked target.
+Broadly speaking, to construct a co-occurrence matrix, we must iterate across every sentence in the document or training corpora, where we iterate across each word and count the co-occurrences with the surrounding context. Each word is iterated as the `label' or `target', while the surrounding words serve as the `context'. A window size is defined, which designates how many words to include in the `context'. This context can be either unidirectional, using the preceeding text, or bidirectional, using all surrounding context. Once the whole training corpora has been processed, the result is a co-occurrence matrix where each cell represents the raw co-occurrence counts for a given label-context pair.
 
-%% HERE
+
 Not every word is used with the same frequency. Similar to our document embeddings, some determiners (`the', `a') may be over-represented and skew the co-occurrence matrix. If these type of stopwords were not removed, we can change the weight of different contexts. Therefore, a positive-pointwise mutual information (PPMI) transform is often used to weight the matrix. 
 
 In other words, PPMI weights the co-occurrence values to avoid word-frequency-bias in embeddings. Words like ``the'' and ``a'' that should not be considered meaningful in terms of co-occurrence are down-weighted. Less frequent words on the other, like ``platitude'' or ``espresso'', that are more meaningful in terms of co-occurrences, are up-weighted. The result is a set of \textit{n}-dimensional vectors for a set of words, which are referred to as ``word embeddings.'' For a more in-depth explanation and discussion of word embeddings and distributional semantics, see \cite{lenci2018distributional}.
@@ -125,9 +125,9 @@ Beside the amount or size of the training corpora, the type of documents is also
 
 \section{Workflow}
 
-%% HERE
+
 Now to get our hands dirty. In practice there are many steps involved in applying these ideas. 
-Here is a sample workflow. Let's start with an example document: ``\textit{My work is a matter of fundamental sounds, made as fully as possible. If people want to have headaches among the overtones, let them. And provide their own aspirin.}'' (Modified from a letter from Samuel Beckett to Alan Schneider, 1957)
+Here is a sample workflow. Let's start with an example document: ``\textit{My work is a matter of fundamental sounds, made as fully as possible. Even though they are fundamental, they bring rich aromatic hints of humor. If people want to have headaches among the overtones, let them. And provide their own aspirin. }'' (Adapted from a letter from Samuel Beckett to Alan Schneider, 1957)
 
 Data preparation and processing in NLP generally follows this pipeline: 
 
@@ -150,6 +150,7 @@ For our example document, it first would be segmented into three sentences (give
 
 \begin{enumerate}
     \item \textit{My work is a matter of fundamental sounds, made as fully as possible.}
+    \item \textit{Even though they are fundamental, they bring rich aromatic hints of humor.}
     \item \textit{If people want to have headaches among the overtones, let them.}
     \item \textit{And provide their own aspirin.}
 \end{enumerate}
@@ -158,28 +159,62 @@ Then, after tokenization, we would have:
 
 \begin{enumerate}
     \item \textit{my, work, is, a, matter, of, fundamental, sounds, made, as, fully, as, possible}
+    \item \textit{even, though, they, are, fundamental, they, bring, rich, aromatic, hints, of, humor}
     \item \textit{if, people, want, to, have, headaches, among, the, overtones, let, them}
-    \item \textit{and, provide, their, own aspirin}
+    \item \textit{and, provide, their, own, aspirin}
 \end{enumerate}
 
-We will skip stopword filtering for our example. Since our text has been preprocessed, the main analysis can proceed. For a very basic word embedding algorithm, the label-context pair co-occurrences are tracked in a co-occurrence matrix.
+Next, we will remove stopwords:
 
-For the first sentence, we would start with ``my'' as the first target. Then, given a window size of 2, the surrounding context would be ``work'' and ``is''. Therefore, the co-occurrence pairs would be [my, work] and [my, is]. We would then create a co-occurrence matrix, with targets on the rows, and context on the columns.
+\begin{enumerate}
+    \item \textit{work, matter, fundamental, sounds}
+    \item \textit{fundamental, bring, rich, aromatic, hints, humor}
+    \item \textit{people, headaches, overtones}
+    \item \textit{provide, aspirin}
+\end{enumerate}
+
+Since our text has been preprocessed, the main analysis can proceed. For a very basic word embedding algorithm, the label-context pair co-occurrences are tracked in a co-occurrence matrix.
+
+For the first sentence, we would start with ``work'' as the first target. Then, given a bidirectional window size of 2, the surrounding context would be ``matter'' and ``fundamental''. Therefore, the co-occurrence pairs would be [work, matter] and [work, fundamental]. We would then create a co-occurrence matrix, with targets on the rows, and context on the columns. 
+
+After processing the first sentence, the co-occurrence matrix can be seen in table \ref{exampleCoocmat}:
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{|l|c|c|c|c|c|c|}
+    \begin{tabular}{|l|c|c|c|c|c|}
     \hline
-    Targets & my & work & is & a & matter & \dots \\
+    Targets & work & matter & fundamental & sounds & \dots \\
     \hline
-    my & 0 & 1 & 1 & 0 & 0 & 0 \\
+    work & 0 & 1 & 1 & 0 & \dots \\
+    \hline
+    matter & 1 & 0 & 1 & 1 & \dots \\
+    \hline
+    fundamental & 1 & 1 & 0 & 1 & \dots \\
+    \hline
+    sounds & 0 & 1 & 1 & 0 & \dots \\
     \hline
     \end{tabular}
-    \caption{Co-occurrence matrix}
+    \caption{Co-occurrence matrix. Each word vector would be a row in the matrix.}
     \label{exampleCoocmat}
 \end{table}
 
-After processing the whole document and calculating a co-occurrence matrix, we would use PPMI to weight the vectors (especially important since we did not remove stopwords).
+Once every sentence has been processed, the final co-occurrence matrix can be seen in figure \ref{coocExample}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=.5]{./images/full_cooc_matrix.png}
+    \caption[Generated using SimBrain.]{Co-occurrence matrix for the example sentences.}
+ \label{coocExample}
+\end{figure}
+
+After processing the whole document and calculating a co-occurrence matrix, we would use PPMI to weight the vectors. The result can be seen in figure \ref{ppmiExample}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=.45]{./images/weighted_cooc_matrix.png}
+    \caption[Generated using SimBrain.]{Resulting co-occurrence matrix after PPMI has been applied.}
+ \label{ppmiExample}
+\end{figure}
 
 %% TODO: integrate figure references.
 
