@@ -80,7 +80,7 @@ As we will see in the next section, these methods can also be adjusted and appli
 
 \section{Word embeddings}
 
-We now move from document embeddings to word embeddings.  Instead of associating documents with vectors, we associate words with vectors. To begin to get a feel what word embeddings are before we discuss the details, see \url{http://vectors.nlpl.eu/explore/embeddings/en/}. Word embeddings are very important in neural networks and machine learning. A well-known example is Word2Vec (Mikolov et al., 2013) which tracks the linguistic context and word co-occurrences to ``embed'' words into a semantic space. The general idea is that the generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually, as in figure \ref{f:writerPainterExample}. 
+We now move from document embeddings to word embeddings.  Instead of associating documents with vectors, we associate words with vectors. To begin to get a feel what word embeddings are before we discuss the details, see \url{http://vectors.nlpl.eu/explore/embeddings/en/}. Word embeddings are very important in neural networks and machine learning. A well-known example is Word2Vec \cite{mikolov2013distributed} which tracks the linguistic context and word co-occurrences to ``embed'' words into a semantic space. The general idea is that the generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually, as in figure \ref{f:writerPainterExample}. 
 
 \begin{figure}[h]
     \centering
@@ -89,11 +89,9 @@ We now move from document embeddings to word embeddings.  Instead of associating
  \label{f:writerPainterExample}
 \end{figure}
 
-% \textit{Brunila \& LaViolette's paper revisiting the idea of distributional semantics: \url{https://arxiv.org/pdf/2205.07750.pdf} (URL for now \dots)}
  
 \subsection{Distributional Semantics Theory}
 
-%% HERE: DS says not how, but why it should work
 Theoretical support for this method of computing word embeddings (i.e., tracking co-occurrences allows for a rough estimation of word meaning relative to other words) is provided by the theory of distributional semantics \cite{harris1954distributional, firth1957synopsis} and other usage-based theories of language \cite{wittgenstein1953philosophical}, which posit that the usage of words reflects their meaning, and information about the meaning of words is embedded in linguistic context and the statistical properties of language usage.
 
 This is often illustrated with the following quote, attributed to John Firth: ``You shall know a word by the company it keeps.'' For example, when someone talks about a \textit{river}, they may also mention \textit{water} or \textit{bank} (as in river bank), helping the listener correctly decode the intended meaning. Or, from the quote, you are able to interpret \textit{company} as referring to other words in the sentence, and not a \textit{business}, based on the earlier context.
@@ -108,9 +106,8 @@ By connecting usage to meaning, this allows for an approximation or representati
 %% skip-gram is similar to masked token prediction -- using the bi-directional context, predict the masked target.
 Broadly speaking, to construct a co-occurrence matrix, we must iterate across every sentence in the document or training corpora, where we iterate across each word and count the co-occurrences with the surrounding context. Each word is iterated as the `label' or `target', while the surrounding words serve as the `context'. A window size is defined, which designates how many words to include in the `context'. This context can be either unidirectional, using the preceding text, or bidirectional, using all surrounding context. Once the whole training corpora has been processed, the result is a co-occurrence matrix where each cell represents the raw co-occurrence counts for a given label-context pair.
 
-
 % Also good but needs to be broken out a bit more into parts and definitions.  In particular for PPMI
-Not every word is used with the same frequency. Similar to our document embeddings, some determiners (`the', `a') may be over-represented and skew the co-occurrence matrix. If these type of \emph{stopwords} were not removed, we can change the weight of different contexts. Therefore, a positive-pointwise mutual information (PPMI) transform is often used to weight the matrix. 
+Not every word is used with the same frequency. Similar to our document embeddings, some determiners (`the', `a') may be over-represented and skew the co-occurrence matrix. If these type of \emph{stopwords} were not removed, we can change the weight of different contexts. Therefore, a positive-pointwise mutual information (PPMI) transform is often used to weight the matrix. Lenci~\cite{lenci2018distributional} explains PPMI as measuring ``how much the probability of a target-context pair estimated in the training corpus is higher than the probability we should expect if the target and the context occurred independently of one another.''
 
 In other words, PPMI weights the co-occurrence values to avoid word-frequency-bias in embeddings. Words like ``the'' and ``a'' that should not be considered meaningful in terms of co-occurrence are down-weighted. Less frequent words on the other, like ``platitude'' or ``espresso'', that are more meaningful in terms of co-occurrences, are up-weighted. The result is a set of \textit{n}-dimensional vectors for a set of words, which are referred to as ``word embeddings.'' For a more in-depth explanation and discussion of word embeddings and distributional semantics, see \cite{lenci2018distributional}.
 
@@ -124,10 +121,15 @@ Therefore, the general method of evaluation is by collecting a set of human judg
 There are a variety of gold standards that have been used across the field, such as WordSim-353 \cite{finkelstein2001placing, agirre2009study}, however, recent models have already reached or surpassed human performance on these tasks.
 
 % Ellis we should discuss this and unpack
-Due to this, Hill and colleagues set out to create a gold standard that separates similarity from association (previous standards had ignored the distinction \cite{hill2015simlex}). For example, ``car'' and ``tire'' would be considered associated but not similar, while ``glasses'' and ``spectacles''
+Since the models had reached the theoretical performance ceiling based on the gold standards, it was problematic for the field; how would future changes or improvements be evaluated if performance was already at the max?
+In response to this, Felix Hill and colleagues \cite{hill2015simlex} set out to create a gold standard that separates similarity from association (previous standards had ignored the distinction) and therefore create a better gold standard that points the way forward for development. 
+
+In brief, association and similarity are two different concepts. Association refers to a relatedness between two concepts, whereas similarity refers almost to synonymy. A major point in their paper \cite{hill2015simlex} is that these two concepts can be separated.
+For example, ``car'' and ``tire'' would be considered associated but not similar, while ``glasses'' and ``spectacles'' would be similar.
+Interested individuals can read the paper for a more in-depth discussion and model comparison. This issue has become less prominent with the advent of BERT and LLMs.
 
 While different algorithms may improve the model performance and similarity to our own semantic representations, the corpus quality also has an impact on model performance.
-Larger training corpora generally improve the quality of the derived embeddings. 
+Larger training corpora generally improve the quality of the derived embeddings, since the increased amount of data ideally adds more context to be processed. 
 GloVe embeddings are trained on various training corpora, varying from 1 billion tokens to 42 billion tokens \cite{pennington2014glove}.
 
 Beside the amount or size of the training corpora, the type of documents is also important; training solely on works of fiction would lead to different embeddings than a model trained on non-fiction, and so on. It is important to consider the meaning you are trying to capture (generalized or specific to a field, such as medical documents).
