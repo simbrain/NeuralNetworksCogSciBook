@@ -1,0 +1,689 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+%\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\addtolength{\textwidth}{3.75in}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\begin{document}
+
+%% 1 --> 1 Network
+\begin{center}
+\begin{tabular}{| c || c | }
+\cline{1-2}
+\multicolumn{1}{| c || }{inputs}
+ & \multicolumn{1}{c|}{targets} \\
+\hline
+  $x_1$  & $t_1$  \\
+\hline
+  1 & -1  \\
+\hline
+ .5 & -.5  \\
+\hline
+ 0 & 0 \\
+\hline
+-1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\bigskip
+\bigskip
+
+
+%% 2-->1 Network
+
+\begin{center}
+\begin{tabular}{| c | c || c | }
+\cline{1-3}
+\multicolumn{2}{| c || }{inputs}
+ & \multicolumn{1}{c|}{targets} \\
+\hline
+  $x_1$  & $x_2$ & $t_1$  \\
+\hline
+  2 & 1 & 1  \\
+\hline
+ 3 & 1.5 & 1  \\
+\hline
+ 1 & 3 & 0 \\
+\hline
+ 2 & 3 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+\bigskip
+\bigskip
+
+\begin{center}
+\begin{tabular}{| c | }
+\hline
+  outputs  \\
+\hline
+  $y_1$ \\
+\hline
+  1   \\
+\hline
+ 1  \\
+\hline
+ 0 \\
+\hline
+ 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\bigskip
+\bigskip
+
+
+%% 3->2 Network
+
+\begin{center}
+\begin{tabular}{| c | c | c || c | c | }
+\cline{1-5}
+\multicolumn{3}{| c || }{inputs}
+ & \multicolumn{2}{c |}{targets} \\
+\hline
+  $x_1$  & $x_2$ & $x_3$ & $t_1$ & $t_2$  \\
+\hline
+  1 & 0 & 0 & .2 & .4   \\
+\hline
+ 0 & 1 & 0 & .5 & .7  \\
+\hline
+ 1 & 0 & 1 & .6 & .7  \\
+\hline
+ 0 & 1 & 1 & .8 & 1  \\
+\hline
+\end{tabular}
+\end{center}
+
+\bigskip
+\bigskip
+
+
+\begin{center}
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{outputs}\\
+\hline
+  $y_1$  & $y_2$  \\
+\hline
+  1 & 3  \\
+\hline
+ 2 & -2  \\
+\hline
+ 3 & 4 \\
+\hline
+ 4 & 3 \\
+\hline
+\end{tabular}
+\end{center}
+
+\bigskip
+\bigskip
+
+Suppose this is our training dataset:
+
+\begin{center}
+\begin{tabular}{| c | c | c || c | c | }
+\hline
+  $x_1$ & $x_2$  & $x_3$  & $t_1$  & $t_2$  \\
+\hline
+  1  & 0  & 0  & 1  & -1  \\
+\hline
+  1  & 1 & 0  & -1  & 1  \\
+\hline
+  0  & 1  &1  & 1  & 1  \\
+\hline
+\end{tabular}
+\end{center}
+Notice that $R = 3$, $N=3$, and $M=2$. Now suppose we have a neural network that we want to train on this data. The network has 3 inputs and 2 outputs and we show it those three inputs, and it produces $(0,0)$ every time. So these are our outputs:
+
+\begin{center}
+\begin{tabular}{| c | c | }
+\hline
+  $y_1$ & $y_2$ \\
+\hline
+  0  & 0  \\
+\hline
+  0  & 0  \\
+\hline
+  0  & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+% Exercise format. More questions.
+To compute SSE we need to through every row, compare each targets with its corresponding output (each of these is one error), square the result, and then add these errors together and divide by the number of rows. So we have:
+\begin{eqnarray*}
+SSE =  (1-0)^2 + (- 1-0)^2 + (-1-0)^2 + (1- 0)^2 + (1-0)^2 + (1 - 0)^2 =  \\ 
+1 + 1 + 1 + 1 + 1 + 1 = 6
+\end{eqnarray*}
+So for this network and this training set, $SSE = 6$. The is intuitively obvious since every output for every row is ``wrong'' by 1, and there are 2 outputs for each of 3 rows. And that's terrible!  Our network is doing a terrible job. 
+
+Now suppose we train the network a bit, and it starts doing better. So now these are the outputs:
+\begin{center}
+\begin{tabular}{| c | c | }
+\hline
+  $y_1$ & $y_2$ \\
+\hline
+  .5  & -1  \\
+\hline
+  -1 & .5  \\
+\hline
+  .8  & 1 \\
+\hline
+\end{tabular}
+\end{center}
+Better!  Now we have:
+\begin{eqnarray*}
+SSE =  (1-.5)^2 + (-1-(-1))^2 + (-1-(-1))^2 + (1- .5)^2 + (1-.8)^2 + (1 - 1)^2 =  \\ 
+.5^2 + 0^2 + 0^2 + .5^2 + .2^2 + 0^2 =  \\ 
+.25 + .25 + .04 = .54
+\end{eqnarray*}
+Error has gotten lower, which is the goal of supervised learning!
+
+
+%% Error Computation
+$\left(\;
+\begin{tabular}{| c | }
+\hline
+  targets  \\
+\hline
+  $t_1$ \\
+\hline
+  0   \\
+\hline
+ 1  \\
+\hline
+ 0 \\
+\hline
+ 1 \\
+\hline
+\end{tabular}
+-
+\begin{tabular}{| c | }
+\hline
+  outputs  \\
+\hline
+  $o_1$ \\
+\hline
+  0   \\
+\hline
+ 1  \\
+\hline
+ 0 \\
+\hline
+ 1 \\
+\hline
+\end{tabular}
+\; \right)^2$
+=
+$\left(\;
+\begin{tabular}{| c | }
+\hline
+  errors  \\
+\hline
+0 - 0   \\
+\hline
+1 - 1  \\
+\hline
+0 - 0 \\
+\hline
+1 - 1 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+\begin{tabular}{| c | }
+\hline
+  1   \\
+\hline
+ 1  \\
+\hline
+ 0 \\
+\hline
+ 0 \\
+\hline
+\end{tabular}
+
+\bigskip
+\bigskip
+
+%% Error Computation 1-1 low error
+
+$\sum_R$
+$\left(\;
+\begin{tabular}{| c | }
+\hline
+  targets  \\
+\hline
+  1   \\
+\hline
+ 2  \\
+\hline
+ 3 \\
+\hline
+ 4 \\
+\hline
+\end{tabular}
+-
+\begin{tabular}{| c | }
+\hline
+  outputs  \\
+\hline
+  .9   \\
+\hline
+ 1.9  \\
+\hline
+ 2.9 \\
+\hline
+ 3.9 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+$\sum_R$
+$\left(\;
+\begin{tabular}{| c | }
+\hline
+  errors  \\
+\hline
+1 - .9   \\
+\hline
+2 - 1.9  \\
+\hline
+3 - 2.9 \\
+\hline
+4 - 3.9 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+$\sum_R$
+$\left(\;
+\begin{tabular}{| c | }
+\hline
+  errors  \\
+\hline
+.1   \\
+\hline
+.1  \\
+\hline
+.1 \\
+\hline
+.1 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+$\sum_R$
+\begin{tabular}{| c | }
+\hline
+.01   \\
+\hline
+ .01  \\
+\hline
+ .01 \\
+\hline
+ .01 \\
+\hline
+\end{tabular}
+$=.01+.01+.01+.01=.04$
+\bigskip
+\bigskip
+
+%% Error Computation 2-2 low error
+
+$\sum_R$
+$\left(\;
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{|c | }{targets} \\
+\hline
+1\;&0\\
+\hline
+0\;&1\\
+\hline
+1\;&0\\
+\hline
+0\;&1\\
+\hline
+\end{tabular}
+-
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{outputs} \\
+\hline
+  .8 & 0  \\
+\hline
+ 0 & 1  \\
+\hline
+ 1 & 0 \\
+\hline
+ 0 & .9 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+$\sum_R$
+$\left(\;
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{errors} \\
+\hline
+1-.8 & 0-0  \\
+\hline
+ 0-0 & 1-1  \\
+\hline
+ 1-1 & 0-0 \\
+\hline
+ 0-0 & 1-.9 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+$\sum_R$
+$\left(\;
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{errors} \\
+\hline
+ .2 & 0  \\
+\hline
+ 0 & 0  \\
+\hline
+ 0 & 0 \\
+\hline
+ 0 & .1 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+$\sum_R$
+$\left(\;
+\begin{tabular}{c}
+$ (.2, 0) \bullet  (.2, 0)$  \\
+$(0, 0) \bullet  (0, 0)$  \\
+$(0, 0) \bullet  (0, 0)$ \\
+$(.1, 0) \bullet  (.1, 0)$ \\
+\end{tabular}
+\; \right)$
+$=.04+0+0+.01=.05$
+\bigskip
+\bigskip
+
+%% Error Computation 2-2 high error
+
+$\sum_R$
+$\left(\;
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{targets} \\
+\hline
+ 1\; & 0  \\
+\hline
+0\; & 1  \\
+\hline
+1\; & 0 \\
+\hline
+0\; & 1 \\
+\hline
+\end{tabular}
+-
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{outputs} \\
+\hline
+  1 & 1  \\
+\hline
+ 1 & 1  \\
+\hline
+ 1 &1 \\
+\hline
+ 1 & 1 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+$\sum_R$
+$\left(\;
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{errors} \\
+\hline
+ 1-1 & 0-1  \\
+\hline
+ 0-1 & 1-1  \\
+\hline
+ 1-1 & 0-1 \\
+\hline
+ 0-1 & 1-1 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+$\sum_R$
+$\left(\;
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{errors} \\
+\hline
+ 0 & -1  \\
+\hline
+ -1 & 0  \\
+\hline
+ 0 & -1 \\
+\hline
+ -1 & 0 \\
+\hline
+\end{tabular}
+\; \right)^2$
+$=$
+$\sum_R$
+$\left(\;
+\begin{tabular}{c}
+$ (0, -1) \bullet  (0, -1)$  \\
+$(-1, 0) \bullet  (-1, 0)$  \\
+$(0, -1) \bullet  (0, -1)$ \\
+$(-1, 0)\bullet  (-1, 0)$ \\
+\end{tabular}
+\; \right)$
+$=1+1+1+1=4$
+
+
+\bigskip
+\bigskip
+
+%
+% For datasetTypes.png
+%
+
+\begin{tabular}{| c | c | c | }
+\cline{1-3}
+\multicolumn{3}{| c | }{Inputs}\\
+\hline
+1 & 0 & 0 \\
+\hline
+0 & 1  & 0 \\
+\hline
+0 & 0  & 1\\
+\hline
+1 & 0  & 1\\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{Outputs}\\
+\hline
+ .5 & 0  \\
+\hline
+ 0 & .5  \\
+\hline
+ -1 & -.5 \\
+\hline
+ -1 & -.5 \\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{| c | c | }
+\cline{1-2}
+\multicolumn{2}{| c | }{Targets}\\
+\hline
+ 1 & 0  \\
+\hline
+ 0 & 1  \\
+\hline
+ -1 & -1 \\
+\hline
+ -1 & -1 \\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{| c | c | c || c | c | }
+\hline
+\multicolumn{3}{| c || }{Inputs}
+ & \multicolumn{2}{c|}{Targets} \\
+\hline
+1 & 0 & 0 & 1 & 0  \\
+\hline
+0 & 1  & 0 & 0 & 1  \\
+\hline
+0 & 0  & 1 & -1 & -1 \\
+\hline
+1 & 0  & 1 & -1 & -1 \\
+\hline
+\end{tabular}
+
+\bigskip
+\bigskip
+
+%
+% For vectorValuedFunction.png $f(x,y,z) = (z+y+x, z-y-x)$
+%
+\begin{tabular}{| c | c | c || c | c | }
+\hline
+\multicolumn{3}{| c || }{Inputs}
+ & \multicolumn{2}{c|}{Outputs} \\
+\hline
+0 & 0 & 0 & 0 & 0  \\
+\hline
+1 & 0  & 0 & 1 & -1  \\
+\hline
+1 & 1  & 1 & 3 & -1 \\
+\hline
+0 & 0  & 1 & 1 & 1 \\
+\hline
+1 & 2  & 3 & 6 & 0 \\
+\hline
+\end{tabular}
+
+\bigskip
+\bigskip
+
+%
+% For Video
+%
+\begin{tabular}{| c | c | c || c | c | }
+\hline
+\multicolumn{3}{| c || }{Inputs}
+ & \multicolumn{2}{c|}{Outputs} \\
+\hline
+1 & 0 & 0 & .5 & 0  \\
+\hline
+0 & 1  & 0 & 0 & .5  \\
+\hline
+0 & 0  & 1 & -1 & -.5 \\
+\hline
+1 & 0  & 1 & -1 & -.5 \\
+\hline
+\end{tabular}
+
+\bigskip
+\bigskip
+
+% Training dataset for classification task
+\begin{tabular}{| c | c | c || c | c | }
+\hline
+\multicolumn{3}{| c || }{Inputs}
+ & \multicolumn{2}{c|}{Targets} \\
+\hline
+1 & 0 & 0 & 1 & 0  \\
+\hline
+0 & 1  & 0 & 0 & 1  \\
+\hline
+0 & 0  & 1 & 1 & 1 \\
+\hline
+\end{tabular}
+
+\bigskip
+\bigskip
+
+% Training dataset for regression task
+\begin{tabular}{| c | c | c || c | c | }
+\hline
+\multicolumn{3}{| c || }{Inputs}
+ & \multicolumn{2}{c|}{Targets} \\
+\hline
+1 & 0 & 0 & .2 & .8  \\
+\hline
+0 & 1  & 0 & .7 & .3  \\
+\hline
+0 & 0  & 1 & .2 & .2 \\
+\hline
+\end{tabular}
+
+\bigskip
+\bigskip
+
+% Training dataset for xor
+\begin{tabular}{| c | c || c | }
+\hline
+\multicolumn{2}{| c || }{Inputs}
+ & \multicolumn{1}{c|}{Targets} \\
+\hline
+0 & 0 & 0  \\
+\hline
+1 & 0 & 1  \\
+\hline
+0 & 1 & 1  \\
+\hline
+1 & 1 & 0  \\
+\hline
+\end{tabular}
+
+
+%% 3->2 Hebb Network
+
+\begin{center}
+\begin{tabular}{| c | c | c || c | c | }
+\cline{1-5}
+\multicolumn{3}{| c || }{inputs}
+ & \multicolumn{2}{c |}{targets} \\
+\hline
+  1 & 0 & 0 & 1 & .4   \\
+\hline
+ 0 & 1 & 0 & .8 & .3  \\
+\hline
+ 0 & 0 & 1 & .5 & .7  \\
+\hline
+\end{tabular}
+\end{center}
+
+\bigskip
+\bigskip
+
+\end{document}  
+
+
+\bigskip
+\bigskip
+
