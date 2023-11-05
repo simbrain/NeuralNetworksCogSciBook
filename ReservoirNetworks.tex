@@ -8,8 +8,9 @@
 % Reservoir like a hidden layer
 % Use quote from Mondares: ``"The word liquid in the name comes from the analogy drawn to dropping a stone into a still body of water or other liquid. The falling stone will generate ripples in the liquid. The input (motion of the falling stone) has been converted into a spatio-temporal pattern of liquid displacement (ripples)." (Links to an external site.)Links to an external site.''
 
+% Discuss spectral radius? Easy to use in Simbrain 4.  Good to be slightly less than 1. http://danielrapp.github.io/rnn-spectral-radius/
 
-% Discuss spectral radius? Easy to use in Simbrain.  Good to be slightly less than 1. http://danielrapp.github.io/rnn-spectral-radius/
+% The reservoir itself is not often trained, but it can be. A cool example, the allostatic update rule (Falandays et. al). Include pictures
 
 Another approach to training recurrent networks is to, in essence, \emph{not train them at all}, using a technique known as \glossary{reservoir computing}. RNNs offer a suite of advantages over their feed-forward cousins owing to their potential ability to store information about past stimuli which is made possible by recurrent connectivity. Because feedback connections exist, the current state of the nodes in the recurrent portion of the network (and any information it contains about prior inputs or states) becomes part of the input in determining the next state of those nodes. They become ideal, then, for processing time-series data (as opposed to simple pattern association tasks). 
 

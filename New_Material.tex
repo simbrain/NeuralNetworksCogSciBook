@@ -69,19 +69,20 @@ In Simbrain 4.0, we have designed the representation of activation vectors and w
 
 \subsection{Tensors}
 
-A tensor is a generalization of the concept of a vector that encompasses numbers, arrays of numbers, matrices (2d arrays of numbers), arrays of matrices, arrays of these arrays, etc. The rank of a  tensor is the number of indices it takes to specify an ``entry'' in it. These are sometimes called ndarrays.  
+A tensor is a generalization of the concept of a vector that encompasses numbers, arrays of numbers, matrices (2d arrays of numbers), arrays of matrices, arrays of these arrays, etc. The rank of a  tensor is the number of indices it takes to specify an ``entry'' in it. These are sometimes called ``n-dimensional arrays'' or ``n-d arrays'' (1d array, 2d array, etc.), and in some ways this latter terminology (which is commonly used in libraries like numpy and torch) is preferable, because it clearly signals that we are talking about neural network data structures, rather than the abstract tensors used in mathematics. 
 
-A number is rank 0 because it requires no indices.  The number 42 is a rank 0 tensor, but nobody talks about it that way. 
+A number is a rank 0 tensor or 0d array because it requires no indices.  The number 42 is a rank 0 tensor, a 0d array, but nobody talks about it that way.  
 
-A vector is rank 1 because it takes one index to specify an entry in a vector.  The vector $(0,1,0)$ is a rank 1 tensor, because it takes one index to specify entries, but people usually just call it a vector. A 1D array of numbers..
+A vector is rank 1 tensor or 1d array because it takes one index to specify an entry in a vector, and the result is spread out in one dimension.  The vector $(0,1,0)$ is a rank 1 tensor, because it takes one index to specify entries, but people usually just call it a vector. A 1D array of numbers..
 
-A matrix is rank 2, because it takes two numbers to specify an entry (a row and column). A 2D array of numbers. We've seen lots of examples of this.
+A matrix is a rank 2 tensors or 2d array, because it takes two numbers to specify an entry (a row and column), and the result is spread out in two dimensions. A 2D array of numbers. We've seen lots of examples of this.
 
-An array of matrices is rank 3, because it takes 3 indices to specify an entry. A 3D array. A common example of this is the representation of an image, which requires several channels of 2d information, several ``copies'' of a pixel array.  For example, an RGB color image that is 20 pixels wide (20 columns) and 40 pixels tall (40 rows) is represented by three matrices (red, green, and blue) of shape $40 \times 20$.  Thus the whole image is represented by a tensor with shape $(3,40,20)$. Channel by width by height.  Another example here is a set of feature maps in a convolutional networks. Each one represents the input layer in a different way, and the whole layer is a set of these features maps, a rank 3 tensor. Occasionally a rank 3 tensor is also thought of as a ``volume'' (imagine a stack of matrices, a prism).
+An set of matrices is a rank 3 tensor or 3d array, because it takes 3 indices to specify an entry and the result is a kind of volume spread out in 3 dimensions, like a Rubik's cube. A common example of this is the representation of an image, which requires several channels of 2d information, several ``copies'' of a pixel array.  For example, an RGB color image that is 20 pixels wide (20 columns) and 40 pixels tall (40 rows) is represented by three matrices (red, green, and blue) of shape $40 \times 20$. Thus the whole image is represented by a tensor with shape $(3,40,20)$. Channel by width by height.  Another example here is a set of feature maps in a convolutional networks. Each feature map represents outputs of the previous layer in a different way, and the whole layer is a set of these features maps, a rank 3 tensor. Occasionally a rank 3 tensor is also thought of as a ``volume'' (imagine a stack of matrices, a prism).
+
  
- A rank 4 tensor is an array of arrays of matrices, a 4D array of numbers.  For example, consider a batch of 100 RGB images, that will be used to train a model. That is, a set of 100 images. That would be a rank 4 tensor with shape $(100,3,20,40)$. It takes 4 indices to get a single number out of the tensor.   But we can also pull out individual images, rows or columns of these individual images, etc.
+ A rank 4 tensor or 4d array is a set of arrays of matrices, a 4D array of numbers. It takes 4 indices to specify an entry and the result is a set or ``batch'' of volumes. The word batch is often used here because we are often deal with batches of training data.  For example, consider a batch of 100 RGB images, that will be used to train a model. That is, a set of 100 images. That would be a rank 4 tensor with shape $(100,3,20,40)$. It takes 4 indices to get a single number out of the tensor.  But we can also pull out individual images, rows or columns of these individual images, etc.
  
- % Rank 5 tensor examples: batch size x time steps x height x width x channels.  Brain scan. Each brain scan is 3d and it's color so there are channels. So a batch of thos.  
+ % Rank 5 tensor examples: batch size x time steps x height x width x channels.  Brain scan. Each brain scan is 3d and it's color so there are channels. So a batch of those.
  
  I'm not sure if this is standard, but it's tempting to think of the indices as batch-number, channel number, row number, column number. Just use the standard applications.
  % GPT: Different deep learning frameworks might have different default orderings. For example, TensorFlow typically uses the "channels-last" format you described, whereas PyTorch and some other frameworks use a "channels-first" format: batch size x channels x height x width. Always check the documentation or conventions for the specific framework you're using.
@@ -107,7 +108,7 @@ When applying the rule, a change in a weight $w_{i,j}$ is equal to the product o
 \begin{eqnarray*}
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
 \end{eqnarray*}
-Since $(t_j - a_j)$ is row error  (with a small ``e''), the rule says that the change in a weight is equal to a learning rate times the activation of the input node for that weight, times the error. This should make some intuitive sense. As we saw above in the goldilocks discussion, for positive inputs weights should be changed in the direction of row error. The input scales things so they work for positive or negative inputs and so that changes are bigger for bigger inputs, and the learning rate allows us to control how quickly learning happens. 
+Since $(t_j - a_j)$ is error  (with a small ``e''), the rule says that the change in a weight is equal to a learning rate times the activation of the input node for that weight, times the error. This should make some intuitive sense. As we saw above in the goldilocks discussion, for positive inputs weights should be changed in the direction of error. The input scales things so they work for positive or negative inputs and so that changes are bigger for bigger inputs, and the learning rate allows us to control how quickly learning happens. 
 
 LMS also changes the bias $b_j$ of an output node $j$ as follows: 
 \begin{eqnarray*}
@@ -118,7 +119,7 @@ That is, the change in a bias for a node $j$ is just the learning rate times the
 Applying the rule involves two stages at each iteration. First, a ``forward pass'', where we compute the output of the network for a given input pattern. This is the normal activation update we've been talking about in past chapters, for a feed-forward network. We set the inputs, and apply the update rules to get the output activations. In our simple case here the main thing we are getting is just the activations $a_j$.  With multi-layer  networks we will propagate through many layers to get all the hidden activations and finally the output activation. 
 
 % Backward refs
-Second, a ``parameter update'' pass. At this point we have an  input-output pair, an ``output dataset'' with one row.  This allows us to compare the actual output with the target value, and compute what we called row error. We can then use the row error $ (t_j - a_j)$ to apply the rule and get weight and bias update values, which we then apply to all the parameters, all the weights and biases.\footnote{With one weight layer networks using LMS this is simple, but later with many layered networks there is a bit more involved, and in fact there is a process of multiplying the row errors backwards through the weights, which is a kind of ``backward pass'' and where the name ``backpropagation'' comes from.}
+Second, a ``parameter update'' pass. At this point we have an  input-output pair, an ``output dataset'' with one row.  This allows us to compare the actual output with the target value, and compute error. We can then use this error $ (t_j - a_j)$ to apply the rule and get weight and bias update values, which we then apply to all the parameters, all the weights and biases.\footnote{With one weight layer networks using LMS this is simple, but later with many layered networks there is a bit more involved, and in fact there is a process of multiplying the errors backwards through the weights, which is a kind of ``backward pass'' and where the name ``backpropagation'' comes from.}
 
 We are in the scalar case of one output node, and just considering one input-output pair. But the full algorithm involves changing many output nodes, and doing it for many output pairs.  We have also not considered what happens when the output activation function is something besides unbounded linear. We'll add these cases step by step in the chapter, but it's helpful to start off simple.
 
@@ -128,17 +129,17 @@ We are in the scalar case of one output node, and just considering one input-out
 
 The plan here will be to give an intuitive feel for the algorithm in a simple case, and then to derive it, and then to add in the details (bias and activation functions) as optional sections, and then to do it for the vector case.
 
-We start with scalar values, the case of a single target. We have a bunch of data, saying what the network did (outputs) and what we wanted it to do (targets). So we have row error, but where the rows have one column for output and one for target. So our row error is just one value. The row error is target value minus the actual output, $e = t-a$. These errors are the main thing to think about at first. 
+We start with scalar values, the case of a single target. We have a bunch of data, saying what the network did (outputs) and what we wanted it to do (targets). So we have error, but where the rows have one column for output and one for target. So our error is just one value. The error is target value minus the actual output, $e = t-a$. These errors are the main thing to think about at first. 
 
 Think of this as a  {\bf Goldilocks principle}: just as someone might keep heating and cooling porridge until it is just right--way too hot, cool it a bunch, oh now a bit too cold, heat it a bit, ahh now just right. stop changing things... we increase and decrease parameters until overall error is just right.\footnote{A useful picture showing how this method leads to a decision boundary that correctly classifies all training examples is here: \url{https://commons.wikimedia.org/wiki/File:Perceptron_example.svg}.} The math ends up making this work.
 
-%Intuitively, the algorithm works like this (for positive valued inputs). If the output is too high, the error is negative. For example, if I wanted 4 but got 5, row error is $4-5 = -1$. I have to make the weights and bias a little bit lower to make the output lower. On the other hand, if the output is too low, the error is positive. For example, if I wanted 5 but got 4, error is $5-4 = 1$. I have to make the weights and bias a little larger. (Notice that multiplying the weights by the row error would send us in the right direction, and that larger errors will lead to larger weight changes). If the output is just right, don't change anything. By incrementally changing the weights and biases in this way, the network slowly learns to produce the correct response to all inputs.
+%Intuitively, the algorithm works like this (for positive valued inputs). If the output is too high, the error is negative. For example, if I wanted 4 but got 5, error is $4-5 = -1$. I have to make the weights and bias a little bit lower to make the output lower. On the other hand, if the output is too low, the error is positive. For example, if I wanted 5 but got 4, error is $5-4 = 1$. I have to make the weights and bias a little larger. (Notice that multiplying the weights by the error would send us in the right direction, and that larger errors will lead to larger weight changes). If the output is just right, don't change anything. By incrementally changing the weights and biases in this way, the network slowly learns to produce the correct response to all inputs.
  
 Recall the rule:
 \begin{eqnarray*}
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
 \end{eqnarray*}
-Since $(t_j - a_j)$ is row error  (with a small ``e''), the rule says that the change in a weight is equal to a learning rate times the activation of the input node for that weight, times the error. This should make some intuitive sense in Goldilocks terms. Let's consider each factor of this rule: the row error and the source activation, separately.
+Since $(t_j - a_j)$ is error  (with a small ``e''), the rule says that the change in a weight is equal to a learning rate times the activation of the input node for that weight, times the error. This should make some intuitive sense in Goldilocks terms. Let's consider each factor of this rule: the error and the source activation, separately.
 
 % Wait, cohere this with the fact that we go opposite the gradient. It's in the derivation sectio but cohere it here.
 First, the error tells us what direction to change the parameters in, which makes sense:
@@ -263,28 +264,28 @@ This tells us, for any given value of $w$, what the squared error will be. That 
 
 However, computing this all by hand can be  a pain, especially as we consider more parameters and a larger training set, so you can also make a little computer program to do it.  Here is the idea. Make a function
 
-\subsection{Code for an error function}
-
-(These subsections put the code in a separate place. Rather than psuedocode, we'll use python code, which is like executable pseudocode)
-
-Rather than working out an equations like this every time imagine we have a function that take an output dataset, a weight, and bias, and returns the sum of the squared error. Here is some python code that does that, for a case where the output dataset just has one input per row, where 0 is the index for the first column (inputs) and 1 is the index for the second column (targets):
-
-\begin{center}
-\begin{minipage}{0.5\textwidth}
-\begin{verbatim}
-def sse(dataset, weight, bias):
-    error = 0
-    for row in dataset:
-        aj = row[0] * weight + bias
-        tj = row[1]
-        row_error = tj - aj
-        error += row_error * row_error
-    return error
-\end{verbatim}
-\end{minipage}
-\end{center}
-
-You can use this code with a fixed weight value and an array of bias values to produce an error surface for biases, or a fixed bias value and an array of weight values to produce an error surface for weights (that is what we did above for a bias of 0), or pass in an array of both weights and biases and then plot a 2d error surface for weights and biases both.
+%\subsection{Code for an error function}
+%
+%(These subsections put the code in a separate place. Rather than psuedocode, we'll use python code, which is like executable pseudocode)
+%
+%Rather than working out an equations like this every time imagine we have a function that take an output dataset, a weight, and bias, and returns the sum of the squared error. Here is some python code that does that, for a case where the output dataset just has one input per row, where 0 is the index for the first column (inputs) and 1 is the index for the second column (targets):
+%
+%\begin{center}
+%\begin{minipage}{0.5\textwidth}
+%\begin{verbatim}
+%def sse(dataset, weight, bias):
+%    error = 0
+%    for row in dataset:
+%        aj = row[0] * weight + bias
+%        tj = row[1]
+%        row_error = tj - aj
+%        error += row_error * row_error
+%    return error
+%\end{verbatim}
+%\end{minipage}
+%\end{center}
+%
+%You can use this code with a fixed weight value and an array of bias values to produce an error surface for biases, or a fixed bias value and an array of weight values to produce an error surface for weights (that is what we did above for a bias of 0), or pass in an array of both weights and biases and then plot a 2d error surface for weights and biases both.
 
 %	Exercises
 %	- Mod the script so that it shows how error changes with training set. Try to find a set where min error is not 0
@@ -301,9 +302,9 @@ That is, the change in a bias for a node $j$ is just the learning rate times the
 
 This one really makes sense in terms of Goldilocks. If the output is too high, make the bias smaller, if it is too low, make the bias higher. It does not respond to inputs, so you can't usually train a network on bias alone, but it does get the adjustments right. An exercise you can do is trying to update the bias only, the weights only, and then both (as the algorithm does), just by coding this all up and then commenting out the bias update line and the weight update line in your code. See how it does in each case.
 
-\subsection{Deriving the rule with calculus}
+\subsection{Derivation of the LMS rule}
 
-All this can be shown with calculus. It's really kind of amazing to turn the crank on the calculus, and see how it all works out giving us the rule above,  with all the intuitive meaning. Run through the calculus, and we get our rule, which we saw above makes sense!
+All this can be shown using calculus. It's kind of amazing to turn the crank on the calculus, and see how it all works out giving us the rule above, with all the intuitive meaning. Run through the calculus, and we get our rule, which we saw above makes sense!
 
 Conceptually, we are using the derivative of the error space. Since it's multi-dimensional, we call the derivative a gradient in this case. The gradient is a vector that points in the direction of change. 
 
@@ -313,24 +314,24 @@ We want to change the weight so that error is reduced. Let's leave the bias out 
 \frac{dE}{dw_{1,2}} (t - a_2)^2
 \end{eqnarray*}
 
-Unpacking $a_2$, we get
+Recall that $a_2 =  a_1 w_{1,2} + b_2$. Substituting, we get
 \begin{eqnarray*}
 \frac{dE}{dw_{1,2}} (t - ( a_1 w_{1,2} + b_2))^2 
 \end{eqnarray*}
 
-Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), we get
+Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), and substituting again, we get
 
 \begin{eqnarray*}
-\frac{dE}{dw_{1,2}} = 2 (t - a_1 w_{1,2} - b_2) (-a_1) = -2 a_1 (t - a_2)
+\frac{dE}{dw_{1,2}} = 2 (t - a_1 w_{1,2} - b_2) (-a_1) =   2 (t - a_2) (-a_1)  = -2 a_1 (t - a_2)
 \end{eqnarray*}
 
-And since $t - a_2$ is row error $e$ we get
+And since $t - a_2$ is error $e$ we get
 
 \begin{eqnarray*}
 \frac{dE}{dw_{1,2}} = -2 e a_1
 \end{eqnarray*}
 
-This says that the change in error with respect to the weight is given by error time source activation times a constant. The 2 can be ignored, since we can think of as being absorbed into the learning rate. Also, this gradient points up in the direction of error getting bigger. But we want to go in the opposite direction, where it gets smaller. So we multiply this gradient by $-1$, changing its sign. And so our learning rule is 
+This says that the change in error with respect to the weight is given by error time source activation times a constant. The 2 can be ignored, since we can think of as being absorbed into the learning rate. Also, this gradient points in the direction of error increasing. But we want to go in the opposite direction, so that error is reduced. So we multiply this gradient by $-1$, changing its sign. And so our learning rule is 
 
 \begin{eqnarray*}
 \Delta w_{1,2}  =  \epsilon a_1 e  = \epsilon a_1 (t - a_2)
@@ -447,7 +448,7 @@ To add bias updates in, we just vectorize the bias update rule, which has the sa
 \Delta \mathbf{b}  =  \epsilon (\mathbf{t} - \mathbf{a}_{out})
 \end{eqnarray*}
 
-So at each iteration, we change the bias vector just in the direction of the row error vector. Remember goldilocks.  When things are too hot, cool them down. Etc.
+So at each iteration, we change the bias vector just in the direction of the error vector. Remember goldilocks.  When things are too hot, cool them down. Etc.
 
 \subsection{Activation functions}
 
@@ -458,7 +459,7 @@ The full LMS rule also involves a derivative on the activation function.  These 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.75\textwidth]{images/graph_binary4.pdf}
+\includegraphics[width=0.75\textwidth]{images/graph_binary.pdf}
 \caption[Jeff Yoshimi.]{The activation functions. The derivative is either 0 or the slope or close to the slope in most cases. }
 \label{derivativesActFunctions}
 \end{figure}
@@ -499,3 +500,100 @@ We take a column of errors (targets - outputs), and scale each component by the 
 \end{eqnarray*}
 
 All of these vector operations should be familiar. For the application of $f$, it's just a matter of apply it to each component of the vector.  For example, if $f(x) = x+1$ then $f(1,2) = (2,3)$. $f'$ is just a function so it can be applied in this way to a vector.
+
+\section{New Material for Hebbian Update}
+
+We've seen how the Hebb rule works for scalar values. Nice and easy: if they fire together, wire together; source times target activations.  The situation is the same when we vectorize the rule, but now we have activation vectors $\mathbf{a}_{\text{in}}$ and $\mathbf{a}_{\text{out}}$, and we have to find a vector operations that ``lines up'' the right components of the two vectors so that we strengthen the right ones.  Here is a preview: multiply the output activation column vector times the input row vector (the input transposed, since we assume columns to start), and out pops what we're looking for. 
+
+So, as usual in the vector world, things end up feeling kind of backwards, we multiply output times input rather than the other way around, and there is this mysterious transpose thrown in.  But if we go back to the ``bridge'' panel of the figure above, it ends up making sense. Figure \ref{vectorizedHebb} shows the idea. I like to start in the center panel, and then (to link to the linear algebra) think of the mentally moving the output vector to the left and moving the input vector to the top. Then we have a kind of outer product representation, and all the products kind of line up in the right way. 
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{images/vectorizedHebb.png}
+\caption[Jeff Yoshimi.]{Using our visual conventions to conceptualized the vectorized Hebb rule,}
+\label{vectorizedHebb}
+\end{figure}
+
+ As a slogan: output column times input row gives you a weight matrix.
+
+As a sanity check in the example, check the shapes. We ahve a $3 \times 1$ output vector times a $1 \times 2$ row vectors, which gives us a weight matrix (or weight matrix delta) in the correct shape: $3 \times 2$. This is sometimes called an outer product.
+So the vectorized Hebb rule is: 
+
+% Be consistent about symbol for learning rate
+
+Ok, so here is the vectorized Hebb rule:
+
+\begin{eqnarray*}
+\Delta \mathbf{w}  = \epsilon \mathbf{a}_{\text{out}} \mathbf{a}_{\text{in}} ^T
+\end{eqnarray*}
+Remember, by default all vectors in bold face are column vectors.  So this is a column vector (the output activation  $\mathbf{a}_{\text{out}}$) times a row vector (the input activations) which produces a matrix in the same shape as the weight matrix. Again, it feels backwards: we go from target to source (rather than source to target), just to get things in the right format.
+
+The Hebb rule can also be vectorized. Suppose we have an input vector $\mathbf{x} = (1, -1)$, and an output vector $\mathbf{y} = (1,0,1)$. Remember, on an output-input representation, the weight matrix connecting them is $3 \times 2$. So our weight updates, assuming a learning rate of 1, correspond to all the connections between the entries in these two vectors. 
+
+Here is an example
+%\[
+%\Delta \mathbf{w}  = 
+%\begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}
+%\begin{pmatrix} 1 & -1 \end{pmatrix}
+%=
+%\begin{pmatrix}
+%    1 & -1 \\
+%    0 & 0 \\
+%    1 & -1
+%\end{pmatrix}
+%\]
+
+
+Our values are
+\begin{equation*}
+\epsilon = 1 \; \; \; \; \\
+\mathbf{a}_{\text{in}} = \begin{bmatrix} 1 \\ -1 \end{bmatrix} \\ 
+\; \; \mathbf{a}_{\text{out}} = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}
+\end{equation*}
+
+Then the equation is (Once they are lined up like this it's kind of easy to ``see'' what is happening, especially in the bridge picture; all the cross points multiply)
+
+\begin{align*}
+\Delta \mathbf{w}  = 1
+\begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} 
+\begin{bmatrix} -1 & 1 \end{bmatrix} 
+= \begin{bmatrix} 1 \cdot -1 & 1 \cdot 1 \\ 0 \cdot -1 & 0 \cdot 1 \\ 1 \cdot -1 & 1 \cdot 1 \end{bmatrix} 
+= \begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix}
+\end{align*}
+
+So we get
+
+\begin{align*}
+\mathbf{w} + \Delta \mathbf{w}  =
+\begin{bmatrix} 0 & 0 \\ 0 & 0 \\  0  & 0  \end{bmatrix} +
+\begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix} =
+\begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix}
+\end{align*}
+
+Iterate again (assuming we are clamping the nodes; if we weren't the output activations would also be changing) and get
+
+
+\begin{align*}
+\mathbf{w} + \Delta \mathbf{w}  =
+\begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix} +
+\begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix} =
+\begin{bmatrix} -2 & 2 \\ 0 & 0 \\  -2 & 2  \end{bmatrix}
+\end{align*}
+
+ Keep iterating and the entries at the top and bottom right will explode to positive infinity, and the top and bottom right will explode to negative infinity. This can be seen graphically in the Simbrain neuron array representation.
+ 
+Try some other numbers and verify that as you repeatedly iterate, error will get smaller.
+
+% TODO: Redraw a new pic just for vectorized hebb with all the right colors and values
+
+
+\section{Backprop}
+
+So this is the same thing, we take row error and use it the same way at the output row, but have to do a bit more work to get the hidden layers.
+
+In terms of applications to cognitive science, there is this old work from Zipser that can be used to justify it!
+
+\section{Batches}
+
+This can all be done in pure linear algebra. But it can also be done in a looping way, that might be easier to learn. Then again good to be good with the weight multiplications. Not sure which is best. Maybe both?
