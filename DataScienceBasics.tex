@@ -161,6 +161,7 @@ On the other hand, sometimes the specific inputs a neural network is trained on 
 % Try to work in Iris assignment as well
 This issue also comes up in neural networks. When you train a network on a labeled dataset, it can learn to be very good at predicting the target data you provide it. However, it might end up being \emph{too} finely tuned on that data and thus fail to do well with new data. This is called \emph{overfitting}. We want to build models that are not overfit to the data they were trained on. We want them to do well not just on the data we trained them on, but also on new data they have never seen. How well does the network generalize to new data?  This is also referred to as ``out of sample'' performance (how well does a model do outside of the same data it was trained on). We train a network on 30 cars, and then test it on a new car it's never seen before. Or we train a network to classify 100 letters, but then we give it new letters it's never seen before. A good network can generalize from what it's been trained on, to new data.
 
+% Validation is a more intuitive term than test
 To deal with this issue, we partition a labeled dataset into two subsets. We train the network on one subset of data and then test it on another set of data that we have ``held out'' to see how well the network generalizes. These two subsets are a training subset and a testing subset of a labeled dataset.
 
 A \glossary{training subset} or \emph{training dataset} or \emph{training data} is a subset of a labeled dataset used for training your model.
