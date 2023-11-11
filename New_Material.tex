@@ -1,8 +1,6 @@
 \chapter{New Material}
 \chapterauthor{Jeff Yoshimi}
 
-% This document is broken into two parts, since I am assigning it to a few students in two stages. The first document is the material that is ready to go now.  The second is the material that I am still developing.
-
 This document contains notes for additions that will eventually be made to the book, in particular to supplement changes and new features in Simbrain 4. Chapter and section headings correspond to where in the book the new material will be placed. This material is very rough. Corrections. and comments welcome.
 
 \section{New Material for Linear Algebra Chapter}
@@ -93,11 +91,9 @@ People also say 3d tensor, 4d tensor etc.  That refers to the shape of the data 
 
 There are a lot of great technical discussions of this (citations). But the goal here in this book is intuition, trying to get a \emph{feel} for these things, so you can reason about them and think about how they might apply to cognitive science. 
 
-\subsection{Historical notes}
+(Most of this can be removed since it's already been added to the main chapter, but some stuff is still different so leaving it here for now).
 
 Our goal in this chapter is the backprop model. That's the crown jewel. All other models can be thought of as instances of that one model. It is used to train feed forward networks using gradient descent. From Rosenblatt up to GPT 3, all models are variants on it. It's a big class. But here is some of the history.
-
-The earliest model, Rosenblatt's perceptron (link) is one main weight layer, with binary outputs, focused on classification tasks. This involves a customized learning rule, the perception learning algorithm, which has an if-then condition which, when true (that is, when the model mis-classifies a sample), applies something like standard form of gradient descent algorithm (in fact, if sigmoids with a steep slope are used then a one-weight layer backprop network  approaches the perception as a limiting case). The next class of models, associated with Widroff and Hoff, allowed continuous valued outputs and could solve regression tasks. This was also known as the delta rule or adalines or madalines (there are some differences here, but they are pretty close). This is pretty much the same as backprop, but for one weight layer. The next major advance was allowing for multiple layers, as discussed in the main text, and that is what we now know as backprop. Still, 
 
 \subsection{The Algorithm}
 
@@ -158,87 +154,7 @@ Also, negative source activations will make the weight change change sign as wel
 This is like a variant on the Hebb rule. Hebb said, just change the weight based on the product of source and target. Fire together wire together. That has use for detecting patterns of correlation between input and output. Make the output reflect those correlations. But now we say something different. We change weight based on the product of source activation and the error. We in a sense correlate with the error, which reduces the error, until the error is close to 0.
 
 One last way to think of this is in terms of statistical concepts. We can think of LMS as repeatedly testing the network and correcting for false positives (the output is too high; a ``type 1'' error) and false negatives (the output is too low; a ``type 2'' error) until the error rate is as low as possible. This analysis makes mmost sense for classification tasks with binary variables.
- 
-\subsection{Example}\label{lms_example}
-
-In this example and in subsequent practice questions, assume we have a  simple 1-1 feed-forward network (as in the left panel of figure \extref{tables_nets}), and that the slope of the output node is 1 and bias is 0. So we have two nodes, with activations $a_1$ and $a_2$, and a weight $w_{1,2}$. We also assume a very simple labeled dataset with a single row: one input value and one corresponding target value. That is:
-\begin{center}
-\begin{tabular}{| c || c | }
-\cline{1-2}
-\multicolumn{1}{| c || }{inputs}
- & \multicolumn{1}{c|}{targets} \\
-\hline
-  1 & 2  \\
-\hline
-\end{tabular}
-\end{center}
-We label the target value $t$. We will not consider updates to the bias term. As in the discussion of the Hebb rule (chapter \extref{ch_unsupervised}), we use the prime symbol $'$ to indicate a variable after a delta term has been applied.
-
-% Explicitly explain that a prime means next time step, for all variables
-We can now work out a complete example, and in the process see how LMS implements gradient descent. Suppose we are given:
-\begin{eqnarray*}
-& a_1 = 1 \\
-& w_{1,2} = 1.5 \\
-& b_2 = 0 \\
-& t = 2  \\
-& \epsilon = .5  \\
-\end{eqnarray*}
-With this information we can determine: (1) the output activation $a_2$ of the network (our ``forward pass''), (2) SSE, (3) the updated weight value at the next time step, which we designate $w_{1,2}'$, (4) the output activation $a_2'$, and (5) error at the next time step, SSE$'$. We can then repeat these steps and check to see that SSE is reduced over time, which moves us down the error surface for this task, which is shown in Fig. \ref{error_lms}.
-
-(1) The network will produce a $1.5$ in response to an input of $1$, since the input activation is $1$, the weight is $1.5$, and $1 \cdot 1.5 = 1.5$ (we are, again, assuming output bias of 0 and slope of 1). 
-
-(2) SSE for these simple networks and labeled datasets is very easy, since there is just one row, one target value, and one output value. That is,  SSE $= (t - a_2)^2$ or in this case $(2-1.5)^2 = .5^2 = .25$. Notice that this puts us at the point $(1.5,.25)$ in the graph in Fig. \ref{error_lms}.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.5\textwidth]{images/error_lms.png}
-\caption[Jeff Yoshimi.]{Gradient descent on the error surface for the LMS example discussed in Section. \ref{lms_example}. As the LMS rule is applied the weight strength changes in a way that minimizes sum squared error.}
-\label{error_lms}
-\end{figure}
-
-(3) Applying the formula above
-\begin{eqnarray*}
-\Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
-\end{eqnarray*}
-we get
-\begin{eqnarray*}
-\Delta w_{1,2}  =  .5 \cdot 1 \cdot (2- 1.5) = .25
-\end{eqnarray*}
-We then use $\Delta w$ to update the weight value from its old value of 1.5, so that
-\begin{eqnarray*}
-w_{1,2}' = w_{1,2} + \Delta w_{1,2}  = 1.5 +.25  = 1.75
-\end{eqnarray*}
-So our new weight value is 1.75. 
-
-(4) With this new weight, the network produces an output  $a_2' = 1 \cdot 1.75 = 1.75$. 
-
-(5) The squared error is now $(2-1.75)^2=.25^2=.0625$, whereas before it was $.25$. So we have moved to the point $(1.75,.0625)$ in the graph  of the error surface in Fig. \ref{error_lms}. An improvement!  We have moved lower on the error curve; we have descended the error gradient.
-
-In subsequent time steps we get:
-
-\begin{eqnarray*}
-w_{1,2}'' = 1.75 + .5 \cdot 1 \cdot (2 - 1.75) = 1.875 \\
-w_{1,2}''' = 1.875 + .5 \cdot 1 \cdot (2 - 1.875) = 1. 9375 \\
-\end{eqnarray*}
-As you can see, applying this rule leads to SSE getting lower and lower, and the output getting closer and closer to the desired output of 2. Ten successive points on the error curve are shown in figure \ref{error_lms}.
-
-%\subsection{Example}
-%
-%Ok to understand this better, let's work an example:
-%
-%\begin{eqnarray*}
-%& a_1 = 1 \\
-%& w_{1,2} = 1.5 \\
-%& t = 2  \\
-%& b_2 = 0 \\
-%& \epsilon = .5  \\
-%\end{eqnarray*}
-%
-%% We have a function sse(training-data, weights, biases). It goes through and computes error for each row of the training data, and sums it. What we can do to make plots is set a weight, and then consider all the biases, or set a bias, and consider all weights. Or allow both weights and biases to vary
-%
-%Assume a linear unbounded activation function, i.e activation is just net input. We'll come back to this throughout this chapter.
-
-\subsection{Computing error surfaces}
+ \subsection{Computing error surfaces}
 
 A brief interlude to discuss these error surfaces, like the one in \ref{error_lms} and how the algorithm ends up going down the gradient. It may help to think about how that was created? Since we were only looking at a single target value and error relative to a single weight, it can actually be computed by hand. In the example, squared error is
 

@@ -1,46 +1,55 @@
-\chapter{Supervised Learning in Feed Forward Networks}\label{ch_supervised_ff}
+\chapter{Least Mean Squares and Backprop}\label{ch_supervised_ff}
 \chapterauthor{Jeff Yoshimi}
 	
-Having introduced supervised learning in chapter \extref{ch_supervised}, in this chapter we consider several supervised learning algorithms for feedforward networks in depth, and consider their implications for cognitive science. First, an early form of supervised learning called the ``Least Mean Squares rule'' or ``LMS rule''. Second, backpropagation, which adds a powerful method of learning \emph{internal representations} in a neural network. Finally, we show how even though these networks were mainly developed in engineering contexts, they have been used in connectionism  and computational cognitive science to study the  kinds of representations that humans develop to do things like recognize faces.
+Having introduced supervised learning in chapter \extref{ch_supervised}, in this chapter we consider several supervised learning algorithms for feedforward networks in depth, and consider their implications for cognitive science. First, an early form of supervised learning called the ``Least Mean Squares rule'' or ``LMS rule''.  The remarkable thing about LMS is that almost all of the advancements in the area of neural networks in recent years arguably involve variations on this one simple algorithm, that allow it to solve increasingly complex problems. LMS itself is limited insofar as it can only be used to train networks with one weight layer. This takes us to a second algorithm, backpropagation or ``backprop'', which extends LMS in a way that allows it to be used to train many-layered networks.  The hidden layers of a feedforward network develop \emph{internal representations}, which remap the input space of a neural network in useful and often psychologically realistic ways.
 
 \section{Least Mean Squares Rule}\label{lms_rule}
 
-We now consider our first supervised learning algorithm in detail: the \glossary{Least Mean Square}s rule or ``LMS'' or ``Delta rule'', which uses a form of gradient descent to minimize the error on a training set. It makes a nice contrast with Hebbian learning. We have seen that repeated application of the Hebb rule tends to force weights to go to their maximum or minimum values. LMS is more stable: as we will see, repeated application of LMS shifts weights and biases incrementally up and down until they settle in on just the right values.\footnote{This rule is also known as the ``Widrow-Hoff'' rule, or the ``Delta Rule.'' It is a descendent of Rosenblatt's perceptron learning rule (\cite{rosenblatt1960perceptron}; also see chapter \extref{ch_history}). Rosenblatt's rule computed error using the output of a node with a threshold activation function on classification tasks. Since both targets and outputs were either 0 or 1, this led to weight and bias updates that were ``jittery'' and sometimes unstable. Widrow and Hoff made a slight change to the rule, computing the error based on how far the target values were from the weighted input, which varied continuously. This made learning smoother and more reliable. It also allowed the rule to be used on a broader class of problems, including classification and regression problems. Widrow and Hoff built a device that used the rule called an ``Adaline''. The Delta rule can be shown to be equivalent to ordinary least squares regression, which is why the phrase ``least mean squares'' is used. Terminology  in this  area is not entirely consistent. For example, any network trained by LMS is often called a ``Perceptron''. }  
-% See personal notes and update this and / or history ch.
+We now consider our first supervised learning algorithm in detail: the \glossary{Least Mean Square}s rule or ``LMS'' or ``Delta rule'', which uses a form of gradient descent to minimize the error on a training set. It makes a nice contrast with Hebbian learning. Although the rule itself is similar in form, it is \emph{adaptive}.  While repeated application of the Hebb rule forces weights to explode to maximum or minimum values, LMS follows the Goldilocks principle and let's the weights zoom in on target values until the output is just right.\footnote{This rule is a descendent of Rosenblatt's perceptrons (\cite{rosenblatt1960perceptron}; also see chapter \extref{ch_history}), which had one weight layer and a single binary output that was applied to classification tasks.  His perceptron learning algorithm involved an if-then rule which would apply a form of gradient descent if an input was misclassified. Since both targets and outputs were thresholded binary units, this led to weight and bias updates that were ``jittery'' and sometimes unstable. The LMS rule, associated with Widrow and Hoff, was similar to the perceptron learning rule but worked with linear or sigmoidal outputs. (This is a natural progression insofar as a sigmoidal activation function can approximate a threshold activation function when the slope at the inflection point is steep enough). It was derived using calculus by finding the derivative of a point on an error surface over parameter space, and updating the parameters in a direction that led to error reduction (see section \extref{sect_gradient_descent}). It thus replaced the effort to create learning rules using intuition with a principled mathematical way of deriving learning rules mathematically. The same mathematical methods are still in use today and have enabled many of the incredible advances that have occurred in the field. Note that terminology  in this  area is not entirely consistent. For example, any network trained by LMS is often called a ``Perceptron''. }  
+% If this improves enough consider promoting to main text
 
 Note that LMS is an algorithm that only works with 2-layer networks. It cannot be directly applied to multi-layer networks. That is an important limitation that is overcome by backprop, as we will see.
 % For linear networks, it does not matter how many layers they are, they are the same. 
 % Any linearly separable problem can be solved with this algorithm. The perceptron convergence theorem.
 
-LMS follows the template from section \extref{SupervisedFirstPass}:  begin with  random parameters (weights and biases), iterate through each of the input patterns, compute outputs (this is sometimes called a ``forward pass''), and compare these outputs with desired or target outputs. That is, compute a set of row errors and then an overall error. Then, the weights and biases are adjusted in a way that reduces overall error, using gradient descent.  Weights and biases are changed in such a way that overall error decreases. The next time the network sees the same input vectors again, it should produce outputs on each node that are closer to the desired values.
-% Discuss in a footnote (here  or above) convex optimization and how there is always a global minimum.
-% https://towardsdatascience.com/understanding-convexity-why-gradient-descent-works-for-linear-regression-aaf763308708
-
-Intuitively, the algorithm works like this (for positive valued inputs). If the output is too high, the error is negative. For example, if I wanted 4 but got 5, row error is $4-5 = -1$. I have to make the weights and bias a little bit lower to make the output lower. On the other hand, if the output is too low, the error is positive. For example, if I wanted 5 but got 4, error is $5-4 = 1$. I have to make the weights and bias a little larger. (Notice that multiplying the weights by the row error would send us in the right direction, and that larger errors will lead to larger weight changes). If the output is just right, don't change anything. By incrementally changing the weights and biases in this way, the network slowly learns to produce the correct response to all inputs. Think of this as a kind of {\bf Goldilocks principle}: just as someone might keep heating and cooling porridge until it is just right, we increase and decrease parameters until overall error is just right.\footnote{A useful picture showing how this method leads to a decision boundary that correctly classifies all training examples is here: \url{https://commons.wikimedia.org/wiki/File:Perceptron_example.svg}.}
-% We can also think of this as a process of repeatedly testing the network and correcting for false positives (the output is too high; a ``type 1'' error) and false negatives (the output is too low; a ``type 2'' error) until the error rate is as low as possible. This analysis really only makes sense for binary variables and thus classification tasks. But it's useful to mention, once qualified.
- 
-\subsection{The Algorithm}
-
-Now we can describe the LMS rule, and verify that it causes the weights to change a such a way that the sum of squared errors (SSE) gets lower over time.\footnote{We will not formally derive it, or state the algorithm in its full generality. However, the derivation is not too difficult: the key step involves taking the derivative of the error function with respect to a weight (how much is error changing as a function of that particular weight). A brief derivation is at \url{https://en.wikipedia.org/wiki/Delta_rule} and a more detailed discussion is at \url{http://uni-obuda.hu/users/fuller.robert/delta.pdf}.}
-
-% It's like Hebb but instead of target node we have error on target node. 
-When applying the rule, a change in a weight $w_{i,j}$ is equal to the product of a learning rate $\epsilon$, the activation of the input node to that weight, $a_i$, and the difference between a desired and actual activation ($t_j - a_j$) for that node:
+LMS follows the template from section \extref{SupervisedFirstPass}: begin with random parameters (weights and biases), iterate through each of the input patterns, compute errors, and use these to errors to update weights and biases in such a way that error is reduced. We will focus on the case of a single linear output node here. \footnote{We will not formally derive it, or state the algorithm in its full generality. However, the derivation is not too difficult: the key step involves taking the derivative of the error function with respect to a weight (how much is error changing as a function of that particular weight). A brief derivation is at \url{https://en.wikipedia.org/wiki/Delta_rule} and a more detailed discussion is at \url{http://uni-obuda.hu/users/fuller.robert/delta.pdf}. In subsequent planned sections we derive the rule, and extend it rule to handle many outputs, and more complex activation functions.} When applying the rule, a change in a weight $w_{i,j}$ is equal to the product of a learning rate $\epsilon$, the activation of the input node to that weight, $a_i$, and the difference between a desired and actual activation ($t_j - a_j$) for that node:
 \begin{eqnarray*}
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
 \end{eqnarray*}
-Since $(t_j - a_j)$ is row error  (with a small ``e''), the rule says that the change in a weight is equal to a learning rate times the activation of the input node for that weight, times the error. This should make some intuitive sense. As we saw above in the goldilocks discussion, for positive inputs weights should be changed in the direction of row error. The input scales things so they work for positive or negative inputs and so that changes are bigger for bigger inputs, and the learning rate allows us to control how quickly learning happens. 
+Since $(t_j - a_j)$ is error  (with a small ``e''), the rule says that the change in a weight is equal to a learning rate times the activation of the input node for that weight, times the error (that is, $\Delta w_{i,j}  =  \epsilon a_i e_j$),  This means that for positive inputs, weights are changed in the direction of error.\footnote{The input scales things so they work for positive or negative inputs and so that changes are bigger for bigger inputs, and the learning rate allows us to control how quickly learning happens. Even though we are giving interpretations for each factor in the rule, it can be derived purely from calculus.} Notice that the form of the rule is identical to the Hebb rule, except with output activation replaced by error. 
 
-LMS also changes the bias $b_j$ of an output node $j$ as follows: 
+LMS changes the bias $b_j$ of an output node $j$ as follows: 
 \begin{eqnarray*}
 \Delta b_j  =  \epsilon (t_j - a_j)
 \end{eqnarray*}
 That is, the change in a bias for a node $j$ is just the learning rate times the error on output node $j$.\footnote{Note that this is really the same as the weight change rule, if we think of the bias in terms another input neuron, clamped at 1, and attached to this output neuron by a modifiable weight (which is in effect the bias).}
 
-Applying the rule involves two stages at each iteration. First, a ``forward pass'', where we compute the output of the network for a given input pattern. Then a ``backward pass'' or ``weight update'' pass where we compute the error for each output node (how close was the node's output to the target value?) and then use this error to change its fan-in weights and its bias. Then we repeat the process for every output node on every input pattern, until we have worked our way through the whole training set. 
+% The new_material doc contains additional material here, but I'm not sure it's useful. 
 
-% Talk about how divergence looks in this kind of case. And add some practice examples that show it happening. E.g. Given a1 = -3, w12=4, t = 0, epsilon = 1, what is w12'?
+The LMS rule directly instantiates the Goldilocks principle. When heating up soup, or a bath, or a room, we adjust up and down based on errors.\footnote{In fact, the LMS rule is comparable to a bunch of thermostats, one for each output node of a network, where the targets correspond to the settings on the thermostats.} Oh, it's too cold, let's heat it up. Oh wait, now it's too hot, cool it down. Ok now it's perfect, stop changing things, it's just right. In a similar way here we increase and decrease parameters until error is as low as possible. Consider how this works in a few cases where we assume a positive input:
+\begin{itemize}
+\item Target is 2 and output is 1. Output is too low. Error is $2-1 = 1$ and so we make the weight stronger.
+\item Target is 1 and output is 2. Output is too high. Error is $1-2 = -1$ and so we make the weight weaker.
+\item Target is 1 and output is 1. Output is just right. Error is $1-1 = 0$ and so we don't change a thing.
+\end{itemize}
 
-\subsection{Example}\label{lms_example}
+% This material is useful but not ready for prime time yet
+%We also end up multiplying by the source value? Why? Well, think about it, again in the two cases.
+%\begin{enumerate}
+%\item Large source activation. This is making a big change in the output. So we want any change to the weight and bias to be proportional to the source activation. The output was too high, and this source activation is large, so we want to make the change in the weight large, to compensate for the large activation
+%\item Small source activation. The output was too high, but this source activation was not high, so we just change things a bit. It's contributing less to the problem.
+%\end{enumerate}
+%Also, negative source activations will make the weight change change sign as well, so that we make changes in the right direction. % TODO: Examples
+
+%This is like a variant on the Hebb rule. Hebb said, just change the weight based on the product of source and target. Neurons that fire together wire together. That has use for detecting patterns of correlation between input and output. Make the output reflect those correlations. But now we say something different. We change weight based on the product of source activation and the error. We in a sense correlate with the error, which reduces the error, until the error is close to 0.
+%
+%One last way to think of this is in terms of statistical concepts. We can think of LMS as repeatedly testing the network and correcting for false positives (the output is too high; a ``type 1'' error) and false negatives (the output is too low; a ``type 2'' error) until the error rate is as low as possible. This analysis makes mmost sense for classification tasks with binary variables.
+
+% Discuss in a footnote (here  or above) convex optimization and how there is always a global minimum.
+% https://towardsdatascience.com/understanding-convexity-why-gradient-descent-works-for-linear-regression-aaf763308708
+
+
+\section{LMS Example}\label{lms_example}
 
 In this example and in subsequent practice questions, assume we have a  simple 1-1 feed-forward network  (as in the left panel of figure \extref{tables_nets}), and that the slope of the output node is 1 and bias is 0. So we have two nodes, with activations $a_1$ and $a_2$, and a weight $w_{1,2}$. We also assume a very simple labeled dataset with a single row: one input value and one corresponding target value. That is:
 \begin{center}
@@ -102,58 +111,6 @@ w_{1,2}''' = 1.875 + .5 \cdot 1 \cdot (2 - 1.875) = 1. 9375 \\
 \end{eqnarray*}
 As you can see, applying this rule leads to SSE getting lower and lower, and the output getting closer and closer to the desired output of 2. Ten successive points on the error curve are shown in figure \ref{error_lms}.
 
-\subsection{Practice Questions}
-
-% Consider adding the deltas too, as a separate question
-
-\newcounter{LMSCounter}
-
-\noindent
-\stepcounter{LMSCounter}
-{\bf \theLMSCounter.}  Given $a_1 = 2 ,w_{1,2} = 2 ,t = 3 ,\epsilon = .25$, what are $a_2$, $SSE$, $w_{1,2}'$, $a_2'$, and SSE$'$? \\
-{\bf Answer:}  \\
-(1) $a_2 = a_1 \cdot w_{1,2} = 2 \cdot 2 = 4$ \\
-(2) SSE = $(t-a_2)^2 = (3-4)^2 = (-1)^2 = 1$ \\
-(3) $w_{1,2}' = w_{1,2} + \Delta w_{1,2}  = 2 +  \epsilon a_1 (t_2 - a_2) = 2 + (.25 \cdot 2 \cdot (3 - 4)) = 2+(-.5) = 1.5$\\
-(4) $a_2' =  a_1 \cdot w_{1,2}' = 2 \cdot 1.5 = 3$ \\
-(5) SSE$' = (3-3)^2 = 0$
-\bigskip
-
-\noindent
-\stepcounter{LMSCounter}
-{\bf \theLMSCounter.}  Given $a_1 = 2 ,w_{1,2} = 3, t = 5 ,\epsilon = .1$, what are $a_2$, $SSE$, $w_{1,2}'$, $a_2'$, and SSE$'$? \\
-{\bf Answer:} \\
-(1) $a_2 = 2 \cdot 3 = 6$ \\
-(2) SSE $= (5-6)^2 = (-1)^2 = 1$ \\
-(3) $w_{1,2}' = 3 + (.1 \cdot 2 \cdot (5-6)) = 3 + (-.2) = 2.8$ \\
-(4) $a_2' = 2 \cdot 2.8= 5.6$ \\
-(5) SSE$' = (5-5.6)^2 = .36$
-\bigskip
-
-\noindent
-\stepcounter{LMSCounter}
-{\bf \theLMSCounter.}  Given $a_1 = -1 ,w_{1,2} = 1, t = -2 ,\epsilon = .25$, what are $a_2$, $SSE$, $w_{1,2}'$, $a_2'$, and SSE$'$? \\
-{\bf Answer:} \\
-(1) $a_2 = -1$ \\
-(2) SSE $= 1$ \\
-(3) $w_{1,2}' = 1 + (.25 \cdot -1 \cdot (-2-(-1))) = 1 + .25 = 1.25$ \\
-(4) $a_2' = -1.25$ \\
-(5) SSE$' = (-2 - (-1.25))^2 = .56$
-\bigskip
-
-\noindent
-\stepcounter{LMSCounter}
-{\bf \theLMSCounter.}  Given $a_1 = 3 ,w_{1,2} = -.5, t = .8 ,\epsilon = .1$, what are $a_2$, $SSE$, $w_{1,2}'$, $a_2'$, and SSE$'$? \\
-{\bf Answer:} \\
-(1) $a_2 = -1.5$ \\
-(2) SSE $= 5.29$ \\
-(3) $w_{1,2}' = .19$ \\
-(4) $a_2' = .57$ \\
-(5) SSE$' = .053$
-\bigskip
-
-% Add some questions involving multiple inputs, and changing biases
-
 \section{Linearly Separable and Inseparable Problems}
 \label{linearlySeparable}
 
@@ -207,32 +164,31 @@ Once algorithms were discovered that could be used to train multi-layer networks
 
 \section{Backprop}\label{backprop}
 
-In this section we cover what was (at least until recently) the best known form of supervised learning: \glossary{backpropagation} ( or ``backprop''). Backpropagation is a powerful extension of the Least Mean Square  technique. As we saw, LMS only works for two-layer networks with linear activation functions. Backprop works for a much broader class of networks, in particular networks with non-linear (in particular, sigmoidal) activation functions and one or more hidden layers. As we will see, these hidden layers allow a network to transform inputs into different types of representation, and in doing so makes them quite powerful, and also psychologically interesting. 
-%They do so by developing complex internal representations that map the input vectors (points in the input space) to hidden unit vectors (points in the hidden unit space). 
+In this section we cover what was is probably the best known form of supervised learning: \glossary{backpropagation} (or ``backprop''). Backpropagation is a powerful extension of the Least Mean Square  technique. As we saw, LMS only works for two-layer networks. Backprop works for a much broader class of networks, in particular networks with non-linear activation functions containing one or more hidden layers. As we will see, these hidden layers allow a network to transform inputs into different types of representation, and in doing so makes them quite powerful (almost all modern neural networks use variants of backprop), and also psychologically interesting. 
 
-Backprop can be thought of as a generalization of the LMS technique or ``Delta rule'' described in Section \ref{lms_rule}. In fact backprop is sometimes called the ``generalized delta rule.'' This rule had been proposed as early as the late 1960s / early 1970s \cite{bryson1969applied, werbos1974beyond} and was independently discovered by several theorists in the 1980s \cite{le1986learning, parker1985learning}. It was popularized by Rumelhart, McClelland, and Williams in the late 1980s \cite{rumelhart1986parallel}. The discovery and popularization of backprop led to a revival of interest in neural networks in the 1980s and 1990s, following the ``dark ages'' of the 1970s (again, see chapter \extref{ch_history}).
+Backprop can be thought of as a generalization of the LMS technique or ``Delta rule'' described in the last few sections. In fact, backprop is sometimes called the ``generalized delta rule.'' This rule had been proposed as early as the late 1960s / early 1970s \cite{bryson1969applied, werbos1974beyond} and was independently discovered by several theorists in the 1980s \cite{le1986learning, parker1985learning}. It was popularized by Rumelhart, McClelland, and Williams in the late 1980s \cite{rumelhart1986parallel}. The discovery and popularization of backprop led to a revival of interest in neural networks in the 1980s and 1990s, following the ``dark ages'' of the 1970s (again, see chapter \extref{ch_history}).
 
-\subsection{An Informal Account of the Algorithm}
+We will not cover the details of the backpropagation algorithm here\footnote{Though, as with the details LMS, a detailed discussion of backprop is being planned now.}, but will instead describe it in a qualitative way. In fact, it is identical to LMS at the output layer, but adds a way to update the hidden weights. In fact, the weight updates are also almost the same, but the computation of the error is more complex, because we don't have direct access to the targets. That is, for a weight $w_{i,j}$ connecting an input node $a_i$ to a hidden layer node $a_j$, the update rule is:
+\begin{eqnarray*}
+\Delta w_{i,j}  =  \epsilon a_i e_j
+\end{eqnarray*}
+Where $e_j$ is now just a different kind of error. This error is computed by a kind of reversal of how weighted inputs are computed in forward propagation. With weighted inputs or net inputs (see \extref{ch_act_functions}) to a node are computed, input activations are multiplied by intervening weights and added together. In linear algebra terms, the dot product of an input vector and fan-in weight vector is taken. This propagates activation forward. But now, we do the reverse. We take the errors on nodes at some level of a feedforward network, and multiply them by the intervening weights with the previous layer, and add the resulting products.  That is, we backpropagate error. The idea is illustrated in figure \ref{backprop_error}. In the example shown, assume the weights from the hidden unit to the output are 1, so that the backpropped error is $2 * 1 + 0 * 1 = 2$. That error can then be used to update $w_{1,2}$ using  $\Delta w_{1,2}  =  \epsilon a_1 e_2$. Notice that all that has changed from LMS is that we got the error via this backpropagation procedure.\footnote{If $\epsilon = 1$, the weight  $w_{1,2}$ will be updated from 1 to $1 + 1 \cdot 1 \cdot 2 = 3$. This will improve $a_3$ but make $a_4$ worse (however, repeated application of the rule with a lower learning rate $\epsilon$  would reduce error).}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{images/backpropError}
+\caption[Jeff Yoshimi.]{How error is backpropagated. Output errors are multiplied by intervening weights and added together (given the numbers, we can assume the target values are $t_3 = 3$ and $t_4 = -1$). In this case assume the weights are all 1. Thus the error $e_2$ at the hidden unit $a_2$ is $2 * 1 + 0 * 1 = 2$.}
+\label{backprop_error}
+\end{figure}
 
-% Put in some of the algorithm, either in a footnote or an appendix.
-% The innovation was devising  a way to compute the derivative of the error function with respect to the hidden layer, or even multiple hidden layers.
+Intuitively, this corresponds to how much hidden unit contributes to a given output nodes' error  It's as if ``blame is assigned,'' and on this basis the weights to the hidden layer are updated.
 
-We will not cover the details of the backpropagation algorithm in this chapter but will instead describe it in a qualitative way. As with LMS, the backprop algorithm conforms with the general template described in section \extref{SupervisedFirstPass}. Roughly:
-\begin{enumerate}
-\item Initialize the parameters of the network (which now includes hidden unit weights and biases) to random values.
-\item Present an input vector from the training set.
-\item Update the network.
-\item Compute the error at each output node for this input vector (by comparing the actual output with the target output).
-\item Use this error to update the weights and biases of the network, in a way that reduces the error function (e.g. SSE).
-\end{enumerate}
-
-The big innovation with backprop was figuring out how to do the last step on the hidden layer weights and biases, though we will not cover the details here.\footnote{Roughly speaking the output errors are ``back propagated'' to the hidden unit weights and biases. It is determined to what extent each hidden unit contributes to a given output nodes' error, ``blame is assigned,'' and on this basis the weights to the hidden layer are updated. This is where the term ``backpropagation'' comes from.}  
+Since this idea works for any errors on the output of a weight layer, the rule can be applied recursively starting at the final output layer of a feedforward network and moving backwards through all previous layers. Thus it can be used to train many-layered networks. 
 
 As with LMS, backprop works by minimizing an error function with respect to a training set, so that we have gradient descent on an error surface. However, since multi-layer feed-forward networks are more complex than 2-layer networks, the error surface is more complicated. With two-layer linear networks, the error surface has a relatively simple bowl-like structure, which often has a single minimum value at the low-point of a ``bowl'' shape. With a multi-layer non-linear network, the error surface can be more complex and wavy, and there can be multiple local minima (cf. figure \extref{local_minima}). These local minima can ``trap'' the gradient descent procedure, producing sub-optimal solutions.
 
 One simple way to try to deal the issue is by re-initializing the parameters and re-running the algorithm. Each time this is done, the system moves to a different point on the error surface and tries finds the local minimum from that spot. By trying multiple times one can ``search'' for the lowest minimum possible.\footnote{Compare the way we searched for fixed points in chapter \extref{ch_dst}, by starting at different random points in state space.}  This is like dropping a marble at different spots on the error surface and comparing how low the marble goes each time. In this way we can find the lowest of several local minima (which might turn out to be the global minimum) and in this way we can try to improve a network's performance on a task. In practice, however, one uses advanced optimization techniques that do things to automatically search for a global minimum.\footnote{Currently the industry standard seems to be the ``Adam'' method: \url{https://arxiv.org/pdf/1412.6980.pdf}.}
 
-\subsection{XOR and Internal Representations}
+\section{XOR and Internal Representations}
 
 % Deep learning mention?  Ref. to cortex discussion?
 We have not described in detail how the backprop algorithm works. However, we can get insight into what it does by considering what happens in the hidden layer of a network trained using backprop. In particular, we can begin to understand how multi-layer networks, like our brains, can solve problems by remapping input spaces to hidden unit spaces that contain useful internal representations. 
@@ -334,3 +290,92 @@ Second, the sounds the networks produced could be artificially synthesized and p
 % Expand on the semantic cognition book with a few more paragraphs. It's got very simple and  compelling examples. Maybe also add the development book out of UCSD. 
 
 % In another example, due to Hinton, backprop was used to train a network to describe relationships between members of two families, one American and one Italian. The network could be asked a question like ``who was Sophia's sister". The network developed hidden layer nodes that  represented whether a given person was Italian or American, and whether a person was first-generation, second-generation, etc. Using this information the network could draw inferences. What is interesting is that it developed these representations of nationality and generation without being told to \cite{hinton1986learning}.
+
+\section{LMS Exercises}
+
+% If more questions are added, the name of the section can change or new sections can be added
+
+\newcounter{LMSCounter}
+
+% Error and delta-w
+
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = 1, t_2 = 4, a_2 = 2, \epsilon = 1$, what are $e_2$ and $\Delta w_{1,2}$? \\
+{\bf Answer:}  \\
+(1) $e_2 = t_2 - a_2 = 4 - 2  = 2 $ \\
+(2) $\Delta w_{1,2} = \epsilon a_1 e_2 = 1 \cdot 1 \cdot  2 = 2$
+\bigskip
+
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = 1, t_2 = 1, a_2 = 2, \epsilon = 1$, what are $e_2$ and $\Delta w_{1,2}$? \\
+{\bf Answer:}  \\
+(1) $e_2 = 1 - 2  = -1 $ \\
+(2) $\Delta w_{1,2} = \epsilon a_1 e_2 = 1 \cdot 1 \cdot  -1 = -1$
+\bigskip
+
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = 1, t_2 = 2, a_2 = 2, \epsilon = 1$, what are $e_2$ and $\Delta w_{1,2}$? \\
+{\bf Answer:}  \\
+(1) $e_2 = 2 - 2  = 0 $ \\
+(2) $\Delta w_{1,2} = \epsilon a_1 e_2 = 1 \cdot 1 \cdot 0 = 0$
+\bigskip
+
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = 1, t_2 = 1, a_2 = 9, \epsilon = .25$, what are $e_2$ and $\Delta w_{1,2}$? \\
+{\bf Answer:}  \\
+(1) $e_2 = t_2 - a_2 = 1 - 9 = -8 $ \\
+(2) $\Delta w_{1,2} = \epsilon a_1 e_2 = 1 \cdot (-8) \cdot  .25 = -2$
+\bigskip
+
+
+% TODO: Bias
+
+% Combined questions
+
+
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = 1, w_{1,2} = 1, t_2 = 2,\epsilon = 1$, what are the initial activation $a_2$, error $e_2$, and $\Delta w_{1,2}$, and after one weight update, the updated weight $w_{1,2}'$, updated activation  $a_2'$ and updated error $e_2'$? \\
+{\bf Answer:}  \\
+(1) $a_2 = a_1 \cdot w_{1,2} = 1 \cdot 2 = 1$ \\
+(2) $e_2 = t_2 - a_2 = 2 - 1 = 1 $ \\
+(3) $\Delta w_{1,2} = \epsilon a_1 e_2 = 1 \cdot 1 \cdot 1 = 1$ \\
+(4) $w_{1,2}' = w_{1,2} + \Delta w_{1,2}  = 1 + 1 = 2$\\
+(5) $a_2' =  a_1 \cdot w_{1,2}' = 1 \cdot 2 = 2$\\
+(6) $e_2' = (2-2) = 0$
+\bigskip
+
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = 2, w_{1,2} = 1, t_2 = 3 ,\epsilon = .1$, what are the initial activation $a_2$, error $e_2$, and $\Delta w_{1,2}$, and after one weight update, the updated weight $w_{1,2}'$, updated activation  $a_2'$ and updated error $e_2'$? \\
+{\bf Answer:}  \\
+(1) $a_2 = a_1 \cdot w_{1,2} = 1 \cdot 2 = 2$ \\
+(2) $e_2 = t_2 - a_2 = 3 - 2 = 1 $ \\
+(3) $\Delta w_{1,2} = \epsilon a_1 e_2 = .1 \cdot 2 \cdot 1 = .2$ \\
+(4) $w_{1,2}' = w_{1,2} + \Delta w_{1,2}  = 1 + .2 = 1.2$\\
+(5) $a_2' =  a_1 \cdot w_{1,2}' = 2 \cdot 1.2 = 2.4$\\
+(6) $e_2' = (3 - 2.4) = .6$
+\bigskip
+
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = 1, w_{1,2} = 3, t_2 = 1 ,\epsilon = 1$, what are the initial and final error $e_2$ and $e_2'$ after one weight update? 
+{\bf Answer:}  \\
+(1) $e_2 =  1 - 3  = -2 $ \\
+(2) $e_2' = 1 - 1 = 0$
+\bigskip
+
+\noindent
+\stepcounter{LMSCounter}
+{\bf \theLMSCounter.}  Given $a_1 = 1, w_{1,2} = -1, t_2 = 1 ,\epsilon = 1$, what are the initial and final error $e_2$ and $e_2'$ after one weight update? 
+{\bf Answer:}  \\
+(1) $e_2 =  1 - (-1)  = 2 $ \\
+(2) $e_2' = 1 - 1 = 0$
+\bigskip
+
+
+% Add some questions involving multiple inputs, and changing biases
