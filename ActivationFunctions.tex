@@ -120,9 +120,9 @@ discrete, on-off fashion, either firing or not firing an action potential
 depending on a summation of incoming excitatory and inhibitory currents (see section \extref{simpleNeuralDynamics}).
 
    If the value of the weighted input to a threshold activation function is less 
-than or equal to a threshold value $\theta$, then the activation of a threshold 
+than a threshold value $\theta$, then the activation of a threshold 
 node takes on a lower value $\ell$. If the value of the weighted input is greater 
-than $\theta$ then the activation of a threshold node takes on an upper value 
+than or equal to $\theta$ then the activation of a threshold node takes on an upper value 
 $u$.
 \begin{eqnarray*}
     a_k = f(n_k) =  \left\{
@@ -152,7 +152,7 @@ a_k = f(n_k) = m  \cdot n_k
 \end{eqnarray*}
 $m$ is usually set to 1 so that a linear activation function is the identity function (which takes every input to itself). This means that the activation of a node when it uses a linear activation with $m = 1$ just is the weighted input to the node.
 
-A related type of activation function is a \emph{piecewise linear} function. (For this discussion we assume that $m=1$). For a piecewise linear function if the  value of the weighted input is less than $\ell$, then the activation is set to the lower value $\ell$. If the value of weighted input is greater than $u$, then the activation is set to the upper value $u$. For values between the upper and lower bound, the activation is the weighted input:
+A related type of activation function is a \emph{piecewise linear} function. (For this discussion we assume that $m=1$). For a piecewise linear function if the value of the weighted input is less than $\ell$, then the activation is set to the lower value $\ell$. If the value of weighted input is greater than $u$, then the activation is set to the upper value $u$. For values between the upper and lower bound, the activation is the weighted input:
 \begin{eqnarray*}
 a_k = f(n_k) =  
 \left\{
