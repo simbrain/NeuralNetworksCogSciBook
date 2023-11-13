@@ -56,6 +56,7 @@ First, they perform fairly well even if some synapses are removed (\glossary{gra
 
 Second, the memories you train the recurrent network on can interfere with one another. Small networks trained using \glossary{binary vector} inputs (patterns of 0's and 1's, as in see Figure \ref{binary}) cannot easily learn more than one memory. If a second pattern overlaps the first (in which case the two input vectors are not \glossary{orthogonal}), then during recall any partial version of either pattern will produce the \emph{conjunction} of the two patterns. This is sometimes called \glossary{cross talk}. To address the problem, we can use \glossary {bipolar vector} patterns (see Figures \ref{binary} and \ref{bipolar} to see how binary and bipolar patterns compare), in which the ``off'' neurons are set to -1. The reason this helps is that the network is now learning not only to recreate a pattern of correlated activations, but also to \emph{inhibit} activations inconsistent with the current pattern. The ``on'' nodes are connected to the ``off'' nodes with negative weights. Thus, during recall, activating one pattern will inhibit other patterns. This in turn makes it possible to store overlapping patterns. One pattern simultaneously represses the other. 
 % If you store two patterns with just one overlapping unit, for example, you will notice that both can be independently recalled. 
+% Add in Hopfield's trick 2V -1  here to convert binary to bipolar behind the scenes. See "Week 11 Hw (Hopfield")
 
 \begin{figure}[h]
 \centering
