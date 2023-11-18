@@ -8,7 +8,7 @@ With \glossary{supervised learning}, weights are changed using an explicit repre
 In this chapter we focus on general features of supervised learning in feed-forward networks, developing a toolkit of  techniques and visualization methods. We will need to think clearly about labelled datasets, distinguish classification from regression tasks, learn how to visualize these two kinds of task, and discuss how to compute a metric of how well our network is doing at a given time (``error''). Finally, we will need to think about error \emph{reduction} in a visual way, as downward motion on an error surface using the method of ``gradient descent'', which is basically the dynamical systems idea from chapter \extref{ch_dst} of finding attracting fixed points, but this time in weight space rather than activation space. 
 % Make a bit more of the fixed point link
 
-In chapter \extref{ch_supervised_ff}, we cover some of the main classes of algorithm in supervised learning for feed-forward networks (including deep networks), and discuss their implications for cognitive science. In chapter \extref{ch_supervised_recurrent}, we discuss how supervised learning methods can be used to train recurrent networks, and how these trained recurrent networks have illustrated ideas in cognitive science. In both cases, we will see that internal representations are often learned by these networks, which seem to be similar to those humans use in processing language, recognizing faces, and in other tasks. 
+In chapter \extref{ch_lms_backprop}, we cover some of the main classes of algorithm in supervised learning for feed-forward networks (including deep networks), and discuss their implications for cognitive science. In chapter \extref{ch_supervised_recurrent}, we discuss how supervised learning methods can be used to train recurrent networks, and how these trained recurrent networks have illustrated ideas in cognitive science. In both cases, we will see that internal representations are often learned by these networks, which seem to be similar to those humans use in processing language, recognizing faces, and in other tasks. 
 
 % Use function approximation language from Deep Learning?
 % Wiki ``Supervised learning is the machine learning task of inferring a function from labeled training data''
@@ -42,7 +42,7 @@ The way we do this with supervised learning is by using algorithms that modify t
 % \footnote{When neural networks are not being trained, weights are thus parameters in the dynamical systems sense. However, when training begins, the parameters become state variables of a new dynamical system on the weight space of the network (more on this in section \ref{sect_gradient_descent}).} 
 % The two topics come together with supervised recurrent, where we train parameters to produce a _desired_ dynamics, roughly speaking
  
-Because we start with random values for the parameters of the network, it will generally not do well at first. Its outputs won't  initially match target values. We then use a learning algorithm (several are covered in chapter \extref{ch_supervised_ff}) to incrementally update the parameters. If all goes well, the network should begin to behave in accordance with the specifications of the labeled dataset.
+Because we start with random values for the parameters of the network, it will generally not do well at first. Its outputs won't  initially match target values. We then use a learning algorithm (several are covered in chapter \extref{ch_lms_backprop}) to incrementally update the parameters. If all goes well, the network should begin to behave in accordance with the specifications of the labeled dataset.
 
 Below we refer to ``errors''  and ``overall error'', which are discussed in greater detail in Sect. \ref{sect_error}. Roughly speaking individual errors says how far away the outputs produced by a network relative to an input are from the target values for that input, and overall error combines these errors together into a single number for all the nodes and all the rows of the dataset.
 
@@ -282,6 +282,15 @@ We usually don't have a picture of an error surface. Still, we can use a program
 
  There is more to say here. A lot can go wrong, there are settings to adjust (like \emph{how far} you go at each iteration), etc. These details are studied in the mathematical field of optimization. 
  % Point to another source, preferably open access
+ 
+ \section{Expansion of these methods}
+ 
+ This chapter has described some very general features of supervised learning. The history and details of how these are applied in particular cases is spelled out in subsequent chapters.  In chapter \extref{ch_lms_backprop} we see details of this type of algorithm for the case of a simple one-weight-layer network, and then we see how backprop allowed the algorithm to be generalized to feedforward networks with more than weight layer. The key was calculus: by figuring out how to update parameters to reduce error using calculus, a systematic method for applying gradient descent to more complex networks was found.
+ 
+ % glossary items for automatic differentiation and computational graphs
+One feature of the revolution in neural networks that began around 2010 (see section \extref{deep_revolution}) is that these techniques became in a certain sense automated. Libraries were introduced that made it possible to define any kind of layer and link between layers, and as long as certain structures were defined, the calculus could be done automatically, allowing gradient descent to be used.  This is sometimes called automatic differentiation, and it can be done on an arbitrary computational graph.  That made it possible to really define all kinds of crazy networks and structures and layers and update rules and train them using tradient descent. Examples include convolutional layers (chapter \extref{ch_deep_nets}) and transformers  (chapter \extref{ch_transformers}).
+ 
+Because these methods are so powerful, it's often useful to find ways to apply them even when it seems they don't apply. For example, as we see in chapters \extref{ch_supervised_recurrent} and \extref{ch_reservoir}, there are various ways it has been possible to use these same techniques--which work best with feedforward networks--on or with recurrent networks.  
  
 \section{SSE Exercises}
 

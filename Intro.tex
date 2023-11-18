@@ -1,6 +1,7 @@
-
 \chapter{Introduction}\label{ch_intro}
 \chapterauthor{Jeff Yoshimi, Zo\"e Tosi}{.7,.3}
+
+% Need terminology for input and output to a specific weight layer. Comes up in backprop for example
 
 % Redo IAC given assignments
 % Change most italics to glossary items
@@ -44,7 +45,7 @@ The lines with filled disks at the end of them are artificial synaptic connectio
 
 What weight strength represents depends on what kind of model we are dealing with (see section \ref{typesOfResearch}). In a computational neuroscience model, it would represent \glossary{synaptic efficacy}--roughly speaking the impact a pre-synaptic neuron can have on a post-synaptic neuron after the pre-synaptic neuron fires an action potential. In a connectionist or psychological model, the strength might represent an association between concepts. In a machine learning model, there might be no direct interpretation of weight strengths at all: they are mere parameters in a statistical model that does something useful, like recognize faces in images.
 
-Node activations change in accordance with \emph{activation rules} (discussed in ch. \extref{ch_act_functions}),  and weight strengths change in accordance with \emph{learning rules} (discussed in several chapters, including chapters \extref{ch_unsupervised} and  \extref{ch_supervised_ff}). 
+Node activations change in accordance with \emph{activation rules} (discussed in ch. \extref{ch_act_functions}),  and weight strengths change in accordance with \emph{learning rules} (discussed in several chapters, including chapters \extref{ch_unsupervised} and \extref{ch_lms_backprop}). 
 
 In some models a node can also produce a \glossary{spike}, which is a discrete event that corresponds to the action potential of a neuron.\footnote{A spike is represented in Simbrain by a node and all its outgoing connections turning yellow. For an illustration of a spiking node and how it looks in Simbrain, see \url{http://www.simbrain.net/Documentation/docs/Pages/Network/neuron.html}.}  Spiking neurons have their own rules and structures, which we discuss in ch. \extref{ch_spiking}.
 
@@ -83,7 +84,7 @@ In a \glossary{recurrent network}, the nodes are interconnected in such a way th
 
 % Tensor glossary entry. By convention tensor is rank 3 (or more? and used for nodes. Check this. Each sub matrix is  features maps.  
 % Each convolutional layer is associated with a fixed set  of weights that is shared. These do different things. Their results are added together. TODO: Fix the picture so it is clear that each 2d node array in each node tensor is associated with a separate convolutional weight layer, which scans across the input.
-There are other kinds of architecture beyond the ones just mentioned. An especially popular architecture since the 2010s has been the \glossary{deep network}, which involves many layers of neurons and weights (some of them arranged into stacks or ``tensors'' at a given level), often using a special type of weight layer called a \glossary{convolutional layer}, which scans over its input to produce outputs. An example of a deep network is shown in figure \ref{deep_net}. Deep networks are discussed in more detail in chapter \extref{ch_deepNets}. Note that networks like this are so large that we can't represent each node and weight separately. Instead node layers containing thousands of nodes (or more) and weight layers containing tens of thousands  of weights (or more)  are shown as sheets or lines. This is something we have to get used to: there are different ways of drawing neural network diagrams. 
+There are other kinds of architecture beyond the ones just mentioned. An especially popular architecture since the 2010s has been the \glossary{deep network}, which involves many layers of neurons and weights (some of them arranged into stacks or ``tensors'' at a given level), often using a special type of weight layer called a \glossary{convolutional layer}, which scans over its input to produce outputs. An example of a deep network is shown in figure \ref{deep_net}. Deep networks are discussed in more detail in chapter \extref{ch_deep_nets}. Note that networks like this are so large that we can't represent each node and weight separately. Instead node layers containing thousands of nodes (or more) and weight layers containing tens of thousands  of weights (or more)  are shown as sheets or lines. This is something we have to get used to: there are different ways of drawing neural network diagrams. 
 
 \begin{figure}[h]
 \centering
@@ -134,6 +135,8 @@ However, this did not just happen by luck. We had to train the network. To see t
 
 \subsection{Comparison with classical computation}
 
+% TODO: Add a discussion of AI here and how the term "AI" has changed. Classically it refers to this kind of contrast case.  The point is currently in the first footnote but a bit more historical context could be added here.
+
 We can use the 3-object detector to illustrate certain  general properties of computation in neural networks, which can be contrasted with classical computation in a digital computer.\footnote{Of course, neural network simulations are usually run on a traditional computer performing classical computations. But that is a convenient way of implementing the formal structure of a neural network. These implementation can still take advantage of all the special properties of neural networks. Moreover, it is in fact possible to implement neural networks directly on hardware.} In a classical computer discrete symbols (comprised of strings of 0s and 1s, or ``bits'') are operated on by rules, in a sequential manner. Bits of information are placed in registers on a computer's central processing unit (CPU), and logical rules in the CPU's instruction set are applied to these bits. Computers are hand-programmed to do useful things. The inside of a CPU and the memory systems on a computer are carefully controlled environments. They do not do well with noisy signals or damage. Computation in a neural network is  different. Neural computation is not based on sequential, rule-based operations on bits, but on parallel operations where patterns of node activations are transformed by weight strengths.\footnote{We can often represent this as a transformation of \emph{activation vectors} (lists of activation values) by \emph{weight matrices} (tables representing weight strengths). So, while the basic formalism of classical computation is logic,  the basic formalism of neural networks is \emph{linear algebra}, which we study in chapter \extref{ch_linear_algebra}.}    Neural networks are also more tolerant of noisy signals and damage than digital computers are. Moreover, they are not programmed, in the way a computer is, but are trained, in something like the way a human child is.
 
 Let's use the three object detector simulation to consider some of these contrasts in more detail. 
@@ -175,6 +178,7 @@ For the most part, distributed representations are what one finds in the brain. 
 \section{Types of Neural Network Research}\label{typesOfResearch}
 
 % Add discussion of representational alignment and Zipser. This discussion keeps expanding and so it might warrant a new section or subsection of some kind.
+% "Every time I fire a linguist, the performance of our system goes up." Apocryphal to Frederic Jelneck as reported by Sven Matty.  Same for neuroscientist, philosopher, whatever, ML and gradient descent seem to just power their way through any attempt to post hoc understand this stuff.
 
 In practice, neural networks are used in two main ways: (1) as engineering tools, and (2) as scientific models.\footnote{See the discussion of ``standards of intelligence'' in \cite{noelle2022artificial}. Models of idealized intelligence are what we are calling ``engineering'' models here, while psychologically realistic cognitive models are what we are calling ``neural networks as scientific models.''}
 

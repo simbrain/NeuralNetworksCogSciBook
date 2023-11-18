@@ -5,7 +5,6 @@ This document contains notes for additions that will eventually be made to the b
 
 \section{New Material for Linear Algebra Chapter}
 
-% TODO: Tensor discussion
 % TODO: Pictures for source-target representations
  
 \subsection{The scalar and vector tracks}
@@ -64,28 +63,6 @@ In Simbrain 4.0, we have designed the representation of activation vectors and w
 %1x2
 %
 %So you would pass a list of the form [5x3, 2x5, 1x2] to your function. Remember, weight matrices on the left are multiplied by input and activations vectors on the right.I find this pretty counter-intuitive and takes me a lot of practice to think in this “output-input” way.  I want to read left-to-right input-to-output but the standard conventions with matrix product reverse this...
-
-\subsection{Tensors}
-
-A tensor is a generalization of the concept of a vector that encompasses numbers, arrays of numbers, matrices (2d arrays of numbers), arrays of matrices, arrays of these arrays, etc. The rank of a  tensor is the number of indices it takes to specify an ``entry'' in it. These are sometimes called ``n-dimensional arrays'' or ``n-d arrays'' (1d array, 2d array, etc.), and in some ways this latter terminology (which is commonly used in libraries like numpy and torch) is preferable, because it clearly signals that we are talking about neural network data structures, rather than the abstract tensors used in mathematics. 
-
-A number is a rank 0 tensor or 0d array because it requires no indices.  The number 42 is a rank 0 tensor, a 0d array, but nobody talks about it that way.  
-
-A vector is rank 1 tensor or 1d array because it takes one index to specify an entry in a vector, and the result is spread out in one dimension.  The vector $(0,1,0)$ is a rank 1 tensor, because it takes one index to specify entries, but people usually just call it a vector. A 1D array of numbers..
-
-A matrix is a rank 2 tensors or 2d array, because it takes two numbers to specify an entry (a row and column), and the result is spread out in two dimensions. A 2D array of numbers. We've seen lots of examples of this.
-
-An set of matrices is a rank 3 tensor or 3d array, because it takes 3 indices to specify an entry and the result is a kind of volume spread out in 3 dimensions, like a Rubik's cube. A common example of this is the representation of an image, which requires several channels of 2d information, several ``copies'' of a pixel array.  For example, an RGB color image that is 20 pixels wide (20 columns) and 40 pixels tall (40 rows) is represented by three matrices (red, green, and blue) of shape $40 \times 20$. Thus the whole image is represented by a tensor with shape $(3,40,20)$. Channel by width by height.  Another example here is a set of feature maps in a convolutional networks. Each feature map represents outputs of the previous layer in a different way, and the whole layer is a set of these features maps, a rank 3 tensor. Occasionally a rank 3 tensor is also thought of as a ``volume'' (imagine a stack of matrices, a prism).
-
- 
- A rank 4 tensor or 4d array is a set of arrays of matrices, a 4D array of numbers. It takes 4 indices to specify an entry and the result is a set or ``batch'' of volumes. The word batch is often used here because we are often deal with batches of training data.  For example, consider a batch of 100 RGB images, that will be used to train a model. That is, a set of 100 images. That would be a rank 4 tensor with shape $(100,3,20,40)$. It takes 4 indices to get a single number out of the tensor.  But we can also pull out individual images, rows or columns of these individual images, etc.
- 
- % Rank 5 tensor examples: batch size x time steps x height x width x channels.  Brain scan. Each brain scan is 3d and it's color so there are channels. So a batch of those.
- 
- I'm not sure if this is standard, but it's tempting to think of the indices as batch-number, channel number, row number, column number. Just use the standard applications.
- % GPT: Different deep learning frameworks might have different default orderings. For example, TensorFlow typically uses the "channels-last" format you described, whereas PyTorch and some other frameworks use a "channels-first" format: batch size x channels x height x width. Always check the documentation or conventions for the specific framework you're using.
-
-People also say 3d tensor, 4d tensor etc.  That refers to the shape of the data structure, not the data itself.  Like we can imagine a 1d tensor arranged on a 1d line, and a 2d tensor arranged in a plane, and a 3d tensor arranged in space (poor Pitt went crazy at the end of his life working these out to describe the brain).  But this is not the same as the dimensionality of the data itself. Like (1,2,1,0) is a point in a 4d space, but a 1d tensor or 1d array of numbers.
 
 \section{New Material for LMS / Backprop Chapter}
 

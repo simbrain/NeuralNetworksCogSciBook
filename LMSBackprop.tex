@@ -1,4 +1,4 @@
-\chapter{Least Mean Squares and Backprop}\label{ch_supervised_ff}
+\chapter{Least Mean Squares and Backprop}\label{ch_lms_backprop}
 \chapterauthor{Jeff Yoshimi}
 	
 Having introduced supervised learning in chapter \extref{ch_supervised}, in this chapter we consider several supervised learning algorithms for feedforward networks in depth, and consider their implications for cognitive science. First, an early form of supervised learning called the ``Least Mean Squares rule'' or ``LMS rule''.  The remarkable thing about LMS is that almost all of the advancements in the area of neural networks in recent years arguably involve variations on this one simple algorithm, that allow it to solve increasingly complex problems. LMS itself is limited insofar as it can only be used to train networks with one weight layer. This takes us to a second algorithm, backpropagation or ``backprop'', which extends LMS in a way that allows it to be used to train many-layered networks.  The hidden layers of a feedforward network develop \emph{internal representations}, which remap the input space of a neural network in useful and often psychologically realistic ways.
@@ -48,7 +48,6 @@ The LMS rule directly instantiates the Goldilocks principle. When heating up sou
 % Discuss in a footnote (here  or above) convex optimization and how there is always a global minimum.
 % https://towardsdatascience.com/understanding-convexity-why-gradient-descent-works-for-linear-regression-aaf763308708
 
-
 \section{LMS Example}\label{lms_example}
 
 In this example and in subsequent practice questions, assume we have a  simple 1-1 feed-forward network  (as in the left panel of figure \extref{tables_nets}), and that the slope of the output node is 1 and bias is 0. So we have two nodes, with activations $a_1$ and $a_2$, and a weight $w_{1,2}$. We also assume a very simple labeled dataset with a single row: one input value and one corresponding target value. That is:
@@ -81,7 +80,7 @@ With this information we can determine: (1) the output activation $a_2$ of the n
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{images/error_lms.png}
-\caption[Jeff Yoshimi.]{Gradient descent on the error surface for the LMS example discussed in Section. \ref{lms_example}. As the LMS rule is applied the weight strength changes in a way that minimizes sum squared error.}
+\caption[Jeff Yoshimi.]{Gradient descent on the error surface for the LMS example discussed in Section \ref{lms_example}. As the LMS rule is applied the weight strength changes in a way that minimizes sum squared error.}
 \label{error_lms}
 \end{figure}
 
@@ -225,9 +224,9 @@ As we saw, two-layer networks with linear units cannot solve this type of proble
 The key to backprop's superior performance is the way it \emph{re-maps} the linearly inseparable problem in the input space to a linearly separable problem in the hidden unit space, as shown in figure \ref{xor_remapping}. The crucial thing the hidden layer did was transform the input layer representation into a new internal representation, which includes a representation of ``only one unit is on'' and another representation of ``both units are in the same state.''  These two states are now linearly separable, and the output layer can easily separate them. The solution shown in the figure was produced by training a 2-2-1 network using backprop. Other solutions (corresponding to other minima in the error surface) can also be found. You are encouraged to try the experiment yourself in Simbrain. Train a backprop network on XOR, get it to a minimum on the error surface, and then check to see what hidden layer activations occur for each input.
 
 \section{Internal Representations and Psychological Applications}\label{internalRepsFF}
+% TODO: Make this its own chapter
 
 % Work back in both chapter 1 themes: IAC (but  more for recurrent) and Triangle model. Definitely Spivey and JTrace  stuff with  continuous time-courses. See  Magnusson MTS talk. Quasi-regularity in language.
-% Should this be it's own chapter?
 
 We have seen that multilayer feed-forward networks trained by supervised learning methods (\eg backprop) will re-map the input space to reduce overall error on a learning task, for example by mapping linearly inseparable inputs to a separable set of points in the hidden unit space. Even though these supervised learning methods are not generally taken to be neurally realistic\footnote{However, some circuits have been identified in the brain that may implement error-based supervised learning, \eg climbing fibers in the cerebellum (see chapter \extref{ch_neuro}). Error based learning that is similar in some ways to backprop is also emphasized in predictive coding accounts of the brain and predictive processing accounts of cognition.}, they are relevant to psychology and cognitive science, since neural networks trained using methods like backprop often develop internal representations that are similar to representations humans use.\footnote{That is, it is assumed that, even if backprop does not happen in most parts of the brain, it can still be used as a device to discover the kinds of representations that the brain finds. How the brain develops these representations is still a mystery, but backprop let's us at least see what those representations might look like and what function they might serve.}
 % It's a bigger deal than that, they _outperform_ similar models in neuroscience
