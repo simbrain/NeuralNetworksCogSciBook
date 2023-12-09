@@ -84,6 +84,7 @@ SRNs are also trained in a special way. They use a training dataset, like the on
 \label{userProvidedSRN}
 \end{table}
 
+% TODO: Link to transformers, move all of it to nlp?
 % Shift registers.
  The dataset trains an SRN on a one-step prediction problem, which is often what SRNs are used for. In machine learning contexts this type of training is also common; there they are referred to as ``auto-regression'' tasks.  The network learns to predict the next item in a sequence based on what items have occurred before. A nice thing about this kind of task is that there is no need for ``labeled data.'' Any string of words or tokens is enough to train a network, since the target at any time is just the next item in a sequence. 
  
@@ -145,13 +146,12 @@ Each of the unrolled networks is then responsible for a specific moment in time.
 
 %The unrolled network is on the right. It involves a copy-paste of the same network three times, with the recurrent weights presented as the left-to-right arrows in the middle. Time flows from left to right and each ``column'' (each 2 or 3 layer feed-forward network)  represents one time step. It is being trained on a sequence of three input-target pairs. We present the first input to the first network, compute the output at time 1, then present the second input to the second layer \emph{and also add the activations from the hidden layer at the previous time step}.\footnote{Again, this is a lot like an SRN, since in both cases the hidden layer is receiving a ``visible'' input as well as the hidden layer's previous activation as a second invisible input.}  The output at time 2 then reflects both past inputs: it knows about context. We keep doing this until we reach the end. We have three time steps here, but we can use as many as we have computer memory to handle. Then we train the whole thing with backpropagation. But note, the various arrows on the right side correspond to a bunch of copies of the same weight matrices. So when a pass of training is done, they all get added back together and what we end up with is just the network on the left.
 
-\section{Language Models}
+\section{Recurrent Networks and Language Generation}\label{languageModelsRecurrent}
 
-%https://amatriain.net/blog/transformer-models-an-introduction-and-catalog-2d1e9039f376/
+% Word embedding link
+Once various technical issues with training recurrent networks were resolved as part of the deep learning revolution, people started using them to do truly amazing things, in particular, build models of language that could generate text. This was a precursor to large language models, and was at the time quite amazing.
 
-Supervised recurrent networks and their successors have become incredibly powerful. As of this writing they are changing the way authorship and education will work, because they can write arguably professional-level papers and artworks.  In the domain of language these are called ``large language models'', because they are based on such large datasets.  Let's have a look at how these scarily powerful models emerged.
-
-Once various technical issues with training recurrent networks were resolved as part of the deep learning revolution, people started using them to do truly amazing things. In a now-classic blog post, Andrej Karpathy describes some of these applications.\footnote{\url{http://karpathy.github.io/2015/05/21/rnn-effectiveness/}. Note that Karpathy makes use of LSTMs; see note \ref{lstm}.}  For example, he trained a neural network on a bunch of Shakespeare\footnote{The data is here: \url{http://cs.stanford.edu/people/karpathy/char-rnn/shakespear.txt}.}  (with words coded as vectors, of course) and then ran the RNN, which produced it's own version of Shakespeare \cite{karpathy2015unreasonable}. Here is a sample:
+In a now-classic blog post, Andrej Karpathy describes some of these applications.\footnote{\url{http://karpathy.github.io/2015/05/21/rnn-effectiveness/}. Note that Karpathy makes use of LSTMs; see note \ref{lstm}.}  For example, he trained a neural network on a bunch of Shakespeare\footnote{The data is here: \url{http://cs.stanford.edu/people/karpathy/char-rnn/shakespear.txt}.}  (with words coded as vectors, of course) and then ran the RNN, which produced it's own version of Shakespeare \cite{karpathy2015unreasonable}. Here is a sample:
 % These are called language models. More specifically character level models because they predict the next character in a sequence.
 
 \begin{quotation}
@@ -162,9 +162,8 @@ That which I am not aps, not a man and in fire, \\
 To show the reining of the raven and the wars \\
 To grace my hand reproach within, and not a fair are hand}
 \end{quotation}
-A neural network wrote that! 
 
-In another example Karpathy trained a network to speak like Tolstoy using an English Translation of \emph{War and Peace}. Remember, these are just networks' trained using variations on backprop.  So he would train the network to produce sequences of statements that were similar to sequences of statements in Tolstoy. As the network learns using gradient descent, the outputs seem more and more like Tolstoy. Recall how we could track Nettalk learning to speak at different stages of training, like a creepy baby (section \extref{internalRepsFF}). Here we can do the same thing with the network, observing get better and better at speaking in the voice of Tolstoy. Here is some network output after iteration 100:
+In another example Karpathy trained a network to speak like Tolstoy using an English Translation of \emph{War and Peace}. Remember, these are just networks' trained using variations on backprop.  So he would train the network to produce sequences of statements that were similar to sequences of statements in Tolstoy. As the network learns using gradient descent, the outputs seem more and more like Tolstoy. Recall how we could track Nettalk learning to speak at different stages of training, like a creepy baby (section \extref{ch_representations}). Here we can do the same thing with the network, observing get better and better at speaking in the voice of Tolstoy. Here is some network output after iteration 100:
 
 % https://tex.stackexchange.com/questions/2396/how-can-i-change-the-indentation-in-quote-and-quotation-environments-and-command
 \newenvironment{myquote}
@@ -195,13 +194,20 @@ Karpathy got these supervised recurrent networks to do other cool things:  for e
 \label{fakeMath}
 \end{figure}
 
-Karpathy's blog post was written in 2015. In 2020 the power of recurrent networks reached another milestone with the introduction of Open AI's model, GPT-3 \cite{brown2020language, floridi2020gpt}.\footnote{Open AI is a venture launched by Elon Musk and others, and currently funded in part by Microsoft.} This model used all the latest ideas in recurrent neural networks, with a giant training dataset, which includes a web-scraped archive of a large subset of the \emph{entire internet}.\footnote{Common crawl: \url{https://en.wikipedia.org/wiki/Common_Crawl}.} If you've every written anything online, it may be part of the training data that was used! The model has over 175 billion parameters; that is, 175 billion weights and biases! It is absolutely massive, and scary. It arguably passes the Turing Test, a long-standing test for artificial general intelligence, answering questions and producing convincing  text in response to prompts.\footnote{\url{https://plato.stanford.edu/entries/turing-test/}.} For example, when asked to write an article with the title ``United Methodists Agree to Historic Split: Those who oppose gay marriage will form their own denomination'', it produced the following:
-\begin{quote}
-After two days of intense debate, the United Methodist Church has agreed to a historic split - one that is expected to end in the creation of a new denomination, one that will be ``theologically and socially conservative,'' according to The Washington Post. The majority of delegates attending the church's annual General Conference in May voted to strengthen a ban on the ordination of LGBTQ clergy and to write new rules that will "discipline" clergy who officiate at same-sex weddings. But those who opposed these measures have a new plan: They say they will form a separate denomination by 2020, calling their church the Christian Methodist denomination...
-\end{quote}
-Most people can't tell that this was written by a computer.  
+\section{Limitations of Supervised Recurrent Networks}\label{supervisedRecurrentLimitations}
 
-Of course, as noted above, the idea of training recurrent networks to be language models has been supplanted by training transformer networks to be large language models, and so these ideas are familiar. Moreover, it's no longer just fake news and math, but real summaries which are often accurate. These developments are discussed in chapter \extref{ch_transformers}. 
+Karpathy's blog post was written in 2015. In 2020, GPT was released, and in 2022, ChatGPT was publicly released, and thus began the next era in the history of neural networks, which we are currently living in. See chapter \ref{ch_transformers}. In a way, those advances grew out of efforts to overcome limitations of supervised recurrent networks like the one's we've described.
+
+We've seen that recurrent connections can provide a network with context information (for example with the copy-back layer of a SRN). What the network sees at time $t$ is an external input and some trace of what happened in the past.  Input plus context is enough for the network to learn to produce meaningful temporal sequences. Transformer networks improve on this basic idea. The main problem they run into is that they favor recent context over earlier context.  But oftentimes it is important to be more sensitive to information much earlier in a sequence than more recent information, and as a result recurrent networks have a hard time capturing larger temporal structures,  like the plot of a story or the overall theme of a musical performance. 
+
+There are also technical problems, like the the problem of vanishing gradients: as error is backpropagated through the weights of a network (section \extref{backprop}), the amount weights are changed further back in time gets smaller and smaller. Another problem is that this type of network does not lend itself to parallel computing hardware like GPUs on fancy graphics cards. This can be dealt with using some tricks, like truncating how far back the ``window'' of backprop goes (``truncated'' backprop through time), but this only takes us so far.
+%% In fact they bear some resemblance to those who suffer from antero-grade amnesia (cf. the piano performances of someone like Clive Wearing, who can create beautiful music but can no longer produce long pieces). Better develop this point with citations. 
+
+One approach to this problem is to use nodes with more complex activations functions (see chapter \extref{ch_act_functions}).\footnote{Two such functions are ``long-short-term memories'' (LSTMs)  \cite{schmidhuber1997long, olah2015understanding} and ``gated recurrent units'' (GRUs). See \url{http://colah.github.io/posts/2015-08-Understanding-LSTMs.} These functions---which are like compound activation functions containing several others as parts---allow activations to be gated or turned off altogether. When placed in a recurrent network trained using gradient descent, they can learn to pass information far along a temporal sequence, ``jumping'' over intermediate nodes, in a way that avoids the problem of vanishing gradients.\label{lstm}} However, these approaches have not been discussed much in connection with cognitive science, and are being supplanted by other techniques, so we pass over them for now. 
+
+
+%TODO
+The answer was to drop recurrent networks, in a sense, and move back to feed-forward.
 
 \section{Connectionist Applications}\label{internalRepsRecurrent}
 
