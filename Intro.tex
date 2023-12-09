@@ -177,7 +177,8 @@ For the most part, distributed representations are what one finds in the brain. 
 
 \section{Types of Neural Network Research}\label{typesOfResearch}
 
-% Add discussion of representational alignment and Zipser. This discussion keeps expanding and so it might warrant a new section or subsection of some kind.
+% This discussion keeps expanding and so it might warrant a new section or subsection of some kind.
+% Rep alignment, interpretability, Zipser. Activation patching. Mechanistic interpretability.
 % "Every time I fire a linguist, the performance of our system goes up." Apocryphal to Frederic Jelneck as reported by Sven Matty.  Same for neuroscientist, philosopher, whatever, ML and gradient descent seem to just power their way through any attempt to post hoc understand this stuff.
 
 In practice, neural networks are used in two main ways: (1) as engineering tools, and (2) as scientific models.\footnote{See the discussion of ``standards of intelligence'' in \cite{noelle2022artificial}. Models of idealized intelligence are what we are calling ``engineering'' models here, while psychologically realistic cognitive models are what we are calling ``neural networks as scientific models.''}
@@ -253,6 +254,8 @@ Neuron Dynamics $\rightarrow$ Network Dynamics $\rightarrow$ Brain Dynamics
 % Maybe talk more about semantic memory and semantic network models, and contrast with other types of memory (many will not have taken intro cog-sci courses)
 The use of neural networks as cognitive models, which behave in the same way humans and animals do, but without concern for neural realism, is sometimes called \glossary{connectionism}.\footnote{Not everyone using the term ``connectionism'' in this way, but it is a fairly standard usage. A more precise phrase would be ``connectionist model of a cognitive process''.}  In connectionist models, there is no direct effort to understand the brain. The focus is on modeling some aspect of human or animal behavior using nodes and weights. Such models  are usually meant to {\em suggest} how a given task is accomplished by the brain---they are ``neurally plausible''---but they do not directly model the underlying neuroscience.
 
+% Should this be a named section on IAC? Kind of lost in this organization.
+% Forward reference to ch_unsupervised_recurrent and DST, it develops fixed point attractors and the transient portion is the thought process
 % We have settled on object pool and property pool. Introduce this nomenclature and distinguish it from the original.  Also, use some memory language. Item vs. category retrieval. "exemplars. It can also generalize along an indefinite number of different lines retrieve the specific characteristics of particular exemplars , and fill in plauaible default values for misaing properties."
 As an example, consider the ``IAC'' or ``Interactive Activation and Competition'' network. A famous example of an IAC network is McClelland's model of knowledge of two fictional 1950s gangs, the Jets and Sharks from {\em West Side Story} \cite{mcclelland1981retrieving}.\footnote{For a video overview of this network in Simbrain, see \url{https://www.youtube.com/watch?v=Nw3TEDfugLs}.}
 

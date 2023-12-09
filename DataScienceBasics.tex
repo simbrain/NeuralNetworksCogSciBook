@@ -178,7 +178,7 @@ The idea is illustrated in Fig. \ref{trainTest}. The idea is that we first train
 
 So what we actually often end up with, in supervised learning, is four tables. (1) Training inputs, (2) test inputs, (3) training targets, and (4) test targets. The training inputs and targets are used to train the model. The test inputs and targets are used to determine how well it performs on new data. In a model we might label these \code{train\_inputs}, \code{train\_targets}, \code{test\_inputs}, and \code{test\_targets}. 
 
-% Expand on batches / glossary item
+% Expand on batches / glossary item. Elaborate on batch metaphor, batch processing in other areas, cooking a batch of cookies, etc. Could help remember
 In practice, even more complex ways of partitioning labeled data into training and testing subset are used, for example splitting the data into training and testing sets different ways on different passes.\footnote{The more general topic is cross validation, see \url{https://en.wikipedia.org/wiki/Cross-validation_(statistics)} and \url{http://scikit-learn.org/stable/modules/cross_validation.html}.} The particular training subset used in a given stage of training is often referred to as a ``batch''. We are keeping things simple here for illustrative purposes.
  
 % There is much more to say about this topic. In particular, when a neural network or other model overfits--performing well on the training subset but poorly on the testing subset--\emph{regularlization} methods are used to address the problem.\footnote{See \url{http://neuralnetworksanddeeplearning.com/chap3.html}} But we will not discuss these topics further here.

@@ -106,6 +106,7 @@ It is worth noting at the outset that these associations between brain regions a
 % Add concrete/abstract, how -what, and an inset showing hot / cool, OFC, and ACC. Also redo 3.9 in a similar way
 
 \subsection{Cortex}
+% Link region discussions here with deep net chapter and the internal representations chapter
 
 Fig. \ref{brain_lobes} (Left) shows the major regions of the brain. Fig. \ref{brain_lobes} (Right) summarizes the functions associated with these areas. These are regions of the \glossary{cerebral cortex}, which is the wrinkled outer surface of the brain (cortex literally means ``rind'', like the outer skin of an orange or lemon). The wrinkling is caused by the cortex folding, like a crumpled piece of paper, in the limited volume of the skull. This folding results in bulges (called ``gyri'') and valleys (called  ``sulcuses'' or ``sulci'') on the surface of cortex. The cortex is thought to be involved in the higher processing functions distinctive of complex behavior and intelligent animals. The size of an animal's cortex roughly correlates with the complexity of its behavior and overall intelligence: humans and dolphins have a relatively large cortex, chimps a smaller cortex, rats even smaller, and non-mammals like birds and insects have no cortex at all. The cortex is composed of two hemispheres, the right and the left hemispheres, connected by a structure made up of nerve fibers called the ``corpus collosum''. Between-hemisphere communication occurs through the corpus collosum. In patients with a neurological disorder called ``epilepsy'', where too much neuronal firing in the brain leads to seizures, the corpus collosum is often severed (this is called a ``collosotomy'') to reduce between-hemispheric communication and prevent future seizures. Both the right and left hemispheres are made up of the same lobes (occipital, temporal, parietal, and frontal).	
 
@@ -128,8 +129,9 @@ In many cortical areas there is a progression from areas that handle low-level s
 
 \subsection{The Occipital Lobe}
 
-The \glossary{occipital lobe} and some of its features are shown in Fig. \ref{brain_vision}. Its most dominant feature is the \glossary{visual cortex}, which supports visual processing, including edge detection, color detection, and simple motion detection. Damage to the visual cortex can produce blindness (\glossary{cortical blindness}), even if the eyes are intact. Processing begins in the eye (in the retina, which is itself a complex neural network), and is then passed along to several structures, most prominently the visual cortex. Processing within the visual cortex occurs in a series of stages, which are thought to correspond to the extraction of increasingly complex features of a visual scene. For example, V1 and  V2  process information about edges and form, V4 is involved in processing of color, and area MT plays a role in motion processing. 
+The \glossary{occipital lobe} and some of its features are shown in Fig. \ref{brain_vision}. Its most dominant feature is the \glossary{visual cortex}, which supports visual processing, including edge detection, color detection, and simple motion detection. Damage to the visual cortex can produce blindness (\glossary{cortical blindness}), even if the eyes are intact. Processing begins in the eye (in the retina, which is itself a complex neural network), and is then passed along to several structures, most prominently the visual cortex. Processing within the visual cortex occurs in a series of stages, which are thought to correspond to the extraction of increasingly complex features of a visual scene. For example, V1 and V2  process information about edges and form, V4 is involved in processing of color, and area MT plays a role in motion processing. 
 % Mention Hubel / Wiesel?
+% Add V4 since it comes up in deep networks?
 
 \begin{figure}[h]
 \centering
@@ -145,6 +147,9 @@ Each of the regions of visual cortex contains something called a \glossary{retin
 Information passes out of the visual cortex in two streams: a \glossary{dorsal stream} to the parietal lobe, which is involved in coordinating visual and spatial information, and a \glossary{ventral stream} to the temporal lobe, which is involved in processing complex visual features of objects and semantic knowledge, i.e. information about what things are  (see Fig. \ref{brain_vision}). We will discuss these pathways in more detail below.
 % Object recognition is something many FF neural networks  do
 
+% TODO: Replace with Yamins 2016.
+% Also: "Two foundational empirical observations about cortical sensory systems are that they consist of a series of anatomically distinguishable but connected areas3,4 (Fig. 1b) and that the initial wave of neural activity during the first 100 ms after a stimulus change unfolds as a cascade along that series of areas2."
+% In that paper IT / the ventral stream are divided into three subparts
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.4]{./images/deepLearningBrain.png}

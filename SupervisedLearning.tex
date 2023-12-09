@@ -192,6 +192,7 @@ Suppose we are given a network and labeled dataset, and have computed the output
 \label{error_computation1}
 \end{figure}
 
+% TODO: Often this is written using double brackets, as in ||t - y||^2. Given the convention, maybe favor something more like that
 The same idea works  for a network with more than one output node, but in that case the squaring operation must be defined for vectors. All this really amounts to is squaring target - output for each output value, and then adding the results together, and it turns out we can express this concisely using some of the vector operations we learned in the linear algebra chapter (chapter \extref{ch_linear_algebra}): 
 % Spelled out version of the error, but not sure it helps, and this notation would have to be worked out
 %\begin{eqnarray*}
