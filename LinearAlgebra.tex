@@ -361,7 +361,43 @@ n_4 = (-1,-1,1) \bullet (\; -1,\; -4,\; 5) = 1 + 4 +5 = 10
 %n_k = (w_{1,n},w_{2,n}, \dots, w_{m,n}) \bullet (a_1,a_2, \dots ,a_m) + b_n
 %\end{equation*}
 
-% Glossary for cosine similarity
+% Expand to include a broader discussion that includes cosine similarity 
+%      - Dot product: not scaled, not centered.
+%      - Cosine similarity: scaled, not centered
+%      - Covariation: centered, not scaled [not as important]
+%      - Correlation: scaled and centered [not as important]
+
+%% Email from Scott:  I said a while ago that i would get back to you on cosine simarlity and
+%the Pearson correlation coefficient.  I think the cosine similarity statistic
+%is used when the things being compared have the same units of measure.
+%
+%  The Pearson correlation coefficient is the cosine similarity of the data 
+%after it has been centered.
+%
+%  To center data (x1, ..., xn) we subtract their mean from each entry.
+%
+%                ( x1, ..., xn) -> ( x1-xbar, ..., xn-xbar) 
+%
+%Geometrically the centered data is the orthogonal projection of (x1, ..., xn) 
+%to the subspace orthogonal to the vector (1, ..., 1).  This subspace has 
+%dimension n-1.  The projection can reduce the angle between two vectors (x1, 
+%..., xn) and (y1, ..., yn).  In a sense there are fewer ways they can 
+%point away from each other when we reduce the number of dimensions by 1.
+%
+%  By centering the data before taking the cosine similarity we avoid 
+%spurious differences introduced by the choice of units of measure.  Both 
+%(x1, ..., xn) and (y1, ..., yn) are thought of as vectors in R^n but the 
+%n-tuples of numbers can stand for different quantities.  For instance we could 
+%measure the germination time of seeds as a function of temperature.  If we 
+%measure temperature in Celsius and time in seconds we will get a different 
+%cosine similarity than if we measure temperature in Celsius and time in hours.  
+%Whereas the Pearson correlation coefficient will be the same either way.
+%
+%  In a case like in the Wikipedia article which involves comparing the words
+%in two documents there are not two different units of measure for the two 
+%things being compared.  Not centering the data may have little effect on the 
+%usefulness of the statistic in this case but it could save computation time. 
+
 %The normalized dot product between two vectors, also known as the cosine similarity, calculates the angle between two vectors such that the similarity calculation is not impacted by magnitude. Bounded between $[-1, 1]$, such that $\cos = -1$ indicates opposite vectors, $\cos = 0$ indicates orthogonal vectors, and $\cos = 1$ are proportional vectors. Some implementations are bounded between $[0,1]$. Occasionally, cosine distance is used, which is $1 - \cos$, in which case proportional or highly similar vectors will have a cosine distance of 0, while dissimilar vectors will have a cosine distance of 1.
 % Add some exercises to the end.
 
@@ -506,7 +542,7 @@ In the special case where most of the possible entries in a weight matrix are 0,
 
 \section{Vector-Matrix Product}
 
-The power of matrices in neural networks is our ability to use them to represent weights and transformations of activation vectors as they propagate. We are splitting the topic into two parts. For the intro version of the course the book currently focuses on, we only consider one case: a vector-matrix product. We can understand this in a simplified way using mainly just the dot product. But this is just a specially curated case, and the full story is more complex and involves more cases.\footnote{\label{leftRightConvention}  We will not give a general definition of matrix multiplication here. Instead, we will describe a special case of it: ``vector-matrix'' multiplication, which involves multiplying an activation vector on the left times a weight matrix on the right.We are presenting the computation as a row vector on the left times a weight matrix on the right, which is required by the ``source-target'' representation (see note \ref{sourceTarget}). It is also easy to think about in terms of the operations involved in updating a neural network: an activation vector is ``passed through'' a weight matrix to produce another activation vector, in this case a hidden unit vector. However, this is non-standard. In linear algebra and most applications this operation would usually be represented with the matrix on the left and a column vector on the right. This is because a matrix is often thought of as a function that operates or acts on a vector, transforming inputs to outputs.}  But we're starting simple.
+The power of matrices in neural networks is our ability to use them to represent weights and transformations of activation vectors as they propagate. We are splitting the topic into two parts. For the intro version of the course the book currently focuses on, we only consider one case: a vector-matrix product. We can understand this in a simplified way using mainly just the dot product. But this is just a specially curated case, and the full story is more complex and involves more cases.\footnote{\label{leftRightConvention}  We will not give a general definition of matrix multiplication or matrix product here. Instead, we will describe a special case of it: ``vector-matrix'' multiplication, which involves multiplying an activation vector on the left times a weight matrix on the right.We are presenting the computation as a row vector on the left times a weight matrix on the right, which is required by the ``source-target'' representation (see note \ref{sourceTarget}). It is also easy to think about in terms of the operations involved in updating a neural network: an activation vector is ``passed through'' a weight matrix to produce another activation vector, in this case a hidden unit vector. However, this is non-standard. In linear algebra and most applications this operation would usually be represented with the matrix on the left and a column vector on the right. This is because a matrix is often thought of as a function that operates or acts on a vector, transforming inputs to outputs.}  But we're starting simple.
 
 So the way we do things here, we focus on taking an input vector, and dotting it with columns of a weight matrix, which (in the source-target format) represent fan-in weight vectors. In this way we produce a new output vector. Each of these dot products is a weighted inputs (see chapter \extref{ch_act_functions}). Assuming a default unbounded linear activation function, this can be used to represent weight  propagation. We consider the feed-forward case first, then the recurrent case.
 
@@ -727,3 +763,156 @@ vector in the span of $(1,1)$ are equal to each other, so $(1,2)$ is not in the
 span of $(1,1)$. For every vector in the span of $(1,2)$ the second
 component is twice the first, so (1,1) is not in the span of $(1,2)$. Thus, 
 $\{ (1,2), (1,1) \}$ is also a basis for the plane. 
+
+\section{Exercises}\label{linear_algebra_exercises}
+
+\newcounter{LinearAlgebraCounter}
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is the dimensionality of the input space, hidden unit space, output space, weight space, and activation space in Fig. \ref{labelledNets} (Left)? 
+{\bf Answer:} 2-dimensional, 3-dimensional, 2-dimensional, 12-dimensional, and 7-dimensional.
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is the dimensionality of the weight space and activation space in Fig. \ref{labelledNets} (Right)? 
+{\bf Answer:} 4-dimensional and 2-dimensional.
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is the dimensionality of the weight space and activation space in Fig. \ref{sampleNetRecurrent}? 
+{\bf Answer:} 3-dimensional and 3-dimensional.
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is $(1,1,1) \bullet  (1,1,1)$? 
+{\bf Answer:}  $(1 \cdot 1) + (1 \cdot 1) + (1 \cdot 1) = 1 + 1 + 1 = 3$. 
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is $(-1,0,1) \bullet (-1,-1,0)$? 
+{\bf Answer:} $(-1 \cdot -1) + (0 \cdot -1) + (1 \cdot 0) = 1 + 0 + 0 = 1$. 
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is $(10,2,-10) \bullet  (0,10,-10)$? 
+{\bf Answer:}  $0 + 20 + 100 = 120$. 
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is $(.5,-1,1,-1) \bullet  (10,-2,1,2)$? 
+{\bf Answer:}  $5 + 2 + 1 -2 = 6$. 
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  Suppose we have $(a_1,a_2) = (1,-1)$, $(w_{1,3}, w_{2,3})=(-1,1)$ and $b_3=5$. What is $n_3$? 
+{\bf Answer:} $(1 \cdot -1) + (-1 \cdot 1) + 5 = -1 - 1 + 5 = 3$. 
+\bigskip
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{./images/3NodeNet.png}
+\caption[Jeff Yoshimi.]{A recurrent network with three nodes labelled $1,2,3$ and weights $w_{1,2} = -1, w_{2,3}=0.5, w_{3,1}=2$.}
+\label{sampleNetRecurrent}
+\end{figure}
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is the matrix representation of the weights in the network in Fig. \ref{sampleNetRecurrent}?
+{\bf Answer:}  
+\[
+\begin{pmatrix}
+ 0  &   -1 & 0 \\
+ 0  &   0 & 0.5 \\
+ 2  &   0 & 0 \\
+\end{pmatrix}
+\]
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is the fan-in weight vector for node 2 in Fig. \ref{sampleNetRecurrent}?
+{\bf Answer:}  $(-1)$. 
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is
+$\begin{pmatrix}1 & 1\end{pmatrix}\begin{pmatrix} 1 & 2  \\ 3 & 4 \end{pmatrix}$?
+{\bf Answer:}  $\Big((1)(1) + (1)(3), (1)(2) + (1)(4)\Big)  = (4,6)$. 
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is
+$\begin{pmatrix}-1 & 1\end{pmatrix}\begin{pmatrix} 1 & -2  \\ 3 & 4 \end{pmatrix}$?
+{\bf Answer:}  $\Big((-1)(1) + (1)(3), (-1)(-2) + (1)(4)\Big)  = (2,6)$. 
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  What is
+$\begin{pmatrix}-10 & 10\end{pmatrix}\begin{pmatrix} 0.5 & -0.5  \\ -1 &  1\end{pmatrix}$?
+{\bf Answer:} $(-15,15)$. 
+\bigskip
+
+
+\noindent
+\refstepcounter{LinearAlgebraCounter}\label{linAlgPractice1}
+{\bf \theLinearAlgebraCounter.}  If the network in Fig. \ref{sampleNetRecurrent} has linear nodes and is given the activation vector $(a_1,a_2,a_3) = (1,1,1)$, what will its activation be in the next time step?
+{\bf Answer:} 
+\[
+  \begin{matrix}\begin{pmatrix}1 & 1 & 1\end{pmatrix}\\\mbox{}\end{matrix}
+ \begin{pmatrix}
+ 0  &   -1 & 0 \\
+ 0  &   0 & 0.5 \\
+ 2  &   0 & 0 \\
+\end{pmatrix}
+  =
+  \bigg( (1)(0) + (1)(0) + (1)(2) ,\;\; (1)(-1) + (1)(0) + (1)(0) ,\;\; (1)(0) + (1)(.5) + (1)(0) \bigg)
+  =  (2,-1,0.5)
+\]
+\bigskip
+
+\noindent
+\stepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  If the network in Fig. \ref{sampleNetRecurrent} has linear nodes and is given the activation vector $(a_1,a_2,a_3) = (-1,-1,2)$, what will its activation be in the next time step?
+{\bf Answer:} 
+\[
+  \begin{matrix}\begin{pmatrix}-1 & -1 & 2\end{pmatrix}\\\mbox{}\end{matrix}
+ \begin{pmatrix}
+ 0  &   -1 & 0 \\
+ 0  &   0 & 0.5 \\
+ 2  &   0 & 0 \\
+\end{pmatrix}
+  =  (4,1,-0.5)
+\]
+\bigskip
+
+
+\noindent
+\refstepcounter{LinearAlgebraCounter}
+{\bf \theLinearAlgebraCounter.}  If the network in question \ref{linAlgPractice1} is iterated four times, what will its activation be in those four time steps?
+We saw from question \ref{linAlgPractice1} that after one time step the activation vector is $(2,-1,0.5)$. If we now use this as input to the network again we get:
+\[
+  \begin{matrix}
+  \begin{pmatrix}2 & -1 & 0.5
+  \end{pmatrix}\\\mbox{}
+ \end{matrix}
+ \begin{pmatrix}
+ 0  &   -1 & 0 \\
+ 0  &   0 & 0.5 \\
+ 2  &   0 & 0 \\
+\end{pmatrix}
+  =  (1,-2,-0.5)
+\]
+Repeating this process again with $(1,-2,-0.5)$ as input we get $(-1,-1,-1)$. Repeating one more time we get $(-2,1,-0.5)$.
+{\bf Answer:}  $(2,-1,0.5),(-1,-2,-0.5),(-1,-1,-1),(-2,1,-0.5)$.
+\bigskip

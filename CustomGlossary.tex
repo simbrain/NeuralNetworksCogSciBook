@@ -4,80 +4,160 @@
 \item[Action potential] the rapid change in the membrane potential of a neuron, caused by a rapid flow of charged particles or ions across the membrane that occurs during the excitation of that neuron.
 \item[Activation] value associated with a node. Has different interpretations depending on the context. It can, for example, represent the firing rate of a neuron, or the presence of an item in working memory.
 \item[Activation function] function that converts weighted inputs into an activation in some node updated rules.
+\item[Activation space] the set of all possible activation vectors for a neural network.
 \item[Anterograde amnesia] a type of memory loss or amnesia caused by brain damage in the hippocampus, where the ability to create new fact-based or declarative memories is compromised after the injury. 
 \item[Artificial neural network] (Acronym: ANN) a collection of interconnected units, which processes information in a brain-like way.
 \item[Ataxia] impaired coordination or clumsiness caused by neurological damage in the cerebellum.
+\item[Attractor] a state or set of states with the property that any  sufficiently nearby state will go towards it. Fixed points and periodic orbits can be attractors.
 \item[Auditory cortex] regions of the temporal lobes of the brain that process sound. 
 \item[Axon] the part of the neuron that carries outgoing signals to other neurons.
+\item[Backpropagation] (Synonyms: backprop) A supervised learning algorithm that can train the weights of a multi-layer network using gradient extent. Can be thought of an extension of Least Mean Square methods for multi-layer networks. 
 \item[Basal ganglia] a structure below the surface of the cortex (subcortical) that is involved in voluntary action and reward processing.
+\item[Basin of attraction] the set of all states in a state space that tend 
+\item[Basis] a linearly independent set of vectors that span the whole vector space. Any two bases for a vector space have the same number of vectors.
 \item[Bias] a fixed component of the weighted input to a node's activation. Determines its baseline activation when no inputs are received.
+\item[Bifurcation] a topological change that occurs in a dynamical system as a parameter is varied.
+\item[Binary vector] a vector all of whose components are $0$ or $1$.
 \item[Biological neural network] a set of interconnected neurons in an animal brain.
 \item[Brain stem] the lowest part of the brain that connects to the spinal cord and is fundamental for breathing, heart rate, and sleep.
+\item[Categorical data] data that can take one of a discrete set of values. For example, the time of day can be treated as a categorical variable taking two values: day and night. Also called nominal data.
 \item[Cerebellum] a structure below the surface of the cortex (subcortical) involved in balance and fine movements, as well as maintaining internal models of the world for motor control.
 \item[Cerebral cortex] the outer layer of the brain characterized by its structural folding (gyri and sulci); underlies complex behavior and intelligence in higher animals. 
+\item[Chaotic dynamical system] a type of dynamical system in which the future behavior of the system is hard to predict. Such systems have sensitive dependence on initial conditions. Compare the ``butterfly effect.''
 \item[Clamped node] a node that does not change during updating. Any activation function associated with the node is ignored, and its activation stays the same.
+\item[Clamped weight] a weight that does not change during updating. Any local learning rule associated with the weight is ignored, and its strength stays the same.
 \item[Classification task] a supervised learning task in which each input vector is associated with one or more discrete  categories. An example would be classifying images of faces as male or female. When classification associates each input with one category only, a one-hot encoding is often used on the output layer.
+\item[Column vector] a vector whose components are written in a column \eg $\displaystyle \begin{pmatrix} 2 \\ 1 \\ 3 \end{pmatrix}$.
+\item[Competitive learning] A form of unsupervised learning in which outputs nodes are trained to respond to clusters in the input space. 
 \item[Computational cognitive neuroscience] the use of neural networks to simultaneously model psychological and neural processes.
 \item[Computational neuroscience] the study of the brain using computer models.
 \item[Connectionism] the study of psychological phenomena using artificial neural networks.
 \item[Convolutional layer] a special kind of weight layer where a set of weights (a ``filter'') is passed over a source node layer to produce activations in a target layer, in the sense of being multiplied by each of a moving sequence of subsets of the input activations. This is related to the mathematical operation of convolution.
 \item[Cortical blindness] neurological impairment caused by damage to the occipital lobe that results in blindness or inability to see, without any damage to the eyes. 
+\item[Cross talk] a phenomenon where training patterns interfere with one another when training a neural network to perform some task. 
+\item[Data cleaning] removing, fixing, replacing, or otherwise dealing with bad data. Includes subsetting data, i.e. extracting rows or columns or removing rows or columns. One stage of data wrangling.
+\item[Data science]  An area of science and practice concerned with managing and analyzing datasets, often using tools of machine learning, including neural networks.
+\item[Data wrangling] (Synonyms: data munging, pre-processing) the process of transforming data into a form usable by a neural network. Encompasses obtaining, cleaning, imputing, coding, and rescaling data. 
+\item[Dataset] any table of numerical values that is used by a neural network, or that will be used by a neural network after pre-processing. (This is not a standard definition, but one stipulated in this text). Input, output, target, and training datasets are specific types of tables used in specific ways by neural networks.
+\item[Decision boundary] In the context of a classification task, a hypersurface (e.g., in 2 dimensions, a line) that divides an input space into decision regions. Each decision region is associated with one possible output.
 \item[Deep network] A neural network with a large number of successive layers of nodes mediating between inputs and outputs. Deep networks are trained using \emph{deep learning} techniques.
+\item[Dimensionality reduction] A technique for transforming an $n$-dimensional vector space into another vector space with $m<n$ dimensions. A way of visualizing higher than 3-dimensional data that would otherwise be impossible to visualize.
+\item[Discriminative model] A model that associates feature vectors, which are often distributed representations, with discrete categories (e.g. one-hot localist vectors).  Categories can be discriminated from distributed feature vectors. This is a non-standard, informal definition. The formal definition is that a discriminative model is a model of the conditional probability of categorical outputs given inputs. Contrasted with generative models.
 \item[Distributed representation] a representation scheme where patterns of activation across groups of neurons indicate the presence of an object. 
 \item[Dorsal stream] Pathway that extends from the occipital lobe into the parietal lobes, underlying visuospatial processing of visual objects in space. Damage to this pathway can cause impairment in reaching and grasping for objects. 
+\item[Dot product] The scalar obtained by multiplying corresponding components of two vectors then adding the resulting products together. Example: $(1,2,3) \bullet (0,1,-1) = 0+2-3 = -1$.
+\item[Dynamical system] a rule that says what state a system will be in at any future time, given any initial condition.
 \item[Environment] a structure that influences the input nodes of a neural network or is influenced by the output nodes of a network, or both.
+\item[Error function] a function that associates a network and a training dataset with a scalar error value. Many supervised learning techniques attempt to modify network parameters so as to reduce the error function. Also called a ``loss function'' or, in the context of mathematical optimization, an ``objective function.''
+\item[Error surface] the graph of a function from parameters values of a network to error values of an associated error function. Each point on an error surface corresponds to different parameters (usually weight values and biases) of a network. Gradient descent finds minima on an error surface, where error is relatively low.
+\item[Evolutionary algorithm] an algorithm that creates a model based on simulated evolution. In the context of neural networks, or ``evolved neural networks'', a set of randomly generated neural networks is created and they are used to perform some task.  Those that perform best are kept and combined with other top performers, and the resulting networks are used to perform the same task. The process is repeated over many generations. Closely related to genetic algorithms.
+\item[Example] (Synonyms: instances, cases) rows of a dataset. Used in phrases like input example, training example, etc., depending on which dataset we are considering.
 \item[Excitatory synapses] synapses where an action potential in a presynaptic neuron triggers the release of neurotransmitters that then increase the likelihood of an action potential occurring in the postsynaptic neuron.
+\item[Fan-in weight vector] the weight vector for all of the inputs to a node in a neural network.
+\item[Fan-out weight vector] the weight vector for all of the outputs from a node in a neural network.
+\item[Feature] (Synonyms: attribute, property) a column of a dataset, often associated with a node of a neural network.
+\item[Feature Map] a node layer that is the output of a convolutional layer, in which each activation is the result of a filter being multiplied (using the dot product) to one region of the input layer.
+\item[Feature-extraction] (Synonym:  coding)  process of translating non-numerical data (e.g. text, images, audio files, DNA sequences) into a numerical format. % Using the hyphen because of the bug with overlap with "feature"
 \item[Feed-forward network] a network comprised of a sequence of layers where all neurons in any layer (besides the last layer) are connected to all neurons in the next layer. Contains no recurrent connections.
+\item[Filter] (Synonym: kernel) the set of weights in a convolutional layer. This is more or less the same thing as a convolutional layer, but it refers specifically to the weights, whereas ``convolution'' also refers the process of passing the filter over the input activations.
 \item[Firing rate] number of spikes (action potentials) a neuron fires per unit time. Usually measured in hertz, that is, number of spikes per second. A higher firing rate corresponds to a more ``active'' neuron. 
+\item[Fixed point] a state that does not change under a dynamical system. The system ``stays'' in this state forever. An orbit consisting of a single point.
 \item[Frontal lobe] forward-most lobe of the brain whose many roles include decision-making, action planning, and executive control. Houses many important regions, including prefrontal cortex (PFC), orbitofrontal cortex (OFC), and motor cortex. 
 \item[Generalization] the ability of a neural network to perform tasks that were not included in its training dataset. An example would be a network that was trained to identify 10 faces as male, and 10 as female, being able to perform well on (or ``generalize to'') new faces it has not seen before.
+\item[Generative Model] A model that can be used to generate prototypical features associated with some category, for example, associating a localist category label with a distributed feature vector. This is a non-standard definition. The formal definition is that it is a model of the joint probability distribution over a set of inputs and outputs. Contrasted with discriminative models. 
 \item[Graceful degradation] a property of systems whereby decrease in performance is proportional to damage sustained. The contrast is with brittle systems, in which a small amount of damage can lead to complete failure.
+\item[Gradient descent] a technique for finding a local minimum of (in a neural network context) an error function. Network parameters are iteratively updated using the negative of the gradient of the error function, which can be thought of as an arrow pointing in the direction in which the error surface is dropping most rapidly.
 \item[Hemineglect] neurological impairment caused by damage to regions of the parietal lobes characterized by a lack of attending to anything in one half of the visual field.
 \item[Hippocampus] a structure below the surface of the cortex (subcortical) that is involved in long-term memory consolidation and spatial maps. Damage to this structure can cause memory loss, or amnesia. 
 \item[Inhibitory synapses] synapses where an action potential in a presynaptic neuron triggers the release of neurotransmitters that then decrease the likelihood of an action potential occurring in the postsynaptic neuron.
+\item[Initial condition] the state a dynamical system begins in.
+\item[Input dataset] a dataset whose rows correspond to input vectors to be sent to the input nodes of a neural network.
 \item[Input node] (Synonym: sensor) a node that takes in information from an external environment. 
+\item[Input space] The vector space associated with the input layer of a neural network. The set of all possible input vectors for a neural network.
+\item[Labeled dataset] a conjunction of two datasets: an input dataset with input vectors, and a target dataset with target vectors or ``labels''. An input-target dataset. Used for supervised learning tasks.  
 \item[Learning] In a neural network, a process of updating synaptic weights so that the network improves at producing some desired behavior relative to an error function or other objective function.
+\item[Learning rate] A value that controls how much parameters are updated each time a learning rule is applied. Lower values lead to slower learning; larger values to faster learning.
+\item[Learning rule] (in neural networks) a rule for updating the weights of a neural network. Application of this rule is sometimes called ``training.''
+\item[Least mean square] (Synonym: delta rule). A supervised learning algorithm that adjusts weights and biases of a 2-layer feed-forward network so that input vectors in a training dataset produces outputs as similar as possible to corresponding target vectors.
 \item[Linear activation function] a function that is typically just the weighted input, sometimes scaled by a slope parameter. A piecewise linear activation function clips weighted input at  upper and lower bounds. The ReLU function only clips at a lower bound of 0.
+\item[Linear combination] to make a linear combination from a set of vectors we multiply each vector in the set by a scalar and then we add up the resulting vectors.
+\item[Linearly inseparable] A classification task that is not linearly separable.
+\item[Linearly separable] A classification task can be solved using a decision boundary that is a line (or, in more than 2-dimensions, a plane or hyperplane).
 \item[Localist representation] a representation scheme where activation of individual neurons indicate the presence of an object. Example: activation of neuron 25 indicates the presence of my grandmother.
 \item[Long Term Potentiation] (LTP) a process by which the efficacy of a synapse is increased after repeated use. LTP is part of the basis of the Hebb rule.
 \item[Machine learning] the use of statistical techniques to produce artificial intelligence. Uses of neural networks as engineering devices are a kind of machine learning.
+\item[Matrix] a rectangular table of numbers. Often used to represents the 
 \item[Membrane potential] the voltage that results from the difference in the total sum charge of ions on either side of the cell membrane. A cell at rest typically has a resting membrane potential of -70 mV. 
+\item[n-cycle] a finite set of $n$ states that a discrete-time dynamical system visits in the same repeating sequence. For discrete-time dynamical systems periodic orbits are $n$-cycles.
 \item[Neurotransmitters] small chemical packages that transmit signals from one neuron to another via synapses. These packages are released when an action potential in a pre-synaptic neuron stimulates their release from vesicles on the axon terminals into the synaptic cleft where they travel to receptors on the dendrites of a post-synaptic neuron. 
 \item[Node] (Synonyms: unit, artificial neuron) a simulated neuron or neuron-like element in an artificial neural network. 
 \item[Node Layer] A collection of nodes that are treated as a group. For example, in a feed-forward network every node in one layer can be connected to every node in another layer. The activations in a node layer can be represented with an activatoin vector. Without qualification, ``layer'' means node layer.
+\item[Numerical data] data that is integer or real-valued. Examples include age, weight, and height. Data for a neural network must usually be converted into a numerical form.
 \item[Occipital lobe] the lobe located in the back of the cortex where visual processing primarily takes place. 
+\item[Optimization] The process of finding the maximum or minimum of a function. In neural networks, it is often used to find network parameters for which error is lowest.
+\item[Orbit] (Synonym: trajectory) the set of states visited by a dynamical system from an initial condition. 
+\item[Orthogonal] Two vectors are orthogonal to each other if their dot product is zero. One-hot vectors are orthogonal. They are widely separated in input space and tend not to produce cross-talk in learning tasks.
+\item[Output dataset] a dataset whose rows correspond to output vectors recorded from a neural network. 
 \item[Output node] (Synonyms: actuator, effector) a node that provides information to an external environment. 
+\item[Output space] The vector space associated with the output layer of a neural network. The set of all possible output vectors for a neural network.
 \item[Parallel processing] Processing many items at once, concurrently. Contrasted with serial processing, where items are processed one at a time.  Neural networks are known for processing items in parallel, whereas classical computer process items in serial.
+\item[Parameter] A quantity for a dynamical system that is fixed as the system runs but can be adjusted and run again with a different value. Used in the description of bifurcations. In a neural network, the parameters we  update are usually its weights and biases. This concept is also used in machine learning when treating a neural network as a trainable model, whose parameters (weights and biases) are updated using optimization techniques.
 \item[Parietal lobe] the lobe located behind the frontal lobe and above the occipital lobe. This part of cortex plays a role in processing spatial information, integrating multisensory information, and is home to the somatosensory cortex, which processes information about touch sensation.
 \item[Performance] Consideration of how a network responds to inputs, while keeping its weights fixed.  Often the term is also used to consider how well it is doing relative to an error function or objective function.
+\item[Periodic orbit] a set of points that a dynamical system visits repeatedly and in the same order. An $n$-cycle is a type of periodic orbit.
+\item[Phase portrait] a picture of a state space with important orbits draw in it. A picture of the dynamics of a system.
+\item[Pre-processing] the process of transforming data into a form usable by a neural network. Compare data-wrangling.
 \item[Prefrontal cortex] the front-most part of the frontal cortex, which is involved in executive function, decision-making, and planning. It is also thought to have an attractor-based structure that supports the operation of working memory.
 \item[Primary motor cortex] strip in the motor cortex that houses a somatotopic map of the body and controls simple movement production. 
 \item[Proposition]  (Synonyms: statement, sentence) an expression that can be true or false.
 \item[Prosopagnosia] an impairment in recognizing faces that results from damage to particular regions of the ventral stream.
 \item[Receptors] binding sites at the ends of dendrite branches of the post-synaptic neuron where neurotransmitters attach.
 \item[Recurrent network] a network whose nodes are interconnected in such a way that activity can flow in repeating cycles.
+\item[Regression task] a supervised learning task in which the goal is to create a network that produces outputs as close as possible to a set of target values. Targets are real-valued rather than binary (as they often are in classification tasks). An example would be predicting the exact price of a house based on its features.
 \item[Reinforcement learning] a form of learning in which a system learns to take actions that maximize reward in the long run.   Actions that produce rewards, or action that lead to actions that produce reward, are reinforced in such a way that agents learn to obtain rewards and avoid costly situation.  In humans, associated with circuits in the brain stem and basal ganglia.  Sometimes treated as a third form of learning alongside supervised and unsupervised learning.
 \item[ReLU activation function] (``relu'' is short for ``rectified linear unit'') a linear activation function that is clipped at  0. It's activation is 0 for weighted inputs less than or equal to 0, and it is equal to weighted inputs otherwise. It is a popular activation function for deep networks.
+\item[Repeller] (Synonym: unstable state) a state or set of states $R$ with the property that if the system is in a nearby state the system will always go away from R. Fixed points and periodic orbits can both be repellers.
+\item[Rescaling] A mathematical transformation of a set of samples in a dataset that preserves their relations to one another but changes their values. Often values are rescaled to lie in the interval $(0,1)$ or $(-1,1)$. One stage of data wrangling.
 \item[Retinotopic map] A topographic map of locations in the retina. Regions of the brain that are retinotopic maps have the property that neurons near one another process information about nearby areas in visual space.
-\item[Sigmoid activation function] an activation function that whose value increases  monotoically between a lower and upper bound. As the input goes infinitely far in the positive direction the value converges to the upper bound. As the input goes infinitely far in the negative direction the value converges to the lower bound.
+\item[Row vector] a vector whose components are written in a row \eg $(2,1,3)$.
+\item[Scalar] usually a real number but in some applications it can be a complex number.When we multiply a vector by a scalar we are ``rescaling'' the vector, \ie changing the vector's length without changing its direction.
+\item[Scalar multiplication] an operation used to ``rescale'' a vector. It takes a scalar and a vector and returns a vector with the same direction.
+\item[Self Organizing Map] (Acronym: SOM)  A network trained by unsupervised competitive learning, in which the layout of the output nodes corresponds to the layout of the input space.
+\item[Sigmoid activation function] an activation function that whose value increases monotoically between a lower and upper bound. As the input goes infinitely far in the positive direction the value converges to the upper bound. As the input goes infinitely far in the negative direction the value converges to the lower bound.
+%\item[Simple Recurrent Network]
 \item[Soma] (Synonym: cell body) the central part of a neuron, which the dendrites and axons connect to.
 \item[Somatosensory cortex] front-most region of the parietal lobe that houses a somatotopic map of the body parts and processes tactile information from the body.
+\item[Span] the set of all linear combinations of a set of vectors is called the span of that set of vectors.
+\item[Sparse matrix] a matrix in which most of the entries are 0. A sparse weight matrix represents a set of connections between nodes where most of the possible entries are missing. Contrasted with dense matrices and dense or all-to-all connectivity. 
 \item[Spike] A discrete event that models the action potential for a neuron.
+\item[State] a specification of values for all the variables describing a system. The state of a neural network is typically an activation vector.
+\item[State space] the set of possible states of a system. The state spaces we consider are vector spaces. Two specific state spaces we focus on are activation spaces and weight spaces.
+\item[State variable] a variable associated with a dynamical system that describes one number associated with a system at a time. Examples include a person's height and weight, a particle's position and momentum, and a neuron's activation. The \emph{state} of a system is a vector each of whose components is the value of one state variable. 
 \item[Strength] A value associated with a weight. Has different interpretations depending on the context. It can, for example, represent the efficacy of a synapse, or an association between items in memory.
+\item[Subspace] any subset of a vector space that also happens to satisfy the definition of a vector space. The sum of any two vectors in a subspace is in the subspace and any scalar multiple of a vector in a subspace is in the subspace.
 \item[Supervised learning] a learning rule in which weights are adjusted using an explicit representation of desired outputs.
 \item[Synapse] the junction between nerve cells where a information is transferred from one neuron to another.
 \item[Synaptic efficacy] The degree to which a pre-synaptic spike increases the probability of a post-snyaptic spike at a synapse.
+\item[Target dataset] a dataset whose rows correspond to target outputs we'd like a neural network to produce for corresponding input vectors. For classification tasks, a set of \emph{class labels}.
 \item[Temporal lobe] lobe forward of the occipital lobe and below the parietal and frontal lobes. This region is involved primarily in processing semantic information about what things are and factual information, and also houses several important language areas.
 \item[Temporal lobe] lobe forward of the occipital lobe and below the parietal and frontal lobes. This region is involved primarily in processing semantic information about what things are and factual information, and also houses several important language areas.
+\item[Tensor] a generalization of the concept of a vector that encopasses numbers, lists of numbers, matrices, sets of matrices, sets of these sets, etc. The rank of a  tensor is the number of indices it takes to specify an ``entry'' in it.  A number is rank 0 because it requires no indices. A vector is rank 1 because it takes one index to specify an entry in a vector. A matrix is rank 2, because it takes two numbers to specify an entry (a row and column). A set of matrices is rank 3, because it takes 3 indices to specify an entry. Etc.
 \item[Thalamus] an internal brain structure that relays information from sensory and motor structures to the cortex.
 \item[Threshold activation function] a function that has one value for  input at or below a fixed amount (the threshold) and another value for input above the threshold. Usually the value of the function is less below the  threshold than it is above the threshold.
 \item[Threshold potential] the membrane potential of the cell above which an action potential is fired. 
 \item[Tonotopic map] a topographic map in the auditory cortex that is organized by frequency of sounds. Similar sounds (in terms of frequency) are processed by neurons that are near one another.
 \item[Topology] the way the nodes and weights of a network are wired together. A network's ``architecture.''
+\item[Training subset] a subset of a dataset used for training a neural network model (or other machine learning model). Contrasted with testing subset.
 \item[Unsupervised learning] a learning rule in which weights are adjusted without an explicit representation of desired outputs.
+\item[Vector addition] (Synonym: Vector sum) two vectors with the same number of components can be added (or summed) by adding their corresponding components. Example: $(1,2) + (3,4) = (4,6)$.
+\item[Vector space] a collection of vectors, all of which have the same number of components. For example, the plane is a collection of vectors, all of which have two components. (Note that this is an  informal definition; to be a vector space, a set of vectors must meet further requirements as well).
+\item[Vector subtraction] two vectors with the same number of components can be subtracted by subtracting their corresponding components.Example: $(1,2) - (3,4) = (-2,-2)$.
+\item[Vectors] ordered lists of numbers ($n$-tuple of numbers). The numbers in a vector are its components. In many cases a vector represents a point. For example: $(2,2)$ is a vector with two components, which represents a point in a plane.
 \item[Ventral stream] pathway that extends from the occipital lobe into the temporal lobes, underlying processing of visual object recognition. 
 \item[Visual cortex] rear-most region in the occipital lobe involved in visual processing, where primary and secondary visual cortex are housed.
 \item[Weight] (Synonyms: connection, artificial synapse) a simulated synapse or synapse-like element in a neural network. 
 \item[Weight layer] A set of weights treated as a group. Often they are the collection of weights connecting one node layer to another, which can in turn be represented by a weight matrix.
+\item[Weight space] a vector space made up of all possible weight vectors for a neural network.
+\item[Weight space] the set of possible weight vectors for a given neural network.
 \item[Weighted Input] (Synonym: net input)  Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
 \end{description}
