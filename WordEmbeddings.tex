@@ -1,12 +1,13 @@
-\chapter{Natural Language Processing}\label{ch_nlp}
+\chapter{Word Embeddings}\label{ch_word_embeddings}
 \chapterauthor{Ellis Cain, Jeff Yoshimi}
 
 % Also see online doc NLP Exercises
 % TODO: Go through chapter and add glossary items
+% Cohere tokens concept with transformer chapter
 
-This chapter introduces natural language processing or NLP, with an emphasis on techniques that can be used in conjunction with neural networks. A dominant theme throughout the chapter is the concept of a word embedding (also discussed in section \extref{wrangling}), where words in a corpus are associated with vectors that capture important characteristics.  In this way words and texts can be ``embedded'' in a vector space, associated with lists of numbers that can in turn be processed by a neural network, and associated with points in a space. These techniques have a long history in linguistics and in the study of neural networks, but have become especially prominent in recent years with the advent of large language models like GPT (section \extref{transformers}). Given the emphasis on converting words and other linguistic entities to vectors, this chapter also sheds further light on the concept of feature engineering (section \extref{wrangling}) and ``wrangling'' data so it can be used in neural networks.
+This chapter elaborates on the concept of a word embedding, which was briefly discussed in section \extref{wrangling}. A word embedding associates words and word parts (tokens) with vectors in a way that that captures important characteristics of those tokens. In this way tokens can be ``embedded'' in a vector space, that is, associated with lists of numbers that can in turn be processed by a neural network, and associated with points in a space. These techniques have a long history in linguistics and in the study of neural networks, but have become especially prominent in recent years with the advent of large language models like GPT (section \extref{transformers}). Given the emphasis on converting words and other linguistic entities to vectors, this chapter also sheds further light on the concept of feature engineering (section \extref{wrangling}) and ``wrangling'' data so it can be used in neural networks.
 
-After giving some background on linguistics we build up to the concept of a word embedding in stages. First we discuss document embeddings (associating whole documents with vectors of numbers), which are simpler to understand and serve as a useful basis for understanding word embeddings.  Then we discuss word embeddings. Then we discuss the kind of pre-processing and workflow often involved in actually taking a text, creating an embedding, and feeding it to a statistical model like a neural network. Finally we give a brief summary of ways neural networks are used to process linguistic data that has been numerically coded with a text embedding.\footnote{Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We will use ``text embedding'' as a generic way to cover both cases.}
+After giving some background on linguistics and natural language processing, we build up to the concept of a word embedding in stages. First we discuss document embeddings (associating whole documents with vectors of numbers), which are simpler to understand and serve as a useful basis for understanding word embeddings.  Then we discuss word embeddings. Then we discuss the kind of pre-processing and workflow often involved in actually taking a text, creating an embedding, and feeding it to a statistical model like a neural network. Finally we give a brief summary of ways neural networks are used to process linguistic data that has been numerically coded with a text embedding.\footnote{Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We will use ``text embedding'' as a generic way to cover both cases.}
 
 \section{Background and History}
 
@@ -80,7 +81,7 @@ As we will see in the next section, these methods can also be adjusted and appli
 
 \section{Word embeddings}
 
-We now move from document embeddings to word embeddings.  Instead of associating documents with vectors, we associate words with vectors. To begin to get a feel what word embeddings are before we discuss the details, see \url{http://vectors.nlpl.eu/explore/embeddings/en/}. Word embeddings are very important in neural networks and machine learning. A well-known example is Word2Vec \cite{mikolov2013distributed} which tracks the linguistic context and word co-occurrences to ``embed'' words into a semantic space. The general idea is that the generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually, as in figure \ref{f:writerPainterExample}. 
+We now move from document embeddings to word embeddings.  Instead of associating documents with vectors, we associate words with vectors. To begin to get a feel what word embeddings are before we discuss the details, see \url{http://vectors.nlpl.eu/explore/embeddings/en/}. Word embeddings are very important in neural networks and machine learning. A well-known example is Word2Vec \cite{mikolov2013distributed} which tracks the linguistic context and word co-occurrences to ``embed'' words into a semantic space.\footnote{A code-based walk through of the algorithm is here:  \url{https://www.tensorflow.org/tutorials/word2vec}.} The general idea is that the generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually, as in figure \ref{f:writerPainterExample}. 
 
 \begin{figure}[h]
     \centering
@@ -113,7 +114,7 @@ In other words, PPMI weights the co-occurrence values to avoid word-frequency-bi
 
 % \textbf{Quote from Lenci:} PPMI measures how much the probability of a target-context pair estimated in the training corpus is higher than the probability we should expect if the target and the context occurred independently of one another. (Lenci, 2018)
 
-\subsection{Evaluation of word embedding}
+\subsection{Evaluation of word embeddings}
 
 How should these embeddings be evaluated? Previous research on word similarity and relatedness has shown that directly asking for relatedness judgements can accurately capture word relations \cite{finkelstein2001placing}.
 
@@ -135,7 +136,6 @@ GloVe embeddings are trained on various training corpora, varying from 1 billion
 Beside the amount or size of the training corpora, the type of documents is also important; training solely on works of fiction would lead to different embeddings than a model trained on non-fiction, and so on. It is important to consider the meaning you are trying to capture (generalized or specific to a field, such as medical documents).
 
 \section{Workflow}
-
 
 Now to get our hands dirty. In practice there are many steps involved in applying these ideas. 
 Here is a sample workflow or pipeline:
@@ -203,7 +203,7 @@ Once every sentence has been processed, the final co-occurrence matrix can be se
 \begin{figure}[h]
     \centering
     \includegraphics[scale=.5]{./images/full_cooc_matrix.png}
-    \caption[Generated using SimBrain.]{Co-occurrence matrix for the example sentences.}
+    \caption[Generated using Simbrain.]{Co-occurrence matrix for the example sentences.}
  \label{coocExample}
 \end{figure}
 
