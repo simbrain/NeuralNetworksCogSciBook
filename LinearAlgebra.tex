@@ -1,20 +1,14 @@
 \chapter{Linear Algebra and Neural Networks}\label{ch_linear_algebra}
 \chapterauthor{Jeff Yoshimi, Scott Hotton}
 
-% * Add bold faced notation activation vectors and weight matrices and run it through.
-% For indexing style see http://neuralnetworksanddeeplearning.com/chap2.html
-% Also see "indexing hell" comment there
-
-% Add discussion of tensors and rank to set up deep net discussion. Currently there is some discussion in Supervised_FF which can be moved here.
+% Also see "indexing hell" comment at  http://neuralnetworksanddeeplearning.com/chap2.html
 
 % Identity matrix
 
 % NN discovers faster matrix product: https://www.nature.com/articles/s41586-022-05172-4. Oddly meta.
 
 In this chapter, we review some basic concepts of linear algebra with an 
-emphasis on how they can be applied to the study of neural networks. This can be viewed as a transition from the formal structure of single nodes and weights, to the formal 
-structure of \emph{lists} and \emph{tables} of nodes and weights. In particular, we  consider vectors and matrices, which allow us to describe the behavior of groups of nodes 
-and weights in a compact way.
+emphasis on how they can be applied to the study of neural networks. This can be viewed as a transition from the formal structure of single nodes and weights, to the formal structure of \emph{lists} and \emph{tables} of nodes and weights. In particular, we  consider vectors and matrices, which allow us to describe the behavior of groups of nodes and weights in a compact way.
 
 Linear algebra also facilitates a powerful geometric framework for \emph{visualizing} the structure and dynamics of a neural network. The properties of a set of inputs and whether they can be properly classified is an example of something that is  more intuitively understandable when the input vectors are visualized as points in a space. Chapter \extref{ch_act_functions} notes that whenever the ``play''  button \includegraphics[scale=.5]{./images/Play.png} is pressed in Simbrain, some dynamical process is simulated. The framework of linear algebra makes it possible to visualize the changing activations of a set of nodes, or the changing strengths of a set of weights, as a moving point in a space. This approach to thinking about neural networks uses \emph{dynamical systems theory}, discussed in chapter \extref{ch_dst}, and can be used to think about many features of neural network models in an intuitive way.\footnote{For a quick demonstration of this way of visualizing network dynamics, try running the simulation \emph{highDimensionalProjection.bsh}. The dynamics of the network is visible in the projection component.}  
 
@@ -48,6 +42,10 @@ For example, here are four vectors:
 \begin{equation*}
     (0,0) \quad (0,1) \quad (1,0) \quad (1,1) 
 \end{equation*}
+
+% TODO: Expand this as we use this more and decide if any convention regarding indices should be given now.
+We sometimes adopt the convention of writing vectors using bold-faced lower-case letters, for example $\mathbf{a}_i$ for a  vector of input values, $\mathbf{t}$ for a vector of target values, or $\mathbf{a}_4$ for the activation vector in the fourth node-layer of a feed-forward network.  By contrast non bold-faced, italic lower-case letters are usually reserved for components of vectors, and the subscript indicates which component. For example, $a_2$ could designate the second component of an activation vector $\mathbf{a}$.
+
 When the components of a vector are written horizontally, from left to right,
 it is called a {\em row vector}. The ordered pairs shown above are row 
 vectors. The components can also be written out vertically, from top to 
@@ -105,6 +103,9 @@ that the philosopher Ren{\'{e}} Descartes
  $(3,4)$, 3 units to the right, and 4 units up; there's a fly at 
  $(-2,-1)$, 2 units to the left, and 1 unit down; and there's another at 
  $(4,-2)$, 4 units to the right, and two units down (see figure \ref{2d}).} 
+ 
+ % This is useful in Simbrain but the connection is a bit lost here 
+For 2-dimensional spaces, finding your way around is a bit like using an ``Etch a sketch'' toy\footnote{\url{https://en.wikipedia.org/wiki/Etch_A_Sketch}.}, where you move a tracing point around in a space using one knob for left-and-right ($x$-values) and one knob for up and down ($y$-values). If you plot the activation space of two nodes in Simbrain and adjust the activations of the two nodes, this analogy is useful for understanding what is happening.
 
 \begin{figure}[h]
 \centering
@@ -431,6 +432,8 @@ exist in vector spaces called ``matrix spaces''). However, it will be easier for
 \label{labelledNets}
 \end{figure}
 
+We adopt the convention of writing matrices using bold-faced upper-case letters, for example $\mathbf{W}$ or $\mathbf{R}$. By contrast, non bold-faced, italic lower-case letters are reserved for components of entries in a matrix, and subscripts indicate which row and column. For example $w_{2,3}$ could be the scalar at the second row and third column of a $2 \times 3$ matrix $\mathbf{W}$.\footnote{In physics and mathematics it would be more conventional to use upper-case letters like $W_{2,3}$ of the matrix $\mathbf{W}$ for this purpose, but we here follow more standard conventions in discussions of neural networks.} In the matrix above, for example, $w_{1,3} = 7 $
+
 \section{Weight Matrices}
 
 Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix.\footnote{\label{sourceTarget} This is a somewhat unconventional way of representing weight matrices. It can be called a ``source-target'' representation, because rows are associated with source neurons and columns are associated with target neurons. It is more common in neural network texts to use a ``target-source'' representation, where rows are associated with target neurons and columns are associated with source neurons. This is related to the choice to represent the weight from node $j$ to $k$ with $w_{j,k}$, a ``source-target'' indexing scheme, rather than $w_{k,j}$. We made changes in convention in order to make the formalism easier to learn, but again they are non-standard. Further discussion is in note \ref{leftRightConvention}.} This implies that a source-target weight matrix representation of a set of weights will have as many rows as source neurons and as many columns as target neurons.
@@ -538,13 +541,14 @@ Figure \ref{sparseRecurrent} shows another example, that shows what we do when s
 \noindent Now let's check your understanding: there are 4 nodes and thus the matrix is 4-by-4. There are two positive weights and two negative weights, and there are two positive entries and two negative entries in the table. Node 4 is self-connected and the fourth diagonal entry is non-zero. Nodes 1 and 4 have two weights in their fan-in and those two columns have two entries.
 
 % Add link to NLP chapter when it's ready
-In the special case where most of the possible entries in a weight matrix are 0, the matrix is called a \glossary{sparse matrix}. The matrix  in figure \ref{sparseRecurrent} is sparse. Sparse weight matrices represent sparsely connected networks, which are common in the brain (sparse matrices also come up in other areas related to neural networks, for example in representing text corpora). The are contrasted with dense matrices and dense connectivity. The term ``dense'' connection is often used to refer to ``all-to-all'' connections between weight layers.
+In the special case where most of the possible entries in a weight matrix are 0, the matrix is called a \glossary{sparse matrix}. The matrix  in figure \ref{sparseRecurrent} is sparse. Sparse weight matrices represent sparsely connected networks, which are common in the brain (sparse matrices also come up in other areas related to neural networks, for example in representing text corpora). The are contrasted with dense matrices and dense connectivity. The term ``dense'' connection is often used to refer to ``all-to-all'' or ``fully connected'' sets of weights between node layers.
 
 \section{Vector-Matrix Product}
 
-The power of matrices in neural networks is our ability to use them to represent weights and transformations of activation vectors as they propagate. We are splitting the topic into two parts. For the intro version of the course the book currently focuses on, we only consider one case: a vector-matrix product. We can understand this in a simplified way using mainly just the dot product. But this is just a specially curated case, and the full story is more complex and involves more cases.\footnote{\label{leftRightConvention}  We will not give a general definition of matrix multiplication or matrix product here. Instead, we will describe a special case of it: ``vector-matrix'' multiplication, which involves multiplying an activation vector on the left times a weight matrix on the right.We are presenting the computation as a row vector on the left times a weight matrix on the right, which is required by the ``source-target'' representation (see note \ref{sourceTarget}). It is also easy to think about in terms of the operations involved in updating a neural network: an activation vector is ``passed through'' a weight matrix to produce another activation vector, in this case a hidden unit vector. However, this is non-standard. In linear algebra and most applications this operation would usually be represented with the matrix on the left and a column vector on the right. This is because a matrix is often thought of as a function that operates or acts on a vector, transforming inputs to outputs.}  But we're starting simple.
+% TODO: Should obviously update this material once the new material is added
+The power of matrices in neural networks is our ability to use them to represent weights and transformations of activation vectors as they propagate. We are splitting the topic into two parts. For the version of the course the book currently focuses on, we only consider one case: a vector-matrix product. We can understand this in a simplified way using mainly just the dot product. But this is just a specially curated case, and the full story is more complex and involves more cases.\footnote{\label{leftRightConvention}  We will not give a general definition of matrix multiplication or matrix product here. Instead, we will describe a special case of it: ``vector-matrix'' multiplication, which involves multiplying an activation vector on the left times a weight matrix on the right.We are presenting the computation as a row vector on the left times a weight matrix on the right, which is required by the ``source-target'' representation (see note \ref{sourceTarget}). It is also easy to think about in terms of the operations involved in updating a neural network: an activation vector is ``passed through'' a weight matrix to produce another activation vector, in this case a hidden unit vector. However, this is non-standard. In linear algebra and most applications this operation would usually be represented with the matrix on the left and a column vector on the right. This is because a matrix is often thought of as a function that operates or acts on a vector, transforming inputs to outputs.}  But we're starting simple.
 
-So the way we do things here, we focus on taking an input vector, and dotting it with columns of a weight matrix, which (in the source-target format) represent fan-in weight vectors. In this way we produce a new output vector. Each of these dot products is a weighted inputs (see chapter \extref{ch_act_functions}). Assuming a default unbounded linear activation function, this can be used to represent weight  propagation. We consider the feed-forward case first, then the recurrent case.
+So the way we do things here, we focus on taking an input vector, and dotting it with columns of a weight matrix, which (in the source-target format) represent fan-in weight vectors. In this way we produce a new output vector. Each of these dot products is a weighted input (see chapter \extref{ch_act_functions}). Assuming a default unbounded linear activation function, this can be used to represent weight propagation. We consider the feed-forward case first, then the recurrent case.
 
 Feed-forward. Consider the feed-forward network in figure \ref{labelledNets}, which uses linear activation functions without bias (we are also ignoring clipping) so that node activations just are weighted inputs. That is, we multiply the input vector by the intervening weight matrix to obtain the hidden unit vector:  $\textbf{a}_{hidden} = \textbf{a}_{input} \textbf{W}_{input,hidden}$. We can then multiply the hidden unit vector by the hidden-to-output layer weight matrix to get the output vector. We can continue to do this for all the layers of a feed-forward network. So, for linear networks, pretty much all we do when updating the network is use matrix products (and even for non-linear networks, we use the matrix product to compute vectors of weighted inputs, which are then transformed by, for example, sigmoid functions).
 
@@ -594,6 +598,8 @@ You can easily set this up in Simbrain and confirm this is what happens. We will
 
 \section{Tensors}\label{sect_tensors}
 
+% https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks
+
 A \glossary{tensor} is a generalization of the concept of a vector that encompasses numbers, arrays of numbers, matrices (2d arrays of numbers), arrays of matrices, arrays of these arrays, etc. These more complex structures are increasingly common since the time of the deep learning revolution (section \extref{deep_revolution}). The basic idea is not just to work with vectors and matrices, but also sets of matrices and even sets of sets of matrices. These have special nomenclature like ``volume''. In this section we cover the basics.
 
 % TODO: Glossary items for textbfs
@@ -602,7 +608,7 @@ A \glossary{tensor} is a generalization of the concept of a vector that encompas
 The \textbf{rank} of a  tensor is the number of indices required to specify an entry in it.These are also sometimes called ``n-dimensional arrays'' or ``n-d arrays'' (1d array, 2d array, etc.).\footnote{Note that the dimensionalty of an array is the literal dimension of the object, like a vector is 1d and a matrix is 2d. This is not the same as the dimensionality of the space these objects live in. For example, $(1,2,1,0)$ is a point in a 4d space, but it is a 1d tensor or 1d array of numbers.} The \textbf{shape} of a tensor is the number of components it has along each of the array's dimensions. We have seen this with matrices, where the shape is stated in terms of rows and columns, e.g. a $5 \times 2$ matrix. For more complex tensors the shape is specified by a number of components for each dimension of the array, like a $4 \times 2 \times 5$ volume. Here are the main types of tensor:
 
 \begin{itemize}
-\item A \textbf{number} is a rank 0 tensor or 0d array because it requires no indices. The number 42 is a rank 0 tensor, a 0d array, but nobody talks about it that way. 
+\item A \textbf{scalar} is a rank 0 tensor or 0d array because it requires no indices. The number 42 is a rank 0 tensor, a 0d array, but nobody talks about it that way. 
 \item A \textbf{vector} is a rank 1 tensor or 1d array because it takes one index to specify an entry in a vector, and the result is spread out in one dimension. The vector $(0,1,0)$ is a rank 1 tensor, because it takes one index to specify entries, but people usually just call it a vector. Vectors were discussed in much of this chapter, starting in section \ref{sect_vector}.
 \item A \textbf{matrix} is a rank 2 tensor or 2d array, because it takes two numbers to specify an entry (a row and column index), and the result is spread out in two dimensions. We've seen lots of examples of matrices in this chapter, and they were discussed in section \ref{sect_matrices}.
 \item A \textbf{volume} is an array of matrices. It is a rank 3 tensor or 3d array, because it takes 3 indices to specify an entry, and the result is spread out in three dimensions. The term ``volume'' is common but not completely standard, but is intuitive so we adopt it here. It can be visualized as a stack of matrices, or as a solid, something like a Rubik's cube or 3d chess board (see figure \ref{tensorVisualStyles}). A common use of volumes is to represent images, which requires several channels of 2d information, several ``copies'' of a pixel array. For example, an RGB color image that is 28 rows (height) by 28 columns (width) is represented by three matrices (red, green, and blue) of shape $28 \times 28$. Thus the whole image is represented by a tensor with shape $3 \times 28 \times 28$.  These indices are referred to as channel, width, and height. 
