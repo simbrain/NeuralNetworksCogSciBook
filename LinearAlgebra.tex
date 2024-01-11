@@ -540,8 +540,7 @@ Figure \ref{sparseRecurrent} shows another example, that shows what we do when s
 
 \noindent Now let's check your understanding: there are 4 nodes and thus the matrix is 4-by-4. There are two positive weights and two negative weights, and there are two positive entries and two negative entries in the table. Node 4 is self-connected and the fourth diagonal entry is non-zero. Nodes 1 and 4 have two weights in their fan-in and those two columns have two entries.
 
-% Add link to NLP chapter when it's ready
-In the special case where most of the possible entries in a weight matrix are 0, the matrix is called a \glossary{sparse matrix}. The matrix  in figure \ref{sparseRecurrent} is sparse. Sparse weight matrices represent sparsely connected networks, which are common in the brain (sparse matrices also come up in other areas related to neural networks, for example in representing text corpora). The are contrasted with dense matrices and dense connectivity. The term ``dense'' connection is often used to refer to ``all-to-all'' or ``fully connected'' sets of weights between node layers.
+In the special case where most of the possible entries in a weight matrix are 0, the matrix is called a \glossary{sparse matrix}. The matrix  in figure \ref{sparseRecurrent} is sparse. Sparse weight matrices represent sparsely connected networks, which are common in the brain (sparse matrices also come up in other areas related to neural networks, for example in representing words in documents; see chapter \extref{ch_word_embeddings). The are contrasted with dense matrices and dense connectivity. The term ``dense'' connection is often used to refer to ``all-to-all'' or ``fully connected'' sets of weights between node layers.
 
 \section{Vector-Matrix Product}
 
