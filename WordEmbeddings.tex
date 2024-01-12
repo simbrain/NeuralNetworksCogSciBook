@@ -80,7 +80,7 @@ As we will see in the next section, these methods can also be adjusted and appli
 
 \section{Word embeddings}
 
-We now move from document embeddings to word embeddings.  Instead of associating documents with vectors, we associate words with vectors. To begin to get a feel what word embeddings are before we discuss the details, see \url{http://vectors.nlpl.eu/explore/embeddings/en/}. Word embeddings are very important in neural networks and machine learning. A well-known example is Word2Vec \cite{mikolov2013distributed} which tracks the linguistic context and word co-occurrences to ``embed'' words into a semantic space.\footnote{A code-based walk through of the algorithm is here:  \url{https://www.tensorflow.org/tutorials/word2vec}.} The general idea is that the generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually, as in figure \ref{f:writerPainterExample}. 
+We now move from document embeddings to word embeddings.  Instead of associating documents with vectors, we associate words with vectors. To begin to get a feel what word embeddings are before we discuss the details, see \url{http://vectors.nlpl.eu/explore/embeddings/en/}. Word embeddings are very important in neural networks and machine learning. A widely used pre-trained model is GloVe (Global Vectors for Word Representation, \cite{pennington2014glove}), which tracks the linguistic context and word co-occurrences to ``embed'' words into a semantic space. The general idea is that the generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually, as in figure \ref{f:writerPainterExample}. 
 
 \begin{figure}[h]
     \centering
@@ -217,3 +217,6 @@ After processing the whole document and calculating a co-occurrence matrix, we w
 
 % Talk about neural network based word embeddings like word2vec and fasttext. These methods mainly track co-occurrence frequencies, which reflect statistical learning theories (SL citations), where learners track label-object co-occurrence statistics.  Here we are using neural networks to create word embeddings. Those word embeddings can then be used to create inputs to other neural networks.
 
+\section{Connection to neural networks}
+
+The above-mentioned co-occurrence based word embeddings are not the only option. Besides these, neural networks can also be used to create word embeddings. A well-known example is Word2Vec \cite{mikolov2013distributed}, which trains shallow neural networks to predict targets based on the surrounding context\footnote{A code-based walk through of the algorithm is here:  \url{https://www.tensorflow.org/tutorials/word2vec}.}. After the network is trained, the weights of the hidden layer are extracted to serve as the word embeddings. In other words, sometimes co-occurrence based word embeddings are used as data for a neural network, whereas other times neural network based embeddings may be used for a different neural network.
