@@ -240,7 +240,7 @@ weights of a neural network.
 
 \item[Node] (Synonyms: unit, artificial neuron) a simulated neuron or neuron-like element in an artificial neural network. 
 
-\item[Node Layer] A collection of nodes that are treated as a group. For example, in a feed-forward network every node in one layer can be connected to every node in another layer. The activations in a node layer can be represented with an activatoin vector. Without qualification, ``layer'' means node layer.
+\item[Node Layer] A collection of nodes that are treated as a group. For example, in a feed-forward network every node in one layer can be connected to every node in another layer. The activations in a node layer can be represented with an activation vector. Without qualification, ``layer'' means node layer.
 
 \item[Numerical data] data that is integer or real-valued. Examples include age, weight, and height. Data for a neural network must usually be converted into a numerical form.
 
@@ -354,7 +354,9 @@ weights of a neural network.
 
 %\item[Sum of Squared Error] 
 
-\item[Sparse matrix] a matrix in which most of the entries are 0. A sparse weight matrix represents a set of connections between nodes where most of the possible entries are missing. Contrasted with dense matrices and dense or all-to-all connectivity. 
+\item[Sparse matrix] a matrix in which most of the entries are 0. A sparse weight matrix represents a set of connections between nodes where most of the possible connections are missing. Contrasted with dense matrices and dense or all-to-all connectivity. 
+
+\item[Sparsity] of a matrix is a number between $0$ and $1$ obtained by counting how many zero entries the matrix has and dividing by the total number of entries. A matrix with no zero entries has a sparsity of $0$ and a matrix with all zero entries has a sparsity of $1$.
 
 \item[Subspace] any subset of a vector space that also happens to satisfy the definition of a vector space. The sum of any two vectors in a subspace is in the subspace and any scalar multiple of a vector in a subspace is in the subspace.
 
@@ -421,7 +423,7 @@ weights of a neural network.
 
 \item[Weighted Input] (Synonym: net input)  Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
 
-\item[Weight layer] A set of weights treated as a group. Often they are the collection of weights connecting one node layer to another, which can in turn be represented by a weight matrix.
+\item[Weight layer] A set of weights treated as a group. Often they are the collection of weights connecting one node layer to another, which can in turn be represented by a weight matrix. % Distinguish recurrent from feed forward case?
 
 \item[Weight space] the set of possible weight vectors for a given neural network.
 

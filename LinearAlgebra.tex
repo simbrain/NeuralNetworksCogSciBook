@@ -81,10 +81,10 @@ The number of components in a vector can be any positive integer. If there is
 only one component, then the vector is essentially just a scalar.
 
    For any positive integer $n$, the set of all $n$-tuples forms a vector space.
-The integer $n$ is called the {\em dimension} of the vector space. For 
+The integer $n$ is called the \glossary{dimension of a vector space}. For 
 example, the set of all of ordered pairs of real numbers is a 2 dimensional 
-real vector space. The set of all ordered triples is a 3 dimensional real 
-vector space. 
+real vector space $\real^2$. The set of all ordered triples is a 3 dimensional real 
+vector space $\real^3$. The set of all possible activations for a network with 172 nodes is a subset of  $\real^{172}$.
 
    The components of a vector can be thought of as the coordinates of a point
 in Euclidean geometry. The components of a vector can be used to locate a
@@ -362,11 +362,29 @@ n_4 = (-1,-1,1) \bullet (\; -1,\; -4,\; 5) = 1 + 4 +5 = 10
 %n_k = (w_{1,n},w_{2,n}, \dots, w_{m,n}) \bullet (a_1,a_2, \dots ,a_m) + b_n
 %\end{equation*}
 
+% dot(u,v) = u*v
+% cos_sim(u,v) = u*v/|u|*|v|, which happens to also be cos(theta btween u and).
+%			i.e like dot by divide by magnitude of u and v
+% cov(u,v) = like dot but subtract out mean
+% corr(u,v) = like cov but divide magnitude of u and v
+
+
 % Expand to include a broader discussion that includes cosine similarity 
 %      - Dot product: not scaled, not centered.
 %      - Cosine similarity: scaled, not centered
-%      - Covariation: centered, not scaled [not as important]
-%      - Correlation: scaled and centered [not as important]
+%      - Covariance: centered, not scaled
+%      - Correlation: scaled and centered 
+
+% These operations don't really apply to pairs of numbers (except trivially), but rather to pairs of vectors
+
+% Different ways the data tend to be gathered
+% smell vector 1 = (1,1,1,0)
+% smell vector 2 = (1,1,1,0)
+%
+% weight/height
+% human 1  		= (5, 120)
+% human 2  		= (5.5,180)
+% human 3  		= (6.5,210)
 
 %% Email from Scott:  I said a while ago that i would get back to you on cosine simarlity and
 %the Pearson correlation coefficient.  I think the cosine similarity statistic
@@ -402,7 +420,31 @@ n_4 = (-1,-1,1) \bullet (\; -1,\; -4,\; 5) = 1 + 4 +5 = 10
 %The normalized dot product between two vectors, also known as the cosine similarity, calculates the angle between two vectors such that the similarity calculation is not impacted by magnitude. Bounded between $[-1, 1]$, such that $\cos = -1$ indicates opposite vectors, $\cos = 0$ indicates orthogonal vectors, and $\cos = 1$ are proportional vectors. Some implementations are bounded between $[0,1]$. Occasionally, cosine distance is used, which is $1 - \cos$, in which case proportional or highly similar vectors will have a cosine distance of 0, while dissimilar vectors will have a cosine distance of 1.
 % Add some exercises to the end.
 
+
+\section{Vector Spaces as Metric Spaces}
+
+A vector space can have a metric which is a way to say what the distance is
+between any two points. The usual metric for a real vector space is the
+Euclidean metric which can be expressed in terms of the dot product.  With this
+metric the distance between any pair of vectors in $\real^n$:
+\begin{equation*}
+\mathbf{x} = (x_1, x_2, \ldots, x_n) \qquad
+\mathbf{y} = (y_1, y_2, \ldots, y_n) \qquad
+\end{equation*}
+is:
+\begin{equation*}
+|| \mathbf{x} - \mathbf{y} || =
+\sqrt{ (\mathbf{x} - \mathbf{y}) \bullet (\mathbf{x} - \mathbf{y}) }
+= \sqrt{ \sum_{j=0}^n (x_j - y_j)^2 }
+\end{equation*}
+There are many metrics for every vector space but usually we use the Euclidean metric.
+
+% Consider adding a plot showing nearby points here.
+The upshot of this is that we can interpret the vector spaces associated with neural networks--activation spaces, input spaces, weight spaces, etc.--as giving us a sense of how far apart relevant vectors are, and thus how similar the things they represent are. Points nearby one another in an input space correspond to similar inputs: similar smells, similar visual inputs, similar words relative to a word embedding (chapter \extref{ch_word_embeddings}), etc. Points nearby one another in a weight space are similar configurations of weights. These interpretations are often emphasized in analyses of neural networks (for example, see chapter \extref{ch_representations}), and in fact the spaces associated with neural networks are sometimes called ``similarity spaces''.  An example which illustrates the importance of this way of thinking is figure \extref{competitiveInputSpace}.
+
 \section{Matrices}\label{sect_matrices}
+
+% Officially stipulate our usage: components of a vectors, entries of a matrix.
 
    Another object studied in linear algebra is a \glossary{matrix}, which is a 
 rectangular array of numbers arranged into rows and columns: basically a table of 
@@ -432,7 +474,7 @@ exist in vector spaces called ``matrix spaces''). However, it will be easier for
 \label{labelledNets}
 \end{figure}
 
-We adopt the convention of writing matrices using bold-faced upper-case letters, for example $\mathbf{W}$ or $\mathbf{R}$. By contrast, non bold-faced, italic lower-case letters are reserved for components of entries in a matrix, and subscripts indicate which row and column. For example $w_{2,3}$ could be the scalar at the second row and third column of a $2 \times 3$ matrix $\mathbf{W}$.\footnote{In physics and mathematics it would be more conventional to use upper-case letters like $W_{2,3}$ of the matrix $\mathbf{W}$ for this purpose, but we here follow more standard conventions in discussions of neural networks.} In the matrix above, for example, $w_{1,3} = 7 $
+We adopt the convention of writing matrices using bold-faced upper-case letters, for example $\mathbf{W}$ or $\mathbf{R}$. By contrast, non bold-faced, italic lower-case letters are reserved for entries in a matrix, and subscripts indicate which row and column. For example $w_{2,3}$ could be the scalar at the second row and third column of a $2 \times 3$ matrix $\mathbf{W}$.\footnote{In physics and mathematics it would be more conventional to use upper-case letters like $W_{2,3}$ of the matrix $\mathbf{W}$ for this purpose, but we here follow more standard conventions in discussions of neural networks.} In the matrix above, for example, $w_{1,3} = 7 $
 
 \section{Weight Matrices}
 
@@ -507,6 +549,7 @@ Now the recurrent case, starting with the recurrent network shown in figure \ref
 
 Figure \ref{sparseRecurrent} shows another example, that shows what we do when some links are missing. If a weight does not exist, it is represented by a $0$ in the corresponding matrix. Here is its representation:
 
+% Make this a table with a caption but keep this position
 \begin{minipage}{0.5\textwidth}
 \centering
 \[
@@ -540,8 +583,9 @@ Figure \ref{sparseRecurrent} shows another example, that shows what we do when s
 
 \noindent Now let's check your understanding: there are 4 nodes and thus the matrix is 4-by-4. There are two positive weights and two negative weights, and there are two positive entries and two negative entries in the table. Node 4 is self-connected and the fourth diagonal entry is non-zero. Nodes 1 and 4 have two weights in their fan-in and those two columns have two entries.
 
-In the special case where most of the possible entries in a weight matrix are 0, the matrix is called a \glossary{sparse matrix}. The matrix in figure \ref{sparseRecurrent} is sparse.  Sparse weight matrices represent sparsely connected networks, which are common in the brain (sparse matrices also come up in other areas related to neural networks, for example in representing words in documents; see chapter \extref{ch_word_embeddings}).  Sparsely connected networks are contrasted with fully connected networks, which are represented by regular matrices, that is non-sparse matrices, which contain few or no 0 entries.  These are sometimes called ``dense'',  ``all-to-all'' or ``fully connected'' sets of weights between node layers.
-
+% Change refs below to refs to the table
+In the special case where most of the entries in a weight matrix are $0$, the matrix is called a \glossary{sparse matrix}. The matrix representing the weights in figure \ref{sparseRecurrent} is sparse. A sparse matrix is contrasted with dense matrix, where most of the entries are non-zero. Really these are two ends of a continuum described by a number called \glossary{sparsity}, which ranges from $0$ to $1$, and where higher values are more sparse. The sparsity of a matrix is obtained by counting how many zero entries the matrix has and dividing by the total number of entries. If all of the matrix entries are $0$ then the sparsity of the matrix is $1$. If half of the entries are $0$ then the sparsity is $.5$.  If none of the matrix entries are $0$ then the sparsity of the matrix is $0$. The matrix in the table above has $16$ entries, $12$ of which are $0$, so its sparsity is $12/16 = 3/4 = .75$. Sparse weight matrices represent sparsely connected networks, where only a few of the possible connections between relevant nodes exist (recall that a matrix representation of a network uses $0$ to represent the absence of a connection).  Dense matrices are used to represent densely connected networks. The word ``dense connection'' or ``dense weight layer'' in this context often implies a sparsity of $0$, that is, an ``all-to-all'' or ``fully connected'' set of weights between relevant nodes.
+% Think about whether some clarification about feed-forward and recurrent weight layers is needed
 
 \section{Vector-Matrix Product}
 
