@@ -133,7 +133,9 @@ These sudden shifts in the behavior of a system when parameters are changed are 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.5]{./images/bifurcation.png}
-\caption[Scott Hotton.]{A bifurcation where a fixed point goes from being attracting to repelling, and in which an attracting periodic orbit appears. (This is called a ``Hopf bifurcation''). }
+\caption[Scott Hotton.]{A bifurcation where a fixed point goes from being 
+attracting to repelling, and in which an attracting periodic orbit appears. 
+(This is called a ``Hopf bifurcation''). }
 \label{F:bifurcation}
 \end{figure}
 
@@ -157,11 +159,33 @@ In this section, we  introduce some language for classifying orbits and using th
 
 One way to classify orbits is by their shape, or ``topology.''\footnote{The topology of an orbit is its shape, in a special sense. Think of an orbit as a compressible / extendible string. This concept of shape allows arbitrary squashing and pulling of the orbits. Two orbits have the same topology if one can be squashed or squeezed in to the other shape without cutting the strings or gluing them together. In a discrete time system the topological properties of orbits work differently. Orbits are discrete chains and their topology is defined similarly to how the network diagrams in chapter \extref{ch_intro} were defined.} Some prominent topologies for an orbit are a point, line and a loop. The analogues of these in a discrete time system are a point, a sequence of points, and a cycle of points. 
 
-   The simplest shape for an orbit is a \glossary{fixed point} (also known as an equilibrium), a state that goes to itself under a dynamical system. See the top row of Fig. \ref{F:attractorsRepellers}. This type of orbit is just a single point. When we start a dynamical system  at a fixed point it remains there for all time. Once a system reaches a
-fixed point it stays in that state forever. 
+   The simplest shape for an orbit is a \glossary{fixed point} (also known as 
+an equilibrium), a state that goes to itself under a dynamical system. See the 
+top row of Fig. \ref{F:attractorsRepellers}.  This type of orbit is just a 
+single point.  When we start a dynamical system at a fixed point it remains 
+there for all time. Once a system reaches a fixed point it stays in that state 
+forever. 
 
-Another shape for an orbit is a repeating loop or cycle. See the bottom row of Fig. \ref{F:attractorsRepellers}.\footnote{The Poincar\'{e}-Bendixson theorem tells us there must be at least one fixed point inside the periodic orbits shown on the bottom row of the figure. These fixed points have been omitted for pedagogical purposes.} This kind of orbit periodically visits the same points over and over again. This is a \glossary{periodic orbit}, a set of points that a dynamical system visits repeatedly in the same order. Periodic orbits repeatedly cycle back on themselves. This corresponds to an oscillation in a network, a repeating pattern of firings. For a continuous time dynamical system, a periodic orbit is loop-shaped (it has the topology of a circle), and its period is the amount of time takes to go around the loop.\footnote{Do not confuse the period of a single periodic  orbit with the number of periodic orbits in the state space. For example, a dynamical system can have one periodic orbit with period 2 and three other periodic orbits with period 5.}
-  For a discrete time system, a periodic orbit is a finite set of $n$ states that the system cycles through (its period is $n$). This is also called an \glossary{n-cycle}. For example, a 2-cycle is a pair of states the system goes back and forth between. A 3-cycle is a set of 3 points that system visits in the same repeating sequence. Similarly for 4,5,100, and arbitrarily large $n$-cycles.
+   Another shape for an orbit is a repeating loop or cycle.  See the bottom row 
+of Fig. \ref{F:attractorsRepellers}.\footnote{The Poincar\'{e}-Bendixson 
+theorem tells us there must be at least one fixed point inside the periodic 
+orbits shown on the bottom row of the figure.  These fixed points have been 
+omitted for pedagogical purposes.}  This kind of orbit periodically visits the 
+same points over and over again.  This is a \glossary{periodic orbit}, a set of 
+points that a dynamical system visits repeatedly in the same order.  Periodic 
+orbits repeatedly cycle back on themselves.  This corresponds to an oscillation 
+in a network, a repeating pattern of firings.  For a continuous time dynamical 
+system, a periodic orbit is loop-shaped (it has the topology of a circle), and 
+its period is the amount of time takes to go around the loop.\footnote{Do not 
+confuse the period of a single periodic orbit with the number of periodic 
+orbits in the state space.  For example, a dynamical system can have one 
+periodic orbit with period 2 and three other periodic orbits with period 5.}
+For a discrete time system, a periodic orbit is a finite set of $n$ states that 
+the system cycles through (its period is $n$).  This is also called an 
+\glossary{n-cycle}.  For example, a 2-cycle is a pair of states the system goes 
+back and forth between.  A 3-cycle is a set of 3 points that system visits in 
+the same repeating sequence.  Similarly for 4,5,100, and arbitrarily large 
+$n$-cycles.  
 
 %   Here is the beginning of an orbit for a three node network:
 %\begin{small}
@@ -177,8 +201,45 @@ Another shape for an orbit is a repeating loop or cycle. See the bottom row of F
 %And they have to repeat again in the seventh, eighth, and ninth states. This
 %system cycles through these same three states over and over for all of time. 
 
-There are other shapes besides points, lines and loops. Some orbits in higher dimensions are donut shaped ``tori'', for example. Others are even more complex, e.g. fractal shaped.
-% Images of fractals etc. More on their significance.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5]{./images/Two5-cycles.png}
+\caption[Scott Hotton.]{Two $5$-cycles in a two dimensional state space.  The 
+points in the $5$-cycles are indicated with open circles.  The arrows on the
+dashed lines connecting the open circles indicate where each point in a 
+$5$-cycle goes under the dynamical system.  (Left) A $5$-cycle for a simple 
+dynamical system that just rotates the points by $1/5$ of a turn.  (Right) A 
+$5$-cycle for a more complicated dynamical system.}
+\label{F:Two5cycles}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{./images/Attracting5-cycle.png}
+\caption[Scott Hotton.]{An attracting $5$-cycle.  The $5$-cycle is shown as in 
+the left panel of Fig. \ref{F:Two5cycles}.  The dots indicate points that are 
+not part of the $5$-cycle.  The arrows on the dashed lines connecting the dots 
+indicate where the points go under the dynamical system.  Over time they jump 
+closer and closer to the $5$-cycle without staying next any particular point in 
+the $5$-cycle.}
+\label{F:Attracting5cycle}
+\end{figure}
+
+   Joining orbits together produces an invariant set.  States in an invariant
+set never leave it.  For instance the disks inside the periodic orbits shown in
+the bottom row of Fig. \ref{F:attractorsRepellers} are invariant sets.  They
+are the union of spiral shaped orbits (not all of which are shown) and a fixed 
+point.  Invariant sets can have many other shapes and extend into higher 
+dimensional spaces.  For example a two dimensional torus in a three dimensional 
+state space can be an invariant set.  
+Invariant sets can even be fractals like the one shown in Fig. \ref{F:chaoticStateSpace}.
+
+%\begin{figure}[h]
+%\centering
+%\includegraphics[scale=0.66]{./images/EmbeddedFrame03_k0.26722.eps}
+%\caption[Scott Hotton.]{A torus in three space.}
+%\label{F:Torus}
+%\end{figure}
 
 \subsection{Attractors and Repellers}
 
