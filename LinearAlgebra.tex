@@ -669,7 +669,7 @@ The \textbf{rank} of a  tensor is the number of indices required to specify an e
 
  % Rank 5 tensor examples: batch size x time steps x height x width x channels. Brain scan. Each brain scan is 3d and it's color so there are channels. So a batch of those.
 
-Examples of each of these types of tensor are shown in figure \ref{tensorTypes}. More examples are in chapter \extref{ch_deep_nets}.
+Examples of each of these types of tensor are shown in figure \ref{tensorTypes}. More examples are in chapter \extref{ch_cnn}.
 
 \begin{figure}[h]
 \centering
@@ -685,10 +685,9 @@ Examples of each of these types of tensor are shown in figure \ref{tensorTypes}.
 \label{tensorVisualStyles}
 \end{figure}
 
-We can refer to the different indices for a tensor using standardized names in a standard order: batch size, number of channels (or depth), height, and width.\footnote{Usage varies. Some put height and width first in indexing; some put them last in indexing. Even though the rank of a tensor is the number of indices \emph{required} to specify an entry, sometimes additional entries are included (e.g. specifying a vector as a column vector assumes it is being placed in a 2d space). Thus the presentation of the ``shape'' of a tensor can vary.  In figure \ref{tensorTypes} the shapes might be given as $1 \times 1$, $6 \times 1$, $6 \times 6$, $3 \times 6 \times 6$, and $3 \times 3 \times 6 \times 6$.}
+We can refer to the different indices for a tensor using standardized names in a standard order: batch size, depth (number of channels), height, and width.\footnote{Usage varies. Some put height and width first in indexing; some put them last in indexing. Even though the rank of a tensor is the number of indices \emph{required} to specify an entry, sometimes additional entries are included (e.g. specifying a vector as a column vector assumes it is being placed in a 2d space). Thus the presentation of the ``shape'' of a tensor can vary.  In figure \ref{tensorTypes} the shapes might be given as $1 \times 1$, $6 \times 1$, $6 \times 6$, $3 \times 6 \times 6$, and $3 \times 3 \times 6 \times 6$.}
 % Can use all numbers in a shape or not, depending on the context (e.g a library might require a 4 tuple to specify a tensor even if it is a vector, like 1x1x6x5).
 % Much of the work in dealing with neural networks and neural net libraries is taking subsets of these tensors, slicing and indexing them, filtering them, and passing the right shaped thing from one place to another
-
 
 
 \section{Appendix: Block Matrix Representations}

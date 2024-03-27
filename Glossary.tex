@@ -104,6 +104,8 @@ towards a given attractor.
 
 \item[Dendritic spine] small outgrowths on the end of a dendritic branch where the receptors to which neurotransmitters attach can be found.
 
+\item[Depth] the number of node layers in a feed-forward network. More generally a description of the number of  layer-like structures stacked in a neural network. Deeper networks can produce more complex representation which aggregate representations of earlier layers. (The term ``depth'' also refers to a way of describing one component of the size a tensor, as in width-by-height-by-depth).
+ 
 \item[Dimension of a vector space] the number of vectors in a basis for a vector space. This equals the number of components the vectors have. Examples: the line is a 1-dimensional vector space; the plane is a 2-dimensional vector space.
 
 \item[Dimensionality reduction] A technique for transforming an $n$-dimensional vector space into another vector space with $m<n$ dimensions. A way of visualizing higher than 3-dimensional data that would otherwise be impossible to visualize.
@@ -421,13 +423,15 @@ weights of a neural network.
 
 \item[Weight] (Synonyms: connection, artificial synapse) a simulated synapse or synapse-like element in a neural network. 
 
-\item[Weighted Input] (Synonym: net input)  Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
+\item[Weighted Input] (Synonym: net input) Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
 
 \item[Weight layer] A set of weights treated as a group. Often they are the collection of weights connecting one node layer to another, which can in turn be represented by a weight matrix. % Distinguish recurrent from feed forward case?
 
 \item[Weight space] the set of possible weight vectors for a given neural network.
 
 \item[Weight vector] a vector describing the strengths of the weights in a neural network.
+
+\item[Width] the number of nodes in a node layer of a feed-forward network. More generally a description of the representational capacity of a layer or layer-like structure in a neural network. Wider layers can capture more features of the inputs to that layer. This is non-standard terminology adopted in this book as a useful organizing principle. (The term ``width'' also refers to a way of describing one component of the size a tensor, as in width-by-height-by-depth).
 
 \item[Winner-Take-All] a pool of nodes structured (often with mutually inhibitory connections) so that the node receiving the most inputs weighted inputs ``wins'' and becomes active while the other nodes become inactive.
 
