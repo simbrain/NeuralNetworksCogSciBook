@@ -93,21 +93,41 @@ Most people can't tell that this was written by a computer.  This kind of text g
 
 \section{The Transformer Architecture}\label{transformers}
 
-So, how does GPT work? How does it achieve all this? Its power rests on the novel feed-forward architecture it uses, the transformer architecture, which combined representational width and depth with a special form of context awareness. All the things we've seen about other networks apply here. It is a kind of deep feed-forward network, which uses a huge amount of training data. But the key innovation is that within each ``layer'' it can develop many forms of context representation, which relate all the tokens in a context window to each other, and then process these using highly complex representations.
+So, how does GPT work? How does it achieve all this? Its power rests on the novel feed-forward architecture it uses, the transformer architecture, which combines representational width and depth with a special form of context awareness. All the things we've seen about other neural networks apply here. It is a kind of deep feed-forward network, which uses a huge amount of training data. But the key innovation is that within each ``layer'' it can develop many forms of context representation, which relate all the tokens in a context window to each other.
 
-The transformer architecture \cite{vaswani2017attention} contains layers or ``blocks'' which are specialized to process the large context windows that are fed to the network as input. With training they learn to find long-range dependencies between different parts of a context window (which includes an original prompt, its own response to that prompt, etc.; it includes the \emph{entire exchange} you've had with GPT up to the current point, so long as it fits in the context window). Each block combines  a ``self-attention'' layer with a traditional linear layer and several other mechanisms (see figure \ref{transformerBlock}). The self-attention layer is where the magic happens. One part of this layer compares each token in the context window to every other token in the window. In our simple example, ``hello'' is compared to ``hello'', ``how'', ``are'', and ``you'', and this comparison is used to create a representation of the sentence that reflects dependencies between the words. All words are compared to each other in the context window, so that no matter how far apart they are, they can still influence each other. The self-attention mechanism learns what relations between words in a context window are important; in a sense it learns what to focus on (hence ``self attention''). This ability to find meaningful relationships within an input sequence is part of why transformers are relevant to cognitive science, as we will see.
+The transformer architecture \cite{vaswani2017attention} contains layers or ``blocks'' which are specialized to process the large context windows that are fed to the network as input. With training they learn to find long-range dependencies between different parts of a context window. Recall that the context window  includes an original prompt, its own response to that prompt, etc.; it includes the \emph{entire exchange} you've had with GPT up to the current point, so long as it fits in the context window. Each block combines  a ``self-attention'' layer with a traditional linear layer and several other mechanisms (see figure \ref{transformerBlock}). The self-attention layer is where the magic happens. One part of this layer compares each token in the context window to every other token in the window. In our simple example, ``hello'' is compared to ``hello'', ``how'', ``are'', and ``you'', and this comparison is used to create a representation of the sentence that reflects dependencies between the words. All words are compared to each other in the context window, so that no matter how far apart they are, they can still influence each other. The self-attention mechanism learns what relations between words in a context window are important; in a sense it learns what to focus on (hence ``self attention''). This ability to find meaningful relationships within an input sequence is part of why transformers are relevant to cognitive science, as we will see.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/transformerBlock.png}
-\caption[Jeff Yoshimi modification of Todo.]{One layer of a transformer architecture, which is also called a ``block''. }
-\label{transformerBlock}
+\includegraphics[scale=.4]{./images/transformerBlockBasic.png}
+\caption[Jeff Yoshimi with consultation from Tim Meyer.]{Part of one head of a transformer block. Each token is converted into a vector using a word embedding. This vector is then simultaneously multiplied by three matrices  $\textbf{V}$, $\textbf{Q}$, and $\textbf{V}$ to produce three vectors (hence these operations can be run on fast parallel computing hardware). These vectors are used to produce a context representation. Bolded items are matrices that are updated using gradient descent.}
+\label{transformerBlockSimple}
 \end{figure}
 % More on normalizing. See neuralnets.txt.  Also need a picture to show that input and output are same-sized.
 % (this is not shown in the picture above but embedding dimension is a hyperparameter shown in figure \refgptParams).
 
+The details of what occurs in a block are not developed in detail here though we are planning to expand the discussion in future versions of this chapter. However, here is a rough sketch of what happens. Each input token in a context window is first converted into a vector using a vector embedding (chapter \extref{ch_word_embeddings}). This vector is then simultaneously matrix multiplied by three weight matrices labeled $\textbf{V}$, $\textbf{Q}$, and $\textbf{K}$ to produce three vectors: the key, query, and value vectors. This is what is shown in figure \ref{transformerBlockSimple}.
 
-The details of what occurs in a block are not developed in detail here though we are planning to expand the discussion in future versions of this chapter. However, here is a rough sketch of what happens. Input tokens such as ``hello'' or ``?' in a context window are first converted into vectors using a vector embedding (chapter \extref{ch_word_embeddings}). Each of these vectors is then matrix multiplied by three weight matrices labeled $\textbf{V}$, $\textbf{K}$, and $\textbf{Q}$ to produce value, key, and query vectors for each input token. The key and query vectors are matrix multiplied in all combinations to create a matrix of self attention scores. This captures relationships between tokens in a context window. These scores are multiplied by the value vectors. This entire process happens once for each head. The outputs of all the heads are squashed back together and normalized, and put through a standard feed-forward network of the kind we've been talking about throughout the book. The output of the block is a set of vectors that has the same shape as the input vectors.  For example, in the example in figure \ref{contextWindow} the input would be 9 vectors with 3 components each, and the output would be too. For a nice visualization that is vaguely in the Simbrain style, see \url{https://bbycroft.net/llm}.
+The key and query vectors are then multiplied (using a dot product) in all possible combinations to produce a context representation.  This is shown in figure \ref{selfAttention}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.6]{./images/selfAttention.png}
+\caption[Jeff Yoshimi with consultation from Tim Meyer.]{Scaled self attention matrix generated from key and query vectors. Value vectors are then multiplied by this to produce the output of one head of a block. }
+\label{selfAttention}
+\end{figure}
+
+The key and query vectors are matrix multiplied in all combinations to create a matrix of self attention scores. This captures relationships between tokens in a context window. These scores are multiplied by the value vectors. 
+
+This entire process happens once for each head. The outputs of all the heads are squashed back together and normalized, and put through a standard feed-forward network of the kind we've been talking about throughout the book. The output of the block is a set of vectors that has the same shape as the input vectors.  For example, in the example in figure \ref{contextWindow} the input would be 9 vectors with 3 components each, and the output would be too. For a nice visualization that is vaguely in the Simbrain style, see \url{https://bbycroft.net/llm}.
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.6]{./images/transformerArchitectureSchematic.png}
+\caption[Jeff Yoshimi with consultation from Tim Meyer.]{Schematic of the whole structure. Representational width (multiple heads) and depth (multiple stacked blocks) are both visible.  }
+\label{transformerArchitectureSchematic}
+\end{figure}
 
 % The matrices are shared across all tokens. They are the main thing trained.
 % Gradient descent is being pushed back through a LOT of stuff
