@@ -1,9 +1,10 @@
 %
-% Master book document
+% Sample "container" document, containing some subset of chapters from the master document.
 % 
 % Copy this and modify the \input commands at the bottom to create a custom book,
 % or to create a file to compile a single chapter
-%
+% 
+% After assembling chapters, run  create_authorship_order.py and create_custom_glossary as described in the Readme
 
 \documentclass[oneside]{book}
 \usepackage[pdftex]{graphicx}
@@ -18,8 +19,8 @@
 
 \def\ie{{\it i.e. }}
 \def\eg{{\it e.g. }}
-\def\real{{\bf R}}
 \newcommand{\code}{\texttt}
+\def\real{{\bf R}}
 
 %
 % Use this command to indicate glossary entries. Be sure some entry of the same name
@@ -70,35 +71,35 @@
 
 \title{Neural Networks in Cognitive Science}
 % Author line below is automatically set using create_authorship_order.py
-\author{Jeff Yoshimi, Zo\"e Tosi, Scott Hotton, Chelsea Gordon, David C. Noelle}
-\date{Version 2023.1.1}  % Year based semantic-versioning. Year.Major.Minor
+\author{Jeff Yoshimi}
 \maketitle
 
 \tableofcontents
 
-% Choose which chapters to include here
-\input{Preface}
-\input{Intro}
-\input{History}
-\input{Neuroscience}
-\input{ActivationFunctions}
-\input{LinearAlgebra}
-\input{DataScienceBasics}
-\input{WordEmbeddings}
-\input{UnsupervisedLearning}
+% Choose which chapters to include here by uncommenting
+%\input{New_Material_1}
+%\input{Preface}
+%\input{Intro}
+%\input{History}
+%\input{Neuroscience}
+%\input{ActivationFunctions}
+%\input{LinearAlgebra}
+%\input{DataScienceBasics}
+%\input{WordEmbeddings}
+%\input{UnsupervisedLearning}
 \input{DynamicalSystems}
-\input{UnsupervisedRecurrent}
-\input{SupervisedLearning}
-\input{LMSBackprop}
-\input{ConvolutionalNetworks}
-\input{InternalRepresentations}
-\input{SupervisedRecurrent}
-\input{Transformers}
-\input{SpikingNeurons}
-\input{ReservoirNetworks}
-\input{Glossary} %When using custom glossary replace this with \input{CustomGlossary}
-\appendix
-\input{LogicGates}
+%\input{UnsupervisedRecurrent}
+%\input{SupervisedLearning}
+%\input{LMSBackprop}
+%\input{InternalRepresentations}
+%\input{ConvolutionalNetworks}
+%\input{SupervisedRecurrent}
+%\input{Transformers}
+%\input{SpikingNeurons}
+%\input{ReservoirNetworks}
+%\input{CustomGlossary}
+%\appendix
+%\input{LogicGates}
 
 % Makes sure figure attributions are listed in table of contents
 \phantomsection 
