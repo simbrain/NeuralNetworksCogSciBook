@@ -1,6 +1,36 @@
 \chapter{Transformers}\label{ch_transformers}
 \chapterauthor{Jeff Yoshimi}
 
+
+% TODOS
+% 
+% Add 3b1b note. As usual, the GOAT...
+%
+% Different types of llm like Claude and Bard. Build this off the hyperparameter discussion. Ex: Claude has a large context window.  
+
+% One shot, zero shot etc. Lots of the "shot" learning is based on reasoning  (through the width and depth of the giant network), getting it to reason step by step through something. It is not weights and biases.  Background of one shot in AI vs. NN. NN require gradual learning but humans learn in one shot so that was a problem. And classical AI can do so too just with a single rule in the database
+
+% Tim's email
+%
+%fine tuning is updating an already existing LLM to bias it in favor of the language in some specified corpus you are interested in. For example you might download a llama 2 model, and then fine tune it based on a set of corpus using x library.
+%in context learning are things you can add to your prompt, ie in the context window, to improve the output, will be discussed further in the prompt engineering chapter
+%
+%* policy gradient
+%* added external functionalities like wolfram alpha
+%
+%*prompt engineering
+%* prompt templates
+%* prompting techniques
+%* funny historical examples of prompting discoveries
+%
+%https://developer.nvidia.com/blog/how-to-get-better-outputs-from-your-large-language-model/
+%
+%https://arxiv.org/pdf/2310.14735.pdf
+%
+% Video on fine tuning an LLM to talk about a set of PDFS (we can do it on Husserl): https://www.youtube.com/watch?v=dXxQ0LR-3Hg
+
+
+
 % TODO: Title LLMs and Transformers?
 % Encoders, decoders, masking, other cases.  For example, we can feed a transformer network the first halves of hundreds of movie scripts and train it to produce the second halves of those scripts, or we can train it to predict what the first summary paragraph of a Wikipedia article is based on the main body of the article.
 % Mention fine tuning and other things built  on top of the underlying model.  See Kauf and Ivanova 2023
