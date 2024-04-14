@@ -104,8 +104,6 @@ towards a given attractor.
 
 \item[Dendritic spine] small outgrowths on the end of a dendritic branch where the receptors to which neurotransmitters attach can be found.
 
-\item[Depth] the number of node layers in a feed-forward network. More generally a description of the number of  layer-like structures stacked in a neural network. Deeper networks can produce more complex representation which aggregate representations of earlier layers. (The term ``depth'' also refers to a way of describing one component of the size a tensor, as in width-by-height-by-depth).
- 
 \item[Dimension of a vector space] the number of vectors in a basis for a vector space. This equals the number of components the vectors have. Examples: the line is a 1-dimensional vector space; the plane is a 2-dimensional vector space.
 
 \item[Dimensionality reduction] A technique for transforming an $n$-dimensional vector space into another vector space with $m<n$ dimensions. A way of visualizing higher than 3-dimensional data that would otherwise be impossible to visualize.
@@ -148,7 +146,11 @@ towards a given attractor.
 
 \item[Filter] (Synonym: kernel) the set of weights in a convolutional layer. This is more or less the same thing as a convolutional layer, but it refers specifically to the weights, whereas ``convolution'' also refers the process of passing the filter over the input activations.
 
+\item[Filter Bank] A set of filters. One kind of volume-to-volume layer in a convolutional neural network. 
+
 \item[Fixed point] a state that does not change under a dynamical system. The system ``stays'' in this state forever. An orbit consisting of a single point.
+
+\item[Flattening] the process of converting a tensor with rank 3 or greater to a vector.  Allows the output of a convolutional layer to be sent to a standard feed-forward node layer.
 
 \item[Frontal lobe] forward-most lobe of the brain whose many roles include decision-making, action planning, and executive control. Houses many important regions, including prefrontal cortex (PFC), orbitofrontal cortex (OFC), and motor cortex. 
 
@@ -265,6 +267,8 @@ weights of a neural network.
 
 \item[Output space] The vector space associated with the output layer of a neural network. The set of all possible output vectors for a neural network.
 
+\item[Padding] Entries added to an input in a convolutional layer in order to deal with issues relating to the edges of inputs. For example can be used to ensure width and height of the output remain the same.
+
 \item[Parallel processing] Processing many items at once, concurrently. Contrasted with serial processing, where items are processed one at a time.  Neural networks are known for processing items in parallel, whereas classical computer process items in serial.
 
 \item[Parameter] A quantity for a dynamical system that is fixed as the system runs but can be adjusted and run again with a different value. Used in the description of bifurcations. In a neural network, the parameters we  update are usually its weights and biases. This concept is also used in machine learning when treating a neural network as a trainable model, whose parameters (weights and biases) are updated using optimization techniques.
@@ -287,6 +291,8 @@ weights of a neural network.
 % "limit cycle" is not synonymous with "perioidic orbit". 
 
 \item[Phase portrait] a picture of a state space with important orbits draw in it. A picture of the dynamics of a system.
+
+\item[Pooling layer] a volume-to-volume layer in a convolutional layer which reduces the amount of information passing through the network, ideally with altering the essential structure of that information. Related to subsampling and downsampling. 
 
 \item[Pre-processing] the process of transforming data into a form usable by a neural network. Compare data-wrangling.
 
@@ -317,6 +323,10 @@ weights of a neural network.
 \item[ReLU activation function] (``relu'' is short for ``rectified linear unit'') a linear activation function that is clipped at  0. It's activation is 0 for weighted inputs less than or equal to 0, and it is equal to weighted inputs otherwise. It is a popular activation function for deep networks.
 
 \item[Repeller] (Synonym: unstable state) a state or set of states $R$ with the property that if the system is in a nearby state the system will always go away from R. Fixed points and periodic orbits can both be repellers.
+
+\item[Representational depth] the number of node layers in a feed-forward network. More generally a description of the number of  layer-like structures stacked in a neural network. Deeper networks can produce more complex representation which aggregate representations of earlier layers. (The term ``depth'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height).
+ 
+\item[Representational width] the number of nodes in a node layer of a feed-forward network. More generally a description of the representational capacity of a layer or layer-like structure in a neural network. Wider layers can capture more features of the inputs to that layer. This is non-standard terminology adopted in this book as a useful organizing principle. (The term ``width'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height).
 
 \item[Rescaling] A mathematical transformation of a set of samples in a dataset that preserves their relations to one another but changes their values. Often values are rescaled to lie in the interval $(0,1)$ or $(-1,1)$. One stage of data wrangling.
 
@@ -353,6 +363,8 @@ weights of a neural network.
 %\item[STDP Window]
 
 \item[Strength] A value associated with a weight. Has different interpretations depending on the context. It can, for example, represent the efficacy of a synapse, or an association between items in memory.
+
+\item[Stride] In a filter bank or pooling layer, the number of pixels the filter or kernel or pooling window is moved when it is scanned across its input.
 
 %\item[Sum of Squared Error] 
 
@@ -430,8 +442,6 @@ weights of a neural network.
 \item[Weight space] the set of possible weight vectors for a given neural network.
 
 \item[Weight vector] a vector describing the strengths of the weights in a neural network.
-
-\item[Width] the number of nodes in a node layer of a feed-forward network. More generally a description of the representational capacity of a layer or layer-like structure in a neural network. Wider layers can capture more features of the inputs to that layer. This is non-standard terminology adopted in this book as a useful organizing principle. (The term ``width'' also refers to a way of describing one component of the size a tensor, as in width-by-height-by-depth).
 
 \item[Winner-Take-All] a pool of nodes structured (often with mutually inhibitory connections) so that the node receiving the most inputs weighted inputs ``wins'' and becomes active while the other nodes become inactive.
 
