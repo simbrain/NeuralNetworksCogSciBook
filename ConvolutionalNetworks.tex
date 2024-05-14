@@ -131,7 +131,7 @@ Now we stack these things on top of each other, add a new kind of layer, and als
 The idea here is to get back to representational structure, here \glossary{representational depth}. This allows the network to learn to identify not just simple features like edges or curves, but also \emph{features of features}, like combinations of curves which make more complex shapes, and then combinations of these shapes. 
 % More here; put the Selfridge reference here
 
-There are several kinds of volume-to-volume layer in a convolutional networks.  One is a filter bank, as discussed above. The other is a \glossary{pooling layer}, which reduces the amount of information passing through the network without altering its basic structure. Finally, we can \glossary{flatten} a layer, which takes us from the convolutional layers back to a traditional feed-forward  node and weight layers.  See figure \ref{deepNetExample}. Pooling layers and flattening are discussed in this section.
+There are several kinds of volume-to-volume layer in a convolutional networks. One is a filter bank, as discussed above. The other is a \glossary{pooling layer}, which reduces the amount of information passing through the network without altering its basic structure. Finally, we can \glossary{flatten} a layer, which takes us from the convolutional layers back to a traditional feed-forward  node and weight layers. Flattening a layer involves taking all the values in a tensor and simply arranging them into a single vector. A flattened 3x3 matrix, for example, would be a vector with 9 components. See figure \ref{deepNetExample}. Pooling layers and flattening are discussed in this section.
 
 % From Yamins, 2016: "Deep networks through stacking. Since convolutional layer outputs have the same spatial layout as their inputs, output of one layer can be input to another. HCNNs can thus be stacked into deep networks (Fig. 1c). Although the local fields seen by units in a single layer have a fixed, small size, the effective receptive field size relative to the original input increases with succeeding layers. Because of repeated striding, deep HCNNs typically become less retinotopic with each succeeding layer, consistent with empirical observations4."
 
@@ -171,9 +171,9 @@ For these operations we use the same equations as above, but with pool width and
 
 \subsection{Flattening and Dense Layers}
 
-Another thing we can do, usually in the final layers of a deep CNN, is to ``flatten'' a volume back into a vector, converting the tensor into a node layer, and thus taking us back to the world of traditional neural networks focused on in much of the book. If we have a 5x5 this becomes the activation vector for a node layer with 25 nodes. If we have a 4x5x10 this becomes the activation vector for a node layer with 200 nodes. Then we just do things as we've done before.
+Another thing we can do, usually in the final layers of a deep CNN, is to ``flatten'' a volume back into a vector. If we have a 5x5 matrix, for example, we can flatten it into an activation vector for a node layer with 25 nodes. If we have a 4x5x10 volume, this becomes the activation vector for a node layer with 200 nodes.  Note that the shape of the flattened vector is just the product of the shape values for the larger tensor.  
 
-These layers are conventional fully-connected dense layers. 
+In this way we can convert whatever high-rank tensor we have into a vector, and thereby get back into the world of  traditional neural networks focused on in much of the book.  Then we just do things as we've done before.  We can ``couple'' our complex convolutional layers into a standard feed-forward network.  In this context, weight layers are sometimes called ``fully-connected'' or ``dense'' weight layers to contrast them with convolutional weight layers.
 	
 The overall idea is to start with layers that learn these complex features, then to compress these representations with subsampling, and finally to present the results to the final layers, which are the kinds of standard feedforward networks discussed in earlier chapters (for example, chapter \extref{ch_supervised}).
 
@@ -184,11 +184,10 @@ The overall idea is to start with layers that learn these complex features, then
 \label{deepNetExample}
 \end{figure}
 
-
 \section{Applications of Convolutional Networks}
 
 % This section obviously needs to be developed
-% What do convolutional layers correspond to in the brain?
+% Biggest applications involve comparisons to visual cortex. Compare to monkeys paper. https://github.com/dicarlolab/CORnet
  
 As discussed in section \extref{deep_revolution}, deep networks and deep learning led to a revolution in neural networks beginning in the 2010s. The revolution was in engineering initially, but the history of deep networks shows that they have applications across all the domains of neural network research: engineering, computational neuroscience, connectionism, and computational cognitive neuroscience. 
 
