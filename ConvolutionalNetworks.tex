@@ -16,13 +16,13 @@ The idea of re-mapping an input space to a hidden unit space in order to solve c
 In terms of engineering, these convolutional networks have been associated with improvements in image recognition, speech recognition, language translation, and in many other areas \cite{lecun2015deep, goodfellow2016deep}. They do this by creating hierarchies of representations, corresponding  to increasingly complex features of an input image. As we saw in chapter \extref{ch_neuro} (see figure \extref{deepLearning_Vision}) when such networks are trained to recognize images they develop internal representation that are extremely similar to those developed by the human visual  system. Thus they are relevant both to neuroscience (where they can describe the behavior of neurons in the visual system), and to psychology (where they can describe internal representations humans might rely on).
 % More on engineering advances. The nature paper (lecun2015deep) has some helpful information at "first major application"
 
-The topic of deep networks and deep learning are quite involved and the field is active and continues to grow (this is a preliminary chapter on the topic; it will be expanded in the future). Here we will describe some of the main concepts and some of their applications to neuroscience and psychology.
+The topic of convolutional networks is quite involved and the field is active and continues to grow. Here we will describe some of the main concepts and some of their applications to neuroscience and psychology.
 
 \section{Convolutional Layers}\label{convolutionalLayer}
 
 % Terminology: source layer, source image, pixel array, input volume, output volume
 
-The key idea with a deep network is to use a special type of weight layer called a \glossary{convolutional layer} to efficiently learn to recognize features in a previous layer.\footnote{An outstanding visual discussion of the concept of a convolutions is at \url{https://youtu.be/KuXjwB4LzSA}} Until now we've been dealing with weight layers that connect all the nodes in a source layer to all the nodes in a target layer; these are sometimes called ``dense layers'' or ``fully connected'' layers to contrast them with convolutional layers. By contrast, convolutional layers involve a set of weights that are ``scanned'' or ``passed'' over the source layer's activations to produce activations in a target layer. This can also be called a ``convolution'' of the source layer activations. Networks that feature convolutional layers are called ``convolutional neural networks'' or ``CNNs'' on analogy to ANN for artificial neural network and RNN for recursive neural network.
+The key idea with a deep network is to use a special type of weight layer called a \glossary{convolutional layer} to efficiently learn to recognize features in a previous layer.\footnote{An outstanding visual discussion of the concept of a convolutions is at \url{https://youtu.be/KuXjwB4LzSA}} Until now we've been dealing with weight layers that connect all the nodes in a source layer to all the nodes in a target layer; these are sometimes called ``dense layers'' or ``fully connected'' layers. By contrast, convolutional layers involve a set of weights that are ``scanned'' or ``passed'' over the source layer's activations to produce activations in a target layer. This can also be called a ``convolution'' of the source layer activations. Networks that feature convolutional layers are called ``convolutional neural networks'' or ``CNNs''.
 % Footnote on the mathematical definition of convolution, and how from that standpoint the source node activations are a function from index entries to activations.
 
 \begin{figure}[h]
@@ -40,7 +40,7 @@ The key idea with a deep network is to use a special type of weight layer called
 \end{figure}
 
 % Expand on weight sharing and add glossary item. Discuss the fact that this is not neurally realistic and ways to understand that.
-The weights in a convolutional layer are called a \glossary{filter} or \textbf{kernel}. The weights in a filter are scanned over the source layer to produce outputs. This is a new idea. Rather than a fixed set of weights in a fully-connected weight layer, we have a small set of weights that are reused or shared during the scanning operation (this is also known as ``weight sharing'').
+The set of weights in a convolutional layer are called a \glossary{filter} or \textbf{kernel}. The weights in a filter are scanned over the source layer to produce outputs. This is a new idea. Rather than a fixed set of weights in a fully-connected weight layer, we have a small set of weights that are reused or shared during the scanning operation (this is also known as ``weight sharing'').
 
  The source layer of a convolutional layer is often itself a 2d array, prototypically an input image, and so we can think of source layer activations as pixels and the source layer as a pixel array or input volume (even when the input is not an image this language is useful). Filters are like small pixel patterns that we slide across the whole pixel array, which ``light up'' most when they are on top of a similar pixel pattern. The filter is generally moved from left to right and top to bottom of the pixel array. At each stage of the scanning operation, it is multiplied by the patch or ``receptive field''  of the pixel array it is on top of.\footnote{To get a better feel for how this works videos are helpful. A good place  to start is with the first animated gif here: \url{https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks} This video is also great: \url{https://youtu.be/KuXjwB4LzSA}.} The multiplication is a dot product (see chapter \extref{ch_linear_algebra}), where each weight in the filter is multiplied by the corresponding activation of the pixel array, and the results are added together. Recall that the dot product computes something like a similarity score: the more the filter and the pixels match, the greater the dot product will be. The resulting scalar is used to populate one activation in the target layer. Thus, the convolutional layer computes a kind of \emph{sliding dot product} with the source activations, which highlights where the filter matches the pixel array.
  
@@ -61,7 +61,7 @@ In general, filters--like this edge detector--are not programmed. This is a neur
 
 \section{Applying a Filter to a Volume}
 
-So far we have considered an artificial example where the input, filter, and feature map were matrices. However, the power of CNNs is that can deal well with more complex tensors. In the context of image processing (and in most applications of convolutional networks), the input is a volume, a set of multiple stacked matrices or channels, a rank 3 tensor or 3d array. 
+So far we have considered an artificial example where the input, filter, and feature map were matrices. However, the power of CNNs is that they can deal well with more complex tensors. In the context of image processing (and in most applications of convolutional networks), the input is a volume, a set of multiple stacked matrices or channels, a rank 3 tensor or 3d array. 
 
 To get an initial feel for this situation, think of the filter as a set of filters, one ``sub-filter'' (my term) for each input channel. This set of filters is ``combed'' across the input volume, in the sense that each sub-filter is convolved with a corresponding input channel, and the results are then added together and used to populate one entry in the output matrix. That is how the convolution works. Figure \ref{filterComb} gives a sense of how it works. Convince yourself that the shapes make sense.
 
@@ -89,7 +89,7 @@ In general, the depth of the filter (in the sense of tensor dimensions of depth,
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{images/filterDepth}
-\caption[Soraya Boza.]{Illustration of how filters must have a depth that matches the input volume they are passed over. Shown is the receptive field of a filter at one stage of a convolutional pass. Alternatively, think of this as the filter itself being placed ``inside'' the input volume and moved through it.}
+\caption[Soraya Boza.]{Illustration of how filters usually have a depth that matches the input volume they are passed over. Shown is the receptive field of a filter at one stage of a convolutional pass. Alternatively, think of this as the filter itself being placed ``inside'' the input volume and moved through it.}
 \label{filterDepth}
 \end{figure}
 
@@ -118,9 +118,9 @@ In general a convolutional layer will involve multiple filters, a \glossary{filt
 \label{filterBank}
 \end{figure}
 
-Each feature map in a filter bank learns differently via gradient descent to represent the input. Thus we get different ways of representing the input. This generalizes the concept of the \glossary{representational width} of a layer (section \extref{structureNets}) to CNNs. Just as more nodes makes a regular node layer of a feed-forward network more powerful, so too do more filters make a convolutional layer more powerful. Rather than learning just one way to represent inputs, a bank of filters can learn multiple complimentary ways to represent inputs.
+Each feature map in a filter bank learns differently via gradient descent to represent the input. Thus we get different ways of representing the input. This generalizes the concept of the \glossary{representational width} of a layer (section \extref{structureNets}) to CNNs. Just as more nodes makes a regular node layer of a feed-forward network more powerful, so too do more filters make a convolutional layer more powerful. Rather than learning just one way to represent inputs, a bank of filters can learn multiple complementary ways to represent inputs.
 
-The representations are not programmed in but are learned via gradient descent. This is kind of remarkable to ponder. We did not tell the network we want it to learn to respond to edges. All we focus on in training a network is inputs and outputs, using a labeled data set. Training data for these networks might involve images paired with numbers. The network is given nothing else but these training examples: if you see this picture, it's a 2; this picture is an 8, etc. Then the network adjusts all its parameters (all the weights in its convolutional layers), in such a way as to reduce error. 
+The representations are not programmed in but are learned via gradient descent. This is remarkable. We did not tell the network we want it to learn to respond to edges. All we focus on in training a network is inputs and outputs, using a labeled data set. Training data for these networks might involve images paired with numbers. The network is given nothing else but these training examples: if you see this picture, it's a 2; this picture is an 8, etc. Then the network adjusts all its parameters (all the weights in its convolutional layers), in such a way as to reduce error. 
 
 Edge detectors were learned by training, not programmed in. This is how primary visual cortex reacts to images, so this is a nice model of the brain, hence an example of computational  neuroscience. However, these networks are best known for the engineering benefits, since they are powerful pattern recognition systems. This is also an old connectionist theme. In Nettalk (section \extref{ch_representations}), phonetic categories like consonant and vowel were not programmed in, but emerged with training. With simple recurrent networks  (section \extref{internalRepsRecurrent}), grammatical categories like verb and noun were not programmed in but  emerged with training.
 
@@ -148,16 +148,13 @@ There are several kinds of volume-to-volume layer in a convolutional networks.  
 \label{maxPooling}
 \end{figure}
 
-A \glossary{pooling layer} is useful when tensors start getting too big. The idea is to go from bigger to smaller tensors, to keep these more computationally manageable. But we must do it in a way that preserves important information. Here again we pass a window over the input and slide it left-to-right and top-to-bottom, but instead of multiplying or dotting, we just take an average or a max value. The output is then a smaller tensor. 
-
-There are two common pooling operations:
+A \glossary{pooling layer} is useful when tensors start getting too big. The idea is to go from bigger to smaller tensors, to keep these more computationally manageable. But we must do it in a way that preserves important information. Here again we pass a window over the input and slide it left-to-right and top-to-bottom, but instead of multiplying or dotting, we apply one of two common pooling operations:
 
 \begin{description}
 \item[Max pooling] In each window, the maximum number is taken and written to an output matrix.
 \item[Average pooling] The average value across a window is written to an output matrix.
 \end{description}
-
-These are sometimes called subsampling or downsampling methods. They are valuable in that they reduce the overall size of the network while preserving important structures.
+The result of this operation is an output that is smaller than the input. These are sometimes called subsampling or downsampling methods. They are valuable in that they reduce the overall size of the network while preserving important structures.
 
 The window passed over the input volume has a pool size, a width and height. It does not usually have depth because we do not want to combine the results of several feature maps. We pass the pooling operation over every feature map separately. The idea comes from the last section, where we saw that each filter learns to represent the inputs in a new way. When we downsample, we don't want to lose those differences. However, a new convolutional layer can learn to combine information.
 
@@ -177,8 +174,8 @@ For these operations we use the same equations as above, but with pool width and
 Another thing we can do, usually in the final layers of a deep CNN, is to ``flatten'' a volume back into a vector, converting the tensor into a node layer, and thus taking us back to the world of traditional neural networks focused on in much of the book. If we have a 5x5 this becomes the activation vector for a node layer with 25 nodes. If we have a 4x5x10 this becomes the activation vector for a node layer with 200 nodes. Then we just do things as we've done before.
 
 These layers are conventional fully-connected dense layers. 
-
-The overall idea is to start with layers that learn these complex features, then to compress these representations with subsampling, and finally to present the results to the final layers, which are basically familiar backprop networks presented with the results of a whole lot of convolving and subsampling. 
+	
+The overall idea is to start with layers that learn these complex features, then to compress these representations with subsampling, and finally to present the results to the final layers, which are the kinds of standard feedforward networks discussed in earlier chapters (for example, chapter \extref{ch_supervised}).
 
 \begin{figure}[h]
 \centering
