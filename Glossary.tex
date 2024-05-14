@@ -78,7 +78,7 @@ towards a given attractor.
 
 \item[Connectionism] the study of psychological phenomena using artificial neural networks.
 
-\item[Convolutional layer] a special kind of weight layer where a set of weights (a ``filter'') is passed over a source node layer to produce activations in a target layer, in the sense of being multiplied by each of a moving sequence of subsets of the input activations. This is related to the mathematical operation of convolution.
+\item[Convolutional layer] a special kind of weight layer where a set of weights (a ``filter'') is scanned over a previous node layer to produce activations in a target layer. This is related to the mathematical operation of convolution.
 
 \item[Controlled process] a cognitive processes that requires attention for its execution, and is relatively slow. Examples include solving math problems, doing homework, or performing an  unusual task that you have not practiced.
 
@@ -292,7 +292,7 @@ weights of a neural network.
 
 \item[Phase portrait] a picture of a state space with important orbits draw in it. A picture of the dynamics of a system.
 
-\item[Pooling layer] a volume-to-volume layer in a convolutional layer which reduces the amount of information passing through the network, ideally with altering the essential structure of that information. Related to subsampling and downsampling. 
+\item[Pooling layer] a volume-to-volume layer in a convolutional layer which reduces the amount of information passing through the network, ideally without altering the essential structure of that information. Related to subsampling and downsampling. 
 
 \item[Pre-processing] the process of transforming data into a form usable by a neural network. Compare data-wrangling.
 
@@ -324,9 +324,9 @@ weights of a neural network.
 
 \item[Repeller] (Synonym: unstable state) a state or set of states $R$ with the property that if the system is in a nearby state the system will always go away from R. Fixed points and periodic orbits can both be repellers.
 
-\item[Representational depth] the number of node layers in a feed-forward network. More generally a description of the number of  layer-like structures stacked in a neural network. Deeper networks can produce more complex representation which aggregate representations of earlier layers. (The term ``depth'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height).
+\item[Representational depth] the number of node layers in a feed-forward network. More generally a description of the number of  layer-like structures stacked in a neural network. Deeper networks can produce more complex representations which aggregate representations of earlier layers. (The term ``depth'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height).
  
-\item[Representational width] the number of nodes in a node layer of a feed-forward network. More generally a description of the representational capacity of a layer or layer-like structure in a neural network. Wider layers can capture more features of the inputs to that layer. This is non-standard terminology adopted in this book as a useful organizing principle. (The term ``width'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height).
+\item[Representational width] the number of nodes in a node layer of a feed-forward network. More generally a description of the representational capacity of a layer or layer-like structure in a neural network. Wider layers can capture more features of the previous layer. This is non-standard terminology adopted in this book as a useful organizing principle. (The term ``width'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height).
 
 \item[Rescaling] A mathematical transformation of a set of samples in a dataset that preserves their relations to one another but changes their values. Often values are rescaled to lie in the interval $(0,1)$ or $(-1,1)$. One stage of data wrangling.
 
