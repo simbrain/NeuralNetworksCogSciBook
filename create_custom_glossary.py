@@ -11,6 +11,8 @@
 # - Unmatched \glossary items are noted in the terminal.
 # - The script handles both singular and plural forms of glossary items.
 # - Comments are ignored both in glossary and in chapters of the container doc 
+# 
+# TODO: Add colon after each entry but without the space \item adds.
 
 import sys
 import re
