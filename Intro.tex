@@ -6,7 +6,6 @@
 % Maybe use some of the blue brain / human brain project pics. They are amazing.
 % Need terminology for input and output to a specific weight layer. Comes up in backprop for example
 
-
 % Sometimes "network" in biology also refers to networks of _brain areas_. See ch. 3
 The phrase ``neural network'' has several meanings. A \glossary{biological neural network} is an actual set of interconnected neurons in an animal brain. Fig. \ref{introNets} (left) shows a biological neural network. ``Neural network'' can also mean \glossary{artificial neural network} (or ``ANN"),  that is, a computer model that has certain things in common with biological neural networks. Fig. \ref{introNets} (right) shows an artificial neural network. It has ``nodes'' and ``weights'' that are analogous to the neurons and synapses of a biological neural network. We focus on artificial neural networks in this book, and when we refer to ``neural networks'' we usually mean artificial neural networks.
 % There are other ways referring to artificial neural networks, including: ``connectionist network,' or' ``PDP (parallel distributed processing) network. These differ slightly but will be treated as synonyms in what follows.
@@ -46,7 +45,7 @@ Node activations change in accordance with \emph{activation functions} (discusse
 
 In some models a node can also produce a \glossary{spike}, which is a discrete event that corresponds to the action potential of a neuron.\footnote{A spike is represented in Simbrain by a node and all its outgoing connections turning yellow. For an illustration of a spiking node and how it looks in Simbrain, see \url{http://www.simbrain.net/Documentation/docs/Pages/Network/neuron.html}.}  Spiking neurons have their own rules and structures, which we discuss in chapter \extref{ch_spiking}.
 
-Nodes and weights are the basic parts of a neural network. Together, they form a network structure or mathematically, a graph\footnote{\url{https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)}.}, where the nodes correspond to vertices, and the weights correspond to edges.\footnote{A neural network is a special type of graph: a vertex-labeled, edge-labeled, directed graph. This means that the edges between nodes have a direction (the graph is \emph{directed}), and that numbers are associated with the vertices and edges (it is \emph{vertex-labeled} and \emph{edge-labeled}).}  The graph-structure formed by a network's nodes and weights is the network's \glossary{topology}. At a first pass, neural network topologies fall into one of two rough types shown in Fig. \ref{nn_types}: feed-forward and recurrent. We first 
+Nodes and weights are the basic parts of a neural network. Together, they form a network structure or mathematically, a graph\footnote{\url{https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)}.}, where the nodes correspond to vertices, and the weights correspond to edges.\footnote{A neural network is a special type of graph: a vertex-labeled, edge-labeled, directed graph. This means that the edges between nodes have a direction (the graph is \emph{directed}), and that numbers are associated with the vertices and edges (it is \emph{vertex-labeled} and \emph{edge-labeled}).}  The graph-structure formed by a network's nodes and weights is the network's \glossary{topology}. At a first pass, neural network topologies fall into one of two rough types shown in Fig. \ref{nn_types}: feed-forward and recurrent. 
 
 % Another issue with layer concept. Sometimes it refers just to activations, sometimes to activations and all the hyperparameters, rules, etc. (i.e. what would show up in a property editor if you double clicked.)
 % Are pools of IAC node layers?
@@ -181,6 +180,7 @@ For the most part, distributed representations are what one finds in the brain. 
 
 \section{Types of Neural Network Research}\label{typesOfResearch}
 
+% See discussion with Pierre on  Jun 12, 2024
 % This discussion keeps expanding and so it might warrant a new section or subsection of some kind.
 % Rep alignment, interpretability, Zipser. Activation patching. Mechanistic interpretability.
 % "Every time I fire a linguist, the performance of our system goes up." Apocryphal to Frederic Jelneck as reported by Sven Matty.  Same for neuroscientist, philosopher, whatever, ML and gradient descent seem to just power their way through any attempt to post hoc understand this stuff.
