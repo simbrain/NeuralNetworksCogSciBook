@@ -229,7 +229,7 @@ $(u,\ell,m) = (1,0,1)$.
 As the slope parameter is varied, the shape of the sigmoid function changes. When the slope is
 large or ``steep'', the sigmoid will begin to look like the threshold function. When the slope is near $0$, it will begin to look more like a linear function.
 
-\section{Non-local activation functions}
+\section{Non-local activation functions}\label{wta_softmax_section}
 
 The activation functions we have discussed thus far are local in the sense of being computable based on information available at the neuron, by way of its connections to other neurons. However, in some cases a neuron's activation can only be computed based on the state of other neurons in a group.\footnote{This is not biologically realistic, since a real neuron can only do things based on information available to it locally, but these functions often have useful formal and mathematical properties, and can in some cases be justified as valid simplifications or approximations of network activity.} These are often called ``layers'', as in a type of node layer. In Simbrain this is represented by drawing a border around the neurons (these structures are called neuron groups in Simbrain), as in figure \ref{wta_softmax}.
 
