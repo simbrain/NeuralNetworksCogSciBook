@@ -167,18 +167,48 @@ Co-occurrence based word embeddings are not the only option. Besides these, neur
 
 % BERT, discussed in transformer chapter briefly, is also a very complex embedding, that is associated with the rise of transformers.
 
-% Another kind of embedding is a simple one that is just random vectors that we then train with gradient descent.
+Another kind of embedding is one that is just filled with random vectors that we then train with gradient descent (see section \extref{sect_gradient_descent}) relative to some kind of task, like next word prediction (see chapter \extref{ch_transformers}), which gradually trains the embedding to work well relative to the required task.
 
-\section{Using a word embedding to make a document embedding}
+\subsection{Using a word embedding to make a document embedding}\label{wordEmbeddingMatrix}
 
-Of course word embedding can be used to generate document embeddings, simply by associating each token in  a document with its vector embedding and concatenating the result. Thus we can associate a whole document with a matrix, where each row is the vector embedding for one word or token in the document. 
+Of course word embedding can be used to generate document embeddings, simply by associating each token in  a document with its vector embedding and concatenating the result. Thus we can associate a whole document with a matrix, where each row is the vector embedding for one word or token in the document. A prominent example where this idea is used is with LLMs like ChatGPT (see chapter \extref{ch_transformers}), where a context window---a set of prompts and responses ---is converted into a matrix using a vector embedding. Let's take a small, brutish context window:  ``dog chases cat and cat chases dog!''.  First we tokenize the input, then associate each token with an index, like this (notice that the punctuation mark is a token):
 
-A prominent example where this is used is with LLMs, where each prompt context is converted into a matrix using a vector embedding. 
+\begin{center}
+\begin{tabular}{c@{}c@{}c@{}c@{}c@{}c@{}c@{}c}
+   3 & 1 & 4 & 5 & 2 & 1 & 3 & \hspace{0.5cm}6 \\
+   \texttt{dog} & \texttt{\quad chases} & \texttt{\quad cat} & \texttt{\quad and} & \texttt{\quad cat} & \texttt{\quad chases} & \texttt{\quad dog} & \texttt{\quad !} \\
+\end{tabular}
+\end{center}
 
-Even though idea is simple, it's easy to get lost with all the vectors and matrices and tensors, so here is a picture to make it clear.
+Now we can take each integer and associate it with a row of an embedding matrix, like this, shown here with integer labels on rows to make the idea clear.
+\[
+\left[\begin{array}{c|ccc}
+    1 & 0.5 & 0.1 & 0.3 \\
+    2 & 0.2 & 0.4 & 0.6 \\
+    3 & 0.7 & 0.8 & 0.9 \\
+    4 & 1.0 & 1.1 & 1.2 \\
+    5 & 1.3 & 1.4 & 1.5 \\
+    6 & 0.3 & 0.1 & 1.2 \\
+\end{array}\right]
+\]
 
-% TODO  A picture showing a string of words, integers above them, and then rows of an embedding matrix, and then the final matrix representation of the document
-% Important to cohere this with transformer chapter. Show in particular how word embeddings can themselves be trainable using gradient descent. 
+If we take each token and the corresponding row for it, and stack the results vertically, we end up with a matrix representation of a set of words (that is, a document, or in an llm, a context window), like this: 
+
+\[
+\begin{bmatrix}
+    0.7 & 0.8 & 0.9 \\
+    0.5 & 0.1 & 0.3 \\
+    1.0 & 1.1 & 1.2 \\
+    1.3 & 1.4 & 1.5 \\
+    0.2 & 0.4 & 0.6 \\
+    0.5 & 0.1 & 0.3 \\
+    0.3 & 0.1 & 1.2 \\
+\end{bmatrix}
+\]
+
+So there's our vector embedding for the document,  what we can a ``word embedding matrix'' or a ``token embedding matrix''. This matrix is suitable for processing in a neural network, like an LLM. 
+
+You should confirm that the token embedding matrix above makes sense, that each row corresponds to the corresponding token in the sentence ``dog chases cat and cat chases dog!''
 
 \subsection{Evaluation of word embeddings}
 
