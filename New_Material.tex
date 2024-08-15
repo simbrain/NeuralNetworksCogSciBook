@@ -224,7 +224,7 @@ And since $t - a_2$ is error $e$ we get
 \frac{dE}{dw_{1,2}} = -2 e a_1
 \end{eqnarray*}
 
-This says that the change in error with respect to the weight is given by error time source activation times a constant. The 2 can be ignored, since we can think of as being absorbed into the learning rate. Also, this gradient points in the direction of error increasing. But we want to go in the opposite direction, so that error is reduced. So we multiply this gradient by $-1$, changing its sign. And so our learning rule is 
+This says that the change in error with respect to the weight is given by error times source activation times a constant. The 2 can be ignored, since we can think of it as being absorbed into the learning rate. Also, this gradient points in the direction of error increasing. But we want to go in the opposite direction, so that error is reduced. So we multiply this gradient by $-1$, changing its sign. And so our learning rule is 
 
 \begin{eqnarray*}
 \Delta w_{1,2}  =  \epsilon a_1 e  = \epsilon a_1 (t - a_2)
