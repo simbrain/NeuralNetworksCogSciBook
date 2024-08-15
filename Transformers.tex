@@ -1,6 +1,8 @@
 \chapter{Transformer Architecture and LLMs}\label{ch_transformers}
 \chapterauthor{Jeff Yoshimi, Pierre Beckmann, Tim Meyer}{.5, .4, .1}
 
+% LLM's browsing the net
+% Multihop reasoning
 % Cite Mitchell paper: https://oecs.mit.edu/pub/00hsw4x2/release/1
 % Watch new 3b1b videos and add note. (Maybe say we will do more to cohere in the next revision for better interpretation). For example, think of each head as asking a question. Gets us intuition about self attention. Also each attention head looks at something different. Queries are like questions, keys are like replies. 
 % Eric S: One striking thing about GPT4 is that you can enter prompts like "Write a four paragraph essay on X" or "First, describe X. Next, describe Y. Finally, describe Z" and it will do it. By the end of the task, the prompt is rather far from the output. It would be nice if this section could explain a bit more how this architecture enables such structured outputs, which one wouldn't expect from say a next-word, next-word, next-word autocomplete on your phone. (GPT3 could also do this, unreliably, so I think the human feedback training isn't essential to this type of task, if I'm recalling correctly that GPT3 was a pure transformer without the human feedback training.)
@@ -187,9 +189,9 @@ The size of the context window is another hyperparameter not shown in the figure
 %https://arxiv.org/pdf/2310.14735.pdf
 %
 
-\section{Analysis of LLMs}
+\section{Analysis of LLMs}\label{llm_analsis}
 
-As with all the architectures discussed in this book, transformer-based LLMs are not just used to engineer useful devices but are also major object of scientific interest (see section \extref{typesOfResearch}). They are studied in many academic disciplines and areas of cognitive science. They are in various ways being considered as models of cognition, linguistic processing, and neural processing. 
+As with all the architectures discussed in this book, transformer-based LLMs are not just used to engineer useful devices but are also major object of scientific interest (see chapter \extref{ch_applications}). They are studied in many academic disciplines and areas of cognitive science. They are in various ways being considered as models of cognition, linguistic processing, and neural processing. 
 
 % A difference in degree not kind. (A few points are mixed together here). It was not clear they would generalize so well. So a link to that. Can ask about situations etc. (See the dreyfus point). Pierre thought the best that would happen is grammar. (Jeff immediately tried old Dreyfus experiments and it passed). 
 These models have the remarkable property of being human engineered but not completely understood by the humans who engineered them (this is true of other models, but is especially the case here, given how complex LLMs are, and given how expensive they are to train). 
@@ -254,7 +256,7 @@ Another long-standing argument against machine intelligence due to Hubert Dreyfu
 
 %There is something strange about LLMs. They were built by humans but are so complex that we do not completely understand them. This has often been the case historically with neural networks, but the issue is accentuated here. It's like we built this super powerful motor and now we can put it in different things, but we don't understand how the motor works so we have to look at its components and find new ways to study it, reverse engineer it, use it, etc. This may be a difference of degree (CNNs were also like this), but it is enough of a difference in degree that it feels like a change in kind.\footnote{One aspect of this is that with CNN's one could run a bunch on their own computer; with LLMs they are so expensive to train and it takes so long that people just make API calls to existing LLM models. So it feels more like this separately existing thing is just being studied, akin to studying any natural phenomenon in nature.} It really does feel different. These massive transformer-based neural networks with all their many layers and blocks and matrices and other features somehow magically produce human-like speech and video, etc., but how exactly is not understood. 
 % 
-%This is a twist on our earlier discussion of types of neural network research (section \extref{typesOfResearch}). It was built for engineering, but ended up being useful for science. Most earlier cases started in science and went to engineering (e.g. deep learning CNNs).
+%This is a twist on our earlier discussion of types of neural network research (chapter \extref{ch_applications}). It was built for engineering, but ended up being useful for science. Most earlier cases started in science and went to engineering (e.g. deep learning CNNs).
 %
 %The point was made striking early via BERT (which came out around the time of GPT-2). It came out of Google and fit their engineering needs. Psychologists and linguists then realized  BERT was doing better at analyzing language than other models in linguistics, so they started to treat it as an object of scientific interest in its own right. This gave rise to a new field called ``BERTology''. 
 %
