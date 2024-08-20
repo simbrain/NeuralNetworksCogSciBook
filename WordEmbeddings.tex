@@ -1,18 +1,13 @@
 \chapter{Word Embeddings}\label{ch_word_embeddings}
 \chapterauthor{Ellis Cain, Jeff Yoshimi}
 
-
 % TODO: Go through chapter and add glossary items
 
-This chapter elaborates on the concept of a word embedding, which was briefly discussed in section \extref{wrangling}. A word embedding associates each \glossary{token} in a set of tokens with a set of vectors (see chapter \extref{ch_linear_algebra}) in a way that that captures important characteristics of the set of tokens. Tokens can include words, word-parts, and other character sequences, but we focus on words here and it is standard to call these ``word embeddings'' rather than ``token embeddings'' (in fact we will often use ``word'' interchangeably with ``token'' simply as a matter of convenience).\footnote{The concept of a ``token'' varies from one context to another. Tokens can also punctuation, emojis, or word-parts and character sequences of various kinds. Sometimes tokens are extracted automatically from a corpus, for example using byte pair encodings.  See \url{https://en.wikipedia.org/wiki/Byte_pair_encoding}.} In this way words can be ``embedded'' in a vector space, in that a word is associated with lists of numbers that can in turn be processed by a neural network, and associated with points in a space. 
+This chapter elaborates on the concept of a word embedding, which was briefly discussed in section \extref{wrangling}. A word embedding associates each \glossary{token} in a set of tokens with a set of vectors (see chapter \extref{ch_linear_algebra}) in a way that that captures important characteristics of the set of tokens. Tokens can include words, word-parts, and other character sequences, but we focus on words here and it is standard to call these ``word embeddings'' rather than ``token embeddings'' (in fact we will often use ``word'' interchangeably with ``token'' simply as a matter of convenience).\footnote{The concept of a ``token'' varies from one context to another. Tokens can also include punctuation, emojis, or word-parts and character sequences of various kinds. Tokens are usually extracted from a corpus using automated method, for example byte pair encodings. See \url{https://en.wikipedia.org/wiki/Byte_pair_encoding}.} In this way words can be ``embedded'' in a vector space, in that a word is associated with lists of numbers that can in turn be processed by a neural network, and associated with points in a space. 
 
-These techniques have a long history in linguistics and in the study of neural networks, but have become especially prominent in recent years with the advent of large language models (LLMs) like GPT (section \extref{transformers}). While word embeddings may seem outdated and irrelevant due to the advent of LLMs, knowledge of the principles of word embeddings are extremely helpful for understanding LLMs due to the overlap, as these more advanced models build upon these principles and incorporate related techniques.
-For example, we will see that LLMs use a random embedding that is trained using gradient descent. That is, words are initially associated with vectors in an arbitrary way, but then the neural network trains the embedding in a way that suits its purpose. 
-However, even in this case it is useful to have a conceptual understanding of the theory surrounding word embeddings, as a way of understanding the different parts of an LLM. 
+These techniques have a long history in linguistics and in the study of neural networks, but have become especially prominent in recent years with the advent of large language models (LLMs) like GPT (see chapter \extref{transformers}). While word embeddings may seem outdated and irrelevant due to the advent of LLMs, knowledge of the principles of word embeddings are extremely helpful for understanding LLMs due to the overlap, as these more advanced models build upon these principles and incorporate related techniques.
 
-After giving some background on linguistics and natural language processing, we build up to the concept of a word embedding in stages. First we discuss document embeddings (associating whole documents with vectors of numbers), which are simpler to understand and serve as a useful basis for understanding word embeddings. Then we discuss word embeddings and their theoretical backing. 
-Then we discuss the kind of pre-processing and workflow often involved in actually taking a text and creating an embedding.%, and feeding it to a statistical model like a neural network.
-Throughout the chapter, we mention connections between text embeddings\footnote{Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We will use ``text embedding'' as a generic way to cover both cases.} and neural networks, whether the neural networks are used to create text embeddings or used with text embeddings as the input.
+After giving some background on linguistics and natural language processing, we build up to the concept of a word embedding in stages. First we discuss document embeddings (associating whole documents with vectors of numbers), which are simpler to understand and serve as a useful basis for understanding word embeddings. Then we discuss word embeddings and their theoretical backing.  Then we discuss the kind of pre-processing and workflow often involved in actually taking a text and creating an embedding. Throughout the chapter, we mention connections between text embeddings\footnote{Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We will use ``text embedding'' as a generic way to cover both cases.} and neural networks, whether the neural networks are used to create text embeddings or used with text embeddings as the input.
 % Finally we give a brief summary of ways neural networks are used to process linguistic data that has been numerically coded with a text embedding.\footnote{Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We will use ``text embedding'' as a generic way to cover both cases.}
 Additionally, given the emphasis on converting words and other linguistic entities to vectors, this chapter overall also sheds further light on the concept of feature engineering (section \extref{wrangling}) and ``wrangling'' data so it can be used in neural networks. 
 
@@ -94,7 +89,7 @@ The above-mentioned methods are calculated at the document level, in that resear
 \section{Word embeddings}
 
 We now move from document embeddings to word embeddings. In this approach, instead of associating documents with vectors, we associate words or tokens with vectors. 
-The general idea is that the words are embedded (or placed) into a vector space, in which the semantic information is captured and represented by the relative distance to other words in this space. Words that have similar semantic information would be near each other, and those which are unrelated would be far apart.
+The general idea is that the words are embedded (or placed) into a vector space, in which the semantic information is captured and represented by the relative distance to other words in this space. Words that have similar semantic information would be near each other, and those which are unrelated would be far apart.\footnote{We describe several common approaches to word embeddings here, but there are others. For example, LLMs use a random embedding (a random association between tokens and vectors) that is trained using gradient descent. In other cases LLMs themselves are used to produce embeddings.}
 
 For a sense of how the approach works, here are seven words embedded in a space, which illustrates that the relative relations between tokens are preserved (Fig. \ref{f:writerPainterExample}).\footnote{These were plotted using \url{http://vectors.nlpl.eu/explore/embeddings/en/}, which is a helpful interactive page for getting an intuitive feel for how word embeddings work.}  Notice that the creator of a medium (i.e., composer, author, painter) is closest to the medium or composition (i.e., music, book, painting). Interestingly, ``critic'' is closest to ``author''.
 
@@ -174,47 +169,6 @@ Co-occurrence based word embeddings are not the only kind of word embedding. Bes
 
 %% Randomly intialized embeddings (they used to start with word2vec and glove but training everything end to end ends up being better.  People were surprised by that in beginning. This is what is used and has become standard to train end to end. Otherwise by initializing with certain weights you might push
 % Another kind of embedding is one that is just filled with random vectors that we then train with gradient descent (see section \extref{sect_gradient_descent}) relative to some kind of task, like next word prediction (see chapter \extref{ch_transformers}), which gradually trains the embedding to work well relative to the required task. This is a surprisingly powerful method and has become a kind of de facto standard with LLMs.  The value of this kind of custom trained embedding is that the embedding ends up being well-suited to whatever task (for example next word prediction) the network is trained on.\footnote{While it may be tempting to initialize an embedding with word2vec or Glove and then train it, there is a concern that doing so might push the embedding into some region of solution space that is less optimal.}
-
-\subsection{Using a word embedding to make a document embedding}\label{wordEmbeddingMatrix}
-
-Of course word embedding can be used to generate document embeddings, simply by associating each token in a document with its vector embedding and concatenating the result. Thus we can associate a whole document with a matrix, where each row is the vector embedding for one word or token in the document. A prominent example where this idea is used is with LLMs like ChatGPT (see chapter \extref{ch_transformers}), where a context window --- a set of prompts and responses --- is converted into a matrix using a vector embedding. Let's take a small, brutish context window:  ``dog chases cat and cat chases dog!''.  First we tokenize the input, then associate each token with an index, like this (notice that the punctuation mark is a token):
-
-\begin{center}
-\begin{tabular}{c@{}c@{}c@{}c@{}c@{}c@{}c@{}c}
-   3 & 1 & 4 & 5 & 2 & 1 & 3 & \hspace{0.5cm}6 \\
-   \texttt{dog} & \texttt{\quad chases} & \texttt{\quad cat} & \texttt{\quad and} & \texttt{\quad cat} & \texttt{\quad chases} & \texttt{\quad dog} & \texttt{\quad !} \\
-\end{tabular}
-\end{center}
-
-Now we can take each integer and associate it with a row of an embedding matrix, like this, shown here with integer labels on rows to make the idea clear.
-\[
-\left[\begin{array}{c|ccc}
-    1 & 0.5 & 0.1 & 0.3 \\
-    2 & 0.2 & 0.4 & 0.6 \\
-    3 & 0.7 & 0.8 & 0.9 \\
-    4 & 1.0 & 1.1 & 1.2 \\
-    5 & 1.3 & 1.4 & 1.5 \\
-    6 & 0.3 & 0.1 & 1.2 \\
-\end{array}\right]
-\]
-
-If we take each token and the corresponding row for it, and stack the results vertically, we end up with a matrix representation of a set of words (that is, a document, or in an llm, a context window), like this: 
-
-\[
-\begin{bmatrix}
-    0.7 & 0.8 & 0.9 \\
-    0.5 & 0.1 & 0.3 \\
-    1.0 & 1.1 & 1.2 \\
-    1.3 & 1.4 & 1.5 \\
-    0.2 & 0.4 & 0.6 \\
-    0.5 & 0.1 & 0.3 \\
-    0.3 & 0.1 & 1.2 \\
-\end{bmatrix}
-\]
-
-So there's our vector embedding for the document,  what we can a ``word embedding matrix'' or a ``token embedding matrix''. This matrix is suitable for processing in a neural network, like an LLM. 
-
-You should confirm that the token embedding matrix above makes sense, that each row corresponds to the corresponding token in the sentence ``dog chases cat and cat chases dog!''
 
 \subsection{Evaluation of word embeddings}
 
@@ -315,3 +269,44 @@ After processing the whole document and calculating a co-occurrence matrix, we w
     \caption[Generated using Simbrain.]{Resulting co-occurrence matrix after PPMI has been applied. Bidirectional window size of 2.}
  \label{ppmiExample}
 \end{figure}
+
+\subsection{Using a word embedding to make a document embedding}\label{wordEmbeddingMatrix}
+
+Of course word embedding can be used to generate document embeddings, simply by associating each token in a document with its vector embedding and concatenating the result. Thus we can associate a whole document with a matrix, where each row is the vector embedding for one word or token in the document. A prominent example where this idea is used is with LLMs like ChatGPT (see chapter \extref{ch_transformers}), where a context window --- a set of prompts and responses --- is converted into a matrix using a vector embedding. Let's take a small, brutish context window:  ``dog chases cat and cat chases dog!''.  First we tokenize the input, then associate each token with an index, like this (notice that the punctuation mark is a token):
+
+\begin{center}
+\begin{tabular}{c@{}c@{}c@{}c@{}c@{}c@{}c@{}c}
+   3 & 1 & 4 & 5 & 2 & 1 & 3 & \hspace{0.5cm}6 \\
+   \texttt{dog} & \texttt{\quad chases} & \texttt{\quad cat} & \texttt{\quad and} & \texttt{\quad cat} & \texttt{\quad chases} & \texttt{\quad dog} & \texttt{\quad !} \\
+\end{tabular}
+\end{center}
+
+Now we can take each integer and associate it with a row of an embedding matrix, like this, shown here with integer labels on rows to make the idea clear.
+\[
+\left[\begin{array}{c|ccc}
+    1 & 0.5 & 0.1 & 0.3 \\
+    2 & 0.2 & 0.4 & 0.6 \\
+    3 & 0.7 & 0.8 & 0.9 \\
+    4 & 1.0 & 1.1 & 1.2 \\
+    5 & 1.3 & 1.4 & 1.5 \\
+    6 & 0.3 & 0.1 & 1.2 \\
+\end{array}\right]
+\]
+
+If we take each token and the corresponding row for it, and stack the results vertically, we end up with a matrix representation of a set of words (that is, a document, or in an llm, a context window), like this: 
+
+\[
+\begin{bmatrix}
+    0.7 & 0.8 & 0.9 \\
+    0.5 & 0.1 & 0.3 \\
+    1.0 & 1.1 & 1.2 \\
+    1.3 & 1.4 & 1.5 \\
+    0.2 & 0.4 & 0.6 \\
+    0.5 & 0.1 & 0.3 \\
+    0.3 & 0.1 & 1.2 \\
+\end{bmatrix}
+\]
+
+So there's our vector embedding for the document,  what we can a ``word embedding matrix'' or a ``token embedding matrix''. This matrix is suitable for processing in a neural network, like an LLM. 
+
+You should confirm that the token embedding matrix above makes sense, that each row corresponds to the corresponding token in the sentence ``dog chases cat and cat chases dog!''
