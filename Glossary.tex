@@ -333,7 +333,7 @@ weights of a neural network.
 
 \item[Reinforcement learning] A form of learning in which a system learns to take actions that maximize reward in the long run.   Actions that produce rewards, or action that lead to actions that produce reward, are reinforced in such a way that agents learn to obtain rewards and avoid costly situation.  In humans, associated with circuits in the brain stem and basal ganglia.  Sometimes treated as a third form of learning alongside supervised and unsupervised learning.
 
-\item[ReLU activation function] A linear activation function that is clipped at  0. It's activation is 0 for weighted inputs less than or equal to 0, and it is equal to weighted inputs otherwise. It is a popular activation function for deep networks. Note that ``relu'' is short for ``rectified linear unit''.
+\item[ReLU] A linear activation function that is clipped at  0. It's activation is 0 for weighted inputs less than or equal to 0, and it is equal to weighted inputs otherwise. It is a popular activation function for deep networks. Note that ``relu'' is short for ``rectified linear unit''.
 
 \item[Repeller] (Synonym Unstable state): a state or set of states $R$ with the property that if the system is in a nearby state the system will always go away from R. Fixed points and periodic orbits can both be repellers.
 
@@ -361,7 +361,7 @@ weights of a neural network.
 
 \item[Soma] (Synonym Cell body): the central part of a neuron, which the dendrites and axons connect to.
 
-\item[Softmax] A node layer which normalizes inputs so that its activations can be interpreted as a probability distribution. Each activation is between 0 and 1 and the sum over all the activations in a softmax layer is 1. 
+\item[Softmax] An activation function which normalizes inputs so that its activations in a layer (or in simbrain, a neuron group) can be interpreted as a probability distribution. Each activation is between 0 and 1 and the sum over all the activations in a softmax layer is 1. 
 
 \item[Somatotopic map] A topographic map in the somatosensory cortex that is organized by areas of the body. Nearby regions of this area represent nearby parts of the body.
 
@@ -425,6 +425,8 @@ weights of a neural network.
 
 \item[Transformer architecture] A complex feed-forward network structure which includes a ``self-attention'' mechanism that allows hidden layers to be ``aware'' of multiple kinds of relationships between different parts of a sequence of input activations. In the context of LLMs these networks can develop representations of words even when they are far apart in a document.
 
+\item[Testing subset] A subset of a dataset used for testing a neural network model (or other machine learning model). This data has not been used in training (it has been ``held out'') and thus the testing data can be used to see how well a model generalizes from what it was trained on to new data.
+
 \item[Training subset] A subset of a dataset used for training a neural network model (or other machine learning model). Contrasted with testing subset.
 
 \item[Truth table] A table whose columns are the inputs and outputs of a Boolean functions.
@@ -461,7 +463,7 @@ weights of a neural network.
 
 \item[Wernicke's area] A region of the temporal lobe associated with written and spoken language comprehension. Damage to this area can lead to Wernicke's aphasia, affecting the ability to understand language, even if language production remains intact.
 
-\item[Winner-Take-All] A pool of nodes structured (often with mutually inhibitory connections) so that the node receiving the most inputs weighted inputs ``wins'' and becomes active while the other nodes become inactive.
+\item[Winner-Take-All] A pool of nodes structured (often with mutually inhibitory connections) so that the node receiving the most inputs weighted inputs ``wins'' and becomes active while the other nodes become inactive. Also a type of non-local activation function where the node in the group receiving the most net input is active at a winning value and the rest take on a losing value (usually zero). 
 
 \item[Zero vector] A vector whose components are all $0$. Adding the zero vector to any vector gives the same vector.
 

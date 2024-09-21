@@ -173,7 +173,7 @@ A piecewise linear function is basically a clipped or truncated linear function.
 \label{relu}
 \end{figure}
 
-A special case of a piecewise linear activation function is a \emph{rectified linear unit} or \glossary{ReLU activation function}. The terminology comes from electronics where rectifiers are often used to truncate the negative part of an alternating current to produce a direct current. They cut off all negative values, replacing them with a 0, and leave the weighted input unchanged otherwise (see figure \ref{relu}).\footnote{The rule can be even more concisely stated as the maximum value between 0 and $n_k$, or $\mbox{max}(0,n_k)$.} Thus, they are a piecewise linear function with no upper bound:
+A special case of a piecewise linear activation function is a \emph{rectified linear unit} or \glossary{ReLU} activation function. The terminology comes from electronics where rectifiers are often used to truncate the negative part of an alternating current to produce a direct current. They cut off all negative values, replacing them with a 0, and leave the weighted input unchanged otherwise (see figure \ref{relu}).\footnote{The rule can be even more concisely stated as the maximum value between 0 and $n_k$, or $\mbox{max}(0,n_k)$.} Thus, they are a piecewise linear function with no upper bound:
 \begin{eqnarray*}
 a_k = f(n_k) =  
 \left\{
@@ -236,21 +236,30 @@ The activation functions we have discussed thus far are local in the sense of be
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.4]{./images/softmax_wta.png}
-\caption[Jeff Yoshimi.]{A winner take all and a softmax activation function. All weight strengths are 1 and the connections are one-to-one so the weighted inputs are just the input values visible in the figure. The boundary around the nodes indicates that they are taken into consideration when computing the activations.}
+\caption[Jeff Yoshimi.]{A winner-take-all and a softmax activation function. All weight strengths are 1 and the connections are one-to-one so the weighted inputs are just the input values visible in the figure. The boundary around the nodes in the ``neuron group'' indicates that they are all taken into consideration when computing the activations.}
 \label{wta_softmax}
 \end{figure}
 
-% glossary for wta below?
-A simple example is a winner take all circuit like the one shown in the left panel of figure \ref{wta_softmax}. In this case all the weighted inputs to a group of neurons are computed, and the one for which the weighted input is greatest (the node on the left) is set to a prescribed winning number like 1, and the rest are set to a losing number, usually 0. This obviously requires considering every neuron in the group, even if they are not directly connected to each other.  Although this is unrealistic, it is a reasonable approximation of a network of inhibitory and excitatory connections  (compare the discussion of pools in an IAC networks in section \extref{connectionism})).
+A simple example is a \glossary{winner-take-all} activation function like the one shown in the left panel of figure \ref{wta_softmax}. In this case all the weighted inputs to a group of neurons are computed, and the one for which the weighted input is greatest (the node on the left) is set to a prescribed winning number like 1, and the rest are set to a losing number, usually 0. 
+
+\begin{eqnarray*}
+a_k &=& f(n_k) = 
+\begin{cases} 
+    \text{win\_value} & \text{if } n_k = \max(n_1, n_2, \dots, n_m) \\
+    0 & \text{otherwise} 
+\end{cases}
+\end{eqnarray*}
+
+This obviously requires considering every neuron in the group, even if they are not directly connected to each other.  Although this is unrealistic, it is a reasonable approximation of a network of inhibitory and excitatory connections  (compare the discussion of pools in an IAC networks in section \extref{connectionism})).
 
 % Refs
-A well-known example of a non-local activation function is the softmax activation function, which is often used for classification tasks and for well-known networks like large language models. It converts the weighted inputs to a group of nodes into a probability distribution over those nodes--that is, a set of values all of which are between 0 and 1 which sum to 1.   These activations are often interpreted as probabilities associated with a group of class labels. For example if a softmax layer of a network trained to recognize visual inputs has nodes for cat, dog, and raccoon, then the softmax activations might be .05, .9, and .05, indicating a 5 \% probability that the input pattern represents a cat, a 90 \% probability that it represents a dog, and a 5 \% that it represents a raccoon.
+Another well-known example of a non-local activation function is the \glossary{softmax} activation function, which is often used for classification tasks. It converts the weighted inputs to a group of nodes into a probability distribution over those nodes--that is, a set of values all of which are between 0 and 1 which sum to 1.   These activations are often interpreted as probabilities associated with a group of class labels. For example if a softmax layer of a network trained to recognize visual inputs has nodes for cat, dog, and raccoon, then the softmax activations might be .05, .9, and .05, indicating a 5 \% probability that the input pattern represents a cat, a 90 \% probability that it represents a dog, and a 5 \% that it represents a raccoon.
 
 The formula for softmax is this:
-\begin{eqnarray}
-\sigma(n_i) &=& \frac{\exp\left(\frac{n_i}{T}\right)}{\sum_{j=1}^{K} \exp\left(\frac{n_j}{T}\right)}
-\end{eqnarray}
-That is, for each neuron $i$ in the softmax layer, its weighted input $n_i$ is exponentiated, and these exponentiated values are normalized (the summation on the bottom, which shows why softmax requires knowledge of all nodes in a layer). $T$ is a temperature parameter discussed below. 
+\begin{eqnarray*}
+a_k = f(n_k) =  \frac{\exp\left(\frac{n_k}{T}\right)}{\sum_{j=1}^{N} \exp\left(\frac{n_j}{T}\right)}
+\end{eqnarray*}
+That is, for each neuron $k$ in the softmax layer, its weighted input $n_k$ is exponentiated\footnote{In the context of softmax layers weighted inputs--the raw inputs to the layer--are sometimes called ``logits'', in reference to the concept of a logit in statistics (\url{https://en.wikipedia.org/wiki/Logit}), which is a quantity that can can take on any value from negative to positive infinity, and which is then transformed into a probability.}, and these exponentiated values--are normalized (the summation on the bottom, which shows why the softmax activation function requires information about all nodes in a layer, and is thus part of a neuron group in Simbrain). $T$ is a temperature parameter which scales the weighted inputs before they are exponentiated, and is discussed further below. 
 
 The exponentiation step increases the influence of larger input values, producing a more sharply peaked distribution. The exponential function is shown in figure \ref{exponentiation}. Think of the x-axis as weighted input. As weighted input gets bigger, the exponential gets much bigger, so that larger values are accentuated. An example is shown in the right panel of figure \ref{wta_softmax}. Note how the inputs are 3, 2, and 1, but the softmax probabilities are .7, .2, and .1. The exponentiation step has accentuated the difference between the inputs.
 
@@ -261,9 +270,14 @@ The exponentiation step increases the influence of larger input values, producin
 \label{exponentiation}
 \end{figure}
 
-The temperature $T$ is a scaling parameter that controls how sharply peaked the softmax distribution is. When $T=1$ it is a default softmax function.  For high temperature values, larger than 1, the softmax distribution becomes more dispersed. Think of a ``hotter'' more active system, doing slightly more random or reckless things. In classification tasks, this can be interpreted as less confidence about the classification.  For small temperature values between 0 and 1 the distribution becomes more sharply peaked. Think of a ``cooler'' In a classification task this can be interpreted as more confidence about the predictions.  One application of temperature is to large language models (chapter \extref{ch_transformers}), where turning the temperature up can encourage the system to produce less predictable responses and turning it down can lead it to rely more on its training data.
+The temperature $T$ is a scaling parameter that controls how sharply peaked the softmax distribution is (see figure \ref{softmaxTemps}). When $T=1$ it is a default softmax function.  For high temperature values, larger than 1, the softmax distribution becomes more dispersed. Think of a ``hotter'' more active system, doing slightly more random or reckless things. In classification tasks, this can be interpreted as less confidence about the classification.  For small temperature values between 0 and 1 the distribution becomes more sharply peaked. Think of a ``cooler'' more restrained system. In a classification task this can be interpreted as more confidence about the predictions.  One application of temperature is to large language models (chapter \extref{ch_transformers}), where turning the temperature up can encourage the system to produce less predictable responses and turning it down can lead it to rely more on its training data.
 
-% Raw inputs to softmax are logits. Discuss.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{./images/softmaxDiffTemps.png}
+\caption[Jeff Yoshimi.]{Softmax for relatively low, medium, and high temperatures of $.05$, $1$, and $3$, respectively. At lower temperatures the probability distributions over nodes is more sharply peaked and at higher temperatures it is more spread out.}
+\label{softmaxTemps}
+\end{figure}
 
 \section{Exercises}\label{activation_function_exercises}
 
