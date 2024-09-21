@@ -13,6 +13,8 @@
 # - Comments are ignored both in glossary and in chapters of the container doc 
 # 
 # TODO: Add colon after each entry but without the space \item adds.
+# TODO: Rather than manually dealing with singular / plural, find a way to specify the root word but then refer 
+#       to it in multiple ways in main text. Right now we have to force two to match, which is limiting.
 
 import sys
 import re
@@ -49,13 +51,17 @@ def find_glossary_items(files):
             items.update(re.findall(r'\\glossary(?:\[[^\]]*\])?{([^}]+)}', line))
     return sorted(item.lower() for item in items)
 
-def create_custom_glossary(glossary_items, glossary_text):
+def create_custom_glossary(ch_glossary_items, glossary_text):
     added_entries = set()
     custom_glossary_entries = []
     
-    for item in glossary_items:
-        singular_item = item.rstrip('s')
-        pattern = rf'\b{re.escape(singular_item)}s?\b'
+    for item in ch_glossary_items:
+
+        # Strip a single trailing s 
+        singular_item = item[:-1] if item.endswith('s') else item
+        
+        # Find a match to the item inside an \item[...] entry in the glossary
+        pattern = rf'\\item\[{re.escape(singular_item)}s?\]'
         
         if re.search(pattern, glossary_text, re.IGNORECASE):
             for line in glossary_text.split('\n'):
@@ -81,9 +87,16 @@ def main():
     
     container_document = sys.argv[1]
     chapters = find_chapters(container_document)
-    glossary_items = find_glossary_items(chapters)
+
+    # Finds glossary items in this container doc
+    ch_glossary_items = find_glossary_items(chapters)
+    # print(ch_glossary_items)
+    
+    # Finds all glossary items in the main glossary file
     glossary_text = read_file(MAIN_GLOSSARY_FILE)
-    create_custom_glossary(glossary_items, glossary_text)
+
+    # Create the custom glossary as the intersection of these
+    create_custom_glossary(ch_glossary_items, glossary_text)
 
 if __name__ == "__main__":
     main()

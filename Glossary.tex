@@ -30,6 +30,8 @@
 
 \item[Axon] The part of the neuron that carries outgoing signals to other neurons.
 
+\item[Bag of words]: A representation method that associates a document with a vector of word frequencies, where each entry of the vector corresponds to a word and the value of the entry corresponds to the number of times that word occurs in the document. The underlying idea is that the word usage frequencies would capture the (semantic) content of a document. The order and grammatical information of the words in the document is disregarded, hence the term ``bag''.  A form of document embeddings, as contrasted with token or word embeddings, are more common with neural networks.
+
 \item[Backpropagation] (Synonyms Backprop): A supervised learning algorithm that can train the weights of a multi-layer network using gradient extent. Can be thought of an extension of Least Mean Square methods for multi-layer networks. 
 
 \item[Basal ganglia] A structure below the surface of the cortex (subcortical) that is involved in voluntary action and reward processing.
@@ -52,6 +54,8 @@ towards a given attractor.
 \item[Boolean functions] Functions that take a list of 0's and 1's as input and produce a 0 or 1 as output. The 0 represents a ``False'' and the 1 represents a ``True''. Boolean functions can be realized by logic gates.
 
 \item[Brain stem] The lowest part of the brain that connects to the spinal cord and is fundamental for breathing, heart rate, and sleep.
+
+\item[Broca's area] A region of the frontal lobe associated with language production, gesture, and speech. Damage to this area can lead to Broca's aphasia, affecting speech fluency.
 
 \item[Categorical data] Data that can take one of a discrete set of values. For example, the time of day can be treated as a categorical variable taking two values: day and night. Also called nominal data.
 
@@ -83,7 +87,7 @@ towards a given attractor.
 
 \item[Controlled process] A cognitive processes that requires attention for its execution, and is relatively slow. Examples include solving math problems, doing homework, or performing an  unusual task that you have not practiced.
 
-\item[Cortical blindness] Neurological impairment caused by damage to the occipital lobe that results in blindness or inability to see, without any damage to the eyes. 
+\item[Cortical blindness] Neurological impairment caused by damage to the occipital lobe that results in blindness or inability to see. This can occur without any damage to the eyes. 
 
 \item[Cross talk] A phenomenon where training patterns interfere with one another when training a neural network to perform some task. 
 
@@ -151,13 +155,15 @@ towards a given attractor.
 
 \item[Fixed point] A state that does not change under a dynamical system. The system ``stays'' in this state forever. An orbit consisting of a single point.
 
-\item[Flattening] The process of converting a tensor with rank 3 or greater to a vector.  Allows the output of a convolutional layer to be sent to a standard feed-forward node layer.
+\item[Flatten] The process of converting a tensor with rank 3 or greater to a vector.  Allows the output of a convolutional layer to be sent to a standard feed-forward node layer.
 
 \item[Frontal lobe] Forward-most lobe of the brain whose many roles include decision-making, action planning, and executive control. Houses many important regions, including prefrontal cortex (PFC), orbitofrontal cortex (OFC), and motor cortex. 
 
 %\item[Function Approximation]
 
 \item[Generalization] The ability of a neural network to perform tasks that were not included in its training dataset. An example would be a network that was trained to identify 10 faces as male, and 10 as female, being able to perform well on (or ``generalize to'') new faces it has not seen before.
+
+\item[Generative AI] Artificially intelligent systems (often neural networks) that are capable of creating text, images, video, and other content, often at a level that is passably human.
 
 \item[Generative Model] A model that can be used to generate prototypical features associated with some category, for example, associating a localist category label with a distributed feature vector. This is a non-standard definition. The formal definition is that it is a model of the joint probability distribution over a set of inputs and outputs. Contrasted with discriminative models. 
 
@@ -198,6 +204,8 @@ towards a given attractor.
 %\item[Izhikevich model]
 
 \item[Labeled dataset] A conjunction of two datasets: an input dataset with input vectors, and a target dataset with target vectors or ``labels''. An input-target dataset. Used for supervised learning tasks.  
+
+\item[Large language model] (LLM) A model that generates language based on a large dataset.  LLMs are typically implemented as using the transformer architecture.
 
 \item[Learning] In a neural network, a process of updating synaptic weights so that the network improves at producing some desired behavior relative to an error function or other objective function.
 
@@ -297,6 +305,8 @@ weights of a neural network.
 
 \item[Pooling layer] A volume-to-volume layer in a convolutional layer which reduces the amount of information passing through the network, ideally without altering the essential structure of that information. Related to subsampling and downsampling. 
 
+\item[Positional encoding]: A method used in transformer models to add information about the position of tokens in a sequence to an activity pattern. This is important because transformers process information in parallel without knowledge of where a token occurs in a sequence.
+
 \item[Pre-processing] The process of transforming data into a form usable by a neural network. Compare data-wrangling.
 
 %\item[Point neurons]
@@ -327,9 +337,9 @@ weights of a neural network.
 
 \item[Repeller] (Synonym Unstable state): a state or set of states $R$ with the property that if the system is in a nearby state the system will always go away from R. Fixed points and periodic orbits can both be repellers.
 
-\item[Representational depth] The number of node layers in a feed-forward network. More generally a description of the number of  layer-like structures stacked in a neural network. Deeper networks can produce more complex representations which aggregate representations of earlier layers. (The term ``depth'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height).
+\item[Representational depth] The number of node layers in a feed-forward network. More generally a description of the number of  layer-like structures stacked in a neural network. Deeper networks can produce more complex representations which aggregate representations of earlier layers. (The term ``depth'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height. That is a separate, unrelated use of the term).
  
-\item[Representational width] The number of nodes in a node layer of a feed-forward network. More generally a description of the representational capacity of a layer or layer-like structure in a neural network. Wider layers can capture more features of the previous layer. This is non-standard terminology adopted in this book as a useful organizing principle. (The term ``width'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height).
+\item[Representational width] The number of nodes in a node layer of a feed-forward network. More generally a description of the representational capacity of a layer or layer-like structure in a neural network. Wider layers can capture more features of the previous layer. This is non-standard terminology adopted in this book as a useful organizing principle. (The term ``width'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height. That is a separate, unrelated use of the term).
 
 \item[Rescaling] A mathematical transformation of a set of samples in a dataset that preserves their relations to one another but changes their values. Often values are rescaled to lie in the interval $(0,1)$ or $(-1,1)$. One stage of data wrangling.
 
@@ -352,6 +362,8 @@ weights of a neural network.
 \item[Soma] (Synonym Cell body): the central part of a neuron, which the dendrites and axons connect to.
 
 \item[Softmax] A node layer which normalizes inputs so that its activations can be interpreted as a probability distribution. Each activation is between 0 and 1 and the sum over all the activations in a softmax layer is 1. 
+
+\item[Somatotopic map] A topographic map in the somatosensory cortex that is organized by areas of the body. Nearby regions of this area represent nearby parts of the body.
 
 \item[Somatosensory cortex] Front-most region of the parietal lobe that houses a somatotopic map of the body parts and processes tactile information from the body.
 
@@ -403,11 +415,15 @@ weights of a neural network.
 
 \item[Token] A word, word-part, or other sequence of characters. A generalization of the concept of a word to include other word-like entities. Tokens are associated with vectors in a word embedding.
 
-\item[Tolerance of noisy inputs] The ability of a network to perform well when the inputs presented to it have noise added.
+\item[Token] A word, word-part, or other sequence of characters. A generalization of the concept of a word to include other word-like entities. Tokens are associated with vectors in a word embedding.
+
+\item[Token embedding] (Near synonym: Word embedding). A way of associating each token or word in a document with a numerical vector. Useful in neural networks as a way to convert written text to network inputs. Modern LLMs utilize these token-level embeddings to deal with out-of-vocabulary terms, by breaking words down into sub-tokens. Many types of word embedding algorithm exist.
 
 \item[Topology] The way the nodes and weights of a network are wired together. A network's ``architecture.''
 
 \item[Tonotopic map] A topographic map in the auditory cortex that is organized by frequency of sounds. Similar sounds (in terms of frequency) are processed by neurons that are near one another.
+
+\item[Transformer architecture] A complex feed-forward network structure which includes a ``self-attention'' mechanism that allows hidden layers to be ``aware'' of multiple kinds of relationships between different parts of a sequence of input activations. In the context of LLMs these networks can develop representations of words even when they are far apart in a document.
 
 \item[Training subset] A subset of a dataset used for training a neural network model (or other machine learning model). Contrasted with testing subset.
 
@@ -415,20 +431,13 @@ weights of a neural network.
 
 \item[Turing Test] The Turing Test is a behavioral test that can be used to determine whether a system is intelligent or not. The standard form of the test is as follows: If a human judge communicating with a system via a text interface cannot determine whether the system is human or not, the system passes the test and can be deemed intelligent.  The test derives from a similar test due to Alan Turing (the ``imitation game'') but is not identical with the imitation game. There is controversy surrounding whether the test is an adequate test of intelligence.
 
-\item[Weight vector] A list of values for the weights of a neural network or for one of its layers. A weight vector can be multiplied times an activation vector to produce a weighted sum of activations.
-
-\item[Weight space] A vector space made up of all possible weight vectors for a neural network.
-
-\item[Weighted inputs] (Synonym Net input): the sum of incoming activations to a node times intermediate weights, plus bias. Intuitively, it is the overall level of input a node is receiving.
-
 \item[Unsupervised learning] A learning rule in which weights are adjusted without an explicit representation of desired outputs.
+
+\item[Vector] Ordered list of numbers ($n$-tuple of numbers). The numbers in a vector are its components. In many cases a vector represents a point. For example: $(2,2)$ is a vector with two components, which represents a point in a plane.
 
 \item[Vector addition] (Synonym Vector sum): two vectors with the same number of components can be added (or summed) by adding their corresponding components. Example: $(1,2) + (3,4) = (4,6)$.
 
 \item[Vector subtraction] Two vectors with the same number of components can be subtracted by subtracting their corresponding components.Example: $(1,2) - (3,4) = (-2,-2)$.
-
-% Python script still not finished so listing this plural 
-\item[Vectors] Ordered lists of numbers ($n$-tuple of numbers). The numbers in a vector are its components. In many cases a vector represents a point. For example: $(2,2)$ is a vector with two components, which represents a point in a plane.
 
 \item[Vector space] A collection of vectors, all of which have the same number of components. For example, the plane is a collection of vectors, all of which have two components. (Note that this is an  informal definition; to be a vector space, a set of vectors must meet further requirements as well).
 
@@ -449,6 +458,8 @@ weights of a neural network.
 \item[Weight space] The set of possible weight vectors for a given neural network.
 
 \item[Weight vector] A vector describing the strengths of the weights in a neural network.
+
+\item[Wernicke's area] A region of the temporal lobe associated with written and spoken language comprehension. Damage to this area can lead to Wernicke's aphasia, affecting the ability to understand language, even if language production remains intact.
 
 \item[Winner-Take-All] A pool of nodes structured (often with mutually inhibitory connections) so that the node receiving the most inputs weighted inputs ``wins'' and becomes active while the other nodes become inactive.
 
