@@ -71,14 +71,40 @@ print("Ordering:", str(sorted_authors).strip("[]"))
 sorted_authors = [i[0] for i in sorted_authors]
 author_string = ', '.join(sorted_authors)
 
-# 
+#
+# Function to split the author string into chunks of a given size
+#
+def split_author_string(author_string, max_length=80):
+    words = author_string.split(", ")
+    lines = []
+    current_line = ""
+    
+    for word in words:
+        if len(current_line) + len(word) + 2 > max_length:
+            lines.append(current_line)
+            current_line = word
+        else:
+            if current_line:
+                current_line += ", " + word
+            else:
+                current_line = word
+    
+    if current_line:
+        lines.append(current_line)
+    
+    return r"\\ ".join(lines)
+
+#
 # Write ordered authorship list to container document
-# 
+#
 with open(CONTAINER_DOCUMENT, 'r') as input_file, open('_temp.tex', 'w') as output_file:
     for line in input_file:
         if line.startswith("\\author"):
-            output_file.write(r"\author{"+author_string+"}\n")
+            # Replace author_string with the split version
+            formatted_author_string = split_author_string(author_string)
+            output_file.write(r"\author{" + formatted_author_string + "}\n")
         else:
             output_file.write(line)
+
 
 os.rename('_temp.tex', CONTAINER_DOCUMENT)
