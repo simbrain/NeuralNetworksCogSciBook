@@ -240,7 +240,7 @@ The activation functions we have discussed thus far are local in the sense of be
 \label{wta_softmax}
 \end{figure}
 
-A simple example is a \glossary{winner-take-all} activation function like the one shown in the left panel of figure \ref{wta_softmax}. In this case all the weighted inputs to a group of neurons are computed, and the one for which the weighted input is greatest (the node on the left) is set to a prescribed winning number like 1, and the rest are set to a losing number, usually 0. 
+A simple example is a \glossary{winner-take-all} activation function like the one shown in the left panel of figure \ref{wta_softmax}. In this case all the weighted inputs to a group of neurons are computed, and the activation for the node which received the greatest weighted input (in this example, the node on the left) is set to a prescribed winning number like 1, and activations for the rest of the nodes are set to a losing number, usually 0. 
 
 \begin{eqnarray*}
 a_k &=& f(n_k) = 
@@ -250,16 +250,18 @@ a_k &=& f(n_k) =
 \end{cases}
 \end{eqnarray*}
 
-This obviously requires considering every neuron in the group, even if they are not directly connected to each other.  Although this is unrealistic, it is a reasonable approximation of a network of inhibitory and excitatory connections  (compare the discussion of pools in an IAC networks in section \extref{connectionism})).
+This obviously requires considering every neuron in the group, even if they are not directly connected to each other.  Although this is unrealistic, it is a reasonable approximation of a network of inhibitory and excitatory connections  (compare the discussion of pools in an IAC networks in section \extref{connectionism}).
 
 % Refs
-Another well-known example of a non-local activation function is the \glossary{softmax} activation function, which is often used for classification tasks. It converts the weighted inputs to a group of nodes into a probability distribution over those nodes--that is, a set of values all of which are between 0 and 1 which sum to 1.   These activations are often interpreted as probabilities associated with a group of class labels. For example if a softmax layer of a network trained to recognize visual inputs has nodes for cat, dog, and raccoon, then the softmax activations might be .05, .9, and .05, indicating a 5 \% probability that the input pattern represents a cat, a 90 \% probability that it represents a dog, and a 5 \% that it represents a raccoon.
+Another well-known example of a non-local activation function is the \glossary{softmax} activation function, which is often used for classification tasks. It converts the weighted inputs to a group of nodes into a probability distribution over those nodes--that is, a set of values all of which are between 0 and 1 which sum to 1.   These activations are often interpreted as probabilities associated with a group of class labels. For example if a softmax layer of a network trained to recognize visual inputs has nodes for cat, dog, and raccoon, then the softmax activations might be .05, .9, and .05, indicating a 5\% probability that the input pattern represents a cat, a 90\% probability that it represents a dog, and a 5\% that it represents a raccoon.
 
 The formula for softmax is this:
-\begin{eqnarray*}
-a_k = f(n_k) =  \frac{\exp\left(\frac{n_k}{T}\right)}{\sum_{j=1}^{N} \exp\left(\frac{n_j}{T}\right)}
-\end{eqnarray*}
-That is, for each neuron $k$ in the softmax layer, its weighted input $n_k$ is exponentiated\footnote{In the context of softmax layers weighted inputs--the raw inputs to the layer--are sometimes called ``logits'', in reference to the concept of a logit in statistics (\url{https://en.wikipedia.org/wiki/Logit}), which is a quantity that can can take on any value from negative to positive infinity, and which is then transformed into a probability.}, and these exponentiated values--are normalized (the summation on the bottom, which shows why the softmax activation function requires information about all nodes in a layer, and is thus part of a neuron group in Simbrain). $T$ is a temperature parameter which scales the weighted inputs before they are exponentiated, and is discussed further below. 
+\begin{equation*}
+a_k = f(n_k)
+   = \frac{\exp\left(n_k/T\right)}
+          {\displaystyle{\sum_{j=1}^N}\exp\left(n_j/T\right)}
+\end{equation*}
+That is, for each neuron $k$ in the softmax layer, its activation $a_k$ is computed as follows. The weighted input $n_k$ is exponentiated\footnote{In the context of softmax layers weighted inputs--the raw inputs to the layer--are sometimes called ``logits'', in reference to the concept of a logit in statistics (\url{https://en.wikipedia.org/wiki/Logit}), which is a quantity that can can take on any value from negative to positive infinity, and which is then transformed into a probability.}, and these exponentiated values are normalized (the summation on the bottom, which shows why the softmax activation function requires information about all nodes in a layer, and is thus part of a neuron group in Simbrain). $T$ is a temperature parameter which scales the weighted inputs before they are exponentiated, and is discussed further below. 
 
 The exponentiation step increases the influence of larger input values, producing a more sharply peaked distribution. The exponential function is shown in figure \ref{exponentiation}. Think of the x-axis as weighted input. As weighted input gets bigger, the exponential gets much bigger, so that larger values are accentuated. An example is shown in the right panel of figure \ref{wta_softmax}. Note how the inputs are 3, 2, and 1, but the softmax probabilities are .7, .2, and .1. The exponentiation step has accentuated the difference between the inputs.
 

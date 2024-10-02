@@ -431,9 +431,7 @@ n_4 = (-1,-1,1) \bullet (\; -1,\; -4,\; 5) = 1 + 4 +5 = 10
 
 \section{Vector Spaces as Metric Spaces}
 
-A vector space can have a metric which is a way to say what the distance is
-between any two points. The usual metric for a real vector space is the
-Euclidean metric which can be expressed in terms of the dot product.  With this
+A vector space can have a metric, which is a way to define the distance between any two points. The usual metric for a real vector space is the Euclidean metric, which can be expressed in terms of the dot product. The Euclidean metric uses the concept of a norm, denoted by double bars $|| \cdot ||$, which measures the ``length'' of a vector. Specifically, the norm of a vector $\mathbf{x}$ is the square root of the dot product of the vector with itself: $||\mathbf{x}|| = \sqrt{\mathbf{x} \bullet \mathbf{x}}$.  With this
 metric the distance between any pair of vectors in $\real^n$:
 \begin{equation*}
 \mathbf{x} = (x_1, x_2, \ldots, x_n) \qquad
@@ -685,7 +683,7 @@ Examples of each of these types of tensor are shown in figure \ref{tensorTypes}.
 \label{tensorVisualStyles}
 \end{figure}
 
-We can refer to the different indices for a tensor using standardized names in a standard order: batch size, depth (number of channels), height, and width.\footnote{Usage varies. Some put height and width first in indexing; some put them last in indexing. Even though the rank of a tensor is the number of indices \emph{required} to specify an entry, sometimes additional entries are included (e.g. specifying a vector as a column vector assumes it is being placed in a 2d space). Thus the presentation of the ``shape'' of a tensor can vary.  In figure \ref{tensorTypes} the shapes might be given as $1 \times 1$, $6 \times 1$, $6 \times 6$, $3 \times 6 \times 6$, and $3 \times 3 \times 6 \times 6$.}
+We can refer to the different indices for a tensor using standardized names in a standard order: batch size, depth (number of channels), height, and width.\footnote{This is sometimes called NCHW format (number of samples, number of channels, height, width). However, usage varies. Some put height and width first in indexing; some put them last in indexing. Even though the rank of a tensor is the number of indices \emph{required} to specify an entry, sometimes additional entries are included (e.g. specifying a vector as a column vector assumes it is being placed in a 2d space). Thus the presentation of the ``shape'' of a tensor can vary.  In figure \ref{tensorTypes} the shapes might be given as $1 \times 1$, $6 \times 1$, $6 \times 6$, $3 \times 6 \times 6$, and $3 \times 3 \times 6 \times 6$.}
 % Can use all numbers in a shape or not, depending on the context (e.g a library might require a 4 tuple to specify a tensor even if it is a vector, like 1x1x6x5).
 % Much of the work in dealing with neural networks and neural net libraries is taking subsets of these tensors, slicing and indexing them, filtering them, and passing the right shaped thing from one place to another
 
