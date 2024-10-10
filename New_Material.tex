@@ -130,7 +130,7 @@ Also, negative source activations will make the weight change change sign as wel
 
 This is like a variant on the Hebb rule. Hebb said, just change the weight based on the product of source and target. Fire together wire together. That has use for detecting patterns of correlation between input and output. Make the output reflect those correlations. But now we say something different. We change weight based on the product of source activation and the error. We in a sense correlate with the error, which reduces the error, until the error is close to 0.
 
-One last way to think of this is in terms of statistical concepts. We can think of LMS as repeatedly testing the network and correcting for false positives (the output is too high; a ``type 1'' error) and false negatives (the output is too low; a ``type 2'' error) until the error rate is as low as possible. This analysis makes mmost sense for classification tasks with binary variables.
+One last way to think of this is in terms of statistical concepts. We can think of LMS as repeatedly testing the network and correcting for false positives (the output is too high; a ``type 1'' error) and false negatives (the output is too low; a ``type 2'' error) until the error rate is as low as possible. This analysis makes most sense for classification tasks with binary variables.
  \subsection{Computing error surfaces}
 
 A brief interlude to discuss these error surfaces, like the one in \ref{error_lms} and how the algorithm ends up going down the gradient. It may help to think about how that was created? Since we were only looking at a single target value and error relative to a single weight, it can actually be computed by hand. In the example, squared error is
@@ -201,33 +201,27 @@ All this can be shown using calculus. It's kind of amazing to turn the crank on 
 
 Conceptually, we are using the derivative of the error space. Since it's multi-dimensional, we call the derivative a gradient in this case. The gradient is a vector that points in the direction of change. 
 
-We want to change the weight so that error is reduced. Let's leave the bias out for now. Then we are taking this derivative:
+We want to change the weight so that error is reduced. Let's leave the bias out for now. Then we are taking the  derivative of this error function:
 
 \begin{eqnarray*}
-\frac{dE}{dw_{1,2}} (t - a_2)^2
+E = (t - a_2)^2  =  (t - ( a_1 w_{1,2} + b_2))^2  =  (t -  a_1 w_{1,2} -  b_2)^2 
+\end{eqnarray*}
+with respect to a weight $w_{1,2}$.   Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), and substituting, we get
+
+\begin{eqnarray*}
+\frac{dE}{dw_{1,2}} = 2 (t - a_1 w_{1,2} - b_2) (-a_1) =  -2 a_1 (t - a_1 w_{1,2} - b_2) =  -2 a_1 (t - a_2)
 \end{eqnarray*}
 
-Recall that $a_2 =  a_1 w_{1,2} + b_2$. Substituting, we get
-\begin{eqnarray*}
-\frac{dE}{dw_{1,2}} (t - ( a_1 w_{1,2} + b_2))^2 
-\end{eqnarray*}
-
-Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), and substituting again, we get
+And since $t -  a_2$ is error $e_2$ we get
 
 \begin{eqnarray*}
-\frac{dE}{dw_{1,2}} = 2 (t - a_1 w_{1,2} - b_2) (-a_1) =   2 (t - a_2) (-a_1)  = -2 a_1 (t - a_2)
-\end{eqnarray*}
-
-And since $t - a_2$ is error $e$ we get
-
-\begin{eqnarray*}
-\frac{dE}{dw_{1,2}} = -2 e a_1
+\frac{dE}{dw_{1,2}} = -2 e_2 a_1
 \end{eqnarray*}
 
 This says that the change in error with respect to the weight is given by error times source activation times a constant. The 2 can be ignored, since we can think of it as being absorbed into the learning rate. Also, this gradient points in the direction of error increasing. But we want to go in the opposite direction, so that error is reduced. So we multiply this gradient by $-1$, changing its sign. And so our learning rule is 
 
 \begin{eqnarray*}
-\Delta w_{1,2}  =  \epsilon a_1 e  = \epsilon a_1 (t - a_2)
+\Delta w_{1,2}  =  \epsilon a_1 e_2  = \epsilon a_1 (t - a_2)
 \end{eqnarray*} 
 
 Of course this generalizes, and so our general learning rule for weights is:
@@ -235,31 +229,40 @@ Of course this generalizes, and so our general learning rule for weights is:
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
 \end{eqnarray*} 
 
-As an exercise, try deriving the rule for bias. The setup is
+As an exercise, try deriving the rule for bias.  Again the error function is
 
 \begin{eqnarray*}
-\frac{dE}{db_{2}} (t - ( a_1 w_{1,2} + b_2))^2 
+E =  (t - ( a_1 w_{1,2} + b_2))^2 
+\end{eqnarray*}
+but in this case we want to find $\frac{dE}{db_{2}}$.
+
+Now let's add in the activation function $f$ and derive the weight-update rule. Now the error function is:
+
+\begin{eqnarray*}
+E =  (t - f(a_1w_{1,2} + b_2))^2   
 \end{eqnarray*}
 
-Now let's add in the activation function $f$ and derive the weight-update rule.  This involves a few applications of the chain rule:
+and so
 
 \begin{eqnarray*}
-\frac{dE}{dw_{1,2}} (t - f(a_1w_{1,2} + b_2))^2   = 2 (t - f(a_1w_{1,2} + b_2)) f'(a_1w_{1,2} + b_2) a_1 
+\frac{dE}{dw_{1,2}} = 2 (t - f(a_1w_{1,2} + b_2)) f'(a_1w_{1,2} + b_2) a_1 
 \end{eqnarray*}
-Note that the derivative of the activation function $f'$ is like a free parameter here. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. BUT some derivatives have problems, like being undefined or 0, which effectively turns off update.
 
-Subbing in $a_2 = f(a_1w_{1,2} + b_2))$, and recalling $n_2 = w_{1,2} + b_2$ 
+Subbing in $a_2 = f(a_1w_{1,2} + b_2))$, and recalling $n_2 = w_{1,2} + b_2$  and $t - a_2 = e_2$ 
 
 \begin{eqnarray*}
-\frac{dE}{dw_{1,2}} (t - a_2)^2   = 2 (t - a_2) f'(n_2) a_1 
+\frac{dE}{dw_{1,2}}  = 2 e_2 f'(n_2) a_1 
 \end{eqnarray*}
 
 So the learning rule for weights is:
 \begin{eqnarray*}
-\Delta w_{i,j}  =  \epsilon a_i (t_j - a_j) f'(n_j)
+\Delta w_{i,j}  =  \epsilon a_i e_j f'(n_j)
 \end{eqnarray*} 
 
-This is the same as before, but multiplied by with the derivative of the activation function applied to to the net input (the weighted input to the node). We discuss this more below.
+This is the same as before, but multiplied by with the derivative of the activation function applied to to the net input (the weighted input to the node). We discuss this more below. 
+
+Note that the derivative of the activation function $f'$ is like a free parameter in this formula. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. Situations like this allow backprop to be automated in a sense. BUT some derivatives have problems, like being undefined or 0, which effectively turns off update.
+
 
 Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less.  It doesn't matter as much.  Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all.  Again see below.
 
