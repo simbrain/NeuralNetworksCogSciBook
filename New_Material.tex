@@ -6,7 +6,7 @@ This document contains notes for additions that will eventually be made to the b
 \section{New Material for Linear Algebra Chapter}
 
 % TODO: Pictures for source-target representations
- 
+
 \subsection{The scalar and vector tracks}
 
 % Compare https://youtu.be/Smav86u60FM?t=390 (from neurons to tokens, from weighted combinations of scalars to weighted combinations of vectors)
@@ -74,7 +74,7 @@ Our goal in this chapter is the backprop model. That's the crown jewel. All othe
 
 \subsection{The Algorithm}
 
-Now we can describe the LMS rule, and verify that it causes the weights to change a such a way that the sum of squared errors (SSE) gets lower over time.
+Now we can describe the LMS rule, and verify that it causes the weights to change in such a way that the sum of squared errors (SSE) gets lower over time.
 
 % TODO: But no activation function yet
 When applying the rule, a change in a weight $w_{i,j}$ is equal to the product of a learning rate $\epsilon$, the activation of the input node to that weight, $a_i$, and the difference between a desired and actual activation ($t_j - a_j$) for that node:
@@ -107,7 +107,7 @@ We start with scalar values, the case of a single target. We have a bunch of dat
 Think of this as a  {\bf Goldilocks principle}: just as someone might keep heating and cooling porridge until it is just right--way too hot, cool it a bunch, oh now a bit too cold, heat it a bit, ahh now just right. stop changing things... we increase and decrease parameters until overall error is just right.\footnote{A useful picture showing how this method leads to a decision boundary that correctly classifies all training examples is here: \url{https://commons.wikimedia.org/wiki/File:Perceptron_example.svg}.} The math ends up making this work.
 
 %Intuitively, the algorithm works like this (for positive valued inputs). If the output is too high, the error is negative. For example, if I wanted 4 but got 5, error is $4-5 = -1$. I have to make the weights and bias a little bit lower to make the output lower. On the other hand, if the output is too low, the error is positive. For example, if I wanted 5 but got 4, error is $5-4 = 1$. I have to make the weights and bias a little larger. (Notice that multiplying the weights by the error would send us in the right direction, and that larger errors will lead to larger weight changes). If the output is just right, don't change anything. By incrementally changing the weights and biases in this way, the network slowly learns to produce the correct response to all inputs.
- 
+
 Recall the rule:
 \begin{eqnarray*}
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
@@ -117,8 +117,8 @@ Since $(t_j - a_j)$ is error  (with a small ``e''), the rule says that the chang
 % Wait, cohere this with the fact that we go opposite the gradient. It's in the derivation sectio but cohere it here.
 First, the error tells us what direction to change the parameters in, which makes sense:
 \begin{enumerate}
-\item Positive error. Example target is 2 and output is 1. Error is $2-1 = 1$. The output is too low, so we need to make the weight larger. The porridge was too cold, so we need to make it hotter. 
-\item Negative error. Example target is 0 and output is 1. Error is $0-1 = -1$. The output is too large, so we need to make the weight smaller. The porridge was too hot, so we need to make it cooler. 
+\item Positive error. Example: target is 2 and output is 1. Error is $2-1 = 1$. The output is too low, so we need to make the weight larger. The porridge was too cold, so we need to make it hotter. 
+\item Negative error. Example: target is 0 and output is 1. Error is $0-1 = -1$. The output is too large, so we need to make the weight smaller. The porridge was too hot, so we need to make it cooler. 
 \end{enumerate}
 
 But we also end up multiplying by the source value? Why? Well, think about it, again in the two cases.
@@ -131,7 +131,8 @@ Also, negative source activations will make the weight change change sign as wel
 This is like a variant on the Hebb rule. Hebb said, just change the weight based on the product of source and target. Fire together wire together. That has use for detecting patterns of correlation between input and output. Make the output reflect those correlations. But now we say something different. We change weight based on the product of source activation and the error. We in a sense correlate with the error, which reduces the error, until the error is close to 0.
 
 One last way to think of this is in terms of statistical concepts. We can think of LMS as repeatedly testing the network and correcting for false positives (the output is too high; a ``type 1'' error) and false negatives (the output is too low; a ``type 2'' error) until the error rate is as low as possible. This analysis makes most sense for classification tasks with binary variables.
- \subsection{Computing error surfaces}
+
+\subsection{Computing error surfaces}
 
 A brief interlude to discuss these error surfaces, like the one in \ref{error_lms} and how the algorithm ends up going down the gradient. It may help to think about how that was created? Since we were only looking at a single target value and error relative to a single weight, it can actually be computed by hand. In the example, squared error is
 
@@ -259,10 +260,9 @@ So the learning rule for weights is:
 \Delta w_{i,j}  =  \epsilon a_i e_j f'(n_j)
 \end{eqnarray*} 
 
-This is the same as before, but multiplied by with the derivative of the activation function applied to to the net input (the weighted input to the node). We discuss this more below. 
+This is the same as before, but multiplied by the derivative of the activation function applied to to the net input (the weighted input to the node). We discuss this more below. 
 
 Note that the derivative of the activation function $f'$ is like a free parameter in this formula. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. Situations like this allow backprop to be automated in a sense. BUT some derivatives have problems, like being undefined or 0, which effectively turns off update.
-
 
 Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less.  It doesn't matter as much.  Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all.  Again see below.
 
@@ -411,7 +411,7 @@ So, as usual in the vector world, things end up feeling kind of backwards, we mu
 \label{vectorizedHebb}
 \end{figure}
 
- As a slogan: output column times input row gives you a weight matrix.
+As a slogan: output column times input row gives you a weight matrix.
 
 As a sanity check in the example, check the shapes. We ahve a $3 \times 1$ output vector times a $1 \times 2$ row vectors, which gives us a weight matrix (or weight matrix delta) in the correct shape: $3 \times 2$. This is sometimes called an outer product.
 So the vectorized Hebb rule is: 
@@ -477,19 +477,77 @@ Iterate again (assuming we are clamping the nodes; if we weren't the output acti
 \begin{bmatrix} -2 & 2 \\ 0 & 0 \\  -2 & 2  \end{bmatrix}
 \end{align*}
 
- Keep iterating and the entries at the top and bottom right will explode to positive infinity, and the top and bottom right will explode to negative infinity. This can be seen graphically in the Simbrain neuron array representation.
- 
+Keep iterating and the entries at the top and bottom right will explode to positive infinity, and the top and bottom right will explode to negative infinity. This can be seen graphically in the Simbrain neuron array representation.
+
 Try some other numbers and verify that as you repeatedly iterate, error will get smaller.
 
 % TODO: Redraw a new pic just for vectorized hebb with all the right colors and values
 
+\section{Appendix: Finding A Linear Decision Boundary Manually}
 
-\section{Backprop}
+Suppose we have a simple pattern association task which classifies six input vectors into two categories, using bipolar outputs (1 means the input is in the category, -1 means it is not in the category). The task is defined by the table shown in  figure \ref{simpleTask}.  We can also plot the input space, labeling points by their target values. Notice that this task is linearly separable. 
 
-So this is the same thing, we take row error and use it the same way at the output row, but have to do a bit more work to get the hidden layers.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.6]{./images/decisionBoundary.png}
+\caption{A classification task that can be solved by hand.}
+\label{simpleTask}
+\end{figure}
 
-In terms of applications to cognitive science, there is this old work from Zipser that can be used to justify it!
+How do we design a neural network to solve this problem? First we build an appropriate network. It will have two input nodes and one output node. We make the output node a binary unit with upper bound 1, lower bound -1, and threshold 0. So the output node will output a 1 if weighted input is greater than 0, and -1 otherwise.
 
-\section{Batches}
+We now focus on the three adjustable parameters of the network: the two weight strengths $w_{1,3}$ and $w_{2,3}$, and the bias $b_3$ of the output node. A learning algorithm can learn this decision boundary automatically, but we can also just use algebra to find the right boundary.
 
-This can all be done in pure linear algebra. But it can also be done in a looping way, that might be easier to learn. Then again good to be good with the weight multiplications. Not sure which is best. Maybe both?
+To do this, we need to know how to make a network produce a particular decision boundary. The decision boundary in this case is the set of points in the $x_1 - x_2$ plane such that weighted input $n_3 = 0$. Points on one side of this line will produce  $n_3 > 0$, and so the output will be 1. Points on the other side of the line will produce an output of -1. (A geometric way of understanding what the decision boundary is included below). So we want to set the weights and bias so that this decision boundary has slope $-1$ and an $x_2$-intercept of $1$. The equation for the weighted input to neuron 3 is:
+\begin{eqnarray*}
+n_3 =  w_{1,3} x_1 + w_{2,3}  x_2 + b_3
+\end{eqnarray*}
+Since the set of points where $n_3$ is 0 is the decision boundary, we set $n_3$ to 0:
+\begin{eqnarray*}
+0 = x_1 w_{1,3} + x_2 w_{2,3} + b_3
+\end{eqnarray*}
+Now we solve for $x_2$:
+\begin{eqnarray*}
+x_2 = -\frac{w_{1,3}}{w_{2,3}} x_1  - \frac{b_3}{w_{2,3}}
+\end{eqnarray*}
+Notice that this is an equation for a line in the plane, that is, an equation of the form $y = mx + b$, where $m = -w_{1,3} / w_{2,3}$, and $b =  -b_3 / w_{2,3}$. To make this clear, here is the same equation, with boxes around the slope and intercept terms:
+\begin{eqnarray*}
+x_2 =  \boxed{-\frac{w_{1,3}}{ w_{2,3}}} x_1 - \boxed{\frac{b_3}{w_{2,3}}}
+\end{eqnarray*}
+
+Just by visual inspection of figure \ref{simpleTask}, we can see that the slope of a good decision line would be about -1, and a $x_2$-intercept of about 1. This is enough to build a network to solve the problem. The boxed values above correspond to the slope and $x_2$-intercept of the equation for the decision boundary. Our goal is to produce a network with a decision boundary like the one shown in figure \ref{simpleTask}, with slope -1 and $x_2$-intercept of 1. That is ,we want:
+\begin{eqnarray*}
+-\frac{w_{1,3}}{w_{2,3}} = -1 \\
+-\frac{b_3 }{w_{2,3}} = 1 \\
+\end{eqnarray*}
+We can set the weight and bias values to do this in various ways. For example, we can set both weights to 1, so that the slope is -1. Then to set $x_2$-intercept to 1, we set $b_3$ to -1. So then our network parameters are:
+\begin{eqnarray*}
+w_{1,3}  = 1 \\
+w_{2,3}  = 1 \\
+b_3  = -1 \\
+\end{eqnarray*}
+
+This should give us the right results. Try building a network with these properties and see if it succeeds in the classification task  shown in figure \ref{simpleTask}.
+
+So to summarize: the decision boundary, which separates the input space into different classes, shifts in two key ways: (1) its slope, determined by the ratio of the weights $-\frac{w_{1,3}}{w_{2,3}}$, and (2) its intercept, which is shifted left or right by the bias $b_3$, scaled by the weight $w_{2,3}$, as seen in the term $-\frac{b_3}{w_{23}}$.
+
+\subsection{Geometric intuition about the decision boundary}
+
+In a neural network with two inputs $x_1$, $x_2$ and one output, the weighted input value $n_3$ for the output node is given by the equation:
+\[
+n_3 = w_{1,3} x_1 + w_{2,3} x_2 + b_3
+\]
+The threshold for classification can be visualized as a horizontal plane, typically at $n_3 = 0$ (as in our example), which intersects the surface defined by the weighted sum of the inputs. The surface defined by $z_3 = w_{1,3} x_1 + w_{2,3} x_2 + b_3$ is a plane in 3D space, where the weights $w_{1,3}$ and $w_{2,3}$ can be viewed as spanning the plane. The plane is spanned by two vectors: $(w_{1,3}, 0, 1)$ and$(0, w_{2,3}, 1)$. The bias $b_3$ shifts this plane vertically along the $z$-axis without affecting its orientation, while the weights determine the plane’s tilt.
+% Above is regression surface
+
+The decision boundary can be visualized as the intersection of the threshold plane, determined by the threshold value $\theta$ (see the activation function chapter), and a surface defined by the weights and bias. See figure \ref{decisionLineSurface}, for the case of a threshold of 0. As you can see visually in the image, inputs below the decision boundary will produce a net-input which is below threshold, while those above the decision boundary will produce a net-input which is above threshold.
+
+% This is actually the link between regression and classification. Where the regression surface intersects the threshold is our decision boundary!  Also note 3 state variables and 3 paramters.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{./images/decisionLinePlanes.png}
+\caption{A decision boundary as the intersection of two surfaces.}
+\label{decisionLineSurface}
+\end{figure}
+
