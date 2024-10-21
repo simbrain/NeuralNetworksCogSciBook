@@ -1,6 +1,8 @@
 \chapter{Least Mean Squares and Backprop}\label{ch_lms_backprop}
 \chapterauthor{Jeff Yoshimi}
 	
+% High level idea of "Gradient flow" backwards, and how you can make things modular
+
 Having introduced supervised learning in chapter \extref{ch_supervised}, in this chapter we consider several supervised learning algorithms for feedforward networks in depth, and consider their implications for cognitive science. First, an early form of supervised learning called the ``Least Mean Squares rule'' or ``LMS rule''. The remarkable thing about LMS is that almost all of the advancements in the area of neural networks in recent years arguably involve variations on this one simple algorithm, that allow it to solve increasingly complex problems. LMS itself is limited insofar as it can only be used to train networks with one weight layer. This takes us to a second algorithm, backpropagation or ``backprop'', which extends LMS in a way that allows it to be used to train many-layered networks.  The hidden layers of a feedforward network develop \emph{internal representations}, which remap the input space of a neural network in useful and often psychologically realistic ways.
 
 \section{Least Mean Squares Rule}\label{lms_rule}
@@ -25,6 +27,7 @@ LMS changes the bias $b_j$ of an output node $j$ as follows:
 That is, the change in a bias for a node $j$ is just the learning rate times the error on output node $j$.\footnote{Note that this is really the same as the weight change rule, if we think of the bias in terms another input neuron, clamped at 1, and attached to this output neuron by a modifiable weight (which is in effect the bias).}
 
 % The new_material doc contains additional material here, but I'm not sure it's useful. 
+% Include new teaching method from "teaching challenges" doc
 
 The LMS rule directly instantiates the Goldilocks principle. When heating up soup, or a bath, or a room, we adjust up and down based on errors.\footnote{In fact, the LMS rule is comparable to a bunch of thermostats, one for each output node of a network, where the targets correspond to the settings on the thermostats.} Oh, it's too cold, let's heat it up. Oh wait, now it's too hot, cool it down. Ok now it's perfect, stop changing things, it's just right. In a similar way here we increase and decrease parameters until error is as low as possible. Consider how this works in a few cases where we assume a positive input:
 \begin{itemize}
@@ -171,7 +174,7 @@ We will not cover the details of the backpropagation algorithm here\footnote{Tho
 \begin{eqnarray*}
 \Delta w_{i,j}  =  \epsilon a_i e_j
 \end{eqnarray*}
-Where $e_j$ is now just a different kind of error. This error is computed by a kind of reversal of how weighted inputs are computed in forward propagation. With weighted inputs or net inputs (see \extref{ch_act_functions}) to a node are computed, input activations are multiplied by intervening weights and added together. In linear algebra terms, the dot product of an input vector and fan-in weight vector is taken. This propagates activation forward. But now, we do the reverse. We take the errors on nodes at some level of a feedforward network, and multiply them by the intervening weights with the previous layer, and add the resulting products.  That is, we backpropagate error. The idea is illustrated in figure \ref{backprop_error}. In the example shown, assume the weights from the hidden unit to the output are 1, so that the backpropped error is $2 * 1 + 0 * 1 = 2$. That error can then be used to update $w_{1,2}$ using  $\Delta w_{1,2}  =  \epsilon a_1 e_2$. Notice that all that has changed from LMS is that we got the error via this backpropagation procedure.\footnote{If $\epsilon = 1$, the weight  $w_{1,2}$ will be updated from 1 to $1 + 1 \cdot 1 \cdot 2 = 3$. This will improve $a_3$ but make $a_4$ worse (however, repeated application of the rule with a lower learning rate $\epsilon$  would reduce error).}
+Where $e_j$ is now just a different kind of error. This error is computed by a kind of reversal of how weighted inputs are computed in forward propagation. When weighted inputs or net inputs (see chapter \extref{ch_act_functions}) to a node are computed, activations are multiplied by intervening weights and added together. In linear algebra terms, the dot product of an input vector and fan-in weight vector is taken. This propagates activation forward. But now, we do the reverse. We take the errors on nodes at some level of a feedforward network, and multiply them by the intervening weights from the previous layer, and add the resulting products.  That is, we backpropagate error. The idea is illustrated in figure \ref{backprop_error}. In the example shown, assume the weights from the hidden unit to the output are 1, so that the backpropped error is $2 * 1 + 0 * 1 = 2$. That error can then be used to update $w_{1,2}$ using  $\Delta w_{1,2}  =  \epsilon a_1 e_2$. Notice that all that has changed from LMS is that we got the error via this backpropagation procedure.\footnote{If $\epsilon = 1$, the weight  $w_{1,2}$ will be updated from 1 to $1 + 1 \cdot 1 \cdot 2 = 3$. This will improve $a_3$ but make $a_4$ worse (however, repeated application of the rule with a lower learning rate $\epsilon$  would reduce error).}
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{images/backpropError}
@@ -179,9 +182,7 @@ Where $e_j$ is now just a different kind of error. This error is computed by a k
 \label{backprop_error}
 \end{figure}
 
-Intuitively, this corresponds to how much hidden unit contributes to a given output nodes' error  It's as if ``blame is assigned,'' and on this basis the weights to the hidden layer are updated.
-
-Since this idea works for any errors on the output of a weight layer, the rule can be applied recursively starting at the final output layer of a feedforward network and moving backwards through all previous layers. Thus it can be used to train many-layered networks. 
+Intuitively, this corresponds to how much a  hidden unit contributes to an output nodes' error. It's as if ``blame is assigned'', and on this basis the weights to the hidden layer are updated. The rule can be applied recursively, starting at the final output layer of a feedforward network and moving backwards through all previous layers. Thus it can be used to train many-layered networks. 
 
 As with LMS, backprop works by minimizing an error function with respect to a training set, so that we have gradient descent on an error surface. However, since multi-layer feed-forward networks are more complex than 2-layer networks, the error surface is more complicated. With two-layer linear networks, the error surface has a relatively simple bowl-like structure, which often has a single minimum value at the low-point of a ``bowl'' shape. With a multi-layer non-linear network, the error surface can be more complex and wavy, and there can be multiple local minima (cf. figure \extref{local_minima}). These local minima can ``trap'' the gradient descent procedure, producing sub-optimal solutions.
 
@@ -199,7 +200,7 @@ The classic example to illustrate these ideas is the XOR problem. Recall that XO
 \multicolumn{2}{| c || }{inputs}
  & \multicolumn{1}{c|}{targets} \\
 \hline
-  $x_1$  & $x_2$ s& $t_1$  \\
+  $x_1$  & $x_2$ & $t_1$  \\
 \hline
   0 & 0 & 0  \\
 \hline

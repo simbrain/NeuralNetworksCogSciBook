@@ -227,7 +227,7 @@ bounds. Figure \ref{activationFunctions} shows the graph of a sigmoid function w
 $(u,\ell,m) = (1,0,1)$. 
 
 As the slope parameter is varied, the shape of the sigmoid function changes. When the slope is
-large or ``steep'', the sigmoid will begin to look like the threshold function. When the slope is near $0$, it will begin to look more like a linear function.
+large or ``steep'', the sigmoid will begin to look like the threshold function. When the slope is near $0$, it will begin to look more like a linear function.\footnote{When training neural networks, the slope parameter is not generally modified. However, changes to the weights attaching to a sigmoid are trained, and these are effectively equivalent to the slope parameter. Thus, with training, a sigmoid neuron can come to behave more or less like a threshold or linear function.}
 
 \section{Non-local activation functions}\label{wta_softmax_section}
 
@@ -288,28 +288,6 @@ adjusting the output node as appropriate. The 3 input nodes must be clamped.\foo
 \bigskip
 
 \newcounter{ActFunctionCounter}
-\stepcounter{ActFunctionCounter}
-
-\noindent
-{\bf \theActFunctionCounter.}  Consider the network shown in Fig. \ref{F:simplenet1}. We want to determine the weighted 
-input to node 4 shown on the right-hand side of the network, \ie we want the
-value of $n_4$. First, we identify the values for the activations of the input 
-nodes, the weights, and the bias on node 4. \\ \\
-\indent \qquad\qquad The activations on the input nodes: $(a_1,a_2,a_3) = 
-(-1,-4,5)$ \\
-\indent \qquad\qquad The weights: $(w_{1,4}, w_{2,4}, w_{3,4}) = (-1,1,1)$ \\
-\indent \qquad\qquad The bias: $b_4 = 0$ \\ \\
-Next, we substitute these values into the formula for weighted input:
-\begin{eqnarray*}
-n_4 = \sum_{j=1}^{3}  a_j  w_{j,4} + b_4 
-    =  a_1 \cdot w_{1,4} + a_2 \cdot w_{2,4} + a_3 \cdot w_{3,4} + b_4 
-    =      (-1)(-1)      +      (-4)(1)      +       (5)(1)      + 0 
-    = 2
-\end{eqnarray*}
-The weighted input to node 4 is $2$, {\bf Answer:} $n_4=2$.
-\bigskip
-
-\noindent
 
 \refstepcounter{ActFunctionCounter}\label{actFunctEx1}
 \noindent
@@ -343,7 +321,7 @@ $b_4 = 1$. What is the weighted input to node 4? {\bf Answer:} $n_4=3$.
 \stepcounter{ActFunctionCounter}
 \noindent
 {\bf \theActFunctionCounter.} Suppose again that we have the same network as in exercise \ref{actFunctEx1} except this time the activations are $(a_1,a_2,a_3) = (0,0,0)$. What is the 
-weighted input to node 4? {\bf Answer:} $n_k=0$.
+weighted input to node 4? {\bf Answer:} $n_4=0$.
 
 \bigskip
 
@@ -357,25 +335,29 @@ upper value of $1$. {\bf Answer:} $a_k=1$.
 
 \bigskip
 
-\stepcounter{ActFunctionCounter}
+%\stepcounter{ActFunctionCounter}
+%\noindent
+%{\bf \theActFunctionCounter.} Suppose node $k$ has a linear activation function with
+%$m=3$ and weighted input $n_k = 2$. What is the activation of node $k$? {\bf 
+%Answer:} $a_k=6$.
+%
+%\bigskip
+
+%\stepcounter{ActFunctionCounter}
+%\noindent
+%{\bf \theActFunctionCounter.} Suppose node $k$ has a linear activation function with
+%$m=1$ and weighted input $n_k = -0.5$. What is the activation of node $k$? {\bf 
+%Answer:} $a_k = -0.5$.
+%\bigskip
+
+\refstepcounter{ActFunctionCounter}
 \noindent
-{\bf \theActFunctionCounter.} Suppose node $k$ has a linear activation function with
-$m=3$ and weighted input $n_k = 2$. What is the activation of node $k$? {\bf 
-Answer:} $a_k=6$.
+{\bf \theActFunctionCounter.} Suppose node $k$ has a piecewise linear activation function with $(u,\ell,m) = (10,-10,1)$ and weighted input $n_k = 4$. What is the activation of node $k$? {\bf 
+Answer:} $a_k = 4$.
 
 \bigskip
 
-\stepcounter{ActFunctionCounter}
-\noindent
-{\bf \theActFunctionCounter.} Suppose node $k$ has a linear activation function with
-$m=1$ and weighted input $n_k = -0.5$. What is the activation of node $k$? {\bf 
-Answer:} $a_k = -0.5$.
-
-\bigskip
-
-% Piecewise linear exercise must be updated. Do not use m!!!  m = 1 in the way it was presented.
-
-\refstepcounter{ActFunctionCounter}\label{actFunctEx2}
+\refstepcounter{ActFunctionCounter}
 \noindent
 {\bf \theActFunctionCounter.} Suppose node $k$ has a piecewise linear activation function with $(u,\ell,m) = (1,0,1)$ and weighted input $n_k = 10$. What is the activation of node $k$? {\bf 
 Answer:} $a_k = 1$.
@@ -390,16 +372,10 @@ Answer:} $a_k = 0$.
 \bigskip
 
 
-\refstepcounter{ActFunctionCounter}\label{actFunctEx2}
+\refstepcounter{ActFunctionCounter}
 \noindent
 {\bf \theActFunctionCounter.} Suppose node $k$ has a ReLU activation function and weighted input $n_k = 19$. What is the activation of node $k$? {\bf 
 Answer:} $a_k = 19$.
-
-\bigskip
-
-\stepcounter{ActFunctionCounter}
-\noindent
-{\bf \theActFunctionCounter.} Suppose we have the same network as in exercise \ref{actFunctEx2}, except $n_k = .8$. What is the activation of node $k$? {\bf Answer:} $a_k = .8$.
 
 \bigskip
 
@@ -410,7 +386,7 @@ with $(u,\ell,m) = (1,0,1)$. This is the sigmoid function shown in Fig.
 \ref{activationFunctions}. Consult that graph. And suppose the weighted input is 
 $0.75$ ($n_k = 0.75$). What, approximately, is the activation of node $k$?  
 Find $0.75$ on the horizontal axis and find the vertical coordinate of the 
-corresponding point on the graph. {\bf Answer:} $n_k \approx 0.9$.
+corresponding point on the graph. {\bf Answer:} $a_k \approx 0.9$.
 
 \bigskip
 
@@ -420,45 +396,58 @@ corresponding point on the graph. {\bf Answer:} $n_k \approx 0.9$.
 
 \bigskip
 
+
+\refstepcounter{ActFunctionCounter}
+\noindent
+{\bf \theActFunctionCounter.} Suppose node $k$ has a sigmoid activation function
+with $(u,\ell,m) = (10,0,1)$ and suppose the weighted input is 
+$0$ ($n_k = 0$). What is the activation of node $k$? {\bf Answer:} $a_k = 5$.
+
+\bigskip
+
+
+\refstepcounter{ActFunctionCounter}
+\noindent
+{\bf \theActFunctionCounter.} Suppose node $k$ has a sigmoid activation function
+with $(u,\ell,m) = (10,0,1)$ and suppose the weighted input is 
+$-100$ ($n_k = -100$). What, approximately, is the activation of node $k$? {\bf Answer:} $a_k  \approx 0$.
+
+\bigskip
+
 \refstepcounter{ActFunctionCounter}\label{actFunctEx4}
 \noindent
 {\bf \theActFunctionCounter.} This is a combined exercise that requires you to determine 
-the weighted input and activation for a single node. Suppose we have a network with 
+the weighted input and then the activation for a node. Suppose we have a network with 
 two input nodes (labeled 1 and 2) connected to a third node (labeled 3). \\ \\
 \indent \qquad\qquad The activations on the input nodes: $(a_1,a_2) = (1,-1)$\\
 \indent \qquad\qquad The weights: $(w_{1,3}, w_{2,3}) = (-1,1)$ \\
 \indent \qquad\qquad The bias: $b_3 = 1$ \\ \\
-And suppose node 3 has a linear activation function with $m=3$. What is the 
+And suppose node 3 has a ReLU activation function. What is the 
 activation of node 3?  First, we compute the weighted input to node 3:
 \begin{eqnarray*}
 n_3 = a_1 \cdot w_{1,3}  + a_2 \cdot w_{2,3} + b_{3} 
     =     (1)(-1)        +     (-1)(1)       + 1     
     = -1 -1 + 1 = -1
 \end{eqnarray*}
-Next, we compute the activation from the weighted input.
-\begin{eqnarray*}
-a_3 = m \cdot n_3  = (3)(-1) = -3
-\end{eqnarray*}
-{\bf Answer:}  $a_3=-3$.
+Next, we apply the ReLU function, which clips negative values to 0, so that
+{\bf Answer:}  $a_3=0$.
 
 \bigskip
 
 \stepcounter{ActFunctionCounter}
 \noindent
-{\bf \theActFunctionCounter.} Same as exercise \ref{actFunctEx4} but: \\ \\
+{\bf \theActFunctionCounter.} Suppose we have a network with 
+two input nodes (labeled 1 and 2) connected to a third node (labeled 3): \\
 \indent \qquad\qquad The activations on the input nodes: $(a_1,a_2) = (-1,1)$\\
 \indent \qquad\qquad The weights: $(w_{1,3}, w_{2,3}) = (0,.5)$ \\
 \indent \qquad\qquad The bias: $b_3 = 0$ \\ \\
-And suppose node 3 has a piecewise linear activation function with $(u,\ell,m) = (1,-1,2)$ What is the 
+And suppose node 3 has a piecewise linear activation function with $(u,\ell,m) = (2,-2,1)$ What is the 
 activation of node 3?  First, we compute the weighted input to node 3:
 \begin{eqnarray*}
 n_3 =  (-1)(0)        +     (1)(.5)       + 0 = .5
 \end{eqnarray*}
-Then 
-\begin{eqnarray*}
-a_3 = m \cdot n_3  = (2)(.5) = 1
-\end{eqnarray*}
-{\bf Answer:}  $a_3=1$.
+The weighted input is between the upper and lower bounds and so
+{\bf Answer:}  $a_3=.5$.
 
 \bigskip
 
@@ -468,8 +457,8 @@ a_3 = m \cdot n_3  = (2)(.5) = 1
 \indent \qquad\qquad The activations on the input nodes: $(a_1,a_2) = (1,1)$\\
 \indent \qquad\qquad The weights: $(w_{1,3}, w_{2,3}) = (0,4)$ \\
 \indent \qquad\qquad The bias: $b_3 = 1$ \\ \\
-And suppose node 3 has a  linear activation function with slope 4.
-{\bf Answer:}  $a_3=20$.
+And suppose node 3 has a threshold activation function with $(u,l,\theta) = (10,-10,1)$.
+{\bf Answer:}  $a_3=5$.
 
 \bigskip
 

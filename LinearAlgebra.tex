@@ -357,12 +357,13 @@ so they must be orthogonal.
 
  Notice that we can concisely represent the weighted input (see chapter \extref{ch_act_functions})
 to a node using the dot product. The weighted input is just the dot product of
-the fan-in weight vector of the node with the input activation vector plus a
+the activation vector with the fan-in weight vector of the output node, plus a
 bias term. For example, if the weight vector for node $4$ in figure \ref{F:simplelabelled} is 
 $(-1,-1,1)$, then the net-input is
 \begin{equation*}
-n_4 = (-1,-1,1) \bullet (\; -1,\; -4,\; 5) = 1 + 4 +5 = 10
+n_4 = (\; -1,\; -4,\; 5) \bullet (-1,-1,1) + 0  = 1 + 4 + 5 + 0 = 10
 \end{equation*}
+
 
 % For example, we can describe the weighted input to node $k$ (as $k$ goes
 %from $1$ to $m$) as follows:
@@ -432,7 +433,7 @@ n_4 = (-1,-1,1) \bullet (\; -1,\; -4,\; 5) = 1 + 4 +5 = 10
 \section{Vector Spaces as Metric Spaces}
 
 A vector space can have a metric, which is a way to define the distance between any two points. The usual metric for a real vector space is the Euclidean metric, which can be expressed in terms of the dot product. The Euclidean metric uses the concept of a norm, denoted by double bars $|| \cdot ||$, which measures the ``length'' of a vector. Specifically, the norm of a vector $\mathbf{x}$ is the square root of the dot product of the vector with itself: $||\mathbf{x}|| = \sqrt{\mathbf{x} \bullet \mathbf{x}}$.  With this
-metric the distance between any pair of vectors in $\real^n$:
+metric the distance between any pair of vectors in $\real^n$ is:
 \begin{equation*}
 \mathbf{x} = (x_1, x_2, \ldots, x_n) \qquad
 \mathbf{y} = (y_1, y_2, \ldots, y_n) \qquad
@@ -484,7 +485,7 @@ We adopt the convention of writing matrices using bold-faced upper-case letters,
 
 \section{Weight Matrices}
 
-Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix.\footnote{\label{sourceTarget} This is a somewhat unconventional way of representing weight matrices. It can be called a ``source-target'' representation, because rows are associated with source neurons and columns are associated with target neurons. It is more common in neural network texts to use a ``target-source'' representation, where rows are associated with target neurons and columns are associated with source neurons. This is related to the choice to represent the weight from node $j$ to $k$ with $w_{j,k}$, a ``source-target'' indexing scheme, rather than $w_{k,j}$. We made changes in convention in order to make the formalism easier to learn, but again they are non-standard. Further discussion is in note \ref{leftRightConvention}.} This implies that a source-target weight matrix representation of a set of weights will have as many rows as source neurons and as many columns as target neurons.
+Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix.\footnote{\label{sourceTarget} This can be called a ``source-target'' representation, because rows are associated with source neurons and columns are associated with target neurons. Some neural network texts (especially older ones) use a ``target-source'' representation, where rows are associated with target neurons and columns are associated with source neurons.} This implies that a source-target weight matrix representation of a set of weights will have as many rows as source neurons and as many columns as target neurons.
 
 We first consider weight layers in feedforward networks. Each weight layer of a feedforward network can be represented by its own weight matrix $\textbf{W}_{i,j}$ where $i$ is the source node layer and $j$ is the target layer. For example, $\textbf{W}_{1,2}$ or $\textbf{W}_{input,hidden}$ is the matrix connecting the input node layer to the hidden node layer on the left of figure \ref{labelledNets}. The column and row headings are shown in bold text and match the node labels in \ref{labelledNets}. Notice that there are as many rows as input neurons and as many columns as hidden layer neurons. You can see, for example, that the weight $w_{2,4}$ from node 2 in the input layer to node 4 in the weight layer is in the row labeled 2 and the column labeled 4: -1. On the right is a more standard matrix representation of $\textbf{W}_{1,2}$.
 
@@ -683,7 +684,7 @@ Examples of each of these types of tensor are shown in figure \ref{tensorTypes}.
 \label{tensorVisualStyles}
 \end{figure}
 
-We can refer to the different indices for a tensor using standardized names in a standard order: batch size, depth (number of channels), height, and width.\footnote{This is sometimes called NCHW format (number of samples, number of channels, height, width). However, usage varies. Some put height and width first in indexing; some put them last in indexing. Even though the rank of a tensor is the number of indices \emph{required} to specify an entry, sometimes additional entries are included (e.g. specifying a vector as a column vector assumes it is being placed in a 2d space). Thus the presentation of the ``shape'' of a tensor can vary.  In figure \ref{tensorTypes} the shapes might be given as $1 \times 1$, $6 \times 1$, $6 \times 6$, $3 \times 6 \times 6$, and $3 \times 3 \times 6 \times 6$.}
+We can refer to the different indices for a tensor using standardized names in a standard order: batch size, depth (number of channels), height, and width.\footnote{This is sometimes called NCHW format (number of samples, channels, height, width). However, usage varies. Some put height and width first in indexing; some put them last in indexing. Even though the rank of a tensor is the number of indices \emph{required} to specify an entry, sometimes additional entries are included (e.g. specifying a vector as a column vector assumes it is being placed in a 2d space). Thus the presentation of the ``shape'' of a tensor can vary.  In figure \ref{tensorTypes} the shapes might be given as $1 \times 1$, $6 \times 1$, $6 \times 6$, $3 \times 6 \times 6$, and $3 \times 3 \times 6 \times 6$.}
 % Can use all numbers in a shape or not, depending on the context (e.g a library might require a 4 tuple to specify a tensor even if it is a vector, like 1x1x6x5).
 % Much of the work in dealing with neural networks and neural net libraries is taking subsets of these tensors, slicing and indexing them, filtering them, and passing the right shaped thing from one place to another
 
