@@ -87,7 +87,7 @@ Depending on whether ``time'' is taken to be continuous or discrete, we have a c
 \label{F:pendulumStateSpace}
 \end{figure}
 
-The mathematical category of dynamical systems is abstract, and encompasses many more specific ideas in mathematics. For example, the solutions to differential equations are often dynamical systems, which allow us to predict future states of a system from its current state. An iterated function is another kind of dynamical system (think of entering $2 \times 2$ on a calculator and repeatedly clicking the $=$ button).
+The mathematical category of dynamical systems is abstract, and encompasses many more specific ideas in mathematics. For example, the solutions to differential equations are often dynamical systems, which allow us to predict future states of a system from its current state. An iterated function is another kind of dynamical system (think of entering ``$2 \times 2$'' on a calculator and repeatedly clicking the ``$=$'' button).
 
 A pendulum is a classical example of a dynamical system. Pendulums have been studied extensively ever since Leonardo da Vinci designed fairly accurate clocks based on them. The state of a pendulum is given by two variables, one variable $\theta$ for the angular displacement of the pendulum from verticality and another variable $\dot{\theta}$ for the angular speed.\footnote{Note the dot over $\dot{\theta}$, which indicates the first derivative of $\theta$, i.e. rate of change of angular displacement, which is angular speed.}  If we start a pendulum with some chosen values for these two variables we can, at least in principle, say exactly how it will move forever in the future. Fig. \ref{F:pendulumStateSpace} shows a pendulum on the left and its state space on the right. The horizontal axis shows the angular displacement, $\theta$, and the vertical axis shows the rate of change of the angular velocity, $\dot{\theta}$. We can put the bob of the pendulum in any initial position and give it a push with any initial speed and the future of the pendulum will be determined. This behavior can be predicted by choosing the corresponding point in the phase portrait and following the orbit though that point. Eventually, because of friction, the orbit will close in on the point $(0,0)$ which corresponds to the pendulum hanging straight down without moving.\footnote{The state space is actually an infinitely long cylinder. Imagine wrapping the left and right edges of the state space in Fig. \ref{F:pendulumStateSpace} around and gluing them together.}
 
@@ -102,7 +102,7 @@ Can you think of ways to make a neural network {\em not} be a dynamical
 system?  One way is to add some random noise to a node. When you do that, it 
 is no longer possible to predict with complete accuracy what future states will follow from the present state.
 
-Since dynamical systems are deterministic, they can be used to predict exactly what future states will follow from any initial condition. However, a \glossary{chaotic dynamical system} is a dynamical system whose future behaviors are difficult to predict. A chaotic system is still a dynamical system, so it's fully deterministic, but it's hard to predict how it will behave, especially moving farther in to the future. It's a kind of paradox: a chaotic system is fully determined by a set of equations, but it behaves in an unpredictable way.\footnote{The formal definition of chaos is a difficult and unresolved topic. One way to define chaos is in terms of ``sensitive dependence on initial conditions.'' In this view, a chaotic system is such that initial conditions that are extremely close to each other in the state space, can end up being very far apart given enough time. This is sommtimes called the \emph{butterfly effect}. Since weather is a chaotic phenomenon a small change in one part of the world, like the flapping of a butterfly's wings, can have a huge effect further in time. So for example, if you sneeze now (vs. not sneezing) it could influence food prices in Brazil a few months later.} To see chaos in Simbrain you can create a logistic activity generator. By default this rule produces chaotic dynamics (open its help page for more information). Many natural processes, like the weather, are thought to be chaotic. An example of chaotic behavior is shown in Fig. \ref{F:chaoticStateSpace}. Notice that given an initial condition it would be hard to predict where precisely that system would be at future times, even if we do know it would stay in that region of state space.
+Since dynamical systems are deterministic, they can be used to predict exactly what future states will follow from any initial condition. However, a \glossary{chaotic dynamical system} is a dynamical system whose future behaviors are difficult to predict. A chaotic system is still a dynamical system, so it's fully deterministic, but it's hard to predict how it will behave, especially moving farther in to the future. It's a kind of paradox: a chaotic system is fully determined by a set of equations, but it behaves in an unpredictable way.\footnote{The formal definition of chaos is a difficult and unresolved topic. One way to define chaos is in terms of ``sensitive dependence on initial conditions.'' In this view, a chaotic system is such that initial conditions that are extremely close to each other in the state space, can end up being very far apart given enough time. This is sometimes called the \emph{butterfly effect}. Since weather is a chaotic phenomenon a small change in one part of the world, like the flapping of a butterfly's wings, can have a huge effect further in time. So for example, if you sneeze now (vs. not sneezing) it could influence food prices in Brazil a few months later.} To see chaos in Simbrain you can create a logistic activity generator. By default this rule produces chaotic dynamics (open its help page for more information). Many natural processes, like the weather, are thought to be chaotic. An example of chaotic behavior is shown in Fig. \ref{F:chaoticStateSpace}. Notice that given an initial condition it would be hard to predict where precisely that system would be at future times, even if we do know it would stay in that region of state space.
 % https://en.wikipedia.org/wiki/Chaos_theory#/media/File:Chaos_Sensitive_Dependence.svg
 
 % Possibly use this to show how they do different things; https://upload.wikimedia.org/wikipedia/commons/4/44/TwoLorenzOrbits.jpg
@@ -122,7 +122,7 @@ We can visualize a dynamical system by drawing several of its orbits in  state s
 
 % Can be more clear that state variable vs parameter can swap, esp with NN's.  usually  neurons are state vars and weights are params but with gradient descent (section x) the weights become state variables (and then the activations are just supplementary variables I guess?). //  Sometimes nodes can be parameters, e.g. when finding optimal inputs for a hidden node; and weights are state variables from the standpoint of learning
 
-Above we noted that it is somewhat arbitrary what we take the state variables of a system to be. In a neural network, it can be the nodes, or the weights, or both, or something else! There is a related subtlety. Sometimes we treat some of the state variables associated with a system as being fixed and unchanging. For example, in a neural network we often \emph{freeze} the weights of the network to study how the activations change. This is biologically unrealistic, since in the brain synapses are changing all the time. But we can justify this approach by noting that synaptic efficacies change \emph{much more slowly} than neural activations do, and so as a simplification we can treat these efficacies as fixed. A variable like this is a \glossary{parameter}, that is, a variable that is treated as fixed, while other state variables are allowed to vary. In a neural network, weights and biases are often treated as parameters. The concept of a parameter also occurs in machine learning contexts, where the parameters of a model are adjusted during training, but then usually fixed when the model is being used.
+Above we noted that it is somewhat arbitrary what we take the state variables of a system to be. In a neural network, it can be the nodes, or the weights, or both, or something else! There is a related subtlety. Sometimes we treat some of the state variables associated with a system as being fixed and unchanging. For example, in a neural network we often \emph{freeze} or ``clamp'' the weights of the network to study how the activations change. This is biologically unrealistic, since in the brain synapses are changing all the time. But we can justify this approach by noting that synaptic efficacies change \emph{much more slowly} than neural activations do, and so as a simplification we can treat these efficacies as fixed. A variable like this is a \glossary{parameter}, that is, a variable that is treated as fixed, while other state variables are allowed to vary. In a neural network, weights and biases are often treated as parameters. The concept of a parameter also occurs in machine learning contexts, where the parameters of a model are adjusted during training, but then usually fixed when the model is being used.
 
 % Topology point can be adumbrated here. Small changes don't change topology. Bifurcations do.
 The parameters of a dynamical system are part of what determines its phase portrait. Once we see this, we can start to \emph{vary} the parameters of a system, and observe corresponding changes in its phase portrait. When we do this, we will see the phase portrait change. Think of each parameter as a knob, and a set of parameters as a set of knobs. When the knobs are changed, the dynamical system changes, and this is visible as a change in its phase portrait. Usually the result of changing a parameter is a mild change in the phase portrait. But sometimes changing a parameter can lead to a drastic change. A new stable state can emerge in the state space, or a set of nodes that were stuck in one state can start oscillating.\footnote{This is similar to what happens in the graceful degradation lab: removing weights (which is like turning a weight knob to 0) usually doesn't make a big difference, but can sometimes lead to a massive change where the agent can no longer recognize something.} 
@@ -166,22 +166,21 @@ single point.  When we start a dynamical system at a fixed point it remains
 there for all time. Once a system reaches a fixed point it stays in that state 
 forever. 
 
-   Another shape for an orbit is a repeating loop or cycle.  See the bottom row 
+   Another shape for an orbit is a repeating loop or cycle. See the bottom row 
 of Fig. \ref{F:attractorsRepellers}.\footnote{The Poincar\'{e}-Bendixson 
 theorem tells us there must be at least one fixed point inside the periodic 
-orbits shown on the bottom row of the figure.  These fixed points have been 
-omitted for pedagogical purposes.}  This kind of orbit periodically visits the 
-same points over and over again.  This is a \glossary{periodic orbit}, a set of 
-points that a dynamical system visits repeatedly in the same order.  Periodic 
-orbits repeatedly cycle back on themselves.  This corresponds to an oscillation 
+orbits shown on the bottom row of the figure. These fixed points have been 
+omitted for pedagogical purposes.}  This kind of orbit visits the 
+same points over and over again. This is a \glossary{periodic orbit}, a set of 
+points that a dynamical system visits repeatedly. This corresponds to an oscillation 
 in a network, a repeating pattern of firings.  For a continuous time dynamical 
 system, a periodic orbit is loop-shaped (it has the topology of a circle), and 
-its period is the amount of time takes to go around the loop.\footnote{Do not 
+its period is the amount of time it takes to go around the loop.\footnote{Do not 
 confuse the period of a single periodic orbit with the number of periodic 
-orbits in the state space.  For example, a dynamical system can have one 
+orbits in the state space. For example, a dynamical system can have one 
 periodic orbit with period 2 and three other periodic orbits with period 5.}
 For a discrete time system, a periodic orbit is a finite set of $n$ states that 
-the system cycles through (its period is $n$).  This is also called an 
+the system cycles through (its period is $n$). This is also called an 
 \glossary{n-cycle}.  For example, a 2-cycle is a pair of states the system goes 
 back and forth between.  A 3-cycle is a set of 3 points that system visits in 
 the same repeating sequence.  Similarly for 4,5,100, and arbitrarily large 
@@ -205,7 +204,7 @@ $n$-cycles.
 \centering
 \includegraphics[scale=0.5]{./images/Two5-cycles.png}
 \caption[Scott Hotton.]{Two $5$-cycles in a two dimensional state space.  The 
-points in the $5$-cycles are indicated with open circles.  The arrows on the
+points in the $5$-cycles are indicated with open circles. The arrows on the
 dashed lines connecting the open circles indicate where each point in a 
 $5$-cycle goes under the dynamical system.  (Left) A $5$-cycle for a simple 
 dynamical system that just rotates the points by $1/5$ of a turn.  (Right) A 
@@ -218,12 +217,11 @@ $5$-cycle for a more complicated dynamical system.}
 \includegraphics[scale=0.333]{./images/Attracting5-cycle.png}
 \includegraphics[scale=0.333]{./images/Repelling5-cycle.png}
 \caption[Scott Hotton.]{The $5$-cycles are shown as in the left panel of Fig. 
-\ref{F:Two5cycles}.  The dots indicate points that are not part of the 
+\ref{F:Two5cycles}.  The filled dots indicate points that are not part of the 
 $5$-cycle.  The arrows on the dashed lines connecting the dots indicate where 
 the points go under the dynamical system.  (Left) An attracting $5$-cycle.  
-Over time the points jump closer and closer to the $5$-cycle without staying 
-next any particular point in the $5$-cycle. (Right) A repelling $5$-cycle.  
-Over time the points jump further and further from the $5$-cycle.}
+Over time the points get closer to the $5$-cycle and can eventually merge into it. (Right) A repelling $5$-cycle.  
+Over time points near the 5 cycle go way from the it.}
 \label{F:Attracting5cycle}
 \end{figure}
 
