@@ -1,8 +1,29 @@
 \chapter{New Material on Gradient Dynamics and Energy Functions}
 \chapterauthor{Scott Hotton, Jeff Yoshimi}
 
-% Break out sections. First, gradient dynamics. Do it intuitively. Explain how it is our main powerhouse for learning in the weight space, but also used to understand main dynamics using energy functions, as in Hopfield
+% Emphasize the gradient is where we get the hill and valley metaphor (see Mak's thesis). But it is NOT the same as the state space itself.
+% Then energy functions, and how they are NOT the same
 % I have a fair number of notes with Scott on this to integrate as well.
+
+\subsection{Potential Functions}
+
+% Potential almost the same as energy but slightly different esp in physics.
+First, consider the concept of a potential function . This is a function that associates each point in a state space with a single point, the potential or energy of that state.  It is thus a function of the form $V \colon \bf{R}^N \to 
+\bf{R}$.  This can be thought of as a surface ``above'' the state space. It is \emph{not} the same as the state space. 
+
+We can now define dynamics using these energy functions. We can follow the gradient up or down (gradient descent or ascent) and in doing so we define a dynamical systems on the state space ``beneath'' the energy function. 
+
+This is where the hill and valley metaphor comes from. Gradient dynamics using gradient descent can be thought of as going to low points in an energy landscape.  This is what attractor dynamics and attractor networks usually refers to.
+
+There are two applications, one regarding performance, the other learning. In performance, we have recurrent networks and attractor networks. Another application is in learning, where the of gradient descent is gradient dynamics is optimization.
+
+One special kind of energy function is a  Lyapunov functions, which are special functions where the gradient dynamics are well behaved, always having attractors.\footnote{Not to be confused with Lyapunov exponents, which are used to identify chaotic orbits. Lyapunov was a smart guy!}.  What Hopfield basically did is prove his networks had memories by defining a lyapunov function. As Hopfield says:
+
+\begin{quote}
+Hopfield networks have a Lyapunov function $E$ (or `energy function') behind their dynamics which leads to an understanding of possible final states. The Lyapunov function decreases in a monotone fashion under the dynamics, and is bounded below. Computation in this system can now be thought of as being done by starting from an initial state from which a final state evolves by moving downhill on E . Because of the existence of an elementary Lyapunov function for the dynamics, the only possible asymptotic result is a state on an attractor. 
+\end{quote}
+
+Also essential in that case are the update dynamics. As can be seen in the Hopfield discussion, deterministic update can have cycles, but stochastic update does not.
 
 \subsection{Dynamical systems from potential functions}
 

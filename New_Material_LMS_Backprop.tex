@@ -1,7 +1,10 @@
-\chapter{New Material LMS Backprop}
+\chapter{New Material LMS and Backprop}
 \chapterauthor{Jeff Yoshimi}
 
 \subsection{Derivation of the LMS rule}
+
+% Add this material and notes from lecture
+The nice thing about LMS is we can directly interpret it in terms of Goldilocks.
 
 All this can be shown using calculus. It's kind of amazing to turn the crank on the calculus, and see how it all works out giving us the rule above, with all the intuitive meaning. Run through the calculus, and we get our rule, which we saw above makes sense!
 
@@ -12,7 +15,7 @@ We want to change the weight so that error is reduced. Let's leave the bias out 
 \begin{eqnarray*}
 E = (t - a_2)^2  =  (t - ( a_1 w_{1,2} + b_2))^2  =  (t -  a_1 w_{1,2} -  b_2)^2 
 \end{eqnarray*}
-with respect to a weight $w_{1,2}$.   Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), and substituting, we get
+with respect to a weight $w_{1,2}$.  Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), and substituting, we get
 
 \begin{eqnarray*}
 \frac{dE}{dw_{1,2}} = 2 (t - a_1 w_{1,2} - b_2) (-a_1) =  -2 a_1 (t - a_1 w_{1,2} - b_2) =  -2 a_1 (t - a_2)
@@ -24,7 +27,7 @@ And since $t -  a_2$ is error $e_2$ we get
 \frac{dE}{dw_{1,2}} = -2 e_2 a_1
 \end{eqnarray*}
 
-This says that the change in error with respect to the weight is given by error times source activation times a constant. The 2 can be ignored, since we can think of it as being absorbed into the learning rate. Also, this gradient points in the direction of error increasing. But we want to go in the opposite direction, so that error is reduced. So we multiply this gradient by $-1$, changing its sign. And so our learning rule is 
+This says that the change in error with respect to the weight is given by error times source activation times a constant. The 2 can be ignored, since we can think of it as being absorbed into the learning rate. Also, this gradient points in the direction of error increasing. But we want to go in the opposite direction, so that error is reduced (this is gradient descent, not gradient ascent). So we multiply the gradient by $-1$, changing its sign. And so our learning rule is 
 
 \begin{eqnarray*}
 \Delta w_{1,2}  =  \epsilon a_1 e_2  = \epsilon a_1 (t - a_2)
@@ -35,7 +38,7 @@ Of course this generalizes, and so our general learning rule for weights is:
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
 \end{eqnarray*} 
 
-As an exercise, try deriving the rule for bias.  Again the error function is
+As an exercise, try deriving the rule for bias. Again the error function is
 
 \begin{eqnarray*}
 E =  (t - ( a_1 w_{1,2} + b_2))^2 
@@ -67,32 +70,31 @@ So the learning rule for weights is:
 
 This is the same as before, but multiplied by the derivative of the activation function applied to to the net input (the weighted input to the node). We discuss this more below. 
 
-Note that the derivative of the activation function $f'$ is like a free parameter in this formula. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. Situations like this allow backprop to be automated in a sense. BUT some derivatives have problems, like being undefined or 0, which effectively turns off update.
+Note that the derivative of the activation function $f'$ is like a free parameter in this formula. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. Situations like this allow backprop to be automated in a sense. But note that some derivatives have problems, like being undefined or 0, which effectively turns off update.
 
-Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less.  It doesn't matter as much.  Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all.  Again see below.
+Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less. It doesn't matter as much. Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all. Again see below.
 
 \section{Vector approach to LMS}
 
-% TODO: Write some new material just for the new representation
+In the scalar approach to LMS we multiply a single output error (target - output) by source activation. Now we have a vector of errors times a vector of source activations. But how to deal with indexing?  The algorithm is ultimately a variant on Hebb, so we already have a template for thinking about it (see the discussion of the vectorized Hebb rule)
+% Reference the new material on Hebb here
 
-In the scalar approach to LMS we multiply a single output error (target - output) by source activation. Now we have a vector of errors times a vector of source activations. But how to deal with indexing?  The algorithm is ultimately a variant on Hebb, so we already have a template for thinking about it.
-
-The error part itself is easy, first we do target - output using elementwise subtraction: $\mathbf{t} - \mathbf{a}_{\text{out}}$.  To multiply these errors times source activations, we do the same thing as in Hebb: we multiply an $m \times  1$ column output errors times a $1 \times  n$ row of source activations to get an $m \times n$ matrix of weight deltas.  Then we scale that by learning rate, and add to the weight matrix.  (There remains the issue of the bias, and any activation functions on the output, but we're starting simple.) So, the vectorized rule is
+The error part itself is easy, first we do target - output using elementwise subtraction: $\mathbf{t} - \mathbf{a}_{\text{out}}$. To multiply these errors times source activations, we do the same thing as in Hebb: we multiply an $m \times  1$ column output errors times a $1 \times  n$ row of source activations to get an $m \times n$ matrix of weight deltas. Then we scale that by learning rate, and add to the weight matrix. (There remains the issue of the bias, and any activation functions on the output, but we're starting simple.) So, the vectorized rule is
 \begin{eqnarray*}
-\Delta \mathbf{w}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) \mathbf{a}_{\text{in}}^T
+\Delta \mathbf{W}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) \mathbf{a}_{\text{in}}^T
 \end{eqnarray*}
-Remember, by default all vectors in bold face are column vectors.  So this is a column vector (the error $\mathbf{t} - \mathbf{a}_{\text{out}}$) times a row vector (the input activations) which produces a matrix in the same shape as the weight matrix.
+Remember, by default all vectors in bold face are column vectors. So this is a column vector (the error $\mathbf{t} - \mathbf{a}_{\text{out}}$) times a row vector (the input activations) which produces a matrix in the same shape as the weight matrix.
 
 Consider the network shown in figure \ref{lms_vector_pre}.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.55\textwidth]{images/vectorLMSBeforeTrain.png}
-\caption[Jeff Yoshimi.]{A network with empty weights. We want it to learn to associate $(0,1)$ input to $(1,0,1)$}
+\caption[Jeff Yoshimi.]{A network with empty weights. We want it to learn to associate the input vector $(0,1)$ with the output vector $(1,0,1)$, but right now the weights are all zero so it just outputs $(0,0,0)$. }
 \label{lms_vector_pre}
 \end{figure}
 
-Remember, the weight matrix is a 3x2 matrix  (``target-source''), which we are treating as all zero in this example. Each row is a fan-in of an output node, and the columns are fan-outs of input nodes. Our template for thinking about this is to imagine inputs coming up from the bottom, and dotting with the fan-in weight vectors to produce outputs (really net-inputs, to which bias is added and an activation function applied)
+Remember, the weight matrix is a 3x2 matrix  (``target-source''), which we are treating as all zero in this example. Each row is a fan-in of an output node, and the columns are fan-outs of input nodes. Our template for thinking about this is to imagine inputs coming up from the bottom, and dotting with the fan-in weight vectors to produce outputs.
 
 Our values are
 \begin{equation*}
@@ -105,7 +107,7 @@ Our values are
 Then the equation is learning rate times error times input transposed:
 
 \begin{align*}
-\Delta \mathbf{w}  = 1
+\Delta \mathbf{W}  = 1
 \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} 
 \begin{bmatrix} 0 & 1 \end{bmatrix} 
 = \begin{bmatrix} 1 \cdot 0 & 1 \cdot 1 \\ 0 \cdot 0 & 0 \cdot 1 \\ 1 \cdot 0 & 1 \cdot 1 \end{bmatrix} 
@@ -115,7 +117,7 @@ Then the equation is learning rate times error times input transposed:
 So we get
 
 \begin{align*}
-\mathbf{w} + \Delta \mathbf{w}  =
+\mathbf{W} + \Delta \mathbf{W}  =
 \begin{bmatrix} 0 & 0 \\ 0 & 0 \\  0  & 0  \end{bmatrix} +
 \begin{bmatrix} 0 & 1 \\ 0 & 0 \\  0  & 1  \end{bmatrix} =
 \begin{bmatrix} 0 & 1 \\ 0 & 0 \\  0  & 1  \end{bmatrix}
@@ -130,7 +132,7 @@ And again, keeping in mind that rows are fan-in of output and columns are fan-ou
 \label{lms_vector_2}
 \end{figure}
 
-We can now check that it works. Remember, think of the column vector on the right as ``entering'' from below, and dotting with each fan-in weight vector (each row of the matrix) to produce the output.  SSE has gone to 0 in a single time step.
+We can now check that it works. Remember, think of the column vector on the right as ``entering'' from below, and dotting with each fan-in weight vector (each row of the matrix) to produce the output. SSE has gone to 0 in a single time step.
 
 \begin{align*}
 \begin{bmatrix} 0 & 1 \\ 0 & 0 \\  0  & 1  \end{bmatrix}
@@ -139,7 +141,7 @@ We can now check that it works. Remember, think of the column vector on the righ
 \end{align*}
 
 % Add exercizes here, use Mak and David examples.
-So now I suggest you try some examples of your own.  Come up with your own training set, apply the rule and see if you can run this a few times.  
+So now I suggest you try some examples of your own. Come up with your own training set, apply the rule and see if you can run this a few times. 
 
 \subsection{Bias}
 
@@ -149,14 +151,11 @@ To add bias updates in, we just vectorize the bias update rule, which has the sa
 \Delta \mathbf{b}  =  \epsilon (\mathbf{t} - \mathbf{a}_{out})
 \end{eqnarray*}
 
-So at each iteration, we change the bias vector just in the direction of the error vector. Remember goldilocks.  When things are too hot, cool them down. Etc.
+So at each iteration, we change the bias vector just in the direction of the error vector. Remember goldilocks. When things are too hot, cool them down. Etc.
 
 \subsection{Activation functions}
 
-(This material can also be added to the scalar case)
-
-
-The full LMS rule also involves a derivative on the activation function.  These derivatives can be understood pretty intuitively if we look at those again. See figure \ref{derivativesActFunctions}.  The derivative for the threshold function is 0 everywhere except at the threshold where it is undefined (this was a problem for Rosenblatt). The derivative for the piecewise linear is 0 above and below the upper and lower bounds and the slope (usually 1) of the function in between those bounds. For the sigmoid it's close to what it is for piecewise linear, approaching 1 as net input is large or small and the slope at the inflection point in the middle, but we do need a formula for it.
+The full LMS rule also involves a derivative on the activation function. These derivatives can be understood pretty intuitively if we look at those again. See figure \ref{derivativesActFunctions}. The derivative for the threshold function is 0 everywhere except at the threshold where it is undefined (this was a problem for Rosenblatt). The derivative for the piecewise linear is 0 above and below the upper and lower bounds and the slope (usually 1) of the function in between those bounds. For the sigmoid it's close to what it is for piecewise linear, approaching 1 as net input is large or small and the slope at the inflection point in the middle, but we do need a formula for it.
 
 \begin{figure}[h]
 \centering
@@ -167,11 +166,11 @@ The full LMS rule also involves a derivative on the activation function.  These 
 
 So how to work this into the LMS error update?
 
-First, recall from chapter \extref{ch_act_functions} that the weighted input to a node $j$ is denoted $n_j$. This is the same as the activation of a linear unit. Its weights times input activations plus a bias.  An activation function $f$ then transformed this weighted inputs, so that $a_j = f(n_j)$.  When we incorporate activation functions we have to keep $a_j$ and $n_j$ separate so just get that clear before moving on.
+First, recall from chapter \extref{ch_act_functions} that the weighted input to a node $j$ is denoted $n_j$. This is the same as the activation of a linear unit. Its weights times input activations plus a bias. An activation function $f$ then transformed this weighted inputs, so that $a_j = f(n_j)$. When we incorporate activation functions we have to keep $a_j$ and $n_j$ separate so just get that clear before moving on.
 
-Ok, and recall from the derivation that error update with an activation function involves the same as before multiplied by with the derivative of the activation function applied to to the net inpu.  Intuitively it's like we scale the error that we use to scale the weights and biases with a factor corresponding to how much the activation function changes things.\footnote{This is a problem with RELU, known as the ``dying Relu" problem.}  It's also why Rosenbatt's perception was limited; binary are 0 derivative everywhere so their weights never change using this rule, and so he had to come up with a kind of ad hoc solution.
+Ok, and recall from the derivation that error update with an activation function involves the same as before multiplied by with the derivative of the activation function applied to the net input. Intuitively it's like we scale the error that we use to scale the weights and biases with a factor corresponding to how much the activation function changes things.\footnote{This is a problem with RELU, known as the ``dying Relu" problem.}  It's also why Rosenbatt's perception was limited; binary are 0 derivative everywhere so their weights never change using this rule, and so he had to come up with a kind of ad hoc solution.
 
-So  the full rule for weights is
+So the full rule for weights is
 
 \begin{eqnarray*}
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j) f' (n_j)
@@ -185,19 +184,92 @@ And the full rule for biases is
 
 Do both of these at each time step to update the network.
 
-\subsection{The Full Vectorized LMS rule}
+\subsection{The Vectorized LMS rule with Activation Functions}
 
-Putting it all together, thevectorized rule is
-
-\begin{eqnarray*}
-\Delta \mathbf{w}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) f'( \mathbf{n}_{\text{out}}) \mathbf{a}_{\text{in}}^T
-\end{eqnarray*}
-
-We take a column of errors (targets - outputs), and scale each component by the derivative of the activation function applied to the weighted inputs. Remember, weighted inputs is just one more quantity that each node has. When it's updated, it must compute that, and then use that to compute the activation value. So the node has both values, and so we can easily get components of this column vector: we have the target, the output activation, and the net input at any time, and that is enough to get us the column vector. We then matrix multiply that by a row of source activations and the result is a matrix of weight deltas with the right shape.
+% TODO: This is now a bit redundant with the material above
+To express this all in vectorized form we have to take the individual entries and see what happens when we express the ideas using vectors.  Again it's a kind of bookkeeping exercise. Here is what we get.
 
 \begin{eqnarray*}
-\Delta \mathbf{b}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) f'( \mathbf{n}_{\text{out}})
+\Delta \mathbf{W}  =  \epsilon ((\mathbf{t} - \mathbf{a}_{\text{out}}) \odot f'( \mathbf{n}_{\text{out}})) \mathbf{a}_{\text{in}}^T
+\end{eqnarray*}
+Where $\odot$ is component-wise or Hadamard product (see section X). That is, we take a column vector of errors $\mathbf{t} - \mathbf{a}_{\text{out}}$, and then component-wise multiply by a vector of derivatives applied to weighted inputs $f'( \mathbf{n}_{\text{out}})$, effectively scaling each component of the error by the corresponding derivative. 
+
+We then matrix multiply the resulting column vector of scaled errors by a row vector of source activations $ \mathbf{a}_{\text{in}}^T$, and the result is a matrix of weight deltas with the right shape. This is sometimes called an ``outer product'', where a $n_{out} \times 1$ scaled error vector is multiplied by a  $1 \times n_{in}$ vector if input activations, producing an $n_{out} \times n_{in}$ matrix of weight deltas. The whole thing is then scaled by the learning rate $\epsilon$.
+
+For the vector of biases we have:
+
+\begin{eqnarray*}
+\Delta \mathbf{b}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) \odot f'( \mathbf{n}_{\text{out}})
+\end{eqnarray*}
+We're basically just changing the biases by the error vector scaled by the derivatives, and leaving out the step where we consider input activations.
+
+\subsection{Batch version of the rule}
+
+In many neural network implementations, computations are applied to batches of data. In this setup, inputs are not passed through a network as single column vectors, but whole batches are (see section X). This is much more computationally efficient and leverages the power of modern hardware like GPUs which are optimized for matrix computations.  It thus helps to be able to think in terms of batches being processed.
+
+By convention, batches are matrices where the rows are input vectors, target vectors, etc., and so they have shape $B \times n$, where $B$ is the batch size and $n$ is the size of the relevant vector. This is nice and easy to think about; basically the batches are little input table, target tables, output tables, etc (see section X).
+
+For a single linear network with one weight layer $\mathbf{W}$, the forward pass is computed like this:
+
+\begin{eqnarray}
+\mathbf{Y} = \mathbf{X} \mathbf{W}^T
+\end{eqnarray}
+where $\mathbf{X}$ is the batch of inputs and has a shape of $B \times n_{in}$, where $B$ is the batch size and $n_{in}$ is the number of nodes in the input layer. Again, it's a kind of input table. $\mathbf{W}$ is transposed so that we get a shape of $n_{in} \times n_{out}$. This is the source-target representation we emphasized in the scalar track (see section X), where columns correspond to fan-in weight vectors. This allows us to think of the product as a bunch of vector-matrix multiplications (or ``right multiplications'' since the matrix is on the right), where we peel off the rows of the input table $\mathbf{X}$ one at a time, multiply them by the weight matrix (dotting the rows with each column of $\mathbf{W}^T$), in each case producing an output vector in $\mathbf{Y}$. As we move down the rows of the input table we stack up rows of the output table or output batch $\mathbf{Y}$, which has a shape of $B \times n_{out}$.
+
+To calculate error, we compare the output $\mathbf{Y}$ with a ``target table" (a batch of target values). Subtracting the target values from the output activations gives us an error matrix:
+\begin{eqnarray}
+\mathbf{E} = \mathbf{Y} - \text{targets}
+\end{eqnarray}
+where $\mathbf{E}$ also has a shape of $B \times n_{out}$.
+
+Now for backprop. The gradient of the loss with respect to the output activations in $\mathbf{Y}$ is proportional to the error matrix $\mathbf{E}$. If we are averaging the loss over the batch, this outer gradient becomes:
+
+\begin{eqnarray}
+\frac{\partial \text{Loss}}{\partial \mathbf{Y}} = \frac{1}{B} \mathbf{E}
+\end{eqnarray}
+
+To update the weights, we use the chain rule to express the gradient of the loss with respect to the weights $\mathbf{W}$ as follows:
+
+\begin{eqnarray}
+\frac{\partial \text{Loss}}{\partial \mathbf{W}} = \frac{\partial \text{Loss}}{\partial \mathbf{Y}} \cdot \frac{\partial \mathbf{Y}}{\partial \mathbf{W}}
+\end{eqnarray}
+
+Since we have $\frac{\partial \text{Loss}}{\partial \mathbf{Y}} = \frac{1}{B} \mathbf{E}$, we then calculate $\frac{\partial \mathbf{Y}}{\partial \mathbf{W}}$ by noting that $\mathbf{Y} = \mathbf{X} \mathbf{W}^T$. This is a matrix version of a familiar scalar derivative like $dy/dw(y = xw) = x$, and in a similar way the derivative of the matrix version is $\mathbf{X}$. 
+
+Combining these derivatives gives us:
+
+\begin{eqnarray}
+\frac{\partial \text{Loss}}{\partial \mathbf{W}} = \frac{1}{B} \mathbf{E}^T \mathbf{X}
+\end{eqnarray}
+Here, $\mathbf{E}^T$ has a shape of $n_{out} \times B$, and $\mathbf{X}$ has a shape of $B \times n_{in}$. Multiplying these gives an $n_{out} \times n_{in}$ matrix, which aligns with the shape of $\mathbf{W}$ and represents the weight updates.
+
+% Make this a separate section on decomposing this kind of product into a sum of outer products?
+A brief interlude: this can be a bit confusing but one helpful way to think of it is as a sum of outer products of the kind we saw in the vectorized hebb rule and the vectorized (but not batched) LMS rule. The matrix product $\mathbf{E}^T \mathbf{X}$ can be expanded as a sum of outer products of each error vector $\mathbf{e}_i$ (rows of $\mathbf{E}$) and input vectors $\mathbf{x}_i$ (rows of $\mathbf{X}$). Now when we index like that, this identity holds:
+\begin{eqnarray}
+\mathbf{E}^T \mathbf{X} = \sum_{i=1}^{B} \mathbf{e}_i^T \mathbf{x}_i
+\end{eqnarray}
+which gives us a sum of outer products.
+
+For example, suppose we have
+\begin{eqnarray*}
+\mathbf{E} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad \mathbf{X} = \begin{pmatrix} 2 & 3 \\ 4 & 5 \end{pmatrix}
+\end{eqnarray*}
+Then $\mathbf{E}^T \mathbf{X}$ can be expanded as:
+\begin{eqnarray*}
+\mathbf{E}^T \mathbf{X} = \mathbf{e}_1^T \mathbf{x}_1 + \mathbf{e}_2^T \mathbf{x}_2 = \begin{pmatrix} 1 \\ 2 \end{pmatrix} \begin{pmatrix} 2 & 3 \end{pmatrix} + \begin{pmatrix} 3 \\ 4 \end{pmatrix} \begin{pmatrix} 4 & 5 \end{pmatrix} = \begin{pmatrix} 2 & 3 \\ 4 & 6 \end{pmatrix} + \begin{pmatrix} 12 & 15 \\ 16 & 20 \end{pmatrix} = \begin{pmatrix} 14 & 18 \\ 20 & 26 \end{pmatrix}
 \end{eqnarray*}
 
-All of these vector operations should be familiar. For the application of $f$, it's just a matter of apply it to each component of the vector.  For example, if $f(x) = x+1$ then $f(1,2) = (2,3)$. $f'$ is just a function so it can be applied in this way to a vector.
+Now we can state the weight update rule for batched LMS without bias or activation rules. Using the learning rate $\epsilon$, and remembering that we are doing gradient descent so that the derivative has to be multiplied by $-1$, the weight change for the matrix in the batch case is:
 
+\begin{eqnarray}
+\Delta \mathbf{W} =  - \epsilon \frac{1}{B} \mathbf{E}^T \mathbf{X}
+\end{eqnarray}
+   
+\subsection{Backprop and Automatic Differentiation}
+
+As we move to learning rules for more than one weight layer, it is harder to interpret things directly, but we can abstractly understand them and also conceive of them in a kind of modular way, building off chain rules like the one above, 
+\begin{eqnarray}
+\frac{\partial \text{Loss}}{\partial \mathbf{W}} = \frac{\partial \text{Loss}}{\partial \mathbf{Y}} \cdot \frac{\partial \mathbf{Y}}{\partial \mathbf{W}}
+\end{eqnarray}
+Just with potentially way more steps than that.
+% Integrate classroom notes and images on this

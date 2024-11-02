@@ -1,12 +1,11 @@
 \chapter{New Material on Unsupervised Learning}
 \chapterauthor{Jeff Yoshimi}
 
-\section{New Material for Hebbian Update}
+\section{Vectorized Hebb Rule}
 
 We've seen how the Hebb rule works for scalar values. Nice and easy: if they fire together, wire together; source times target activations. The situation is the same when we vectorize the rule, but now we have activation vectors $\mathbf{a}_{\text{in}}$ and $\mathbf{a}_{\text{out}}$, and we have to find a vector operations that ``lines up'' the right components of the two vectors so that we strengthen the right ones.  Here is a preview: multiply the output activation column vector times the input row vector (the input transposed, since we assume columns to start), and out pops what we're looking for. 
 
 So, as usual in the vector world, things end up feeling kind of backwards, we multiply output times input rather than the other way around, and there is this mysterious transpose thrown in.  But if we go back to the ``bridge'' panel of the figure above, it ends up making sense. Figure \ref{vectorizedHebb} shows the idea. I like to start in the center panel, and then (to link to the linear algebra) think of the mentally moving the output vector to the left and moving the input vector to the top. Then we have a kind of outer product representation, and all the products kind of line up in the right way. 
-
 
 \begin{figure}[h]
 \centering
@@ -21,11 +20,11 @@ As a sanity check in the example, check the shapes. We have a $3 \times 1$ outpu
 
 \begin{eqnarray}
 \label{vectorHebb}
-\Delta \mathbf{w}  = \epsilon \mathbf{a}_{\text{out}} \mathbf{a}_{\text{in}} ^T
+\Delta \mathbf{W}  = \epsilon \mathbf{a}_{\text{out}} \mathbf{a}_{\text{in}} ^T
 \end{eqnarray}
-Remember, by default all vectors in bold face are column vectors.  So this is a column vector (the output activation  $\mathbf{a}_{\text{out}}$) times a row vector (the input activations) which produces a matrix in the same shape as the weight matrix. Again, it feels backwards: we go from target to source (rather than source to target), just to get things in the right format.
+Remember, by default all vectors in bold face are column vectors. We are taking an $n_{out} \times 1$ column vector of output activations and matrix multiplying by a $1 \times n_{in}$ row vector input activations, to produce an $n_{out} \times n_{in}$ matrix in the same shape as the weight matrix.
 
-Here is an example. Suppose we have an input vector $\mathbf{x} = (-1, 1)$, and an output vector $\mathbf{y} = (1,0,1)$ and all the weights are zero, and our learning rate is 1.
+Suppose we have an input vector $\mathbf{x} = (-1, 1)$, and an output vector $\mathbf{y} = (1,0,1)$ and all the weights are zero, and our learning rate is 1.
 \begin{equation*}
 \epsilon = 1 \; \; \; \; \\
 \mathbf{a}_{\text{in}} = \begin{bmatrix} -1 \\ 1 \end{bmatrix} \\ 
@@ -34,7 +33,7 @@ Here is an example. Suppose we have an input vector $\mathbf{x} = (-1, 1)$, and 
 
 We compute the new weight values using equation \eqref{vectorHebb}:
 \begin{align*}
-\Delta \mathbf{w}  = 1
+\Delta \mathbf{W}  = 1
 \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} 
 \begin{bmatrix} -1 & 1 \end{bmatrix} 
 = \begin{bmatrix} 1 \cdot -1 & 1 \cdot 1 \\ 0 \cdot -1 & 0 \cdot 1 \\ 1 \cdot -1 & 1 \cdot 1 \end{bmatrix} 
@@ -44,7 +43,7 @@ We compute the new weight values using equation \eqref{vectorHebb}:
 So we get
 
 \begin{align*}
-\mathbf{w} + \Delta \mathbf{w}  =
+\mathbf{W} + \Delta \mathbf{W}  =
 \begin{bmatrix} 0 & 0 \\ 0 & 0 \\  0  & 0  \end{bmatrix} +
 \begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix} =
 \begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix}
@@ -54,7 +53,7 @@ Iterate again (assuming we are clamping the nodes; if we weren't the output acti
 
 
 \begin{align*}
-\mathbf{w} + \Delta \mathbf{w}  =
+\mathbf{W} + \Delta \mathbf{W}  =
 \begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix} +
 \begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix} =
 \begin{bmatrix} -2 & 2 \\ 0 & 0 \\  -2 & 2  \end{bmatrix}

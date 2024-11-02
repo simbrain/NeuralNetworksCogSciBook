@@ -3,6 +3,26 @@
 
 % TODO: Pictures for source-target representations
 
+% Outer product as a way of referring to column times row.
+
+\subsection{Elementwise (Hadamard) Product}
+
+The elementwise, or Hadamard, product of two vectors or matrices $\mathbf{a}$ and $\mathbf{b}$ with the same shape is denoted by $\mathbf{a} \circ \mathbf{b}$ and is defined as follows:
+
+\begin{eqnarray}
+(\mathbf{a} \odot \mathbf{b})_{ij} = \mathbf{a}_{ij} \odot \mathbf{b}_{ij}
+\end{eqnarray}
+That is, we multiply corresponding components of the two vectors to produce a new vector with the same shape as the original.  In a way this is the most intuitive concept of multiplying vectors or tensors. Just line them up and multiply.
+
+For example, $(1,2) \odot (3,4) = (3,6)$.
+
+The operation also works on matrices and higher rank tensors. For example
+
+\begin{eqnarray}
+\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} \odot \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix} &=& \begin{pmatrix} 1 \cdot 5 & 2 \cdot 6 \\ 3 \cdot 7 & 4 \cdot 8 \end{pmatrix} = \begin{pmatrix} 5 & 12 \\ 21 & 32 \end{pmatrix}.
+\end{eqnarray}
+
+
 \subsection{The scalar and vector tracks}
 
 % Compare https://youtu.be/Smav86u60FM?t=390 (from neurons to tokens, from weighted combinations of scalars to weighted combinations of vectors)
@@ -16,7 +36,6 @@ However, this is not how things are done by most professionals working on neural
 
 One downside of this is that the indexing changes depending on what you read, but we hope this downside can be an upside. The main book allows a non-math approach, but those going to the target-source point of view must also develop an ability to switch between representations, to see it both ways, which is more complex cognitively but in a way that suits the more advanced mind sets. Many problems are like that, allowing for multiple representations.
 
-% Define shape of matrix
 % Transposes.  Also address in line vectors and whether they need the transpose. There's this weird situation. In simbrain and in general, the default is columns.   But in a book, the default is row.  So to show column we do transose operator. But if bold face alone, it is colulmn
 
 \subsection{Graphical conventions}

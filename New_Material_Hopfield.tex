@@ -1,7 +1,15 @@
 \chapter{New Material on Hopfield}
 \chapterauthor{Scott Hotton, Jeff Yoshimi}
 
+% See Week9_RNN.txt
+% Add RBM info at bottom or in a new doc
+
 \section{New Material on Hopfield Networks}
+
+% Basically he did these things
+% First, mapped from binary to bipolar using the 2v-1 trick, to get the nice properties we talked about while dealing with nice binary patterns
+% Second used symmetric weight matrices which allow lyapunov functions
+% Third used a custom update rule
 
    For a discrete Hopfield network we denote the input of neuron $n$ by $x_n$ 
 and the output by $y_n$.  Neuron states are updated using an input-output 
@@ -1026,3 +1034,19 @@ input vector is $(1,1)^T$ the points $(0,0)^T$ and $(1,1)^T$ form a 2-cycle of
 the dynamical system for synchronous update but for sequential and stochastic 
 update the network eventually ends up in either the state $(1,0)^T$ or the 
 state $(0,1)^T$.
+
+\section{Boltzmann Machines}
+
+This is a variant on a Hopfield network that has a probabilistic element. Neurons are updated by taking a sigmoid rule on weighted inputs to determine a probability of firing.  Such a network can be thought of as something like a Spin glass or Ising network, where the nodes are like magnets and their overall behavior is governed by weights and they will tend to settle into a pattern, just like Hopfield, but in more stochastic way.  Weights are intuitively like correlations, where positive weights correspond to nodes that are typically both on and negative weights corresponds to nodes that are anti-correlated so that one is on when the other is off.
+
+Learning occurs by exposing the network to a training pattern, running the network, observing the difference, and updating the weights in a way that will make the network tend to settle into the training pattern state.
+
+Then a restricted Boltmzann machine is a trick where to make things simpler, we separate visible and hidden nodes, and the learning just happens on the weight between the visible and hidden layers (which are shared).  So the hidden nodes pick up on the statistics of the visible layer.
+
+They also use an energy landscape, They tend to settle into low-energy states, so that we can draw on thermodynamics analogies. There are some differences in interpretation though.
+
+But the whole thing basically acts like a stochastic version of a Hopfield network, a markov process that tends towards a few states that correspond to the fixed points of a Hopfield net.
+
+Summary of room schema.
+
+An actual use is to reccomend movies. Put in a person's set of preferred movies. Now put in a subset. The network figures out the rest. But feed-forward models can do this, and probably better, so they fell out in engineering.
