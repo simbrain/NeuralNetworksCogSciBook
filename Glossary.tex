@@ -16,6 +16,8 @@
 
 \item[Anterograde amnesia] A type of memory loss or amnesia caused by brain damage in the hippocampus, where the ability to create new fact-based or declarative memories is compromised after the injury. 
 
+\item[Antipattern] Intuitively, the antipattern of a pattern $p$ is the pattern formed by ``flipping'' every value in $p$.  For a binary pattern we swap 0's and 1's. For a bipolar pattern we swap -1's and 1's. Examples: the antipattern of $(0,1,0)$ is  $(1,0,1)$. The antipattern of $(-1,1,-1)$ is  $(1,-1,1)$. Antipatterns are  kind of spurious memory.
+
 \item[Artificial neural network] (Acronym: ANN) a collection of interconnected units, which processes information in a brain-like way.
 
 \item[Attractor] A state or set of states with the property that any  sufficiently nearby state will go towards it. Fixed points and periodic orbits can be attractors.
@@ -249,7 +251,7 @@ weights of a neural network.
 
 \item[Motor cortex] Region of cortex that resides in very rear-most part of the frontal lobes that is responsible for the planning and execution of movement. 
 
-\item[n-cycle] A finite set of $n$ states that a discrete-time dynamical system visits in the same repeating sequence. For discrete-time dynamical systems periodic orbits are $n$-cycles.
+\item[N-cycle] A finite set of $n$ states that a discrete-time dynamical system visits in the same repeating sequence. For discrete-time dynamical systems periodic orbits are $n$-cycles.
 
 \item[Neuron] A cell in the nervous system specialized to transmit information.
 
@@ -372,6 +374,8 @@ weights of a neural network.
 \item[Span] The set of all linear combinations of a set of vectors is called the span of that set of vectors.
 
 \item[Spike] A discrete event that models the action potential for a neuron.
+
+\item[Spurious memory] An activation pattern in a recurrent network that is stable (a fixed point attractor) but does not correspond to any of the original patterns the network was trained on. A common form of spurious memory in a recurrent network is an \textbf{antipattern}.
 
 \item[State] A specification of values for all the variables describing a system. The state of a neural network is typically an activation vector.
 
