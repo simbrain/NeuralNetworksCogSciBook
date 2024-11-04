@@ -254,7 +254,7 @@ For example, suppose we have
 \begin{eqnarray*}
 \mathbf{E} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad \mathbf{X} = \begin{pmatrix} 2 & 3 \\ 4 & 5 \end{pmatrix}
 \end{eqnarray*}
-Then $\mathbf{E}^T \mathbf{X}$ can be expanded as:
+These are both row-based matrices. $\mathbf{E}$ has errors as rows (what we sometimes call ``row errors'') and $\mathbf{X}$ has inputs as rows. So it's a nice familiar way to conceptualize things. Then we can expand $\mathbf{E}^T \mathbf{X}$ in a way that makes it clear we are taking outer products of these and summing them to get the weight deltas:
 \begin{eqnarray*}
 \mathbf{E}^T \mathbf{X} = \mathbf{e}_1^T \mathbf{x}_1 + \mathbf{e}_2^T \mathbf{x}_2 = \begin{pmatrix} 1 \\ 2 \end{pmatrix} \begin{pmatrix} 2 & 3 \end{pmatrix} + \begin{pmatrix} 3 \\ 4 \end{pmatrix} \begin{pmatrix} 4 & 5 \end{pmatrix} = \begin{pmatrix} 2 & 3 \\ 4 & 6 \end{pmatrix} + \begin{pmatrix} 12 & 15 \\ 16 & 20 \end{pmatrix} = \begin{pmatrix} 14 & 18 \\ 20 & 26 \end{pmatrix}
 \end{eqnarray*}
