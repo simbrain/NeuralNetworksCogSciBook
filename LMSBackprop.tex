@@ -35,6 +35,7 @@ The LMS rule directly instantiates the Goldilocks principle. When heating up sou
 \item Target is 1 and output is 2. Output is too high. Error is $1-2 = -1$ and so we make the weight weaker.
 \item Target is 1 and output is 1. Output is just right. Error is $1-1 = 0$ and so we don't change a thing.
 \end{itemize}
+% That is, the error tells us what direction we need to change the weight, when inputs are positive. The source activation tells us by how much. It's too hot, error is negative, it needs to be cooler. It's too cold, error is positive, it needs to be warmer. It's just right, error is 0, don't change it at all.
 
 % This material is useful but not ready for prime time yet
 %We also end up multiplying by the source value? Why? Well, think about it, again in the two cases.
@@ -225,13 +226,15 @@ As we saw, two-layer networks with linear units cannot solve this type of proble
 
 The key to backprop's superior performance is the way it \emph{re-maps} the linearly inseparable problem in the input space to a linearly separable problem in the hidden unit space, as shown in figure \ref{xor_remapping}. The crucial thing the hidden layer did was transform the input layer representation into a new internal representation, which includes a representation of ``only one unit is on'' and another representation of ``both units are in the same state.''  These two states are now linearly separable, and the output layer can easily separate them. The solution shown in the figure was produced by training a 2-2-1 network using backprop. Other solutions (corresponding to other minima in the error surface) can also be found. You are encouraged to try the experiment yourself in Simbrain. Train a backprop network on XOR, get it to a minimum on the error surface, and then check to see what hidden layer activations occur for each input.
 
+\newpage
+
 \section{LMS Exercises}
 
 % If more questions are added, the name of the section can change or new sections can be added
 
-\newcounter{LMSCounter}
+For all questions assume output nodes have a linear activation function (no clipping) and bias = 0.
 
-% Error and delta-w
+\newcounter{LMSCounter}
 
 \noindent
 \stepcounter{LMSCounter}
