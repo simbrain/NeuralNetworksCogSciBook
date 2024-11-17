@@ -2,6 +2,11 @@
 
 Latex files and other scripts that can be used to compile a book about neural networks, especially as they are used in cognitive science. As noted in the preface (which also gives a sense of the contents of the book and the philosophy used when writing it), the book can be customized for different teaching purposes, by producing custom "container documents".
 
+# License
+
+This work is licensed under the Creative Commons Attribution 4.0 Attribution-ShareAlike 
+CC BY-SA  License. To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/4.0/. As noted in the description of the license, this allows the content here to be extended and remixed, but assumes that in such a case changes be noted ``but not in any way that suggests the licensor endorses you or your use.''  
+
 # Versions
 
 Calendar based versioning is used in the format `year.major.minor`.  New public releases are created tagged at `major` version updated but not at `minor` version updates (though the PDF should be updated with every release).
