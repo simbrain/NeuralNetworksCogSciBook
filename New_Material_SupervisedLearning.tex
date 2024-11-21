@@ -52,10 +52,10 @@ So to summarize: the decision boundary, which separates the input space into dif
 \section{Geometric intuition about the decision boundary}
 
 In the neural network discussed above, with two inputs and one output, the weighted input $n_3$ to the output node is given by the equation:
-\[
+\begin{eqnarray*}
 n_3 = w_{1,3} x_1 + w_{2,3} x_2 + b_3
-\]
-The threshold for classification, that is the decision boundary, can be visualized as a horizontal plane, typically at $n_3 = 0$ (as in our example), which intersects the surface defined by the equation above. This intersection is normal (that is, perpendicular) to the vector $(w_{1,3}, w_{2,3})$. To see this, note that for any input $(p_1,p_2)$ for which $n_3 = 0$, $(w_{1,3}, w_{2,3}) \bullet  (p_1,p_2) = 0$, so the weight vector is orthogonal to any point on the decision boundary.
+\end{eqnarray*}
+The threshold for classification, that is the decision boundary, can be visualized as a horizontal plane, typically at $n_3 = 0$ (as in our example), which intersects the surface defined by the equation above. This intersection is normal (that is, perpendicular) to the vector $(w_{1,3}, w_{2,3})$. To see this, note that (assuming a bias of 0), for any input $(p_1,p_2)$ for which $n_3 = 0$, $(w_{1,3}, w_{2,3}) \bullet  (p_1,p_2) = 0$, so the weight vector is orthogonal to any point on the decision boundary.
 
 The bias $b_3$ shifts this plane vertically along the $z$-axis without affecting its orientation, while the weights determine the plane’s tilt. As you can see visually in the figure, inputs below the decision boundary will produce a net-input which is below threshold, while those above the decision boundary will produce a net-input which is above threshold.
 
