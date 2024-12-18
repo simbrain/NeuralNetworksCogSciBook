@@ -1,33 +1,34 @@
 \chapter{New Material for Linear Algebra}
 \chapterauthor{Jeff Yoshimi}
 
-% TODO: Pictures for source-target representations
 
-% Outer product as a way of referring to column times row.
+% Outer product as a way of referring to column times row. See ency of scott "inner vs outer product"
 
-\subsection{Elementwise (Hadamard) Product}
+\subsection{Elementwise (Hadamard) Product}\label{hadamard}
 
-The elementwise, or Hadamard, product of two vectors or matrices $\mathbf{a}$ and $\mathbf{b}$ with the same shape is denoted by $\mathbf{a} \odot \mathbf{b}$ and is defined as a vector  or matrix of the shape whose entries are the products of the corresponding components of $\mathbf{a}$  and $\mathbf{b}$. That is, we multiply corresponding components of the two vectors to produce a new vector with the same shape as the original. In a way this is the most intuitive concept of multiplying vectors or tensors. Just line them up and multiply.
+The elementwise (or Hadamard) product of two vectors or tensors $\mathbf{a}$ and $\mathbf{b}$ with the same shape is denoted by $\mathbf{a} \odot \mathbf{b}$ and is defined as a vector or tensor of the shape whose entries are the products of the corresponding components of $\mathbf{a}$  and $\mathbf{b}$. That is, we multiply corresponding components of the two vectors to produce a new vector with the same shape as the original. In a way this is the most intuitive concept of multiplying vectors or tensors. Just line them up and multiply.
 
 For example
 \begin{eqnarray}
 (1,2) \odot (3,4) = (3,6)
 \end{eqnarray}
 
-The operation also works on matrices and higher rank tensors. For example
+The operation also works on matrices and higher-rank tensors. For example
 
 \begin{eqnarray}
 \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} \odot \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix} &=& \begin{pmatrix} 1 \cdot 5 & 2 \cdot 6 \\ 3 \cdot 7 & 4 \cdot 8 \end{pmatrix} = \begin{pmatrix} 5 & 12 \\ 21 & 32 \end{pmatrix}.
 \end{eqnarray}
 
 
-\subsection{The scalar and vector tracks}
+\subsection{The scalar and vector tracks}\label{scalarVectorTracks}
+
+% TODO: Pictures for source-target representations. This is where to really emphasize that point.
 
 % Compare https://youtu.be/Smav86u60FM?t=390 (from neurons to tokens, from weighted combinations of scalars to weighted combinations of vectors)
 
 %To get to the next belt level, you have to deal with this kind of thing, and so train your brain to deal with it.
 
-The book  can be thought of as involving two tracks: a `scalar' and a `vectorized' track. In the scalar track, we think of all operations from the standpoint of individual neurons and their values. We index weights using a source-target or $\textbf{W}_{i,j}$ structure where indices go from $i$ to $j$. In Simbrain, the focus is mostly on separately presented nodes using a ``ball and stick'' representations. We use vectors and matrices to understand many ideas conceptually, but we do not make heavy use of matrix products or matrix algebra. This is much more accessible to beginning students, and is sufficient to teach an entire class. Indeed, this has been the way the book was structured and is the main way Simbrain 3.0 works. This supports the main thrust of the book and Simbrain, making neural networks easy enough to use without any math background at all (there is math to learn, but it is self contained). 
+The book can be thought of as involving two tracks: a `scalar' and a `vectorized' track. In the scalar track, we think of all operations from the standpoint of individual neurons and their values. We index weights using a source-target or $\textbf{W}_{i,j}$ structure where indices go from $i$ to $j$. In Simbrain, the focus is mostly on separately presented nodes using a ``ball and stick'' representations. We use vectors and matrices to understand many ideas conceptually, but we do not make heavy use of matrix products or matrix algebra. This is much more accessible to beginning students, and is sufficient to teach an entire class. Indeed, this has been the way the book was structured and is the main way Simbrain 3.0 works. This supports the main thrust of the book and Simbrain, making neural networks easy enough to use without any math background at all (there is math to learn, but it is self contained). 
 % Source target entails a different representation of matrices
 
 However, this is not how things are done by most professionals working on neural networks in industry, and most academics as well (see ch 2 taxonomy). For any serious work, we must move to the vectorized approach. Everything becomes more concise, and runs more efficiently on high performance performance computers. This requires a change in thinking, a way of seeing and thinking about these problems in terms of matrices, vectors, and tensors, often seeing datasets and batches in new ways, almost as tubes of information that get transformed. The focus here is on vectors, matrices, and higher rank tensors, and on applying linear algebra methods directly to these structures. The weights are now indexed using a target-source scheme, or $\textbf{W}_{j,i}$. In Simbrain 4.0 we have been and are making efforts to make this mode of thinking more intuitive. As of now, there is very little in this format in the book, but we are in the process of adding chapters and sections that present that point of view. Ultimately the hope is to have enough material that a more advanced course could be done entirely from that point of view.

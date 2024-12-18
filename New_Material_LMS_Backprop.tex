@@ -80,10 +80,11 @@ In the scalar approach to LMS we multiply a single output error (target - output
 % Reference the new material on Hebb here
 
 The error part itself is easy, first we do target - output using elementwise subtraction: $\mathbf{t} - \mathbf{a}_{\text{out}}$. To multiply these errors times source activations, we do the same thing as in Hebb: we multiply an $m \times  1$ column output errors times a $1 \times  n$ row of source activations to get an $m \times n$ matrix of weight deltas. Then we scale that by learning rate, and add to the weight matrix. (There remains the issue of the bias, and any activation functions on the output, but we're starting simple.) So, the vectorized rule is
-\begin{eqnarray*}
+\begin{eqnarray}\label{vectorizedLMS}
 \Delta \mathbf{W}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) \mathbf{a}_{\text{in}}^T
-\end{eqnarray*}
+\end{eqnarray}
 Remember, by default all vectors in bold face are column vectors. So this is a column vector (the error $\mathbf{t} - \mathbf{a}_{\text{out}}$) times a row vector (the input activations) which produces a matrix in the same shape as the weight matrix.
+% Integrate outer product here? If so see ency of scott "inner and outer product". Also see the discussion of outer product below and maybe move that here or repeat
 
 Consider the network shown in figure \ref{lms_vector_pre}.
 
@@ -104,7 +105,7 @@ Our values are
 \mathbf{a}_{\text{out}} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}
 \end{equation*}
 
-Then the equation is learning rate times error times input transposed:
+Then using equation \eqref{vectorizedLMS} (change in weight matrix is learning rate times error vector times input vector transposed), we get:
 
 \begin{align*}
 \Delta \mathbf{W}  = 1
@@ -187,12 +188,12 @@ Do both of these at each time step to update the network.
 \subsection{The Vectorized LMS rule with Activation Functions}
 
 % TODO: This is now a bit redundant with the material above
-To express this all in vectorized form we have to take the individual entries and see what happens when we express the ideas using vectors.  Again it's a kind of bookkeeping exercise. Here is what we get.
+To express this all in vectorized form we have to take the individual entries and see what happens when we express the ideas using vectors.  Again it's a kind of bookkeeping exercise. Here is what we get:
 
 \begin{eqnarray*}
 \Delta \mathbf{W}  =  \epsilon ((\mathbf{t} - \mathbf{a}_{\text{out}}) \odot f'( \mathbf{n}_{\text{out}})) \mathbf{a}_{\text{in}}^T
 \end{eqnarray*}
-Where $\odot$ is component-wise or Hadamard product (see section X). That is, we take a column vector of errors $\mathbf{t} - \mathbf{a}_{\text{out}}$, and then component-wise multiply by a vector of derivatives applied to weighted inputs $f'( \mathbf{n}_{\text{out}})$, effectively scaling each component of the error by the corresponding derivative. 
+Where $\odot$ is component-wise or Hadamard product (see section \extref{hadamard}). That is, we take a column vector of errors $\mathbf{t} - \mathbf{a}_{\text{out}}$, and multiply elementwise by a same-shaped column vector of derivatives applied to weighted inputs $f'( \mathbf{n}_{\text{out}})$, effectively scaling each component of the error by the corresponding derivative. 
 
 We then matrix multiply the resulting column vector of scaled errors by a row vector of source activations $ \mathbf{a}_{\text{in}}^T$, and the result is a matrix of weight deltas with the right shape. This is sometimes called an ``outer product'', where a $n_{out} \times 1$ scaled error vector is multiplied by a  $1 \times n_{in}$ vector if input activations, producing an $n_{out} \times n_{in}$ matrix of weight deltas. The whole thing is then scaled by the learning rate $\epsilon$.
 
@@ -201,24 +202,24 @@ For the vector of biases we have:
 \begin{eqnarray*}
 \Delta \mathbf{b}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) \odot f'( \mathbf{n}_{\text{out}})
 \end{eqnarray*}
-We're basically just changing the biases by the error vector scaled by the derivatives, and leaving out the step where we consider input activations.
+We're basically just changing the vector of biases by the error vector scaled by the derivatives, and leaving out the step where we consider input activations.
 
 \subsection{Batch version of the rule}
 
 In many neural network implementations, computations are applied to batches of data. In this setup, inputs are not passed through a network as single column vectors, but whole batches are (see section X). This is much more computationally efficient and leverages the power of modern hardware like GPUs which are optimized for matrix computations.  It thus helps to be able to think in terms of batches being processed.
 
-By convention, batches are matrices where the rows are input vectors, target vectors, etc., and so they have shape $B \times n$, where $B$ is the batch size and $n$ is the size of the relevant vector. This is nice and easy to think about; basically the batches are little input table, target tables, output tables, etc (see section X).
+By convention, batches are matrices where the rows are input vectors (or target vectors, output vectors, etc.), and so they have shape $B \times n$, where $B$ is the batch size and $n$ is the size of the input vectors. This is nice and easy to think about; basically the batches are little input tables (or output tables, etc; see section \extref{datasets}).
 
-For a single linear network with one weight layer $\mathbf{W}$, the forward pass is computed like this:
+For a network with two node layers and one weight layer $\mathbf{W}$ with no activation function (that is, unbounded linear nodes), the forward pass is computed like this:
 
 \begin{eqnarray}
 \mathbf{Y} = \mathbf{X} \mathbf{W}^T
 \end{eqnarray}
-where $\mathbf{X}$ is the batch of inputs and has a shape of $B \times n_{in}$, where $B$ is the batch size and $n_{in}$ is the number of nodes in the input layer. Again, it's a kind of input table. $\mathbf{W}$ is transposed so that we get a shape of $n_{in} \times n_{out}$. This is the source-target representation we emphasized in the scalar track (see section X), where columns correspond to fan-in weight vectors. This allows us to think of the product as a bunch of vector-matrix multiplications (or ``right multiplications'' since the matrix is on the right), where we peel off the rows of the input table $\mathbf{X}$ one at a time, multiply them by the weight matrix (dotting the rows with each column of $\mathbf{W}^T$), in each case producing an output vector in $\mathbf{Y}$. As we move down the rows of the input table we stack up rows of the output table or output batch $\mathbf{Y}$, which has a shape of $B \times n_{out}$.
+$\mathbf{X}$ is a  $B \times n_{in}$ batch of inputs, where $B$ is the batch size and $n_{in}$ is the number of nodes in the input layer. Again, it's a kind of input table. $\mathbf{W}$ is transposed so that we get a shape of $n_{in} \times n_{out}$. This is the source-target representation we emphasized in the scalar track (see section \extref{scalarVectorTracks}), where columns correspond to fan-in weight vectors. This allows us to think of the product as a bunch of vector-matrix multiplications (or ``right multiplications'' since the matrix is on the right), where we peel off the rows of the input table $\mathbf{X}$ one at a time, multiply them by the weight matrix (dotting the rows with each column of $\mathbf{W}^T$), in each case producing an output row vector in $\mathbf{Y}$. As we move down the rows of the input table we stack up rows of the output table or output batch $\mathbf{Y}$, which has a shape of $B \times n_{out}$.
 
-To calculate error, we compare the output $\mathbf{Y}$ with a ``target table" (a batch of target values). Subtracting the target values from the output activations gives us an error matrix:
+To calculate error, we compare the output $\mathbf{Y}$ with a ``target table" (a batch of target values) $\mathbf{T}$. Subtracting the target values from the output activations gives us an error matrix:
 \begin{eqnarray}
-\mathbf{E} = \mathbf{Y} - \text{targets}
+\mathbf{E} = \mathbf{Y} - \mathbf{T}
 \end{eqnarray}
 where $\mathbf{E}$ also has a shape of $B \times n_{out}$.
 
