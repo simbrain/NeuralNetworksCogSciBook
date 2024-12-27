@@ -9,11 +9,11 @@ CC BY-SA  License. To view a copy of this license, visit https://creativecommons
 
 # Versions
 
-Calendar based versioning is used in the format `year.major.minor`.  New public releases are created tagged at `major` version updated but not at `minor` version updates (though the PDF should be updated with every release).
+Calendar based versioning is used in the format `year.version`.  
 
 # How To Use This Book
 
-This folder contains a master document (`Book_master.tex`) that compiles every chapter. The master document is a container document with all of the chapters.
+This folder contains a master document (`NeuralNetworksCogsci.tex`) that compiles every chapter. The master document is a container document with all of the chapters.
 
 You can make your own container document that contain only the chapters of interest to you. When doing so:
 
