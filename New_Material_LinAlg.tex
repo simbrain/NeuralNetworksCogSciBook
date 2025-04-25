@@ -1,7 +1,8 @@
 \chapter{New Material for Linear Algebra}
 \chapterauthor{Jeff Yoshimi}
 
-
+% See "by hand" lectures Tom Yeh.
+% Nice pics and walk through here: https://e2eml.school/transformers.html
 % Outer product as a way of referring to column times row. See ency of scott "inner vs outer product"
 
 \subsection{Elementwise (Hadamard) Product}\label{hadamard}
@@ -52,6 +53,12 @@ The first thing to do is get clear on the shape of the matrix. Remember, we are 
 
 Figure \ref{linalgToSimbrain} is an effort to bridge this gap. On the left is a standard matrix product, $\mathbf{W} \mathbf{x} = \mathbf{y}$. This is how forward propagation of an input vector through a weight matrix is usually understood. The weight matrix is $\mathbf{W}$, the input is $\mathbf{x}$, and the output is $\mathbf{y}$. We think of the matrix as operating on the column vector to produce a new column vector.  
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.15\textwidth]{images/simbrain4_ff_2_3.png}
+\caption[Jeff Yoshimi.]{Graphical conventions for activation vectors and weight matrices in Simbrain 4. }
+\label{simbrain4_ff23}
+\end{figure}
 % need a transpose section
 Here is how I suggest you think about this to connect it up to intuitions about neural networks. Think of the column vector $\mathbf{x}$ as being rotated 90 degrees or transposed to become a row vector (imagine grabbing the vector by the $1$ and pulling it up and to the right). Now mentally take this row and move it to the bottom of the weight matrix, as in the middle panel of  \ref{linalgToSimbrain}. The weight matrix and the output vector stay in the same orientation. The fan-out weight vectors from the input are shown as vertical lines, and the fan-in weight vectors to the output are shown as horizontal lines. Now we can easily ``follow'' the activations upwards as activity is propagated. 
 % The bridge is pretty close to the new simbrain rep. Show that?
@@ -63,12 +70,7 @@ To go from the bridge to the standard Simbrain representation in the right panel
 
 In Simbrain 4.0, we have designed the representation of activation vectors and weight matrices to follow the ``bridge'' concept above as closely as possible. See figure \ref{simbrain4_ff23}.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.15\textwidth]{images/simbrain4_ff_2_3.png}
-\caption[Jeff Yoshimi.]{Graphical conventions for activation vectors and weight matrices in Simbrain 4. }
-\label{simbrain4_ff23}
-\end{figure}
+
 %
 %Also just a thought on how to think about the weight matrices. Their shape is target-source, or output-input. So if we have a 3-5-2-1 network in terms of node layers, we have three weight matrices. Their shapes are:
 %
@@ -78,3 +80,68 @@ In Simbrain 4.0, we have designed the representation of activation vectors and w
 %
 %So you would pass a list of the form [5x3, 2x5, 1x2] to your function. Remember, weight matrices on the left are multiplied by input and activations vectors on the right.I find this pretty counter-intuitive and takes me a lot of practice to think in this “output-input” way. I want to read left-to-right input-to-output but the standard conventions with matrix product reverse this...
 
+\subsection{Matrix Product}
+
+% This is awesome: http://matrixmultiplication.xyz/
+% Add a picture showing lines and how they are lined up together. Use the drawings Scott made (see FINAL_ProposalPacket_Preview_IES_Exploration_JeffYoshimi_v1).  
+
+
+% Connect to row space and column space perspectives.
+
+Consider a matrix multiplication 
+\begin{align*}
+\mathbf{A}\mathbf{B} = \mathbf{C}
+\end{align*}
+
+% Need a picture for this one
+This multiplication can be interpreted in several complementary ways, each offering unique insights depending on the context. Perhaps the most common way to learn matrix multiplication is ``entrywise'': the $(i,j)$ entry of the result $\mathbf{C}$ is computed by taking the dot product of the $i$th row of $\mathbf{A}$ and the $j$th column of $\mathbf{B}$:
+\[
+c_{ij} = \sum_k a_{ik} b_{kj}
+\]
+See figure \ref{entryWiseMatrixProduct} for an illustration. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{images/matrixProductEntryWise.png}
+\caption[Jeff Yoshimi.]{Row $i$, column $j$ of $\mathbf{C}$ is the dot product of row $i$ of $\mathbf{A}$ and column $j$ of $\mathbf{B}$. Here entry $(2,1)$ of $\mathbf{C}$ is the dot product of row $2$ of $\mathbf{A}$ and column $1$ of $\mathbf{B}$.}
+\label{entryWiseMatrixProduct}
+\end{figure}
+
+However, often when dealing with a neural network it is nice to be able to  zoom-out and not worry about specific entries, but just see that rows or columns are being ``processed'' by the matrix. This is a useful conceptual way to understand what is happening. Whether we focus on row processing or column processing is a matter of convention, but I believe the row processing perspective is slightly more common when thinking about convolutional networks or transformers. \footnote{A similar conventional choice occurs when deciding between  the source-target representation of weight matrices (row perspective) and the target-source representation of weight matrices (column perspective), as discussed in note \ref{sourceTarget}.}
+
+Row perspective. One way treats $\mathbf{A}$ as a stack of rows, peels them off, and right multiplies by $\mathbf{B}$ to build up $\mathbf{C}$. Or think of the rows of $\mathbf{A}$ and then linear combinations of the rows of $\mathbf{B}$ to get rows of $\mathbf{C}$. This is common with transformers and batch processing.\footnote{See \url{ https://e2eml.school/transformers.html}.} This approach is useful in considering batch operations and in understanding how representations ``move'' through a transformer.
+
+\begin{align*}
+\begin{bmatrix}
+\text{--- } \mathbf{a}_1 \text{ ---} \\
+\text{--- } \mathbf{a}_2 \text{ ---} \\
+\vdots \\
+\text{--- } \mathbf{a}_m \text{ ---}
+\end{bmatrix}
+\cdot
+\mathbf{B}
+=
+\begin{bmatrix}
+\text{--- } \mathbf{a}_1 \mathbf{B} \text{--- } \\
+\text{--- } \mathbf{a}_2 \mathbf{B} \text{--- } \\
+\vdots \\
+\text{--- } \mathbf{a}_m \mathbf{B} \text{--- }
+\end{bmatrix}
+\end{align*}
+
+Column perspective. Think of a matrix multiplication $\mathbf{A}\mathbf{B} = \mathbf{C}$ as taking the columns of $\mathbf{B}$ and then using linear combinations of the columns of $\mathbf{A}$ to get columns of $\mathbf{C}$. One nice way to do this is to actually write $\mathbf{C}$ as a bunch of columns $\mathbf{A}\mathbf{b}_1, \dots, \mathbf{A}\mathbf{b}_n$. \footnote{See \url{https://www.coursera.org/learn/matrix-algebra-determinants-and-eigenvectors/supplement/mGkyi/matrix-operations}.}
+
+\begin{align*}
+\mathbf{A} \cdot
+\begin{bmatrix}
+\vert &        & \vert \\
+\mathbf{b}_1 & \cdots & \mathbf{b}_n \\
+\vert &        & \vert
+\end{bmatrix}
+=
+\begin{bmatrix}
+\vert &        & \vert \\
+\mathbf{A} \mathbf{b}_1 & \cdots & \mathbf{A} \mathbf{b}_n \\
+\vert &        & \vert
+\end{bmatrix}
+\end{align*}

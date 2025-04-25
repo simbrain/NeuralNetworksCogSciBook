@@ -1,6 +1,7 @@
 \chapter{Least Mean Squares and Backprop}\label{ch_lms_backprop}
 \chapterauthor{Jeff Yoshimi}
-	
+
+% Beautiful! https://xnought.github.io/backprop-explainer/
 % High level idea of "Gradient flow" backwards, and how you can make things modular
 
 Having introduced supervised learning in chapter \extref{ch_supervised}, in this chapter we consider several supervised learning algorithms for feedforward networks in depth, and consider their implications for cognitive science. First, an early form of supervised learning called the ``Least Mean Squares rule'' or ``LMS rule''. The remarkable thing about LMS is that almost all of the advancements in the area of neural networks in recent years arguably involve variations on this one simple algorithm, that allow it to solve increasingly complex problems. LMS itself is limited insofar as it can only be used to train networks with one weight layer. This takes us to a second algorithm, backpropagation or ``backprop'', which extends LMS in a way that allows it to be used to train many-layered networks.  The hidden layers of a feedforward network develop \emph{internal representations}, which remap the input space of a neural network in useful and often psychologically realistic ways.

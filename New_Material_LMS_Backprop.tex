@@ -210,6 +210,8 @@ In many neural network implementations, computations are applied to batches of d
 
 By convention, batches are matrices where the rows are input vectors (or target vectors, output vectors, etc.), and so they have shape $B \times n$, where $B$ is the batch size and $n$ is the size of the input vectors. This is nice and easy to think about; basically the batches are little input tables (or output tables, etc; see section \extref{datasets}).
 
+% Refer back to the AB = C discussion in linear algebra
+
 For a network with two node layers and one weight layer $\mathbf{W}$ with no activation function (that is, unbounded linear nodes), the forward pass is computed like this:
 
 \begin{eqnarray}
@@ -245,7 +247,8 @@ Combining these derivatives gives us:
 Here, $\mathbf{E}^T$ has a shape of $n_{out} \times B$, and $\mathbf{X}$ has a shape of $B \times n_{in}$. Multiplying these gives an $n_{out} \times n_{in}$ matrix, which aligns with the shape of $\mathbf{W}$ and represents the weight updates.
 
 % Make this a separate section on decomposing this kind of product into a sum of outer products?
-A brief interlude: this can be a bit confusing but one helpful way to think of it is as a sum of outer products of the kind we saw in the vectorized hebb rule and the vectorized (but not batched) LMS rule. The matrix product $\mathbf{E}^T \mathbf{X}$ can be expanded as a sum of outer products of each error vector $\mathbf{e}_i$ (rows of $\mathbf{E}$) and input vectors $\mathbf{x}_i$ (rows of $\mathbf{X}$). Now when we index like that, this identity holds:
+% This packs what we get in SGD into matrix math.  We are just adding the weight deltas together.  That is apparent in the summation below. So in a sense there is no dependency between rows. That is surprising when you just see this mass of numbers interacting.  And some of that carries over to transformers where the stacks of vectors maintain their identities through all the processors. See the matrix product discussion in linear algebra.
+A brief interlude: this can be a bit confusing but one helpful way to think of it is as a sum of outer products of the kind we saw in the vectorized hebb rule and the vectorized (but not batched) LMS rule. The matrix product $\mathbf{E}^T \mathbf{X}$ can be expanded as a sum of outer products of each error vector $\mathbf{e}_i$ (rows of $\mathbf{E}$) and input vectors $\mathbf{x}_i$ (rows of $\mathbf{X}$). When we index like that, this identity holds:
 \begin{eqnarray}
 \mathbf{E}^T \mathbf{X} = \sum_{i=1}^{B} \mathbf{e}_i^T \mathbf{x}_i
 \end{eqnarray}
