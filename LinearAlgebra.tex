@@ -646,6 +646,8 @@ We start with the case where one of the matrices is a vector (recall that vector
 
 Left multiplication, where a matrix is multiplied by a column vector to produce a new column vector, is more common in mathematics. We can think of the matrix as ``operating'' on the vector. Figure \ref{matrixVectorProduct} shows how to perform the operation. Take the column vector and dot it with the first row to produce a the first entry in the output column vector. Then scan down the rows the write out the result.  In a sense we have transformed the vector. The matrix represents the transformation, vector on the right is the input, and the vector on the left is the output (the analogy to neural networks, which we come to in the next section, should be clear).\footnote{The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.}
 
+Notice how the shapes work here. The matrix must have as many columns as the vector has rows, so that when we rotate the vector its ``width'' must match the matrix, as can be seen in figure \ref{matrixVectorProduct}. That is, if the matrix has shape $(n, p)$ the column vector must have a compatible shape $(p, 1)$. (We discuss compatible shapes further in section \ref{matrixMultiplication}). This point is quite important, and we will expand on it in discussing the next case, of a row vector times a matrix.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{images/matrixVectorProduct.png}
@@ -698,7 +700,11 @@ Here's the example from figure \ref{vectorMatrixProduct} worked out:
 \]
 \vspace*{.1cm} 
 
-So in this case row vectors are transformed into row vectors. This approach is less common, perhaps because it takes more space to write out. However, we will see a variant on this approach is quite common when we deal with larger matrix products.
+So in this case row vectors are transformed into row vectors. This approach is less common in mathematics, perhaps because it takes more space to write out. However, we will see a variant on this approach is quite common when we deal with larger matrix products, and in fact we will often take this perspective in the book.
+
+Notice in this case that the row vector must have as many columns as the matrix has rows, so that when we rotate the vector its ``height'' matches the matrix, as can be seen in figure \ref{vectorMatrixProduct}. That is, if the row vector has shape $(1, i)$, the matrix must have shape $(i, o)$.  In this case (which goes with the source-target or input-output representation; see note \ref{sourceTarget})), we think of the number of rows of the matrix ($i$)  as the size of the input, and  the number of columns ($o$), as the number of outputs. We can set $o$ to whatever we like.  If $i = o$ we have a square matrix which keeps vectors in the same vector space. If $o > i$ the matrix takes us from one space to a higher dimensional space.  This is sometimes called a \glossary{up projection}.  If $o < i$ the matrix takes us from a higher dimensional to a lower dimensional space.  This is sometimes called a \glossary{down projection}. In neural networks these correspond to weight matrices that take us between layers with the same number of nodes, more nodes, or fewer nodes.  
+
+
 
 Note that the very same operation can be represented in two equivalent ways, by using the transpose. This is based on the theorem that  $\mathbf{A}v =  v^T\mathbf{A}^T$, and is the basis of the ambiguity mentioned above. 
 
