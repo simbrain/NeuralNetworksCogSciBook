@@ -308,10 +308,10 @@ There are many different methods for projecting data from high dimensional space
 
 \section{The Dot Product}\label{dotProduct}
 
-% Nice visualization: http://www.falstad.com/dotproduct/
 % Include discussion of orthogonality and closeness from NeuralNets.txt
 % If we are doing "distance" on a unit hypersphere, then the dot product  is really an inverse metric. max is 1 then as you go to -1 it is increasingly far away (See that falstad applet to show this).
 % The negative cases are important when thinking of a weight vector as orthogonal to a decision boundary  in a network with threshold units
+% Why not a definition here if we are going to do it for cosine similarity?
 
  The \glossary{dot product} is a simple but important function defined 
 for pairs of vectors in a vector space.\footnote{The dot product is more 
@@ -345,14 +345,14 @@ components of a pair vectors, and summing the resulting products. For example
    Clearly the product of any vector with the zero vector (the vector whose
 components are all $0$) is $0$. However, the dot product of two non-zero 
 vectors can also be $0$. It turns out that if the dot product of two non-zero 
-vectors is $0$, then the vectors are {\em orthogonal} (perpendicular) to each 
+vectors is $0$, then the vectors are \glossary{orthogonal} (perpendicular) to each 
 other. It might be hard to tell right away that the vectors 
 $(2,-1,1,-3,1,1)$, $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation 
 shows us
 \begin{eqnarray*}
  (2,-1,1,-3,1,1) \bullet (1,2,3,1,1,-1)& = 0
 \end{eqnarray*}
-so they must be orthogonal. 
+so they must be orthogonal.\footnote{A useful interactive visualization of the dot product is available at \url{http://www.falstad.com/dotproduct/}.}
 %The dot product can also be used to uncover other geometric properties in high dimensional spaces.
 
  Notice that we can concisely represent the weighted input (see chapter \extref{ch_act_functions})
@@ -364,75 +364,118 @@ $(-1,-1,1)$, then the net-input is
 n_4 = (\; -1,\; -4,\; 5) \bullet (-1,-1,1) + 0  = 1 + 4 + 5 + 0 = 10
 \end{equation*}
 
+ These visualizations help show that if we are doing ``distance'' on a unit hypersphere, then the dot product behaves like an inverse metric: it reaches a maximum of 1 when vectors point in the same direction, and becomes increasingly negative as they point in opposite directions. The negative cases are especially important when thinking of a weight vector as orthogonal to a decision boundary in a network with threshold units.
+ 
+\section{Other vector comparison methods}\label{vector_comparisons}
 
-% For example, we can describe the weighted input to node $k$ (as $k$ goes
-%from $1$ to $m$) as follows:
-%\begin{equation*}
-%n_k = (w_{1,n},w_{2,n}, \dots, w_{m,n}) \bullet (a_1,a_2, \dots ,a_m) + b_n
-%\end{equation*}
+The dot product is a way to take two vectors and produce a number that gives us a sense of how close they are to each other (input vectors, activation vectors, etc.). There are a number of ways to compare vectors in this way.
 
-% dot(u,v) = u*v
-% cos_sim(u,v) = u*v/|u|*|v|, which happens to also be cos(theta btween u and).
-%			i.e like dot by divide by magnitude of u and v
-% cov(u,v) = like dot but subtract out mean
-% corr(u,v) = like cov but divide magnitude of u and v
+% Can't this be expressed as cos(u,v)?
+When vectors are first normalized (that is, when the vectors are first divided by their Euclidean norm; see section \ref{metricSpace}), this measure tells us to what extent they are pointing in the same direction. This normalized dot product is also known as \glossary{cosine similarity}, is a commonly used measure of similarity that is independent of vector magnitude. It is defined as
+\[
+\cos(\theta) = \frac{\mathbf{u} \bullet  \mathbf{v}}{|| \mathbf{u}|| \; ||\mathbf{v}||}
+\]
+where $\theta$ is the angle between $\mathbf{u}$ and $\mathbf{v}$, and $||\cdot||$ denotes the Euclidean norm (note that the angle between the vectors need not be known and in fact this is one way of computing that angle).  You do not need to know the angle $\theta$ to use this equation (in fact, this is how angles are formally defined using the dot product);  in computational practice given two vectors $\mathbf{u}$ and $\mathbf{v}$ you just use the right side of the equation to compute their cosine similarity. Cosine similarity is bounded between $[-1, 1]$, such that $\cos(\theta) = -1$ indicates opposite vectors, $\cos(\theta) = 0$ indicates orthogonal vectors, and $\cos(\theta) = 1$ indicates proportional vectors.\footnote{Some implementations are bounded between $[0,1]$. Occasionally, cosine distance is used, which is $1 - \cos$, in which case proportional or highly similar vectors will have a cosine distance of 0, while dissimilar vectors will have a cosine distance of 1.}  Although it is shown as a function of the angle between two vectors, it can be computed simply by using the formula above 
 
+Cosine similarity is widely used in text analysis and natural language processing, especially in applications such as document similarity and information retrieval (see chapter \extref{ch_word_embeddings}). This is because it compares the orientation of two high-dimensional vectors, rather than their magnitude. As such, it captures similarity in content rather than length or scale, which is ideal in contexts where longer documents might contain similar themes as shorter ones.
+% Last point should be front-loaded a bit?
 
-% Expand to include a broader discussion that includes cosine similarity 
-%      - Dot product: not scaled, not centered.
-%      - Cosine similarity: scaled, not centered
-%      - Covariance: centered, not scaled
-%      - Correlation: scaled and centered 
+Two other related measures are \textbf{covariance} and \textbf{correlation}. Covariance measures how two variables vary together after their means have been removed, while correlation also rescales the result to produce a standardized value between \(-1\) and \(1\). To compute the covariance between two data vectors \( \mathbf{x} = (x_1, \dots, x_n) \) and \( \mathbf{y} = (y_1, \dots, y_n) \), first subtract their means to obtain \( \tilde{\mathbf{x}} = (x_1 - \bar{x}, \dots, x_n - \bar{x}) \), and similarly for \( \tilde{\mathbf{y}} \). Then compute \( \text{Cov}(\mathbf{x}, \mathbf{y}) = \frac{1}{n-1} \tilde{\mathbf{x}} \cdot \tilde{\mathbf{y}} \). The Pearson correlation coefficient is given by dividing this result by the product of the standard deviations: \( \text{Corr}(\mathbf{x}, \mathbf{y}) = \frac{\text{Cov}(\mathbf{x}, \mathbf{y})}{\sigma_x \sigma_y} \).
 
-% These operations don't really apply to pairs of numbers (except trivially), but rather to pairs of vectors
+The Pearson correlation coefficient can be seen as the cosine similarity of the data after it has been centered. To center data \( (x_1, \dots, x_n) \), we subtract the mean from each entry: \( (x_1, \dots, x_n) \rightarrow (x_1 - \bar{x}, \dots, x_n - \bar{x}) \).\footnote{Geometrically, this centered data is the orthogonal projection of \( (x_1, \dots, x_n) \) onto the subspace orthogonal to the vector \( (1, \dots, 1) \), which has dimension \( n - 1 \). This projection can reduce the angle between two vectors \( (x_1, \dots, x_n) \) and \( (y_1, \dots, y_n) \); in a sense, there are fewer ways they can point away from each other when we reduce the number of dimensions by one.} By centering the data before taking cosine similarity, we avoid spurious differences introduced by units of measure. For example, vectors \( (x_1, \dots, x_n) \) and \( (y_1, \dots, y_n) \) may represent different physical quantities. Suppose we are measuring the germination time of seeds as a function of temperature. If we measure temperature in Celsius and time in seconds, we will obtain a different cosine similarity than if we measure time in hours—whereas the Pearson correlation coefficient remains the same regardless of such unit changes.
 
-% Different ways the data tend to be gathered
-% smell vector 1 = (1,1,1,0)
-% smell vector 2 = (1,1,1,0)
-%
-% weight/height
-% human 1  		= (5, 120)
-% human 2  		= (5.5,180)
-% human 3  		= (6.5,210)
+These four measures—dot product, cosine similarity, covariance, and correlation—are closely related. They all associate pairs of vectors with scalars. They can be distinguished by whether they center the vectors (by subtracting the mean) and /or scale them (by dividing dividing by the ``spread'' of the data) before comparison. The dot product operates on raw vectors directly, whereas the other three normalize the input in different ways to account for magnitude or mean.
 
-%% Email from Scott:  I said a while ago that i would get back to you on cosine simarlity and
-%the Pearson correlation coefficient.  I think the cosine similarity statistic
-%is used when the things being compared have the same units of measure.
-%
-%  The Pearson correlation coefficient is the cosine similarity of the data 
-%after it has been centered.
-%
-%  To center data (x1, ..., xn) we subtract their mean from each entry.
-%
-%                ( x1, ..., xn) -> ( x1-xbar, ..., xn-xbar) 
-%
-%Geometrically the centered data is the orthogonal projection of (x1, ..., xn) 
-%to the subspace orthogonal to the vector (1, ..., 1).  This subspace has 
-%dimension n-1.  The projection can reduce the angle between two vectors (x1, 
-%..., xn) and (y1, ..., yn).  In a sense there are fewer ways they can 
-%point away from each other when we reduce the number of dimensions by 1.
-%
-%  By centering the data before taking the cosine similarity we avoid 
-%spurious differences introduced by the choice of units of measure.  Both 
-%(x1, ..., xn) and (y1, ..., yn) are thought of as vectors in R^n but the 
-%n-tuples of numbers can stand for different quantities.  For instance we could 
-%measure the germination time of seeds as a function of temperature.  If we 
-%measure temperature in Celsius and time in seconds we will get a different 
-%cosine similarity than if we measure temperature in Celsius and time in hours.  
-%Whereas the Pearson correlation coefficient will be the same either way.
-%
-%  In a case like in the Wikipedia article which involves comparing the words
-%in two documents there are not two different units of measure for the two 
-%things being compared.  Not centering the data may have little effect on the 
-%usefulness of the statistic in this case but it could save computation time. 
+\begin{itemize}
+    \item \textbf{Dot product}: not scaled, not centered.
+    \item \textbf{Cosine similarity}: scaled, not centered.
+    \item \textbf{Covariance}: centered, not scaled.
+    \item \textbf{Correlation}: scaled and centered.
+\end{itemize}
 
-%The normalized dot product between two vectors, also known as the cosine similarity, calculates the angle between two vectors such that the similarity calculation is not impacted by magnitude. Bounded between $[-1, 1]$, such that $\cos = -1$ indicates opposite vectors, $\cos = 0$ indicates orthogonal vectors, and $\cos = 1$ are proportional vectors. Some implementations are bounded between $[0,1]$. Occasionally, cosine distance is used, which is $1 - \cos$, in which case proportional or highly similar vectors will have a cosine distance of 0, while dissimilar vectors will have a cosine distance of 1.
-% Add some exercises to the end.
+It's worth noting that different comparison measures often arise from different  approaches to the data.  The easiest way to see this is by considering a table. Recall from chapter \extref{ch_data_science} that tables are commonly used in neural networks and that columns are often described as features. Here is a table of data
+\begin{center}
+\begin{tabular}{ccc}
+\textbf{Individual} & \textbf{Height (ft)} & \textbf{Weight (lb)} \\
+\hline
+1 & 5.0 & 120 \\
+2 & 5.5 & 180 \\
+3 & 6.5 & 210 \\
+4 & 6.0 & 150 \\
+5 & 5.8 & 170 \\
+\end{tabular}
+\end{center}
+In neural network contexts, we frequently focus on the \emph{rows} of such a dataset and compare them, for example considering pairs of input vectors or activation vectors to assess their similarity. Often dot product or cosine similarity are used to see if they point in the same direction in an input space or activation space.  Often we have many rows and thus many points to think about, a cloud in a space. By contrast, when computing covariance or correlation, we typically work with the \emph{columns}, of such a dataset, comparing features like weight and height. We then compute the correlation or covariation a single time, getting a single value out of the pair of vectors. Or if we have many columns with many features (suppose we also had BMI, resting heart rate, and age in the table above), we might compute multiple correlations or covariances.  So in a sense dot product and cosine similarity are more row oriented, and correlation and covariance are more column oriented.
 
+Given a set of vectors, we can compute all their pairwise relationships using the methods above. Correlation matrices and covariances are well known for this purpose. We refer to these generally as \textbf{vector comparison matrices}. These matrices serve as  tools for exploring similarity, alignment, or statistical dependence among sets of vectors.  It is very helpful to be able to interpret these. They also function as processing elements of some networks, most famously the transformer architecture used in large language models, where the self attention matrix compares vector representations of all the tokens in a context window (see chapter \extref{ch_transformers}).  
 
-\section{Vector Spaces as Metric Spaces}
+Here is an example using pairwise dot products (what is sometimes called a ``Gram matrix''). Suppose we have three vectors in \( \mathbb{R}^3 \):
 
-A vector space can have a metric, which is a way to define the distance between any two points. The usual metric for a real vector space is the Euclidean metric, which can be expressed in terms of the dot product. The Euclidean metric uses the concept of a norm, denoted by double bars $|| \cdot ||$, which measures the ``length'' of a vector. Specifically, the norm of a vector $\mathbf{x}$ is the square root of the dot product of the vector with itself: $||\mathbf{x}|| = \sqrt{\mathbf{x} \bullet \mathbf{x}}$.  With this
+\[
+\mathbf{v}_1 = 
+\begin{bmatrix}
+1 \\
+0 \\
+1
+\end{bmatrix}, \quad
+\mathbf{v}_2 = 
+\begin{bmatrix}
+0 \\
+1 \\
+1
+\end{bmatrix}, \quad
+\mathbf{v}_3 = 
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
+\]
+
+We can construct a dot product matrix by computing every pairwise dot product:
+
+\[
+\begin{array}{c|ccc}
+ & \mathbf{v}_1 & \mathbf{v}_2 & \mathbf{v}_3 \\
+\hline
+\mathbf{v}_1 & \mathbf{v}_1 \cdot \mathbf{v}_1 = 2 & \mathbf{v}_1 \cdot \mathbf{v}_2 = 1 & \mathbf{v}_1 \cdot \mathbf{v}_3 = 1 \\
+\mathbf{v}_2 & \mathbf{v}_2 \cdot \mathbf{v}_1 = 1 & \mathbf{v}_2 \cdot \mathbf{v}_2 = 2 & \mathbf{v}_2 \cdot \mathbf{v}_3 = 1 \\
+\mathbf{v}_3 & \mathbf{v}_3 \cdot \mathbf{v}_1 = 1 & \mathbf{v}_3 \cdot \mathbf{v}_2 = 1 & \mathbf{v}_3 \cdot \mathbf{v}_3 = 2 \\
+\end{array}
+\]
+
+So we get
+
+\[
+=
+\begin{bmatrix}
+2 & 1 & 1 \\
+1 & 2 & 1 \\
+1 & 1 & 2 \\
+\end{bmatrix}
+\]
+
+This matrix shows, for instance, that \( \mathbf{v}_1 \cdot \mathbf{v}_2 = 1 \), indicating 
+moderate alignment between those two vectors, and that each vector has a dot product of 2 
+with itself (its squared length).
+
+In Simbrain there is a tool that is often useful for comparing a set of vectors to itself in all pairwise combinations, using any of the  methods mentions in this section. It is shown in figure \ref{corrPlot}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5]{./images/corrPlot.png}
+\caption[Simbrain screenshot from Jeff Yoshimi.]{A plot in Simbrain that allows a set of vectors (here labeled ``A'', ``B'', etc. They are vectors that correspond to flattened pixel images of letters) to be compared using various vector comparison methods. Any set of vectors can be used to create this kind of plot. The diagonals generally show maximal values for similarity measures, since vectors are on most measures maximally similar to themselves. }
+\label{corrPlot}
+\end{figure}
+
+% Add some exercises to the end where they construct these
+
+\section{Vector Spaces as Metric Spaces}\label{metricSpace}
+
+% A picture would be nice here
+% Should magnitude be mentioned here? 
+
+A vector space can have a metric, which is a way to define the distance between any two points. The usual metric for a real vector space is the Euclidean metric, which can be expressed in terms of the dot product. The Euclidean metric uses the concept of a \glossary{norm}, denoted by double bars $|| \cdot ||$, which measures the ``length'' of a vector. Specifically, the norm of a vector $\mathbf{x}$ is the square root of the dot product of the vector with itself: $||\mathbf{x}|| = \sqrt{\mathbf{x} \bullet \mathbf{x}}$.  With this
 metric the distance between any pair of vectors in $\real^n$ is:
 \begin{equation*}
 \mathbf{x} = (x_1, x_2, \ldots, x_n) \qquad
@@ -466,11 +509,11 @@ values. Here is an example of a matrix:
 \]
 It is conventional to describe matrices by stating the number of rows and 
 columns they have, in that order. The example above is a $4 \times 3$ 
-matrix because it has 4 rows and 3 columns.\footnote{The notation for vectors typically includes a comma-separated list of the vector's components. The notation for matrices typically does contain not commas. A  matrix's components are only aligned into rows and columns without any extra characters to separate them. Otherwise we think of vectors as special cases of matrices. A vector with $n$ components can be represented as either a $1 \times n$ matrix or as an $n \times 1$ matrix. So far we have been representing vectors as $1 \times n$ matrices.}  Each row of a matrix is called a \glossary{row vector} and each column is called a \glossary{column vector}. The matrix above has four row vectors and 
+matrix because it has 4 rows and 3 columns.\footnote{The notation for vectors typically includes a comma-separated list of the vector's components. The notation for matrices typically does contain not commas. A  matrix's components are only aligned into rows and columns without any extra characters to separate them. Otherwise we think of vectors as special cases of matrices. A vector with $n$ components can be represented as either a $1 \times n$ matrix or as an $n \times 1$ matrix. So far we have been representing vectors as $1 \times n$ matrices.} This is also called the \glossary{shape} of a matrix.  Each row of a matrix is called a \glossary{row vector} and each column is called a \glossary{column vector}. The matrix above has four row vectors and 
 three column vectors.\footnote{Note that vectors  are matrices and matrices are vectors!  As already noted, vectors are a special kind of a matrix, 
 a matrix with one row or one column. Conversely, matrices are technically a 
 kind of vector, since they satisfy the formal definition of a vector (they 
-exist in vector spaces called ``matrix spaces''). However, it will be easier for us to follow standard practice and treat these as separate kinds of mathematical objects.}
+exist in vector spaces called ``matrix spaces''). However, it will be easier for us to follow standard practice and treat these as separate kinds of mathematical objects.}  
 
 \begin{figure}[h]
 \centering
@@ -595,18 +638,79 @@ Figure \ref{sparseRecurrent} shows another example, that shows what we do when s
 In the special case where most of the entries in a weight matrix are $0$, the matrix is called a \glossary{sparse matrix}. The matrix representing the weights in figure \ref{sparseRecurrent} is sparse. A sparse matrix is contrasted with dense matrix, where most of the entries are non-zero. Really these are two ends of a continuum described by a number called \glossary{sparsity}, which ranges from $0$ to $1$, and where higher values are more sparse. The sparsity of a matrix is obtained by counting how many zero entries the matrix has and dividing by the total number of entries. If all of the matrix entries are $0$ then the sparsity of the matrix is $1$. If half of the entries are $0$ then the sparsity is $.5$.  If none of the matrix entries are $0$ then the sparsity of the matrix is $0$. The matrix in the table above has $16$ entries, $12$ of which are $0$, so its sparsity is $12/16 = 3/4 = .75$. Sparse weight matrices represent sparsely connected networks, where only a few of the possible connections between relevant nodes exist (recall that a matrix representation of a network uses $0$ to represent the absence of a connection).  Dense matrices are used to represent densely connected networks. The word ``dense connection'' or ``dense weight layer'' in this context often implies a sparsity of $0$, that is, an ``all-to-all'' or ``fully connected'' set of weights between relevant nodes.
 % Think about whether some clarification about feed-forward and recurrent weight layers is needed
 
-\section{Vector-Matrix Product}
+\section{Matrix Multiplication (Part 1)}
 
-% TODO: Should obviously update this material once the new material is added
-The power of matrices in neural networks is our ability to use them to represent weights and transformations of activation vectors as they propagate. We are splitting the topic into two parts. For the version of the course the book currently focuses on, we only consider one case: a vector-matrix product. We can understand this in a simplified way using mainly just the dot product. But this is just a specially curated case, and the full story is more complex and involves more cases.\footnote{\label{leftRightConvention}  We will not give a general definition of matrix multiplication or matrix product here. Instead, we will describe a special case of it: ``vector-matrix'' multiplication, which involves multiplying an activation vector on the left times a weight matrix on the right.We are presenting the computation as a row vector on the left times a weight matrix on the right, which is required by the ``source-target'' representation (see note \ref{sourceTarget}). It is also easy to think about in terms of the operations involved in updating a neural network: an activation vector is ``passed through'' a weight matrix to produce another activation vector, in this case a hidden unit vector. However, this is non-standard. In linear algebra and most applications this operation would usually be represented with the matrix on the left and a column vector on the right. This is because a matrix is often thought of as a function that operates or acts on a vector, transforming inputs to outputs.}  But we're starting simple.
+In this section we begin a discussion of matrix multiplication, where two matrices are multiplied by one another. There is nothing fundamentally difficult about this operation: it is just a combination of multiplying and adding entries, but the details can be tricky. There are established conventions for which things to multiply and add together, and they can be hard to remember. However, being able to do these computations is a crucial skill in neural networks, given how pervasive they are. Adding to the difficulty is that there is a kind of ambiguity to the process: matrix multiplications can often be thought of in different but compatible ways, as we will see (also see note \ref{sourceTarget}).
 
-So the way we do things here, we focus on taking an input vector, and dotting it with columns of a weight matrix, which (in the source-target format) represent fan-in weight vectors. In this way we produce a new output vector. Each of these dot products is a weighted input (see chapter \extref{ch_act_functions}). Assuming a default unbounded linear activation function, this can be used to represent weight propagation. We consider the feed-forward case first, then the recurrent case.
+We start with the case where one of the matrices is a vector (recall that vectors are a kind of matrix, where there is either a single row or a single column). When a matrix is multiplied by a column vector it is called left multiplication (because the matrix is on the left). When a row vector is multiplied by a matrix it is called right multiplication (because the matrix is on the right). In the first case of $\mathbf{A}v$ we go from matrix and column vector to a new column vector. In the second case of $v\mathbf{A}$ we go from a row vector and a matrix to a new row vector.  The first case ``processes'' an input row into a transformed output row. The second case processes an input column vector into a transformed column vector (this concept of ``processing'' will be important below). These cases are good to start with because they show the basic mechanics of the operations, which is to take a vector, and ``scan'' it over the matrix in a certain way, taking dot products as you do, which are then ``written out'' to an output vector.  
 
-Feed-forward. Consider the feed-forward network in figure \ref{labelledNets}, which uses linear activation functions without bias (we are also ignoring clipping) so that node activations just are weighted inputs. That is, we multiply the input vector by the intervening weight matrix to obtain the hidden unit vector:  $\textbf{a}_{hidden} = \textbf{a}_{input} \textbf{W}_{input,hidden}$. We can then multiply the hidden unit vector by the hidden-to-output layer weight matrix to get the output vector. We can continue to do this for all the layers of a feed-forward network. So, for linear networks, pretty much all we do when updating the network is use matrix products (and even for non-linear networks, we use the matrix product to compute vectors of weighted inputs, which are then transformed by, for example, sigmoid functions).
+Left multiplication, where a matrix is multiplied by a column vector to produce a new column vector, is more common in mathematics. We can think of the matrix as ``operating'' on the vector. Figure \ref{matrixVectorProduct} shows how to perform the operation. Take the column vector and dot it with the first row to produce a the first entry in the output column vector. Then scan down the rows the write out the result.  In a sense we have transformed the vector. The matrix represents the transformation, vector on the right is the input, and the vector on the left is the output (the analogy to neural networks, which we come to in the next section, should be clear).\footnote{The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.}
 
-Here is an informal description of how to multiply a vector on the left by a matrix on the right: take the dot product of the vector on the left and the first column vector in the matrix. The resulting number is the first component of a row vector, which will be the result of this operation. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{images/matrixVectorProduct.png}
+\caption[Jeff Yoshimi.]{The column vector can be thought of as being mental rotated and scanned across the rows of the matrix to it's left, taking dot products along the way which are written out to the output vector, which is also a column vector. Alternatively, think of removing the rows from the matrix one by one, and dotting with the column vector, writing out the output vector as we do.}
+\label{matrixVectorProduct}
+\end{figure}
 
-Consider an example. Suppose the feed-forward network in figure \ref{labelledNets} has linear activation functions and 0 bias, and its input activation vector is $\textbf{a}_{input} = (1,2)$. To compute the hidden layer activation vector, we compute the dot product between the input vector and each of the three column vectors:
+Here's the example from Figure \ref{matrixVectorProduct} worked out:
+\[
+  \begin{pmatrix}
+    1 & 2 \\
+    3 & 4 \\
+    0 & 1
+  \end{pmatrix}
+    \begin{matrix}
+    \begin{pmatrix}1\\2\end{pmatrix}
+  \end{matrix}
+  =
+  \begin{pmatrix}
+    (1)(1) + (2)(2) \\
+    (1)(3) + (2)(4) \\
+    (1)(0) + (2)(1)
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    5 \\
+    11 \\
+    2
+  \end{pmatrix}
+\]
+\vspace*{.1cm}
+
+The same example can also be represented by a right multiplication, where we transpose the matrix (see appendix for a definition of transpose). To multiply a row vector on the left by a matrix on the right: take the dot product of the row vector and the first column vector in the matrix (see figure \ref{vectorMatrixProduct}. The resulting number is the first component of a row vector. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/vectorMatrixProduct.png}
+\caption[Jeff Yoshimi.]{The row vector can be thought of as being rotated and scanned along the matrix to its right, writing out the output vector, which is also a row vector. Alternatively the columns of the matrix can be thought of as being removed one by one and dotted with the row vector, writing out the output vector.}
+\label{vectorMatrixProduct}
+\end{figure}
+
+Here's the example from figure \ref{vectorMatrixProduct} worked out:
+\[
+  \begin{matrix}\begin{pmatrix}1 & 2\end{pmatrix}\\\mbox{}\end{matrix}
+  \begin{pmatrix} 1 & 3 & 0 \\ 2 & 4 & 1 \end{pmatrix} 
+  =
+  \bigg( (1)(1) + (2)(2) ,\;\; (1)(3) + (2)(4) ,\;\; (1)(0)+ (2)(1) \bigg)
+  =
+  \begin{pmatrix}  5 \;\; 11 \;\;\; 2  \end{pmatrix}
+\]
+\vspace*{.1cm} 
+
+So in this case row vectors are transformed into row vectors. This approach is less common, perhaps because it takes more space to write out. However, we will see a variant on this approach is quite common when we deal with larger matrix products.
+
+Note that the very same operation can be represented in two equivalent ways, by using the transpose. This is based on the theorem that  $\mathbf{A}v =  v^T\mathbf{A}^T$, and is the basis of the ambiguity mentioned above. 
+
+\section{Matrix Multiplication (Applications)}
+
+% We will introduce some graphical conventions here. There will be variants on them throughout the book.
+
+In this section we apply the ideas above, focus on the case of a row vector times a matrix.\footnote{This matches the source-target format for representing fan-in weight vectors (note \ref{sourceTarget}) which we have chosen for convenience in much of this book.} In this way we produce a new output vector. Each of these dot products is a weighted input (see chapter \extref{ch_act_functions}). Assuming a default unbounded linear activation function, this can be used to represent weight propagation. We consider the feed-forward case first, then the recurrent case.
+
+Consider the feed-forward network in figure \ref{labelledNets}, which uses linear activation functions without bias (we are also ignoring clipping) so that node activations just are weighted inputs. That is, we multiply the input vector by the intervening weight matrix to obtain the hidden unit vector:  $\textbf{a}_{hidden} = \textbf{a}_{input} \textbf{W}_{input,hidden}$. We can then multiply the hidden unit vector by the hidden-to-output layer weight matrix to get the output vector. We can continue to do this for all the layers of a feed-forward network. So, for linear networks, pretty much all we do when updating the network is use matrix products (and even for non-linear networks, we use the matrix product to compute vectors of weighted inputs, which are then transformed by, for example, sigmoid functions).
+
+Suppose the feed-forward network in figure \ref{labelledNets} has linear activation functions and 0 bias, and its input activation vector is $\textbf{a}_{input} = (1,2)$. To compute the hidden layer activation vector, we compute the dot product between the input vector and each of the three column vectors:
 \[
   \begin{matrix}\begin{pmatrix}1 & 2\end{pmatrix}\\\mbox{}\end{matrix}
   \begin{pmatrix} 1 & 0.7 & 2 \\ -2 & -1 & 2.1 \end{pmatrix} 
@@ -622,7 +726,7 @@ This can be visualized by imagining that an input activation vector is being com
 % 1,2 as input confusing because it overlaps indices in video. Change?
 Now for the recurrent case. We can do the same kind of thing with the sparse recurrent network in figure \ref{sparseRecurrent}, but in this case we will be determining its activations at successive time steps. This is because with a recurrent network, the output can always be fed right back into the network as input, which gives these networks their dynamic properties. Let the weight matrix be  $\textbf{W}_{r}$ then a sequence of activation vectors $\textbf{a}(1), \textbf{a}(2), \textbf{a}(3), \dots$ (with time in parentheses) is given by $\textbf{a}(2) = \textbf{a}(1) \textbf{W}_{r}$, $\textbf{a}(3) = \textbf{a}(2) \textbf{W}_{r}$, etc. 
 
-This is easy to see by exmaples. Suppose we have activated node 2 of the network in figure \ref{sparseRecurrent} and we start iterating. Since the activations and weights are all whole numbers, it's not too hard to compute this out for a few time steps. Again just dot the input vector by the columns to write out the first output, where we get the activation vector at time 2 by multiplying the initial activation vector by the weight matrix (that is, $\textbf{a}(1) \textbf{W}_{r} = \textbf{a}(2)$):
+This is easy to see by examples. Suppose we have activated node 2 of the network in figure \ref{sparseRecurrent} and we start iterating. Since the activations and weights are all whole numbers, it's not too hard to compute this out for a few time steps. Again just dot the input vector by the columns to write out the first output, where we get the activation vector at time 2 by multiplying the initial activation vector by the weight matrix (that is, $\textbf{a}(1) \textbf{W}_{r} = \textbf{a}(2)$):
 \[
 \begin{pmatrix}
 0 & 1 & 0 & 0  
@@ -645,8 +749,117 @@ This is easy to see by exmaples. Suppose we have activated node 2 of the network
 (0,1,0,0),\; (-1,0,0,0),\; (0,0,0,-1),\; (0,0,0,1),\;  (0,0,0,-1)\; \dots
 \end{equation*}
 You can easily set this up in Simbrain and confirm this is what happens. We will see in the dynamical systems chapter \extref{ch_dst} that this is one \emph{orbit} in the network's activation space. In this case, the network has started to oscillate between two states, and it will do that forever, and that behavior is basically encoded in the weight matrix.
- 
-%The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.
+
+\section{Matrix Multiplication (Part 2)}\label{matrixMultiplication}
+
+% This is awesome but fork it and do it my way: http://matrixmultiplication.xyz/
+
+We now consider arbitrary matrix multiplications, rather than cases where one of the matrices is a vector. However, we make use of mental models we developed in the matrix/vector case.
+
+Consider a matrix multiplication 
+\begin{align*}
+\mathbf{A}\mathbf{B} = \mathbf{C}
+\end{align*}
+
+% Need lots of new exercises 
+A first useful skill to have down before getting to computations is the skill of checking to see that a matrix multiplication is possible, and also anticipating what the shape of the output will be. This is nice and easy to do. If $\mathbf{A}$ has shape $(m, n)$ and matrix $\mathbf{B}$ has shape $(n, p)$, then the product $\mathbf{C}$ is defined and has shape $(m, p)$. For example: 
+\[
+\text{Shape: } (5 \times 2) \times (2 \times 7) \Rightarrow (5 \times 7)
+\]
+The ``inner'' dimensions (2 and 2) match, so the multiplication is valid. The resulting matrix is $5 \times 7$. Notice that as long as the inner dimensions match, we can have any ``outer'' dimensions we like. 
+% Some matrices will take us from a lower dimension to a higher dimensional space (these are sometimes called ``up projections'').  Other matrices will take us from a higher dimensional space to a lower dimensional space (these are sometimes called ``down projections'') 
+
+A multiplication $\mathbf{A}\mathbf{B} = \mathbf{C}$ can be interpreted in several complementary ways. Perhaps the most common way is ``entrywise'': the $(i,j)$ entry of the result $\mathbf{C}$ is computed by taking the dot product of the $i$th row of $\mathbf{A}$ and the $j$th column of $\mathbf{B}$. See figure \ref{entryWiseMatrixProduct} for an illustration. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{images/matrixProductEntryWise.png}
+\caption[Jeff Yoshimi.]{Row $i$, column $j$ of $\mathbf{C}$ is the dot product of row $i$ of $\mathbf{A}$ and column $j$ of $\mathbf{B}$. Here entry $(2,1)$ of $\mathbf{C}$ is the dot product of row $2$ of $\mathbf{A}$ and column $1$ of $\mathbf{B}$.}
+\label{entryWiseMatrixProduct}
+\end{figure}
+
+However, often when dealing with neural network applications, it helps to zoom-out and imagine that rows or columns are being ``processed'' by the matrix. This builds on the idea left multiplications transforms columns to new columns and that right multiplication transforms rows to new rows. In the more general case, it turns out the row to row perspective is helpful and perhaps more common in some discussions. 
+
+We will start with the ``row processing'' respective. Here we view $\mathbf{A}$ in  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as a stack of row vectors which we peel off one by one and right multiply by $\mathbf{B}$ to build up $\mathbf{C}$.\footnote{Alternatively, we can think of this as taking linear combinations of the rows of $\mathbf{B}$, which is another useful perspective.} This idea of taking a stack of rows and pushing them through a matrix to get another stack of rows is common with batch processing and in understanding how representations ``move'' through a transformer.\footnote{See \url{ https://e2eml.school/transformers.html}.}
+
+Figure \ref{rowPerspective} shows the idea abstractly. We peel off the rows of $\mathbf{A}$ and multiply them by the matrix $\mathbf{B}$ as described in the discussion above. Notice that the result is another collection of rows in $\mathbf{C}$, with as many rows as were in $\mathbf{A}$, where we just think of each rows as being the matrix transformation of that row by $\mathbf{B}$. This will be crucial in the discussions of transformers in chapter \extref{ch_transformers}. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{images/rowPerspective.png}
+\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``row processing''.  The rows of the left matrix $\mathbf{A}$ are taken one by one, and multiplied by matrix $\mathbf{B}$  on the right, using the methods of the section above on right multiplication.  This is done for each row (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a stack of rows, each of which has been processed by $\mathbf{B}$.}
+\label{rowPerspective}
+\end{figure} 
+
+We basically repeat multiple row vector times matrix multiplications to build out the output. We think of rows of $\mathbf{A}$ as being operated on by $\mathbf{B}$:
+
+\begin{align*}
+\begin{bmatrix}
+\text{--- } \mathbf{a}_1 \text{ ---} \\
+\text{--- } \mathbf{a}_2 \text{ ---} \\
+\vdots \\
+\text{--- } \mathbf{a}_m \text{ ---}
+\end{bmatrix}
+\cdot
+\mathbf{B}
+=
+\begin{bmatrix}
+\text{--- } \mathbf{a}_1 \mathbf{B} \text{--- } \\
+\text{--- } \mathbf{a}_2 \mathbf{B} \text{--- } \\
+\vdots \\
+\text{--- } \mathbf{a}_m \mathbf{B} \text{--- }
+\end{bmatrix}
+\end{align*}
+
+We can also take a column perspective on generic matrix multiplications, treating $\mathbf{B}$ in $\mathbf{A}\mathbf{B} = \mathbf{C}$ as a sequence of column vectors, which we peel off one by one and left multiply by $\mathbf{A}$ to build up the columns of $\mathbf{C}$.\footnote{See \url{https://www.coursera.org/learn/matrix-algebra-determinants-and-eigenvectors/supplement/mGkyi/matrix-operations}.} 
+
+Figure \ref{columnPerspective} shows the idea abstractly. We basically repeat multiple matrix by column vector multiplications to build out the output. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{images/columnPerspective.png}
+\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``column processing''.  The rows of the right matrix $\mathbf{B}$ are taken one by one, and multiplied by matrix $\mathbf{A}$  on the left, using the methods of the section above on left multiplication.  This is done for each column (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a file of columns, each of which has been processed by $\mathbf{A}$.}
+\label{columnPerspective}
+\end{figure} 
+
+We think of $\mathbf{A}$ as operating on columns of $\mathbf{B}$ to write out columns as $\mathbf{C}$:
+
+\begin{align*}
+\mathbf{A} \cdot
+\begin{bmatrix}
+\vert &        & \vert \\
+\mathbf{b}_1 & \cdots & \mathbf{b}_n \\
+\vert &        & \vert
+\end{bmatrix}
+=
+\begin{bmatrix}
+\vert &        & \vert \\
+\mathbf{A} \mathbf{b}_1 & \cdots & \mathbf{A} \mathbf{b}_n \\
+\vert &        & \vert
+\end{bmatrix}
+\end{align*}
+
+
+\section{Flow Diagrams}\label{flowDiagrams}
+
+We saw in the last section that a matrix multiplication where we think of the left matrix as a stack of rows can be thought of as transforming each row by the matrix on the right.  The output matrix has the same number of rows as the input matrix, and matrix is like a transformation operating down the rows (again, we can also do this from a column perspective, but rows are more common in the relevant contexts and so we simply decide to focus on them). 
+
+This sets up a kind of diagram that we will sometimes use in later chapters, one where we only show the matrices and other transformations, and simply assume that stacks of rows (or other more complicated structures, like tensors, discussed next) are being processed by weight matrices, activation functions, and other mathematical operations. What we have called ``node layers'' are not shown.  One might call these matrix flow diagrams, tensor flow diagrams, activation processing diagrams, etc. There is no settled terminology to our knowledge, but this way of viewing things has become standard in the literature.
+
+Figure \ref{flowPerspective} shows the idea. In the left panel, a matrix is shown as a stack of rows being processed by two weight matrices $\mathbf{M1}$ and $\mathbf{M2}$. This could represent a 2 weight layer feed-forward network. Notice that it's the same kind of network we talk about elsewhere in the book, but that we now think of it as processing stacks of vectors, not individual vectors. Also note the shape changes between the two matrices, in the hidden layer (a stack of hidden layer activations), but that the number of rows has stayed the same. Also notice that the bottom to rows remain zeros throughout, and so when they are multiplied by the matrices they stay zero. 
+
+Also shown is an arrow from the input to the output, representing skip connection or residual connection. This implies that the input matrix is added to the output matrix. Addition of matrices (and other tensors, as discussed below) is defined when their shape stays the same. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{images/flowPerspective.png}
+\caption[Jeff Yoshimi.]{(Left panel) Two matrices are used to process a matrix input conceptualized as a stack of rows. This is essentially a two weight layer feedforward linear network, though we can assume activation functions are being applied (such as ReLU, in which case such a network might be called an ``MLP'', for multilayer perceptron. Even though it is a standard network, we can see here that it can process matrices because of the features of matrix multiplication discussed above. In this example there is also a skip or residual connection from the input to the output, which assumes that the input and output retain the same shape, even if the hidden layer activations are of a different shape. (Right panel). The entire diagram can be simplified to a simpler diagram in which only the flow of activation is shown, as well as any mathematical operations. Here the entire MLP is being reduced to a single box labeled  $\mathbf{T}$. }
+\label{flowPerspective}
+\end{figure} 
+
+Overall we think of the matrices shown in bold ($\mathbf{M1}$ and $\mathbf{M2}$) as doing the processing (mainly weight matrices and related structures in this book), and of the other matrices as being processed (mainly representing stacks of activation vectors in this book).  This facilitates another kind of diagram, where we don't show the stacks of activation vectors, but only the processing elements, sometimes collapsing several processing layers into one box.  On the right of figure \ref{flowPerspective} such a diagram is shown. In this diagram the skip connection is shown as a straight line up--what is sometimes called a ``residual stream'', with the detour into a few layers of feed-forward processing shown by a box labeled $\mathbf{T}$. It's as if the processor reads from the main line then writes back to it. In this way we can have many different operations of reading to and writing from a residual stream. This will be important in the discussion of transformers and their mechanistic interpretation.
+% Citations
+% All components of a transformer (the token embedding, attention heads, MLP layers, and unembedding) communicate with each other by reading and writing to different subspaces of the residual stream. Rather than analyze the residual stream vectors, it can be helpful to decompose the residual stream into all these different communication channels, corresponding to paths through the model. > \cite{elhage2021mathematical}
 
 \section{Tensors}\label{sect_tensors}
 
@@ -689,32 +902,11 @@ We can refer to the different indices for a tensor using standardized names in a
 % Can use all numbers in a shape or not, depending on the context (e.g a library might require a 4 tuple to specify a tensor even if it is a vector, like 1x1x6x5).
 % Much of the work in dealing with neural networks and neural net libraries is taking subsets of these tensors, slicing and indexing them, filtering them, and passing the right shaped thing from one place to another
 
-
-\section{Appendix: Block Matrix Representations}
-
-For the feed-forward network in figure \ref{labelledNets}, we can begin with a matrix for the full network, which illustrates some of its structure:
-\begin{equation*}
-   \left( 
-   \begin{array} {c|c|c}
-   \begin{matrix} 0 & 0  \\ 0 & 0 \end{matrix} &
-   \begin{matrix} 1 & 0.7 & 2 \\ -2 & -1 & 2.1 \end{matrix} &
-   \begin{matrix} 0 & 0  \\ 0 & 0 \end{matrix} \\
-   \hline
-   \begin{matrix} 0 & 0  \\  0 & 0  \\  0 & 0   \end{matrix} &
-   \begin{matrix} 0 & 0 & 0  \\ 0 & 0 & 0 \\ 0 & 0 & 0  \end{matrix} &
-   \begin{matrix} -2 & ~0.9  \\  ~~1 & -1  \\  -1 & -1.2  \end{matrix} \\
-   \hline
-   \begin{matrix} 0 & 0  \\ 0 & 0 \end{matrix} &
-   \begin{matrix} 0 & 0 & 0  \\ 0 & 0 & 0 \end{matrix} &
-   \begin{matrix} 0 & 0  \\ 0 & 0 \end{matrix}
-   \end{array}
-   \right)
-\end{equation*}
-This is a ``block matrix'' containing two blocks of non-zero values (corresponding to the layers that are connected), and 7 blocks of zeros (corresponding to possible layer-to-layer weight matrices that don't exist for this network, e.g. a recurrent layer from the hidden layer to itself, or a direct layer from the input to the output  layer). 
-% Above add ``input'', ''hidden'', ''target'' layer names to "block portions" on left and top. If possible also add row and column labels
 \section{Appendix: Vector Operations}\label{S:LinearAlgebraAppendix}
 
-% Possibly add discussions of orthogonality, orthonormality, and norms.
+% TODO: Organize into subsections?
+% Add matrix operations? Like adding and subtracting same-sized matrices
+% Pictures of adding and subtracting
 
 Vectors are not just lists of numbers. They are members of \emph{vector spaces}, which are abstract mathematical spaces that have an addition operation and a scalar multiplication operation, and other operations that can be defined on the basis of these. In this appendix we introduce these two basic operations and several others. We also develop the formal definition of a vector space.
    
@@ -820,6 +1012,66 @@ vector in the span of $(1,1)$ are equal to each other, so $(1,2)$ is not in the
 span of $(1,1)$. For every vector in the span of $(1,2)$ the second
 component is twice the first, so (1,1) is not in the span of $(1,2)$. Thus, 
 $\{ (1,2), (1,1) \}$ is also a basis for the plane. 
+
+The \glossary{transpose} of a matrix \( A \), denoted \( A^T \), is the matrix obtained by flipping \( A \) over its diagonal. That is, the element in the \( i \)th row and \( j \)th column of \( A \) becomes the element in the \( j \)th row and \( i \)th column of \( A^T \). Formally, 
+\[
+(A^T)_{ij} = A_{ji}.
+\]
+
+For example: 
+\[
+A = \begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{pmatrix}
+\quad \Rightarrow \quad
+A^T = \begin{pmatrix}
+1 & 4 \\
+2 & 5 \\
+3 & 6
+\end{pmatrix}
+\]
+
+Note that transpose rotates row vectors to make them column vectors and column vectors to make them row vectors.
+
+\section{Appendix: Elementwise (Hadamard) Product}\label{hadamard}
+
+The elementwise (or Hadamard) product of two vectors or tensors $\mathbf{a}$ and $\mathbf{b}$ with the same shape is denoted by $\mathbf{a} \odot \mathbf{b}$ and is defined as a vector or tensor of the shape whose entries are the products of the corresponding components of $\mathbf{a}$  and $\mathbf{b}$. That is, we multiply corresponding components of the two vectors to produce a new vector with the same shape as the original. In a way this is the most intuitive concept of multiplying vectors or tensors. Just line them up and multiply.
+
+For example
+\begin{eqnarray}
+(1,2) \odot (3,4) = (1 \cdot 3,  2 \cdot 4) =  (3,8)
+\end{eqnarray}
+
+The operation also works on matrices and higher-rank tensors. For example
+
+\begin{eqnarray}
+\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} \odot \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix} &=& \begin{pmatrix} 1 \cdot 5 & 2 \cdot 6 \\ 3 \cdot 7 & 4 \cdot 8 \end{pmatrix} = \begin{pmatrix} 5 & 12 \\ 21 & 32 \end{pmatrix}.
+\end{eqnarray}
+
+
+\section{Appendix: Block Matrix Representations}
+
+For the feed-forward network in figure \ref{labelledNets}, we can begin with a matrix for the full network, which illustrates some of its structure:
+\begin{equation*}
+   \left( 
+   \begin{array} {c|c|c}
+   \begin{matrix} 0 & 0  \\ 0 & 0 \end{matrix} &
+   \begin{matrix} 1 & 0.7 & 2 \\ -2 & -1 & 2.1 \end{matrix} &
+   \begin{matrix} 0 & 0  \\ 0 & 0 \end{matrix} \\
+   \hline
+   \begin{matrix} 0 & 0  \\  0 & 0  \\  0 & 0   \end{matrix} &
+   \begin{matrix} 0 & 0 & 0  \\ 0 & 0 & 0 \\ 0 & 0 & 0  \end{matrix} &
+   \begin{matrix} -2 & ~0.9  \\  ~~1 & -1  \\  -1 & -1.2  \end{matrix} \\
+   \hline
+   \begin{matrix} 0 & 0  \\ 0 & 0 \end{matrix} &
+   \begin{matrix} 0 & 0 & 0  \\ 0 & 0 & 0 \end{matrix} &
+   \begin{matrix} 0 & 0  \\ 0 & 0 \end{matrix}
+   \end{array}
+   \right)
+\end{equation*}
+This is a ``block matrix'' containing two blocks of non-zero values (corresponding to the layers that are connected), and 7 blocks of zeros (corresponding to possible layer-to-layer weight matrices that don't exist for this network, e.g. a recurrent layer from the hidden layer to itself, or a direct layer from the input to the output  layer). 
+% Above add ``input'', ''hidden'', ''target'' layer names to "block portions" on left and top. If possible also add row and column labels
 
 \section{Exercises}\label{linear_algebra_exercises}
 

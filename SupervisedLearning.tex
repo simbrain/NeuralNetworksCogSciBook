@@ -33,7 +33,7 @@ A labeled dataset can be thought of as a contract for a pattern association task
 
 \section{Supervised Learning: A First Intuitive Pass}\label{SupervisedFirstPass}
 
-In this chapter we focus on feed-forward networks, which can be thought of implementing vector valued functions. A labeled dataset is essentially a specification for a vector-valued function we'd like our compatible network to implement. Given an input vector $\mathbf{x}_r$ in a labeled dataset, we want the network to produce an output vector $\mathbf{y}_r$ as close as possible to the the corresponding target vector in that dataset. 
+In this chapter we focus on feed-forward networks, which can be thought of implementing vector valued functions (such networks are often referred to as ``MLP's'' or ``Multi-Layer Perceptrons'', in reference to earlier work by Widrow and others; see chapter \extref{ch_history}). A labeled dataset is essentially a specification for a vector-valued function we'd like our compatible network to implement. Given an input vector $\mathbf{x}_r$ in a labeled dataset, we want the network to produce an output vector $\mathbf{y}_r$ as close as possible to the the corresponding target vector in that dataset. 
 %Given an input vector $\mathbf{x}_r$ in the input dataset, we want the network to produce an output vector $\mathbf{y}_r = N(\mathbf{x}_r)$ in the target dataset. 
 
 % A labeled dataset compatible with $N$, containing an input dataset and a target dataset. The rows of the input dataset are $\mathbf{i}_i$, the the rows of the target dataset are $\mathbf{t}_i$, and the outputs of $N$ (the output dataset) are $\mathbf{y}_i$. Note that if we refer to $\mathbf{i}_i$ and $\mathbf{t}_i$, for example, we are referring to the  "corresponding" rows of the two datasets.

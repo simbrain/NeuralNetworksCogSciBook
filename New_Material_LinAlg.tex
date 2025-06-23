@@ -5,22 +5,6 @@
 % Nice pics and walk through here: https://e2eml.school/transformers.html
 % Outer product as a way of referring to column times row. See ency of scott "inner vs outer product"
 
-\subsection{Elementwise (Hadamard) Product}\label{hadamard}
-
-The elementwise (or Hadamard) product of two vectors or tensors $\mathbf{a}$ and $\mathbf{b}$ with the same shape is denoted by $\mathbf{a} \odot \mathbf{b}$ and is defined as a vector or tensor of the shape whose entries are the products of the corresponding components of $\mathbf{a}$  and $\mathbf{b}$. That is, we multiply corresponding components of the two vectors to produce a new vector with the same shape as the original. In a way this is the most intuitive concept of multiplying vectors or tensors. Just line them up and multiply.
-
-For example
-\begin{eqnarray}
-(1,2) \odot (3,4) = (1 \cdot 3,  2 \cdot 4) =  (3,8)
-\end{eqnarray}
-
-The operation also works on matrices and higher-rank tensors. For example
-
-\begin{eqnarray}
-\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} \odot \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix} &=& \begin{pmatrix} 1 \cdot 5 & 2 \cdot 6 \\ 3 \cdot 7 & 4 \cdot 8 \end{pmatrix} = \begin{pmatrix} 5 & 12 \\ 21 & 32 \end{pmatrix}.
-\end{eqnarray}
-
-
 \subsection{The scalar and vector tracks}\label{scalarVectorTracks}
 
 % TODO: Pictures for source-target representations. This is where to really emphasize that point.
@@ -79,70 +63,3 @@ In Simbrain 4.0, we have designed the representation of activation vectors and w
 %1x2
 %
 %So you would pass a list of the form [5x3, 2x5, 1x2] to your function. Remember, weight matrices on the left are multiplied by input and activations vectors on the right.I find this pretty counter-intuitive and takes me a lot of practice to think in this “output-input” way. I want to read left-to-right input-to-output but the standard conventions with matrix product reverse this...
-
-\subsection{Matrix Product}
-
-% This is awesome: http://matrixmultiplication.xyz/
-% Add a picture showing lines and how they are lined up together. Use the drawings Scott made (see FINAL_ProposalPacket_Preview_IES_Exploration_JeffYoshimi_v1).  
-
-
-% Connect to row space and column space perspectives.
-
-Consider a matrix multiplication 
-\begin{align*}
-\mathbf{A}\mathbf{B} = \mathbf{C}
-\end{align*}
-
-% Need a picture for this one
-This multiplication can be interpreted in several complementary ways, each offering unique insights depending on the context. Perhaps the most common way to learn matrix multiplication is ``entrywise'': the $(i,j)$ entry of the result $\mathbf{C}$ is computed by taking the dot product of the $i$th row of $\mathbf{A}$ and the $j$th column of $\mathbf{B}$:
-\[
-c_{ij} = \sum_k a_{ik} b_{kj}
-\]
-See figure \ref{entryWiseMatrixProduct} for an illustration. 
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.75\textwidth]{images/matrixProductEntryWise.png}
-\caption[Jeff Yoshimi.]{Row $i$, column $j$ of $\mathbf{C}$ is the dot product of row $i$ of $\mathbf{A}$ and column $j$ of $\mathbf{B}$. Here entry $(2,1)$ of $\mathbf{C}$ is the dot product of row $2$ of $\mathbf{A}$ and column $1$ of $\mathbf{B}$.}
-\label{entryWiseMatrixProduct}
-\end{figure}
-
-However, often when dealing with a neural network it is nice to be able to  zoom-out and not worry about specific entries, but just see that rows or columns are being ``processed'' by the matrix. This is a useful conceptual way to understand what is happening. Whether we focus on row processing or column processing is a matter of convention, but I believe the row processing perspective is slightly more common when thinking about convolutional networks or transformers. \footnote{A similar conventional choice occurs when deciding between  the source-target representation of weight matrices (row perspective) and the target-source representation of weight matrices (column perspective), as discussed in note \ref{sourceTarget}.}
-
-% On right multiplication, reference to a discussion above, which hopefully can include some nice images
-Row perspective. One way to view $\mathbf{A}\mathbf{B} = \mathbf{C}$ is to treat $\mathbf{A}$ as a stack of row vectors which we peel off one by one and right multiply by $\mathbf{B}$ to build up $\mathbf{C}$.  Recall that multiplication of a row vector on the left by a matrix on the right (``right multiplication'' because the matrix is on the right)  involves transposing the row vector into a column and dotting it with each column of  $\mathbf{B}$, to write out a row, here one row of $\mathbf{C}$.\footnote{Alternatively, we can think of this as taking linear combinations of the rows of $\mathbf{B}$.} This idea of taking a stack of rows and pushing them through a matrix to get another stack of rows is common with batch processing and in understanding how representations ``move'' through a transformer.\footnote{See \url{ https://e2eml.school/transformers.html}.} 
-
-\begin{align*}
-\begin{bmatrix}
-\text{--- } \mathbf{a}_1 \text{ ---} \\
-\text{--- } \mathbf{a}_2 \text{ ---} \\
-\vdots \\
-\text{--- } \mathbf{a}_m \text{ ---}
-\end{bmatrix}
-\cdot
-\mathbf{B}
-=
-\begin{bmatrix}
-\text{--- } \mathbf{a}_1 \mathbf{B} \text{--- } \\
-\text{--- } \mathbf{a}_2 \mathbf{B} \text{--- } \\
-\vdots \\
-\text{--- } \mathbf{a}_m \mathbf{B} \text{--- }
-\end{bmatrix}
-\end{align*}
-
-Column perspective. Another way to view $\mathbf{A}\mathbf{B} = \mathbf{C}$ is to treat $\mathbf{B}$ as a sequence of column vectors, which we peel off one by one and left multiply by $\mathbf{A}$ to build up the columns of $\mathbf{C}$. Recall that multiplication of a matrix by a column vector (left multiplication since the matrix is on the left) involves transposing the column vector into a row and dotting it with each row of  $\mathbf{A}$, to write out a column vector, here one column of $\mathbf{C}$.\footnote{See \url{https://www.coursera.org/learn/matrix-algebra-determinants-and-eigenvectors/supplement/mGkyi/matrix-operations}.} Even though left multiplication of a matrix by a column vector is more common in general, when thinking about batch operations and transformers, the row perspective is more common.
-
-\begin{align*}
-\mathbf{A} \cdot
-\begin{bmatrix}
-\vert &        & \vert \\
-\mathbf{b}_1 & \cdots & \mathbf{b}_n \\
-\vert &        & \vert
-\end{bmatrix}
-=
-\begin{bmatrix}
-\vert &        & \vert \\
-\mathbf{A} \mathbf{b}_1 & \cdots & \mathbf{A} \mathbf{b}_n \\
-\vert &        & \vert
-\end{bmatrix}
-\end{align*}
