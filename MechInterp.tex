@@ -1,0 +1,161 @@
+\chapter{Mechanistic Interpretability}\label{ch_mechinterp}
+\chapterauthor{David Udell, Jeff Yoshimi}{.6, .4}
+
+% Activation Engineering and Representation Engineering  are useful terms, but not where sure to put them.
+
+The modern transformer architecture (chapter \extref{ch_transformers}), trained at sufficient scale, can learn to speak English (as well as every other natural language, assuming sufficient training data). In this way LLMs outperform almost the entire animal kingdom. Only humans and LLMs speak English, as opposed to just learning some noun associations (though the topic is hotly contested; see the discussion in section \extref{stochasticParrot}). This naturally raises the question: how do the LLMs do it? What is special about these systems, that differentiates them from all prior programs and all non-human animals, and groups them together with us humans?
+
+In this chapter we discuss \glossary{mechanistic interpretability} (sometimes abbreviated as ``mechinterp''), a field of study within machine learning that attempts to explain how trained artificial neural networks work. It’s aim ``is to discover simple algorithmic patterns, motifs, or frameworks that can subsequently be applied to larger and more complex models... by conceptualizing the operation of transformers in a new but mathematically equivalent way, we are able to make sense of these small models and gain significant understanding of how they operate internally.''\cite{elhage2021mathematical}.\footnote{This has already become something of a classic text in mechinterp. We encourage the reader to have a look at the opening pages. The paper builds on an earlier thread at \url{distll.pub},  \url{https://transformer-circuits.pub/2021/framework/index.html}.} 
+
+Note that this goes well beyond earlier work simply looking at regions of an activation space or finding what feature a hidden layer is responding to (we discuss this further in section \ref{mechInterpHist}). The goal here is to understand \emph{processes}, ``algorithms'', stepwise procedures that unfold in a residual stream to produce meaningful responses.  A well-known practitioner in the field describes as follows
+
+\begin{quote}
+What is mechanistic interpretability? The core hypothesis of the field is that models learn human comprehensible algorithms. They contain structure that makes sense and can be understood. But they have no incentive to make this legible to us. They learn this structure because it is useful for getting loss on predicting the next token, and it is our job to learn how to reverse engineer it and how to make it legible''.\footnote{From \url{https://youtu.be/veT2VI4vHyU}.}
+\end{quote}
+
+In practice researchers in these fields refer to attempts to find ``programs'', ``algorithms'', or ``circuits'' that are learned by a model. These terms are not usually given precise definitions to our knowledge, but the intuitive idea is to be able to understand the steps that occur in a neural network, often focusing on the contextual representations of tokens as they are processed along a residual stream (see [ref]), in a way that makes sense to human interpreters.\footnote{The use of these terms raise deep issues in philosophy of cognitive science that are discussed at the end of chapter \extref{ch_transformers}.  We are agnostic about the exact interpretation here.}
+
+It is a remarkable feature of many neural network architectures, and especially LLMs, that we have built a system that we do not fully understand. Even though we now have neural networks that speak English, we still do not know how to explain English semantics! (Compare the discussion of neural network analysis in chapter \extref{ch_applications} and of analysis of transformers in section \extref{llm_cogsci}). Mechanistic interpretation is thus sometimes described as a form of reverse engineering. In an influential paper on the topic (which we encourage the reader to read, at least the opening pages) it is described as
+
+\begin{quote}
+attempting to reverse engineer the detailed computations performed by transformers, similar to how a programmer might try to reverse engineer complicated binaries into human-readable source code.  If this were possible, it could potentially provide a more systematic approach to explaining current safety problems, identifying new ones, and perhaps even anticipating the safety problems of powerful future models that have not yet been built.\cite{elhage2021mathematical} 
+\end{quote}
+
+From the standpoint of cognitive science and neuroscience, it’s like we have a working brain but one that we have complete access to. One might think of this as ``speedrunning'' neuroscience.  These ``programs'' executed by a transformer are, despite their inscrutability, far easier to scientifically investigate than animal models or human brains are. (Hence the intensive interest in LLMs in cognitive science; see section \extref{llm_cogsci}).
+
+% (I like this but where to put?)  Middle ground between black box ML and white box computer program.
+
+\section{Historical Context}\label{mechInterpHist}
+
+% Also earlier work on ablations. neuralDamageNetworks.png
+In prior chapters we have seen that the analysis of activation spaces of neural networks has been key to their interpretation as cognitive models, a history which extends back to the PDP revolution of the 1980s and 1990s. The common theme in this literature is that even if neural networks are in many ways biologically unrealistic (for example, the brain does not seem to use backprop), they can still be used to identify processing ideas and motifs that are demonstrably similar to those found in humans \cite{zipser1992identification}). In chapter \extref{ch_representations} in particular, we saw how across a range of networks internal representations could be meaningfully interpreted. In SRNs, vowels and consonants correspond to regions of the hidden unit spaces of a network trained to predict the next phonemes; grammatical and semantic categories correspond to regions of hidden unit space when it is trained to predict the next word in a sequence. We also saw in multiple chapters that hidden unit activations of trained neural networks often provide a strong match to neural activations in the brain, often better than the best prior models (see section \extref{deepVisionNets}). 
+
+In the word embedding chapter (section \extref{geometryWordEmbeddings}) we saw that it is common to represented token by vectors, where geometric relationships between these vectors are meaningful (e.g. the vector difference between the embeddings for ``king'' and ``queen'' corresponds to the subspace for gender). That pattern of structured semantic relationships is essentially what we see again in the activation spaces of (the vastly larger) trained transformers. Other threads of research in recent years have concerned feature visualization in deep networks, using methods such as saliency maps and activation maximization, to understand what the internal layers of a deep network are responding to inputs.
+%. (David) Another idea was the idea of subnetworks of a neural net. It was hoped that you could decompose the net into individually meaningful and interpretable subnetworks, and then those subnetworks would underwrite this "algorithms" concept.
+% (David) I think we should add some brief discussion of how none of these approaches panned out 
+
+Mechanistic interpretability is largely pursued in support of better engineering (see chapter \extref{ch_applications}). Not in terms of making LLMs perform better, which has been achieved by raw computational power and brute force scaling, but largely for the purpose of value alignment, being able to make LLMs behave in accordance with various goals, such as being friendly. For example, to take a cartoon example, if we could find a friendliness circuit more activation could be pumped into it. Or to be able to examine an LLMs world model and make sure there is nothing nefarious in it. 
+
+But, echoing another theme of the book, even if the field is focused on engineering goals like value alignment, the \emph{results} of this field are of immense value to cognitive science, providing a new set of conceptual tools for thinking about how information is processed in the neural networks of the brain.
+
+\section{Tools of Mechanistic Interpretability}
+
+\subsection{Linear Probes}
+
+% Brief summary of main methods: single unit, multi-unit, local field potential 
+In animal brains, electrode probes are used to ``eavesdrop'' on their electrical activity. The analogous data collection task is far easier in a trained transformer.  In general a probe is a trained auxiliary model that helps us understand whether a given concept is encoded in a particular layer or activation space of a neural network. Figure \ref{linearProbe} illustrates the idea. We harvest activations from somewhere in a transformer model, often somewhere along the residual stream, and then train a model to use those associations to ``probe'' for some feature.  
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5]{./images/linearProbe.png}
+\caption[Jeff Yoshimi; the line art for the probe was generated by ChatGPT.]{A probe for an LLM can be inserted anywhere in the processing stream and used to harvest activations for analysis.}
+\label{linearProbe}
+\end{figure}
+
+Why do this? The transformer itself was not trained to make its internal guts transparent in how they work (neither, for that matter, were the guts of us humans, and so we also need probes to understand how we work). Thus in humans, as in LLMs, a separate process, external to the system being studied, must be developed to make sense of what’s going on inside. As Elhage et al. note, ``when there are many equivalent ways to represent the same computation, it is likely that the most human-interpretable representation and the most computationally efficient representation will be different'' \cite{elhage2021mathematical}.
+
+Here is the general approach that is taken to making a probe. We will generally start with some kind of text, and for that text we will know in advance how to label things at different points along the text. Thus we use supervised learning (chapter \extref{ch_supervised}) to train these probes; we know in advance what we are looking for in the model.
+
+For example, given an input stream, we can train a probe to determine how emotionally charged the discussion is as we move from token to token, what grammatical role the tokens serve, positive vs negative affect, or whether what is being said is true or false. As long as we have labeled data we can use it to train a probe. We then feed this to the network, and train the probe at different layers to try to identify these features. That is we:
+
+\begin{enumerate}
+\item Expose the network to this labeled input stream
+\item Record activations from the LLM at some level (an attention head, an MLP hidden layer, or somewhere along the residual stream; see section \extref{transformers})
+\item Train a probe to associate those activations with our labels 
+
+\end{enumerate}
+
+Our linear probe is now a detector for the presence of that concept in model activations, at the point in the model for which it was trained.  
+
+\subsection{Sparse Autoencoders}
+
+The method of linear probes described above was supervised, it required prior knowledge of features of the input stream.  However, unsupervised methods for interpreting the mechanisms at work in a network also exist, in particular, \glossary{sparse autoencoders} or SAEs.  Sparse autoencoders are interesting because they are an unsupervised interpretability tool. We do not need to know in advance what concepts might appear in an activation space to find them.  Nodes in an LLM tend to be uninterpretable, seemingly each dealing in many unrelated concepts (this is because representations in neural networks are almost always distributed; see chapter \extref{ch_intro}).\footnote{Why are individual neurons in a model not ordinarily interpretable? One explanation begins with the idea that a trained model is trying to be maximally efficient with the neurons afforded to it. The feature superposition hypothesis is the claim that trained models are lossy compressions of much larger models than themselves. So, it is possible to ``overload'' a neuron, treating it as a linear combination of many conceptual classifiers. It can also be helpful to see this as a claim about efficient modeling of the world. The version of a model that is most interpretable to humans may not be the smallest version of the model. (From this perspective, sparse autoencoders are just an explicit attempt to undo that ``compactification'' of the model.}   An SAE can be used to extract more easily interpretable features from a set of activations. 
+
+An SAE is a map from an activation space to a larger hidden unit space such that hidden unit activations are (1) mostly zero valued and (2) contain enough information to reconstruct the original activation afterwards.  Since it is an autoencoder, we can train it anywhere inside a network simply by training it to associate a pattern with itself. We tell the optimizer to prefer hidden unit activations that are sparse.  So we get a sparse embedding space. Figure \ref{saeSimbrain} illustrates the idea. Note the input and the output are the same, it’s an auto-encoder, but we have trained the hidden unit activations to be sparse. So the nodes that light up in the middle are good candidates for interpretation.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5]{./images/saeSimbrain.png}
+\caption[Simbrain screenshot from Jeff Yoshimi.]{A sparse auto-encoder takes some input activations and maps it back to itself (notice the input and output activations are the same), through a hidden layer which the gradient descent algorithm tries to make as sparse as possible, producing a kind of localist representation of the input activations.}
+\label{saeSimbrain}
+\end{figure}
+
+% David: bibtex  below and expand
+The activated neurons in a sparse autoencoder seem to each represent a single, human-interpretable concept (Cunningham et al. 2023). 
+
+Those concepts tend to be ``higher-level'' when the sparse autoencoder is narrower (fewer hidden units) and ``lower-level'' when it is wider (more hidden units)
+
+% David: Need more discussion of what to do once these features are found. How are they used? I think we just reuse the linear probe / supervised methodology?
+
+\subsection{Activation Addition}
+
+A third tool in the toolbox of mechanistic interpretability is \glossary{activation addition}. Unlike linear probes (which train a simple classifier to detect a feature you already suspect) or sparse autoencoders (which compress activations into a small set of features), activation addition operates naturalistically, or “in the wild.” You simply record the model’s own hidden activations at the moment it expresses a concept, then re-inject that activation to amplify the concept in new contexts. In more detail
+
+\begin{enumerate}
+      \item Run the model on some input that elicits the feature you care about (e.g., a description of the Golden Gate Bridge).
+      \item Record an activation vector at the chosen layer 
+      \item Scale this vector using scalar multiplication (chapter \extref{ch_linear_algebra}) and at a later time add it back to that layer. With a large enough scaling factor, the model becomes “clamped” into that feature—e.g., turning Claude into a Golden-Gate-Bridge obsessive (see figure \ref{goldenGate}.
+ \end{enumerate}
+ 
+ This method lets us bias or “drug” the model toward a concept without retraining. However, it doesn’t reveal the micro-anatomy: we know \emph{which} activation directions matter, but not the underlying circuitry that produces them. It’s more like psychiatry (tuning behavior) than neurosurgery (mapping every synapse).
+ 
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{./images/goldenGate.png}
+\caption[Claude screenshot from David Udell.]{Claude before (left panel) and after (right panel) it's been spiked with a `Golden gate' drug.}
+\label{goldenGate}
+\end{figure}
+
+%When a known formal mathematical structure is expected to hold in a task, it can be possible to find it too. Because a particular logical relationship holds between propositions and their negations, a direction in activation space reflecting truthiness can be identified, for example (Li et al. 2024). [Below, prompt GPT for first president. So it’s getting ready to say George. If we add that activation to a distinct forward pass, it will become sort of about George washington. You can transfer brain state even though context is totally different. It works by degrees. You can add it full strength, or scalar multiply to get more talk about George washington.][Usually removed and reinjected at same layer or position but probably robust to that.]
+% You can swap layers around and it will often still; work; damage is mild. An interesting play on the old graceful degradation idea.
+
+\subsection{Other Techniques}
+
+% David: we can either add a tiny bit here as a suggestion of what's coming, or just comment the section out.
+
+Some other methods include activation patching ablating,  causal tracing, and interchange intervention .
+
+\section{Examples of What’s Been Found}
+
+Mechanistic interpretability has yielded a number of results.
+
+\subsection{Toy Models}
+
+A (usually small) transformer model that has been exclusively trained against a hand-designed algorithmic task is called a \glossary{toy model}. This name highlights the disparity between the enormous, trillion-parameter models that we converse with, and these far simpler research projects. However, researchers have successfully reverse engineered how some toy models work, and this cannot be said for full-scale naturalistic models.  So in these cases we have more or less fully worked out circuits.
+
+For example, a toy model trained only to perform modular addition converges to an interpretable algorithm \cite{nanda2023progress}.The model is fairly complicated, but the high-level idea is that arithmetical operations can be represented by activations that are processed through the residual stream. For example in computing $a + b$, each number is represented as a rotation, and the sum of their angles is computed as composition of two rotations (see figure \ref{toyModelAddition}).\footnote{The details are more complicated. It is addition mod $P$, and uses ``discrete Fourier transforms and trigonometric identities'' \cite{nanda2023progress} to support the conversion.} Before the circuit was worked out a clue to its function was the presence of circular structures in the activation space when measured at the attention heads and MLPs (\cite{nanda2023progress} , section 4.1).
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4]{./images/toyModelAddition.png}
+\caption[From \cite{nanda2023progress} .]{Addition in a trained neural network is represented by combining rotations together.}
+\label{toyModelAddition}
+\end{figure}
+
+% Othello is another example. ``In a follow-up study, Nanda et al. (2023) discovered that rather than representing the board state (e.g., representing each board tile as black, white, or empty), Othello-GPT actually encodes tiles relative to the current player (as player, opponent, or empty). By re-orienting probes to classify this player-centric representation, Nanda et al. demonstrated that the board state is in fact linearly encoded with high accuracy in the network, contrary to Li et al. (2023)’s claim that the board state is only encoded non-linearly (fig. 6).''
+
+% In another example, a toy model is trained to predict a series of tokens generated by a three-state hidden Markov model \cite{shai2024transformers}. Bayesian probability theory says that an optimal predictor of that generator would keep track of all the possible ways the generator could have evolved from its starting states, ruling out possibilities after each new datapoint came in. Tracking possible further evolutions of a generator, conditional on a sequence of prior observations, gives rise to a particular fractal structure in the predictor: a Sierpiński triangle, in the simple three-state hidden Markov model case. And indeed, a toy transformer trained on this task will, after sufficient training, converge to possessing that Sierpiński triangle (Shai et al. 2024).
+
+\subsection{Induction Heads}
+
+% David. I wrote this with notes and AI, so it clearly needs a pass. I still don't totally get it but this is in the direction... Also citations are needed. You mentioned (Wang et al. 2024) and anthropic.
+
+An early success in mechanistic interpretability was the identification of attention head activation patterns as semantically meaningful. 
+
+Researchers noticed that attention heads sometimes decide which earlier or later words in a sentence to focus on when guessing the next word. Early on, researchers found ``bigram heads'',  which pick out fixed pairs of words. For example, if the LLM sees the word ``Barack,'' this attention head will learn to look ``Obama.'' It’s as if the head has learned the rule ``when you see Barack, expect Obama.'' How this works in more detail can be understood using the concepts developed in section \extref{transformers}. Recall that we can think of a transformer as taking a stack of token representations and incrementally enriching them with context as they are processed by attention heads and MLPs. When an attention head points ahead and looks for some word, it sets almost all of its internal weights to zero except the one corresponding to the slot where it expects that word—here, the slot for ``Obama.'' The head ``reads'' the entire stack of vectors coming in from the residual stream, gives a weight near 1 to the ``Obama'' vector and near 0 to all others, then ``writes'' by taking that “Obama” vector and adding it back into the residual stream at the position for ``Barack.'' In this way the representation for “Barack” is enriched with the signal for “Obama” before the model moves on to the next layer.  
+
+Once bigram heads were understood, people started looking for longer ``$n$-gram heads, that might learn a three-word phrase like “New York City,'' so that whenever the model sees ``New,'' it reaches two words ahead to ``City.''
+
+Even more flexible are \glossary{induction heads} which form patterns on the fly. If the model encounters a pattern like ``$A \ldots B \ldots A$'' in a head, it remembers where the first $A$ appeared and then uses that memory to boost the chance of $B$ right after the second $A$--even if that exact $A-B-A$ pattern never showed up in training. It’s like the head is saying, ``I’ve seen this pattern before, so I know what to look for.''
+
+These discoveries provided a basic way of understanding what is going on inside attention heads. 
+
+This also helped show that attention heads tend to specialize depending on where they sit in the model: heads near the beginning handle basic grammar and short-range word links, heads in the middle build up meaning and relationships (for instance, figuring out what pronouns refer to), and heads near the end often circle back to grammar to polish the final prediction.
+
+
+%% OTHER TOPICS / FRAGMENTS
+
+% Not sure where or if to use this:  ``Based on this understanding, we define progress measures that allow us to study the dynamics of training and split training into three continuous phases: memorization, circuit formation, and cleanup. Our results show that grokking, rather than being a sudden shift, arises from the gradual amplification of structured mechanisms encoded in the weights, followed by the later removal of memorizing components." (Nanda)
+%
+% Had trouble integrating: As noted in the word embedding chapter, activation can be thought of as directions in an activation space. This information can be used in guided studies. Once located, a direction in activation space can even be scaled by scalar coefficients or added on to entirely different forward passes; these interventions change model outputs in the expected conceptual fashion, emphasizing or deemphasizing (Turner et al., 2023). 
+
