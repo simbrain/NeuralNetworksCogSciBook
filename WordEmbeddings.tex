@@ -173,7 +173,7 @@ In addition to co-occurrence based methods, neural networks can also be used to 
 
 \subsection{Geometric Properties of Word Embeddings}\label{geometryWordEmbeddings}
 
-One striking feature of word or token embeddings is that we can perform mathematical operations on them and get meaningful results. That is, the points in the embedding space that correspond to a set of tokens can be compared using addition, subtraction, and other vector operations (see chapter \extref{ch_linear_algebra}), and the results can be surprisingly meaningful.  A famous paper \cite{mikolov2013linguistic} analyzed Word2Vec embeddings for hundreds of words, and found that concepts such as gender and plurality could be captured by directions in the embedding space \ref{geometryWordEmbedding}. This is the case even though the Word2Vec network was not trained to capture these concepts; it is an emergent mathematical feature of the embedding.\footnote{The way the analysis worked was that a set of analogical relationships, like ``year is to years as law is to laws'', were formulated.  For each of these relationships the last term in the analogy (here ``laws'') is searched for where the vector approach would predict it is. The word closest to this point (by cosine similarity) is identified, and can be compared with what is known to be the correct item. In this way an accuracy metric can be computed.  Accuracy scores of 62.2 \% are obtained for verbs in the original paper, and higher accuracy has been obtained in subsequent embedding models such as Glove \cite{pennington2014glove}.}
+One striking feature of word or token embeddings is that we can perform mathematical operations on them and get semantically meaningful results. That is, the points in the embedding space that correspond to a set of tokens can be compared using addition, subtraction, and other vector operations (see chapter \extref{ch_linear_algebra}), and the results surprisingly capture how humans might conduct `operations' with concepts.  A famous paper \cite{mikolov2013linguistic} analyzed Word2Vec embeddings for hundreds of words, and found that concepts such as gender and plurality could be captured by directions in the embedding space \ref{geometryWordEmbedding}. This is the case even though the Word2Vec network was not explicitly trained to capture these concepts; it is an emergent mathematical feature of the embedding.\footnote{The way the analysis worked was that a set of analogical relationships, like ``year is to years as law is to laws'', were formulated.  For each of these relationships the last term in the analogy (here ``laws'') is searched for where the vector approach would predict it is. The word closest to this point (by cosine similarity) is identified, and can be compared with what is known to be the correct item. In this way an accuracy metric can be computed.  Accuracy scores of 62.2 \% are obtained for verbs in the original paper, and higher accuracy has been obtained in subsequent embedding models such as Glove \cite{pennington2014glove}.}
 
 \begin{figure}[h]
 \centering
@@ -182,7 +182,7 @@ One striking feature of word or token embeddings is that we can perform mathemat
 \label{geometryWordEmbedding}
 \end{figure}
 
-In more detail, the vector difference between word embeddings that are related in similar ways are often vectors that point in the same direction (see table 1 of \cite{mikolov2013linguistic} for more examples) :
+In more detail, the vector difference between word embeddings that are related in similar ways are often vectors that point in the same direction (see table 1 of \cite{mikolov2013linguistic} for more examples):
 
 \begin{itemize}
   \item $\textbf{v}_\text{apple} - \textbf{v}_\text{apples} \approx \textbf{v}_\text{car} - \textbf{v}_\text{cars}$
@@ -192,7 +192,7 @@ In more detail, the vector difference between word embeddings that are related i
   \item $\textbf{v}_\text{see} - \textbf{v}_\text{saw} \approx \textbf{v}_\text{return} - \textbf{v}_\text{returned}$
 \end{itemize}
 
-Using basic vector arithmetic we can derive surprising and fun relationships from those listed above which hold in the vector space, for example
+Using basic vector arithmetic we can derive surprising and fun relationships from those listed above which hold in the vector space, for example:
 
 \begin{itemize}
   \item $\textbf{v}_\text{apple} - \textbf{v}_\text{apples} + \textbf{v}_\text{cars} \approx \textbf{v}_\text{car} $
