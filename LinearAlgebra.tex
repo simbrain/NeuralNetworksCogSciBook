@@ -458,16 +458,75 @@ its components to obtain centered data vectors:
 \end{eqnarray}
 The covariance is the dot product of the centered data vectors divided by
 $n-1$.
+
+   Covariance and correlation have exact mathematical expressions.  Let $x$ and 
+$y$ stand for the two variables.  A value for each of the variables can be 
+obtained at each moment in time by making a measurement or by sampling from a 
+large population.  However we obtain values for $x$ and $y$ we get two 
+sequences of values for these two variables.  This is called the 
+\emph{raw data} for the variables.  The two sequences of values for the 
+variables can be expressed as vectors:
+
 \begin{equation}
-\mathrm{Cov}(\mathbf{x}, \mathbf{y}) = \frac{\tilde{\mathbf{x}} \bullet 
-                                             \tilde{\mathbf{y}}}{n-1} 
+\mathbf{x} = (x_1, \dots, x_n) \quad \mbox{and} \quad 
+\mathbf{y} = (y_1, \dots, y_n)
 \end{equation}
-The Pearson correlation coefficient is obtained by dividing the
-covariance by the product of the standard deviations: 
+To compute the covariance of $\mathbf{x}$ and $\mathbf{y}$ we first subtract 
+the mean value of each vector from its components.  We let $\mu_x$ be the 
+mean of $\mathbf{x}$ and $\mu_y$ be the mean of $\mathbf{y}$.  This gives 
+us two vectors whose components are called the \emph{centered data} for the 
+variables.
+\begin{eqnarray}
+\tilde{\mathbf{x}} &=& (x_1 - \mu_x, \, \dots, \, x_n - \mu_x) 
+                                                             \nonumber \\[1mm]
+\tilde{\mathbf{y}} &=& (y_1 - \mu_y, \, \dots, \, y_n - \mu_y) 
+\end{eqnarray}
+The covariance is the dot product of the vectors for the centered data divided 
+by $n$.\footnote{Sometimes $n-1$ is used instead of $n$.}
+\begin{equation}\label{E:covdef}
+\mathrm{Cov}(\mathbf{x}, \mathbf{y}) = \frac{\tilde{\mathbf{x}} \bullet 
+                                             \tilde{\mathbf{y}}}{n} 
+\end{equation}
+
+   The Pearson correlation coefficient is obtained from the covariance using
+the standard deviations of the variables.  The standard deviation, like the 
+mean, is a statistic intended to describe the raw data.  It describes how 
+spread out the raw data is.  The standard deviation for $x$ and $y$ are defined
+as:
 \begin{equation}
+    \sigma_x = \sqrt{ \frac{1}{n} \sum_{j=1}^n (x_j - \mu_x)^2} 
+\qquad \mbox{and} \qquad 
+    \sigma_y = \sqrt{ \frac{1}{n} \sum_{j=1}^n (y_j - \mu_y)^2}
+\end{equation}
+The Pearson correlation coefficient is the covariance divided by the product of
+the standard deviations.
+\begin{equation}\label{E:corrdef}
 \mathrm{Corr}(\mathbf{x}, \mathbf{y}) = 
 \frac{\mathrm{Cov}(\mathbf{x}, \mathbf{y})}{\sigma_x \, \sigma_y}
 \end{equation}
+However we can also write the standard deviation in terms of the centered data:
+\begin{equation}\label{E:stddevc}
+  \sigma_x = \sqrt{ \frac{\tilde{\mathbf{x}} \bullet \tilde{\mathbf{x}}}{n}}
+= \frac{||\tilde{\mathbf{x}}||}{\sqrt{n}}
+\qquad \mbox{and} \qquad 
+  \sigma_y = \sqrt{ \frac{\tilde{\mathbf{y}} \bullet \tilde{\mathbf{y}}}{n}}
+= \frac{||\tilde{\mathbf{y}}||}{\sqrt{n}}
+\end{equation}
+We can substitute the formula for the covariance in equation \eqref{E:covdef},
+and the formulas for the standard deviations in equation \eqref{E:stddevc}
+into the right had side of equation \eqref{E:corrdef}.
+\begin{equation}
+\mathrm{Corr}(\mathbf{x}, \mathbf{y}) = 
+\frac{\left(\displaystyle{\frac{\tilde{\mathbf{x}} \bullet 
+                                                 \tilde{\mathbf{y}}}{n}}\right)}
+     {\left(\displaystyle{\frac{||\tilde{\mathbf{x}}||}{\sqrt{n}}
+               \frac{||\tilde{\mathbf{y}}||}{\sqrt{n}} }\right)}
+= \frac{\tilde{\mathbf{x}} \bullet \tilde{\mathbf{y}}}
+       {||\tilde{\mathbf{x}}|| \cdot ||\tilde{\mathbf{y}}||} 
+\end{equation}
+So we can see that the Pearson correlation coefficient of the raw data is the
+same as the cosine similarity of the centered data.  It is a number in 
+$[-1,1]$.  
 
    Covariance and correlation have exact mathematical expressions.  Let $x$ and 
 $y$ stand for the two variables.  A value for each of the variables can be 
@@ -554,6 +613,14 @@ never increases the angle between $\mathbf{x}$ and $\mathbf{y}$ but it can
 descrease angle between them.  In a sense, there are fewer ways they can point 
 away from each other when we reduce the number of dimensions by $1$. 
 
+    Geometrically, the centered data $\tilde{\mathbf{x}}$ and 
+$\tilde{\mathbf{y}}$, are the orthogonal projections of the raw data 
+$\mathbf{x}$ and $\mathbf{y}$ to the subspace orthogonal to the vector 
+$(1, \dots, 1)$.  This subsapce has dimension $n - 1$.  This projection 
+never increases the angle between $\mathbf{x}$ and $\mathbf{y}$ but it can 
+descrease angle between them.  In a sense, there are fewer ways they can point 
+away from each other when we reduce the number of dimensions by $1$. 
+
    The vectors $\mathbf{x}$ and $\mathbf{y}$ can represent different physical 
 quantities whose numerical value depends on the choice of units of measure.
 By centering the data before computing the cosine similarity we avoid spurious 
@@ -563,6 +630,9 @@ measure temperature in Celsius and time in seconds, we will obtain a different
 numerical value for the cosine similarity of the raw data than if we measure 
 time in hours.  Whereas the value of the Pearson correlation coefficient 
 remains the same regardless of such changes in the unit of measure. 
+value for the cosine similarity than if we measure time in hours.  Whereas the 
+value of the Pearson correlation coefficient remains the same regardless of 
+such changes in the unit of measure. 
 
    These four measures—dot product, cosine similarity, covariance, and 
 correlation—are closely related.  They all associate pairs of vectors with 
