@@ -425,45 +425,53 @@ MLPs (\cite{nanda2023progress} , section 4.1).
 % needed. You mentioned (Wang et al. 2024) and anthropic.
 
 An early success in mechanistic interpretability was the identification of
-attention head activation patterns as semantically meaningful. 
+attention head activation patterns as semantically meaningful. Helpfully, the
+attention scores mechanism in transformers lends itself to interpretation
+without the grafting on of any additional structure--just as the output
+probabilities of a model can be naturally interpreted as a model's confidence
+about its answer, the attention scores of an attention head can naturally be
+interpreted as ``which tokens that head is attending to, to what degree''.
 
-Researchers noticed that attention heads sometimes decide which earlier or
-later words in a sentence to focus on when guessing the next word. Early on,
-researchers found ``bigram heads'',  which pick out fixed pairs of words. For
-example, if the LLM sees the word ``Barack,'' this attention head will learn to
-look ``Obama.'' It's as if the head has learned the rule ``when you see Barack,
-expect Obama.'' How this works in more detail can be understood using the
-concepts developed in section \extref{transformers}. Recall that we can think
-of a transformer as taking a stack of token representations and incrementally
-enriching them with context as they are processed by attention heads and MLPs.
-When an attention head points ahead and looks for some word, it sets almost all
-of its internal weights to zero except the one corresponding to the slot where
-it expects that word—here, the slot for ``Obama.'' The head ``reads'' the
-entire stack of vectors coming in from the residual stream, gives a weight near
-1 to the ``Obama'' vector and near 0 to all others, then ``writes'' by taking
-that “Obama” vector and adding it back into the residual stream at the position
-for ``Barack.'' In this way the representation for “Barack” is enriched with
-the signal for “Obama” before the model moves on to the next layer.  
+Several interpretable roles played by attention heads in transformers have been
+catalogued. ``Bigram heads'' are attention heads that solely identify
+particular pairs of tokens \cite{elhage2021mathematical}. These heads basically
+implement simple rules like: if you see ``Barack'', promote ``Obama``. Other
+heads can be seen to do simple context-sensitive token copying--for example,
+hanging on to the token ``small'' or ``large'' and looking out for the later
+token ``contains'' to follow along with that earlier copied token
+\cite{elhage2021mathematical}. Heads can be found ``attending to delimiter
+tokens, specific positional offsets, or broadly attending over the whole
+sentence... the direct objects of verbs, determiners of nouns, objects of
+prepositions, and coreferent mentions''--a wide range of syntactic and semantic
+roles \cite{clark2019does, voita-etal-2019-analyzing}. Other heads specialize
+in preventing a model from over-repeating a particular token
+\cite{mcdougall2023copy}.
 
-Once bigram heads were understood, people started looking for longer ``$n$-gram
-heads, that might learn a three-word phrase like “New York City,'' so that
-whenever the model sees ``New,'' it reaches two words ahead to ``City.''
+Even more flexible are \glossary{induction heads}, which perform sophsiticated
+in-context learning \cite{elhage2021mathematical,olsson2022context}.
 
-Even more flexible are \glossary{induction heads} which form patterns on the
-fly. If the model encounters a pattern like ``$A \ldots B \ldots A$'' in a
-head, it remembers where the first $A$ appeared and then uses that memory to
-boost the chance of $B$ right after the second $A$--even if that exact $A-B-A$
-pattern never showed up in training. It's like the head is saying, ``I've seen
-this pattern before, so I know what to look for.''
+\begin{quote}
+Induction heads search over the context for previous examples of the present
+token. If they don't find it, they attend to the first token (in our case, a
+special token placed at the start), and do nothing. But if they do find it,
+they then look at the next token and copy it. This allows them to repeat
+previous sequences of tokens, both exactly and approximately \cite{elhage2021mathematical}.
+\end{quote}
 
-These discoveries provided a basic way of understanding what is going on inside
-attention heads. 
+Induction heads are exciting as they were one of the first windows into how
+models can intelligently \emph{learn} in-context. The trick, it seems, is to
+keep a look out for key regularities in your context, and to redeploy that
+regularity later on, when the context is again right. Induction heads are also
+interesting as a relatively smooth evolutionary progression from ``more
+primitive'' bigram and copy heads--they let us see how intelligent semantic
+behavior might grow out of variations on initially extremely simple statistical
+and syntactic rules.
 
-This also helped show that attention heads tend to specialize depending on
-where they sit in the model: heads near the beginning handle basic grammar and
-short-range word links, heads in the middle build up meaning and relationships
-(for instance, figuring out what pronouns refer to), and heads near the end
-often circle back to grammar to polish the final prediction.
+It has been observed that the position of attention heads in a model tends to
+correlate with their function: heads near the beginning handle basic syntax,
+heads in the middle build up to identifying meaning and conceptual
+relationships, and heads toward the end of the model specialize in syntax once
+again (perhaps cleaning up the model's final token predictions).
 
 
 %% OTHER TOPICS / FRAGMENTS
