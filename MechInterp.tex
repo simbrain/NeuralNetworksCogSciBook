@@ -23,7 +23,7 @@ the operation of transformers in a new but mathematically equivalent way,
 [the field is] able to make sense of these small models and
 gain significant understanding of how they operate
 internally.''\cite{elhage2021mathematical}.\footnote{This has already become
-something of a classic text in mechinterp. We encourage the reader to have a
+something of a classic text in mechanistic interpretability. We encourage the reader to have a
 look at the opening pages. The paper builds on an earlier thread at
 \url{distll.pub},
 \url{https://transformer-circuits.pub/2021/framework/index.html}.} 
@@ -42,7 +42,7 @@ sense and can be understood. But they have no incentive to make this legible to
 us. They learn this structure because it is useful for getting loss on
 predicting the next token, and it is our job to learn how to reverse engineer
 it and how to make it
-legible''.\footnote{From\url{https://youtu.be/veT2VI4vHyU}.}
+legible''.\footnote{From \url{https://youtu.be/veT2VI4vHyU}.}
 \end{quote}
 
 Research in mechanistic interpretability thus makes incessant use of this
@@ -145,7 +145,7 @@ immense value to cognitive science. These results are providing a whole new set
 of conceptual tools for thinking about how information is processed in the
 natural neural networks of the brain.
 
-\section{Tools for Mechanistic Interpretability}
+\section{The Tools of Mechanistic Interpretability}
 
 \subsection{Linear Probes}
 
@@ -155,7 +155,7 @@ electrical activity. The analogous data collection task for a trained
 transformer is far easier. In the transformer context, a probe is a trained
 auxiliary model that tries to determine whether a given concept is encoded at a
 particular sublayer or activation space of a neural
-network\cite{alain2018intermediate, belinkov2021classifiers}. Figure
+network \cite{alain2018intermediate, belinkov2021classifiers}. Figure
 \ref{linearProbe} illustrates.
 
 \begin{figure}[ht]
@@ -173,10 +173,13 @@ activations to determine feature presence or absence. For the training set of
 activations we had collected, we knew whether the feature was present or
 absent, and use that knowledge to fix our training labels. It is now hoped that
 this ``probe'' model will successfully generalize its classifications to any
-future model activations. Probes in a transformer are thus trained using
-supervised learning (chapter \extref{ch_supervised}); they can be used when we
-know in advance what feature looking for inside a model and already know how to
-operationalize that feature's presence, to source our training labels.
+future model activations. (Probes are specifically ``linear'' probes when their
+classifications are a nearly linear function of the activations, but any
+classifier architecture is possible.) Probes in a transformer are thus trained
+using supervised learning (chapter \extref{ch_supervised}); they can be used
+when we know in advance what feature looking for inside a model and already
+know how to operationalize that feature's presence, to source our training
+labels.
 
 Why is this extra probe training work necessary? The transformer itself is not
 trained to make its internal machinery self-explanatory (nor, for that matter,
@@ -200,10 +203,11 @@ Because probe training is supervised, it requires prior knowledge of input
 stream features. Entirely unsupervised methods for interpreting activation
 spaces in a network also exist, the most prominent of which are
 \glossary{sparse autoencoders} or SAEs.\footnote{Though see also
-\cite{burns2024discovering} for another significant unsupervised approach.} With
-sparse autoencoders, we do not need to know in advance what concepts might
-appear represented in an activation space to find them. Nodes in an LLM tend to
-be uninterpretable, seemingly each dealing in many unrelated concepts (this is
+\cite{burns2024discovering} for another significant unsupervised approach.}
+With sparse autoencoders, we do not need to know in advance what concepts might
+appear represented in an activation space to find them. Individual neurons in
+an LLM tend to be uninterpretable, seemingly each dealing in many unrelated
+concepts \cite{elhage2022superposition, scherlis2025polysemanticity} (this is
 because representations in neural networks are almost always distributed; see
 chapter \extref{ch_intro}).\footnote{Why are individual neurons in a model not
 ordinarily interpretable? One explanation begins with the idea that a trained
@@ -215,40 +219,38 @@ classifiers. It can also be helpful to see this as a claim about efficient
 modeling of the world. The version of a model that is most interpretable to
 humans may not be the smallest version of the model. (From this perspective,
 sparse autoencoders are just an explicit attempt to undo that
-``compactification'' of the model.}   An SAE can be used to extract more easily
-interpretable features from a set of activations. 
+``compactification'' of the model.} An SAE can be used to extract
+interpretable features from a set of uninterpretable neuron activations.
 
-An SAE is a map from an activation space to a larger hidden unit space such
-that hidden unit activations are (1) mostly zero valued and (2) contain enough
-information to reconstruct the original activation afterwards.  Since it is an
-autoencoder, we can train it anywhere inside a network simply by training it to
-associate a pattern with itself. We tell the optimizer to prefer hidden unit
-activations that are sparse.  So we get a sparse embedding space. Figure
-\ref{saeSimbrain} illustrates the idea. Note the input and the output are the
-same, it's an auto-encoder, but we have trained the hidden unit activations to
-be sparse. So the nodes that light up in the middle are good candidates for
-interpretation.
+An SAE is a learned map from an activation space to a larger hidden unit space
+such that hidden unit activations (1) are mostly zero-valued and (2) contain
+enough information to reconstruct the original activation afterwards. Since it
+is an autoencoder, we can train it anywhere inside a network simply by training
+it to reconstruct the activations there. We tell the optimizer to prefer hidden
+unit activations that are sparse so that we learn a sparse embedding space.
+Figure \ref{saeSimbrain} illustrates the idea. Note the input and the output
+are the same--it's an auto-encoder--but we have trained the hidden unit
+activations to be sparse. It is these few active nodes that we now focus our
+interpretations on.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=.5]{./images/saeSimbrain.png}
-\caption[Simbrain screenshot from Jeff Yoshimi.]{
-      A sparse auto-encoder takes some input activations and maps it back to
-      itself (notice the input and output activations are the same), through a
-      hidden layer which the gradient descent algorithm tries to make as sparse
-      as possible, producing a kind of localist representation of the input
-      activations.
-}
+\caption[Simbrain screenshot from Jeff Yoshimi.]{ A sparse auto-encoder takes
+      some input activations and maps it back to itself (notice that the
+      autoencoder is successfully reconstructing its input activations)
+      through a hidden layer which gradient descent has tried to make
+      as sparsely activating as possible, producing a kind of localistic representation of
+      the input activations. }
 \label{saeSimbrain}
 \end{figure}
 
 % David: bibtex  below and expand
 The activated neurons in a sparse autoencoder seem to each represent a single,
-human-interpretable concept (Cunningham et al. 2023). 
-
-Those concepts tend to be ``higher-level'' when the sparse autoencoder is
-narrower (fewer hidden units) and ``lower-level'' when it is wider (more hidden
-units)
+human-interpretable concept \cite{cunningham2023sparse,
+bricken2023monosemanticity}. Those concepts tend to be ``higher-level'' when
+the sparse autoencoder is narrower (has fewer hidden units) and ``lower-level''
+when it is wider (has more hidden units).
 
 % David: Need more discussion of what to do once these features are found. How
 % are they used? I think we just reuse the linear probe / supervised
@@ -257,37 +259,36 @@ units)
 \subsection{Activation Addition}
 
 A third tool in the toolbox of mechanistic interpretability is
-\glossary{activation addition}. Unlike linear probes (which train a simple
-classifier to detect a feature you already suspect) or sparse autoencoders
-(which compress activations into a small set of features), activation addition
-operates naturalistically, or “in the wild.” You simply record the model's own
-hidden activations at the moment it expresses a concept, then re-inject that
-activation to amplify the concept in new contexts. In more detail
+\glossary{activation addition}. While activations vectors in a model's neuron
+basis are generally not interpretable, they admit certain kinds of manipulation
+with each other. You can record a model's own hidden activations during a
+forward pass dealing with a concept, and then re-inject that activation to
+blend that concept in to behavior in new contexts. In more detail
 
 \begin{enumerate}
       \item Run the model on some input that elicits the feature you care about
       (e.g., a description of the Golden Gate Bridge).
-      \item Record an activation vector at the chosen layer 
+      \item Record an activation vector at the chosen sublayer.
       \item Scale this vector using scalar multiplication (chapter
-      \extref{ch_linear_algebra}) and at a later time add it back to that
-      layer. With a large enough scaling factor, the model becomes “clamped”
-      into that feature—e.g., turning Claude into a Golden-Gate-Bridge
-      obsessive (see figure \ref{goldenGate}.
+      \extref{ch_linear_algebra}).
+      \item At another forward pass, add the activation back in at its sublayer.
  \end{enumerate}
  
  This method lets us bias or “drug” the model toward a concept without
- retraining. However, it doesn't reveal the micro-anatomy: we know \emph{which}
- activation directions matter, but not the underlying circuitry that produces
- them. It's more like psychiatry (tuning behavior) than neurosurgery (mapping
- every synapse).
+ retraining. With a large enough scaling factor, the model often fixates; a
+ ``Golden Gate Bridge'' feature turns Claude into a Golden-Gate-Bridge
+ obsessive, e.g. (see figure \ref{goldenGate}). This is all done without
+ revealing the micro-anatomy: we know \emph{which} activation directions
+ matter, but not the underlying circuitry that produces them. As an analogy,
+ this is more akin to model psychiatry (temporarily steering model behavior
+ without training) than to model neurosurgery (mapping out synaptic function).
  
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.4]{./images/goldenGate.png}
-\caption[Claude screenshot from David Udell.]{
-      Claude before (left panel) and after (right panel) it's been spiked with
-      a `Golden gate' drug.
-}
+\includegraphics[scale=.5]{./images/goldenGate.png}
+\caption[Claude screenshot from David Udell.]{ Claude's responses to a question
+before (left panel) and after (right panel) a Golden Gate Bridge feature has
+been clamped to a very high value. }
 \label{goldenGate}
 \end{figure}
 
@@ -304,27 +305,30 @@ activation to amplify the concept in new contexts. In more detail
 % can swap layers around and it will often still; work; damage is mild. An
 % interesting play on the old graceful degradation idea.
 
-\subsection{Other Techniques}
+% \subsection{Other Techniques}
 
 % David: we can either add a tiny bit here as a suggestion of what's coming, or
 % just comment the section out.
+% Just commented this out for now; happy to return to this later on.
 
-Some other methods include activation patching ablating,  causal tracing, and
-interchange intervention .
+% Some other methods include activation patching ablating,  causal tracing, and
+% interchange intervention.
 
-\section{Results from Mechanistic Interpretability}
+\section{Major Results in Mechanistic Interpretability}
 
-Mechanistic interpretability has yielded a number of results.
+Research in mechanistic interpretability has yielded a number of key results in
+its domain that are of special interest to cognitive science.
 
 \subsection{Toy Models}
 
-A (usually small) transformer model that has been exclusively trained against a
+A (usually tiny) transformer model that has been exclusively trained against a
 hand-designed algorithmic task is called a \glossary{toy model}. This name
-highlights the disparity between the enormous, trillion-parameter models that
-we converse with, and these far simpler research projects. However, researchers
-have successfully reverse engineered how some toy models work, and this cannot
-be said for full-scale naturalistic models.  So in these cases we have more or
-less fully worked out circuits.
+highlights the disparity between these far simpler research projects and the
+enormous, trillion-parameter LLMs that we converse with. In exchange for this
+focus on tiny models, though, researchers have successfully reverse engineered
+how some toy models work, and this cannot be said for full-scale naturalistic
+models. In these cases we have more-or-less fully worked-out circuits
+explaining model behavior.
 
 For example, a toy model trained only to perform modular addition converges to
 an interpretable algorithm \cite{nanda2023progress}.The model is fairly
@@ -426,7 +430,7 @@ often circle back to grammar to polish the final prediction.
 % cleanup. Our results show that grokking, rather than being a sudden shift,
 % arises from the gradual amplification of structured mechanisms encoded in the
 % weights, followed by the later removal of memorizing components." (Nanda)
-%
+
 % Had trouble integrating: As noted in the word embedding chapter, activation
 % can be thought of as directions in an activation space. This information can
 % be used in guided studies. Once located, a direction in activation space can
