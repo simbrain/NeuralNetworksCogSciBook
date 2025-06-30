@@ -154,7 +154,8 @@ In animal brains, electrode probes are used to ``eavesdrop'' on neuronal
 electrical activity. The analogous data collection task for a trained
 transformer is far easier. In the transformer context, a probe is a trained
 auxiliary model that tries to determine whether a given concept is encoded at a
-particular sublayer or activation space of a neural network. Figure
+particular sublayer or activation space of a neural
+network\cite{alain2018intermediate, belinkov2021classifiers}. Figure
 \ref{linearProbe} illustrates.
 
 \begin{figure}[ht]
@@ -198,12 +199,13 @@ we have labeled data we can use it to train a probe.
 Because probe training is supervised, it requires prior knowledge of input
 stream features. Entirely unsupervised methods for interpreting activation
 spaces in a network also exist, the most prominent of which are
-\glossary{sparse autoencoders} or SAEs. With sparse autoencoders, we do not
-need to know in advance what concepts might appear represented in an activation
-space to find them. Nodes in an LLM tend to be uninterpretable, seemingly each
-dealing in many unrelated concepts (this is because representations in neural
-networks are almost always distributed; see chapter
-\extref{ch_intro}).\footnote{Why are individual neurons in a model not
+\glossary{sparse autoencoders} or SAEs.\footnote{Though see also
+\cite{burns2024discovering} for another significant unsupervised approach.} With
+sparse autoencoders, we do not need to know in advance what concepts might
+appear represented in an activation space to find them. Nodes in an LLM tend to
+be uninterpretable, seemingly each dealing in many unrelated concepts (this is
+because representations in neural networks are almost always distributed; see
+chapter \extref{ch_intro}).\footnote{Why are individual neurons in a model not
 ordinarily interpretable? One explanation begins with the idea that a trained
 model is trying to be maximally efficient with the neurons afforded to it. The
 feature superposition hypothesis is the claim that trained models are lossy
@@ -258,7 +260,7 @@ A third tool in the toolbox of mechanistic interpretability is
 \glossary{activation addition}. Unlike linear probes (which train a simple
 classifier to detect a feature you already suspect) or sparse autoencoders
 (which compress activations into a small set of features), activation addition
-operates naturalistically, or “in the wild.” You simply record the model’s own
+operates naturalistically, or “in the wild.” You simply record the model's own
 hidden activations at the moment it expresses a concept, then re-inject that
 activation to amplify the concept in new contexts. In more detail
 
