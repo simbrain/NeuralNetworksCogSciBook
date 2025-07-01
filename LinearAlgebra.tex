@@ -313,87 +313,256 @@ There are many different methods for projecting data from high dimensional space
 % The negative cases are important when thinking of a weight vector as orthogonal to a decision boundary  in a network with threshold units
 % Why not a definition here if we are going to do it for cosine similarity?
 
- The \glossary{dot product} is a simple but important function defined 
-for pairs of vectors in a vector space.\footnote{The dot product is more 
-formally known as the ``scalar product.'' The scalar product gets its name from 
-the fact that its value is a scalar. The scalar product is a member 
-of a general class of functions known as ``inner products''. Inner products 
-are used to express geometric relationships between vectors.}  The dot 
-product is different from scalar multiplication (scalar multiplication and the 
-scalar product are defined in section \ref{S:LinearAlgebraAppendix}). The dot 
-product is a function of two vectors, whereas scalar multiplication is a 
-function of a vector and a scalar. The dot product gets its name from the fact 
-it is represented by a large dot: $\bullet$. It is also common to say that we 
-are ``dotting'' one vector with another.
+   The \glossary{dot product} is a simple but important function defined for 
+pairs of vectors in a vector space.\footnote{The dot product is a member 
+of a more general class of functions known as ``inner products''.  They are 
+used to specify geometric relationships between vectors.}  The dot product is a 
+different kind of function than scalar multiplication (the dot product and 
+scalar multiplication are defined in section \ref{S:LinearAlgebraAppendix}).  
+They both take two arguments but the types of arguments they take are a little 
+different.  The dot product is a function of two vectors that have the same 
+number of components, whereas scalar multiplication is a function of a scalar 
+and a vector.  The dot product gets its name from the fact it is represented by 
+a large dot: $\bullet$.  It is also common to say that we are ``dotting'' one 
+vector with another.\footnote{A useful interactive visualization of the dot 
+product is available at \url{http://www.falstad.com/dotproduct/}.}
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.7]{./images/Simple3Labelled.png}
-\caption[Simbrain screenshot.]{Simple feed-forward network with nodes labeled. The dot product can be used to compute the weighted inputs to node 4.}
+\caption[Simbrain screenshot.]{Simple feed-forward network with nodes labeled. 
+The dot product can be used to compute the weighted inputs to node 4.} 
 \label{F:simplelabelled}
 \end{figure}
 
    The dot product is computed by multiplying each of the corresponding 
-components of a pair vectors, and summing the resulting products. For example
+components of a pair of vectors, and summing the resulting products.  For 
+example
 \begin{eqnarray*}
-&(1,2,3)  \bullet  (4,5,6)& = \quad 1 \cdot 4 + 2 \cdot 5 + 3 \cdot 6 = 32   \\
-&(0,0,0)  \bullet  (4,5,6)& = \quad 0 \cdot 4 + 0 \cdot 5 + 0 \cdot 6 = 0    \\
-&(2,3,-1) \bullet (-1,1,1)& = \quad 2 \cdot (-1) + 3 \cdot 1 + (-1) \cdot 1 = 0 \\
- &(1,1,1,1,1) \bullet (1,1,1,1,1)& = \quad  
-          1 \cdot 1 + 1 \cdot 1 +  1 \cdot 1 + 1 \cdot 1 + 1 \cdot 1 = 5
+&(1,2,3)  \bullet  (4,5,6)& = \quad 1 \cdot 4 \,+\, 2 \cdot 5 \,+\, 3 \cdot 6 
+= 32 \\
+&(0,0,0)  \bullet  (4,5,6)& = \quad 0 \cdot 4 \,+\, 0 \cdot 5 \,+\, 0 \cdot 6 
+= 0  \\
+&(2,3,-1) \bullet (-1,1,1)& = \quad 2 \cdot (-1) \,+\, 3 \cdot 1 \,+\, (-1) 
+\cdot 1 = 0 \\
+&(1,1,1,1,1) \bullet (1,1,1,1,1)& = \quad  
+ 1 \cdot 1 \,+\, 1 \cdot 1 \,+\,  1 \cdot 1 \,+\, 1 \cdot 1 \,+\, 1 \cdot 1 = 5
 \end{eqnarray*}
 
    Clearly the product of any vector with the zero vector (the vector whose
-components are all $0$) is $0$. However, the dot product of two non-zero 
-vectors can also be $0$. It turns out that if the dot product of two non-zero 
-vectors is $0$, then the vectors are \glossary{orthogonal} (perpendicular) to each 
-other. It might be hard to tell right away that the vectors 
-$(2,-1,1,-3,1,1)$, $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation 
-shows us
+components are all $0$) is $0$.  However, the dot product of two non-zero 
+vectors can also be $0$.  When the dot product of two non-zero vectors is $0$ 
+then we say the vectors are \glossary{orthogonal} (perpendicular) to each 
+other.  It might be hard to tell right away that the vectors $(2,-1,1,-3,1,1)$,
+and $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation 
+shows us that it is true:
 \begin{eqnarray*}
- (2,-1,1,-3,1,1) \bullet (1,2,3,1,1,-1)& = 0
+           (2,-1,1,-3,1,1) \bullet (1,2,3,1,1,-1) = 0
 \end{eqnarray*}
-so they must be orthogonal.\footnote{A useful interactive visualization of the dot product is available at \url{http://www.falstad.com/dotproduct/}.}
-%The dot product can also be used to uncover other geometric properties in high dimensional spaces.
+% The dot product can also be used to uncover other geometric properties in 
+% high dimensional spaces.
 
- Notice that we can concisely represent the weighted input (see chapter \extref{ch_act_functions})
-to a node using the dot product. The weighted input is just the dot product of
-the activation vector with the fan-in weight vector of the output node, plus a
-bias term. For example, if the weight vector for node $4$ in figure \ref{F:simplelabelled} is 
-$(-1,-1,1)$, then the net-input is
+   Notice that we can concisely represent the weighted input (see chapter 
+\extref{ch_act_functions}) to a node using the dot product.  The weighted input 
+is just the dot product of the activation vector with the fan-in weight vector 
+of the output node, plus a bias term.  An example is shown in figure 
+\ref{F:simplelabelled}.  The activation vector for nodes $1$, $2$, and $3$ is 
+$(\; -1,\; -4,\; 5)$ and the weight vector for node $4$ is $(-1,-1,1)$ so the 
+net-input to node $4$ is:
 \begin{equation*}
 n_4 = (\; -1,\; -4,\; 5) \bullet (-1,-1,1) + 0  = 1 + 4 + 5 + 0 = 10
 \end{equation*}
 
- These visualizations help show that if we are doing ``distance'' on a unit hypersphere, then the dot product behaves like an inverse metric: it reaches a maximum of 1 when vectors point in the same direction, and becomes increasingly negative as they point in opposite directions. The negative cases are especially important when thinking of a weight vector as orthogonal to a decision boundary in a network with threshold units.
+   These visualizations help show that if we are doing ``distance'' on a unit hypersphere, then the dot product behaves like an inverse metric: it reaches a maximum of 1 when vectors point in the same direction, and becomes increasingly negative as they point in opposite directions. The negative cases are especially important when thinking of a weight vector as orthogonal to a decision boundary in a network with threshold units.
  
 \section{Other vector comparison methods}\label{vector_comparisons}
 
-The dot product is a way to take two vectors and produce a number that gives us a sense of how close they are to each other (input vectors, activation vectors, etc.). There are a number of ways to compare vectors in this way.
+   There are a number of ways the dot product can be used to give us a sense of
+how close or far apart two vectors (such as input vectors, activation vectors, 
+\emph{etc}.) are to each other.  
 
-% Can't this be expressed as cos(u,v)?
-When vectors are first normalized (that is, when the vectors are first divided by their Euclidean norm; see section \ref{metricSpace}), this measure tells us to what extent they are pointing in the same direction. This normalized dot product is also known as \glossary{cosine similarity}, is a commonly used measure of similarity that is independent of vector magnitude. It is defined as
-\[
-\cos(\theta) = \frac{\mathbf{u} \bullet  \mathbf{v}}{|| \mathbf{u}|| \; ||\mathbf{v}||}
-\]
-where $\theta$ is the angle between $\mathbf{u}$ and $\mathbf{v}$, and $||\cdot||$ denotes the Euclidean norm (note that the angle between the vectors need not be known and in fact this is one way of computing that angle).  You do not need to know the angle $\theta$ to use this equation (in fact, this is how angles are formally defined using the dot product);  in computational practice given two vectors $\mathbf{u}$ and $\mathbf{v}$ you just use the right side of the equation to compute their cosine similarity. Cosine similarity is bounded between $[-1, 1]$, such that $\cos(\theta) = -1$ indicates opposite vectors, $\cos(\theta) = 0$ indicates orthogonal vectors, and $\cos(\theta) = 1$ indicates proportional vectors.\footnote{Some implementations are bounded between $[0,1]$. Occasionally, cosine distance is used, which is $1 - \cos$, in which case proportional or highly similar vectors will have a cosine distance of 0, while dissimilar vectors will have a cosine distance of 1.}  Although it is shown as a function of the angle between two vectors, it can be computed simply by using the formula above 
+% Can't this be expressed as cos(u,v)?  
+% It can be, but its not common.
 
-Cosine similarity is widely used in text analysis and natural language processing, especially in applications such as document similarity and information retrieval (see chapter \extref{ch_word_embeddings}). This is because it compares the orientation of two high-dimensional vectors, rather than their magnitude. As such, it captures similarity in content rather than length or scale, which is ideal in contexts where longer documents might contain similar themes as shorter ones.
+   One way is to begin by normalzing the two vectors (that is, we divide each
+of the vectors by their Euclidrean norm to get two vectors with unit norm; see 
+section \ref{metricSpace}).  We then dot the normalized vectors with each 
+other.\footnote{The symbol $||\cdot||$ denotes the Euclidean norm.}
+\begin{equation}\label{E:cossim}
+\cos(\theta) = 
+\frac{\mathbf{u}}{|| \mathbf{u}||}  \bullet 
+\frac{\mathbf{v}}{|| \mathbf{v}||} =
+\frac{\mathbf{u} \bullet \mathbf{v}}{|| \mathbf{u}||  \cdot 
+||\mathbf{v}||}
+\end{equation}
+This normalized dot product is known as \glossary{cosine similarity}.  It is a 
+commonly used measure of similarity that is independent of the vector's 
+magnitude.  The number $\theta$ is the angle between $\mathbf{u}$ and 
+$\mathbf{v}$.  The cosine of the angle between the vectors tells us the extent 
+to which the vectors point in the same direction.  The cosine similarity of two 
+vectors can be any number in the interval $[-1, 1]$.  If the vectors point in 
+exactly the same direction then the angle between them is $0$ and their cosine 
+similarity $1$.  If the vectors are orthogonal to each other then the angle 
+between them is $90^o$ and their cosine similarity is $0$.  If the vectors 
+point in directly opposite directions then the angle between them is $180^o$ 
+and their cosine similarity is $-1$.\footnote{In some implementations the
+quantity is bounded between $[0,1]$.  Occasionally, cosine distance is used, 
+which is $1 - \cos(\theta)$.  In this case nearly proportional vectors 
+will have a cosine distance of nearly 0, while very dissimilar vectors will 
+have a cosine distance of about 1.}
+
+   Note that we do not need to know the angle $\theta$ to compute the
+cosine similarity of two vectors.\footnote{In fact in modern Euclidean geometry 
+angles are formally defined in terms of the dot product.}  Cosine
+similarity can be computed for any pair of vectors in the same vector space no 
+matter how many dimensions the vector space has, although it does take more
+time to compute it in higher dimensions.  Even though the left hand side of 
+equation \eqref{E:cossim} is only a function of the angle between the vectors 
+the cosine similarity of any two nonzero vectors, $\mathbf{u}$ and 
+$\mathbf{v}$, can be computed from the expression on the right hand side of 
+equation \eqref{E:cossim}.
+
+   Cosine similarity is widely used in text analysis and natural language 
+processing, especially in applications such as document similarity and 
+information retrieval (see chapter \extref{ch_word_embeddings}).  This is 
+because it compares the direction of two high-dimensional vectors independently
+of their magnitude.  As such, it captures similarity in content rather than 
+length or scale, which is ideal in contexts where longer documents might 
+contain similar themes as shorter ones.
 % Last point should be front-loaded a bit?
 
-Two other related measures are \textbf{covariance} and \textbf{correlation}. Covariance measures how two variables vary together after their means have been removed, while correlation also rescales the result to produce a standardized value between \(-1\) and \(1\). To compute the covariance between two data vectors \( \mathbf{x} = (x_1, \dots, x_n) \) and \( \mathbf{y} = (y_1, \dots, y_n) \), first subtract their means to obtain \( \tilde{\mathbf{x}} = (x_1 - \bar{x}, \dots, x_n - \bar{x}) \), and similarly for \( \tilde{\mathbf{y}} \). Then compute \( \text{Cov}(\mathbf{x}, \mathbf{y}) = \frac{1}{n-1} \tilde{\mathbf{x}} \cdot \tilde{\mathbf{y}} \). The Pearson correlation coefficient is given by dividing this result by the product of the standard deviations: \( \text{Corr}(\mathbf{x}, \mathbf{y}) = \frac{\text{Cov}(\mathbf{x}, \mathbf{y})}{\sigma_x \sigma_y} \).
+   Two other related measures are \textbf{covariance} and \textbf{correlation}.
+In this context it can be helpful for us to consider the two vectors as 
+sequences of values for two variables.  Covariance and correlaation measure how 
+closely the two variables vary together about each of their respective means.  
+If, at each moment in time, the variables are usually either both above or both 
+below their mean values then we say the variables are positively correlated 
+with each other.  When the variables are positively correlated and we see that
+the value for one of them is above average then the value for the other 
+variable is probably also above average.  On the other hand if both variables 
+are usually on opposite sides of their mean values then we say the variables 
+are negaatively correlated with each other.  When the variables are negatively 
+correlated and we see that the value for one of them is above average then the 
+value for the other variable is probably below average.  If the variables are
+neither positively or negatively correlated then we say they are uncorrelated.
 
-The Pearson correlation coefficient can be seen as the cosine similarity of the data after it has been centered. To center data \( (x_1, \dots, x_n) \), we subtract the mean from each entry: \( (x_1, \dots, x_n) \rightarrow (x_1 - \bar{x}, \dots, x_n - \bar{x}) \).\footnote{Geometrically, this centered data is the orthogonal projection of \( (x_1, \dots, x_n) \) onto the subspace orthogonal to the vector \( (1, \dots, 1) \), which has dimension \( n - 1 \). This projection can reduce the angle between two vectors \( (x_1, \dots, x_n) \) and \( (y_1, \dots, y_n) \); in a sense, there are fewer ways they can point away from each other when we reduce the number of dimensions by one.} By centering the data before taking cosine similarity, we avoid spurious differences introduced by units of measure. For example, vectors \( (x_1, \dots, x_n) \) and \( (y_1, \dots, y_n) \) may represent different physical quantities. Suppose we are measuring the germination time of seeds as a function of temperature. If we measure temperature in Celsius and time in seconds, we will obtain a different cosine similarity than if we measure time in hours—whereas the Pearson correlation coefficient remains the same regardless of such unit changes.
+   Covariance and correlation have exact mathematical expressions.  Let $x$ and 
+$y$ stand for the two variables.  A value for each of the variables can be 
+obtained at each moment in time by making a measurement or by sampling from a 
+large population.  However we obtain values for $x$ and $y$ we get two 
+sequences of values for these two variables.  This is called the 
+\emph{raw data} for the variables.  The two sequences of values for the 
+variables can be expressed as vectors:
+\begin{equation}
+\mathbf{x} = (x_1, \dots, x_n) \quad \mbox{and} \quad 
+\mathbf{y} = (y_1, \dots, y_n)
+\end{equation}
+To compute the covariance of $\mathbf{x}$ and $\mathbf{y}$ we first subtract 
+the mean value of each vector from its components.  We let $\mu_x$ be the 
+mean of $\mathbf{x}$ and $\mu_y$ be the mean of $\mathbf{y}$.  This gives 
+us two vectors whose components are called the \emph{centered data} for the 
+variables.
+\begin{eqnarray}
+\widetilde{\mathbf{x}} &=& (x_1 - \mu_x, \, \dots, \, x_n - \mu_x) 
+                                                             \nonumber \\[1mm]
+\widetilde{\mathbf{y}} &=& (y_1 - \mu_y, \, \dots, \, y_n - \mu_y) 
+\end{eqnarray}
+The covariance is the dot product of the vectors for the centered data divided 
+by $n$.\footnote{Sometimes $n-1$ is used instead of $n$.}
+\begin{equation}\label{E:covdef}
+\mathrm{Cov}(\mathbf{x}, \mathbf{y}) = \frac{\widetilde{\mathbf{x}} \bullet 
+                                             \widetilde{\mathbf{y}}}{n} 
+\end{equation}
 
-These four measures—dot product, cosine similarity, covariance, and correlation—are closely related. They all associate pairs of vectors with scalars. They can be distinguished by whether they center the vectors (by subtracting the mean) and /or scale them (by dividing dividing by the ``spread'' of the data) before comparison. The dot product operates on raw vectors directly, whereas the other three normalize the input in different ways to account for magnitude or mean.
+   The Pearson correlation coefficient is obtained from the covariance using
+the standard deviations of the variables.  The standard deviation, like the 
+mean, is a statistic intended to describe the raw data.  It describes how 
+spread out the raw data is.  The standard deviation for $x$ and $y$ are defined
+as:
+\begin{equation}
+    \sigma_x = \sqrt{ \frac{1}{n} \sum_{j=1}^n (x_j - \mu_x)^2} 
+\qquad \mbox{and} \qquad 
+    \sigma_y = \sqrt{ \frac{1}{n} \sum_{j=1}^n (y_j - \mu_y)^2}
+\end{equation}
+The Pearson correlation coefficient is the covariance divided by the product of
+the standard deviations.
+\begin{equation}\label{E:corrdef}
+\mathrm{Corr}(\mathbf{x}, \mathbf{y}) = 
+\frac{\mathrm{Cov}(\mathbf{x}, \mathbf{y})}{\sigma_x \, \sigma_y}
+\end{equation}
+It is a number in $[-1,1]$.  If $\mathrm{Corr}(\mathbf{x}, \mathbf{y})$ is 
+close to $1$ then $\mathbf{x}$ and $\mathbf{y}$ are highly positively 
+correlated.  If $\mathrm{Corr}(\mathbf{x}, \mathbf{y})$ is close to $-1$ then 
+$\mathbf{x}$ and $\mathbf{y}$ are highly negatively correlated.  If 
+$\mathrm{Corr}(\mathbf{x}, \mathbf{y})$ is close to $0$ then $\mathbf{x}$ and 
+$\mathbf{y})$ are nearly uncorrelated.  
+
+   We can also write the standard deviation in terms of the centered data:
+\begin{equation}\label{E:stddevc}
+  \sigma_x = \sqrt{ \frac{\widetilde{\mathbf{x}} \bullet \widetilde{\mathbf{x}}}{n}}
+= \frac{||\widetilde{\mathbf{x}}||}{\sqrt{n}}
+\qquad \mbox{and} \qquad 
+  \sigma_y = \sqrt{ \frac{\widetilde{\mathbf{y}} \bullet \widetilde{\mathbf{y}}}{n}}
+= \frac{||\widetilde{\mathbf{y}}||}{\sqrt{n}}
+\end{equation}
+We can substitute the formula for the covariance in equation \eqref{E:covdef},
+and the formulas for the standard deviations in equation \eqref{E:stddevc}
+into the right had side of equation \eqref{E:corrdef}.
+\begin{equation}
+\mathrm{Corr}(\mathbf{x}, \mathbf{y}) = 
+\frac{\left(\displaystyle{\frac{\widetilde{\mathbf{x}} \bullet 
+                                            \widetilde{\mathbf{y}}}{n}}\right)}
+     {\left(\displaystyle{\frac{||\widetilde{\mathbf{x}}||}{\sqrt{n}}
+               \frac{||\widetilde{\mathbf{y}}||}{\sqrt{n}} }\right)}
+= \frac{\widetilde{\mathbf{x}} \bullet \widetilde{\mathbf{y}}}
+       {||\widetilde{\mathbf{x}}|| \cdot ||\widetilde{\mathbf{y}}||} 
+\end{equation}
+So we can see that the Pearson correlation coefficient of the raw data is the
+same as the cosine similarity of the centered data.  The correlation of 
+$\mathbf{x}$ and $\mathbf{y}$ corresponds to the extent to which 
+$\widetilde{\mathbf{x}}$ and $\widetilde{\mathbf{y}}$ point in the same 
+direction.
+
+    Geometrically, the centered data $\widetilde{\mathbf{x}}$ and 
+$\widetilde{\mathbf{y}}$, are the orthogonal projections of the raw data 
+$\mathbf{x}$ and $\mathbf{y}$ to the subspace orthogonal to the vector 
+$(1, \dots, 1)$.  This subsapce has dimension $n - 1$.  This projection 
+never increases the angle between $\mathbf{x}$ and $\mathbf{y}$ but it can 
+descrease angle between them.  In a sense, there are fewer ways they can point 
+away from each other when we reduce the number of dimensions by $1$. 
+
+   The vectors $\mathbf{x}$ and $\mathbf{y}$ can represent different physical 
+quantities whose numerical value depends on the choice of units of measure.
+By centering the data before computing the cosine similarity we avoid spurious 
+differences introduced by the units of measure.  For example, suppose we are 
+measuring the germination time of seeds as a function of temperature.  If we 
+measure temperature in Celsius and time in seconds, we will obtain a different 
+numerical value for the cosine similarity of the raw data than if we measure 
+time in hours.  Whereas the value of the Pearson correlation coefficient 
+remains the same regardless of such changes in the unit of measure. 
+
+   These four measures—dot product, cosine similarity, covariance, and 
+correlation—are closely related.  They all associate pairs of vectors with 
+scalars.  They can be distinguished by whether they center the vectors (by 
+subtracting the mean) and /or scale them (by dividing dividing by the 
+``spread'' of the data) before comparison.  The dot product operates on the raw
+data directly, while the other three measure transform the raw data in 
+different ways to faciltate comparisons between data with different means or 
+overall scales.
 
 \begin{itemize}
-    \item \textbf{Dot product}: not scaled, not centered.
-    \item \textbf{Cosine similarity}: scaled, not centered.
+    \item \textbf{Dot product}: not centered, not scaled.
+    \item \textbf{Cosine similarity}: not centered, scaled.
     \item \textbf{Covariance}: centered, not scaled.
-    \item \textbf{Correlation}: scaled and centered.
+    \item \textbf{Correlation}: centered, scaled.
 \end{itemize}
 
-It's worth noting that different comparison measures often arise from different  approaches to the data.  The easiest way to see this is by considering a table. Recall from chapter \extref{ch_data_science} that tables are commonly used in neural networks and that columns are often described as features. Here is a table of data
+   It's worth noting that different comparison measures often arise from 
+different  approaches to the data.  The easiest way to see this is by 
+considering a table.  Recall from chapter \extref{ch_data_science} that tables 
+are commonly used in neural networks and the columns often describe some
+features of interest.   
+
+   Let us consider this table of data.
 \begin{center}
 \begin{tabular}{ccc}
 \textbf{Individual} & \textbf{Height (ft)} & \textbf{Weight (lb)} \\
@@ -405,7 +574,83 @@ It's worth noting that different comparison measures often arise from different 
 5 & 5.8 & 170 \\
 \end{tabular}
 \end{center}
-In neural network contexts, we frequently focus on the \emph{rows} of such a dataset and compare them, for example considering pairs of input vectors or activation vectors to assess their similarity. Often dot product or cosine similarity are used to see if they point in the same direction in an input space or activation space.  Often we have many rows and thus many points to think about, a cloud in a space. By contrast, when computing covariance or correlation, we typically work with the \emph{columns}, of such a dataset, comparing features like weight and height. We then compute the correlation or covariation a single time, getting a single value out of the pair of vectors. Or if we have many columns with many features (suppose we also had BMI, resting heart rate, and age in the table above), we might compute multiple correlations or covariances.  So in a sense dot product and cosine similarity are more row oriented, and correlation and covariance are more column oriented.
+There are two main ways to think geometrically about the numbers in this table.
+One way is to let the ordered pairs of heights and weight in the five rows of 
+the table be the coordinates of five points in $\real^2$.  Since this space 
+only has 2 dimensions we can visualuze these points.  In this point of view 
+the heights and weights being positively correlated means that these five 
+points are nearly collinear to a line with positive slope in the plane.  When 
+the heights and weights are negatively correlated it means that the points are 
+nearly collinear to a line with negative slope in the plane.  When the heights 
+and weights are uncorrelated they usually form a cloud of points in $\real^2$ 
+\label{twogeoms}
+
+   The left panel of figure \ref{twogeoms} shows the five points in $\real^2$.
+The Pearson correlation coefficint for them is about $0.8$.  They are roughly 
+collinear to a line with positive slope.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.25]{./images/heightWeight.pdf}
+\caption{(left) The height and weight coordinates for the five individuals in
+the table.  The odd numbered points are nearly collinear to a line with a
+slope of about $60$ while the even numbered points are more spread out.
+(right)  The vector $\mathbf{h}$ points to the right in the horizontal 
+direction while the vector $\mathbf{u}$ points in the upward vertical 
+direction.  The length of $\mathbf{u}$ is about $3.5$ times the length of 
+$\mathbf{h}$ and the length of $\mathbf{w}$ is about $8$ times the length of
+$\mathbf{u}$.  The cosine similarity of $\mathbf{h}$ and $\mathbf{w}$ is about 
+0.9925 and the angle between $\mathbf{h}$ and $\mathbf{w}$ is about $7^o$.} 
+\label{twogeoms}
+\end{figure}
+
+   The other main way to think geometrically about the numbers in the table is 
+to let the columns for the heights and weights be the coordinates for two 
+points in $\real^5$.  Since this space has 5 dimensions we can not visualize 
+these points directly but we do have the advantage in this case that there are 
+only two points so they have to be contained within a 2 dimensional subspace
+of $\real^5$.  We represent the heights with the vector 
+\begin{equation*}
+\mathbf{h} = (5.0,\, 5.5,\, 6.5,\, 6.0,\, 5.8)
+\end{equation*}
+and the weights with the vector 
+\begin{equation*}
+\mathbf{w} = (120,\, 180,\, 210,\, 150,\, 170)
+\end{equation*}
+For the purpose of visualzing the geometrical relationship between 
+$\mathbf{h}$ and $\mathbf{w}$ we define another vector
+\begin{equation*}
+\mathbf{u} = (-24.8187,\, 20.6994,\, 21.7356,\, -23,7825,\, 2.0103)
+\end{equation*}
+It can be checked that to three digits:
+\begin{equation*}
+\mathbf{h} \bullet \mathbf{u} \approx 0 \quad \mbox{and} \quad
+\mathbf{w} \approx 28.964 \, \mathbf{h} + \mathbf{u}
+\end{equation*}
+so that $\{ \mathbf{h}, \mathbf{u} \}$ is nearly orthogonal basis for the span
+of $\{ \mathbf{h}, \mathbf{w} \}$.  The vector $\mathbf{w}$ is about $30$ 
+times as long as the vector $\mathbf{h}$.  This is shown in the right panel of
+figure \ref{twogeoms}.
+
+
+.  The cosine 
+similarity of the data gives us the cosine of the angle between the two points 
+as measured from the origin of $\real^5$.
+
+In neural network contexts, we frequently focus on the \emph{rows} of such a 
+dataset and compare them, for example considering pairs of input vectors or 
+activation vectors to assess their similarity.  Often the dot product or cosine 
+similarity are used to see if they point in the same direction in an input 
+space or activation space.  Often we have many rows and thus many points to 
+think about, a cloud points in an abstract space.  By contrast, when computing 
+covariance or correlation, we typically work with the \emph{columns}, of such a 
+dataset, comparing features like weight and height. We then compute the 
+correlation or covariation a single time, getting a single value out of the 
+pair of vectors.  Or if we have many columns with many features (suppose we 
+also had BMI, resting heart rate, and age in the table above), we might compute 
+multiple correlations or covariances.  So in a sense dot product and cosine 
+similarity are more row oriented, and correlation and covariance are more 
+column oriented.
 
 Given a set of vectors, we can compute all their pairwise relationships using the methods above. Correlation matrices and covariances are well known for this purpose. We refer to these generally as \textbf{vector comparison matrices}. These matrices serve as  tools for exploring similarity, alignment, or statistical dependence among sets of vectors.  It is very helpful to be able to interpret these. They also function as processing elements of some networks, most famously the transformer architecture used in large language models, where the self attention matrix compares vector representations of all the tokens in a context window (see chapter \extref{ch_transformers}).  
 
@@ -646,8 +891,6 @@ We start with the case where one of the matrices is a vector (recall that vector
 
 Left multiplication, where a matrix is multiplied by a column vector to produce a new column vector, is more common in mathematics. We can think of the matrix as ``operating'' on the vector. Figure \ref{matrixVectorProduct} shows how to perform the operation. Take the column vector and dot it with the first row to produce a the first entry in the output column vector. Then scan down the rows the write out the result.  In a sense we have transformed the vector. The matrix represents the transformation, vector on the right is the input, and the vector on the left is the output (the analogy to neural networks, which we come to in the next section, should be clear).\footnote{The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.}
 
-Notice how the shapes work here. The matrix must have as many columns as the vector has rows, so that when we rotate the vector its ``width'' must match the matrix, as can be seen in figure \ref{matrixVectorProduct}. That is, if the matrix has shape $(n, p)$ the column vector must have a compatible shape $(p, 1)$. (We discuss compatible shapes further in section \ref{matrixMultiplication}). This point is quite important, and we will expand on it in discussing the next case, of a row vector times a matrix.
-
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{images/matrixVectorProduct.png}
@@ -700,11 +943,7 @@ Here's the example from figure \ref{vectorMatrixProduct} worked out:
 \]
 \vspace*{.1cm} 
 
-So in this case row vectors are transformed into row vectors. This approach is less common in mathematics, perhaps because it takes more space to write out. However, we will see a variant on this approach is quite common when we deal with larger matrix products, and in fact we will often take this perspective in the book.
-
-Notice in this case that the row vector must have as many columns as the matrix has rows, so that when we rotate the vector its ``height'' matches the matrix, as can be seen in figure \ref{vectorMatrixProduct}. That is, if the row vector has shape $(1, i)$, the matrix must have shape $(i, o)$.  In this case (which goes with the source-target or input-output representation; see note \ref{sourceTarget})), we think of the number of rows of the matrix ($i$)  as the size of the input, and  the number of columns ($o$), as the number of outputs. We can set $o$ to whatever we like.  If $i = o$ we have a square matrix which keeps vectors in the same vector space. If $o > i$ the matrix takes us from one space to a higher dimensional space.  This is sometimes called a \glossary{up projection}.  If $o < i$ the matrix takes us from a higher dimensional to a lower dimensional space.  This is sometimes called a \glossary{down projection}. In neural networks these correspond to weight matrices that take us between layers with the same number of nodes, more nodes, or fewer nodes.  
-
-
+So in this case row vectors are transformed into row vectors. This approach is less common, perhaps because it takes more space to write out. However, we will see a variant on this approach is quite common when we deal with larger matrix products.
 
 Note that the very same operation can be represented in two equivalent ways, by using the transpose. This is based on the theorem that  $\mathbf{A}v =  v^T\mathbf{A}^T$, and is the basis of the ambiguity mentioned above. 
 

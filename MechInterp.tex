@@ -53,7 +53,7 @@ interpretability relies on the intuitive idea that the steps that occur in a
 neural network are potentially understandable. Formalized notions of these
 concepts are then proposed as parts of research projects in the field; these
 precisified notions often center on the contextual representations of tokens as
-they are processed along a residual stream.\footnote{The use of
+they are processed along a residual stream (on the concept of a residual stream see section \extref{transformerBlocks}).\footnote{The use of
 these terms raise deep issues in philosophy of cognitive science that are
 discussed at the end of chapter \extref{ch_transformers}.  We are agnostic
 about the exact interpretation here.}
@@ -96,7 +96,7 @@ intensive interest in LLMs in cognitive science; see section
 % Also earlier work on ablations. neuralDamageNetworks.png
 In prior chapters we have seen that the analysis of activation spaces of neural
 networks has been key to their interpretation as cognitive models, a history
-which extends back to the PDP revolution of the 1980s and 1990s. The common
+which extends back to the PDP revolution of the 1980s and 1990s (see chapter \extref{ch_history}). The common
 theme in this literature is that even if neural networks are in many ways
 biologically unrealistic (for example, the brain does not seem to use
 backprop), they can still be used to identify processing ideas and motifs that
@@ -122,12 +122,6 @@ concerned feature visualization in deep networks, using methods such as
 saliency maps and activation maximization, to understand what the internal
 layers of a deep network are responding to in their inputs.
 
-%. (David) Another idea was the idea of subnetworks of a neural net. It was
-% hoped that you could decompose the net into individually meaningful and
-% interpretable subnetworks, and then those subnetworks would underwrite this
-% "algorithms" concept.
-% (David) I think we should add some brief discussion of
-% how none of these approaches panned out 
 As previously mentioned, the basic concepts in mechanistic
 interpretability--``programs'' and ``circuits'' and, recently,
 ``features''--have been left undefined, retaining for the whole field only
@@ -264,7 +258,6 @@ interpretations on.
 \label{saeSimbrain}
 \end{figure}
 
-% David: bibtex  below and expand
 The activated neurons in a sparse autoencoder seem to each represent a single,
 human-interpretable concept \cite{cunningham2023sparse,
 bricken2023monosemanticity}. The theory behind this is that, while there is no
@@ -283,11 +276,6 @@ obviously, on the number of units it has available. If fewer units are
 available, the SAE's reconstruction training will prioritize capturing the
 ``most active'', common concepts, ignoring niche concepts that come up only
 rarely.
-
-% David: Need more discussion of what to do once these features are found. How
-% are they used? I think we just reuse the linear probe / supervised
-% methodology?
-% I addressed this below in the ActAdd section.
 
 \subsection{Activation Addition}
 
@@ -350,10 +338,6 @@ steering of model behavior.
 % interesting play on the old graceful degradation idea.
 
 % \subsection{Other Techniques}
-
-% David: we can either add a tiny bit here as a suggestion of what's coming, or
-% just comment the section out.
-% Just commented this out for now; happy to return to this later on.
 
 % Some other methods include activation patching ablating,  causal tracing, and
 % interchange intervention.
@@ -420,14 +404,10 @@ MLPs (\cite{nanda2023progress} , section 4.1).
 
 \subsection{Induction Heads}
 
-% David. I wrote this with notes and AI, so it clearly needs a pass. I still
-% don't totally get it but this is in the direction... Also citations are
-% needed. You mentioned (Wang et al. 2024) and anthropic.
-
 An early success in mechanistic interpretability was the identification of
 attention head activation patterns as semantically meaningful. Helpfully, the
-attention scores mechanism in transformers lends itself to interpretation
-without the grafting on of any additional structure--just as the output
+attention mechanism in transformer blocks (whose activations can be read as ``scores''; see section \extref{transformerBlocks}) lends itself to interpretation
+without having to graf on of any additional structure--just as the output
 probabilities of a model can be naturally interpreted as a model's confidence
 about its answer, the attention scores of an attention head can naturally be
 interpreted as ``which tokens that head is attending to, to what degree''.
@@ -435,7 +415,7 @@ interpreted as ``which tokens that head is attending to, to what degree''.
 Several interpretable roles played by attention heads in transformers have been
 catalogued. ``Bigram heads'' are attention heads that solely identify
 particular pairs of tokens \cite{elhage2021mathematical}. These heads basically
-implement simple rules like: if you see ``Barack'', promote ``Obama``. Other
+implement simple rules like: if you see ``Barack'', promote ``Obama''. Other
 heads can be seen to do simple context-sensitive token copying--for example,
 hanging on to the token ``small'' or ``large'' and looking out for the later
 token ``contains'' to follow along with that earlier copied token
@@ -472,7 +452,6 @@ correlate with their function: heads near the beginning handle basic syntax,
 heads in the middle build up to identifying meaning and conceptual
 relationships, and heads toward the end of the model specialize in syntax once
 again (perhaps cleaning up the model's final token predictions).
-
 
 %% OTHER TOPICS / FRAGMENTS
 
