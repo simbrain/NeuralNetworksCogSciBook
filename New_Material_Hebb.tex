@@ -5,6 +5,7 @@
 
 We've seen how the Hebb rule works for scalar values. Nice and easy: if they fire together, wire together; source times target activations. The situation is the same when we vectorize the rule, but now we have activation vectors $\mathbf{a}_{\text{in}}$ and $\mathbf{a}_{\text{out}}$, and we have to find a vector operations that ``lines up'' the right components of the two vectors so that we strengthen the right ones.  Here is a preview: multiply the output activation column vector times the input row vector (the input transposed, since we assume columns to start), and out pops what we're looking for. 
 
+% Link to new approach to matrix mult. row perspective is each component on left vector is pushed through the right vector. Col is that each right component is scanned down the left. 
 So, as usual in the vector world, things end up feeling kind of backwards, we multiply output times input rather than the other way around, and there is this mysterious transpose thrown in.  But if we go back to the ``bridge'' panel of the figure above, it ends up making sense. Figure \ref{vectorizedHebb} shows the idea. I like to start in the center panel, and then (to link to the linear algebra) think of the mentally moving the output vector to the left and moving the input vector to the top. Then we have a kind of outer product representation, and all the products kind of line up in the right way. 
 
 \begin{figure}[h]
@@ -40,6 +41,7 @@ We compute the new weight values using equation \eqref{vectorHebb}:
 = \begin{bmatrix} -1 & 1 \\ 0 & 0 \\  -1 & 1  \end{bmatrix}
 \end{align*}
 
+% This example does not match the pic!
 So we get
 
 \begin{align*}
