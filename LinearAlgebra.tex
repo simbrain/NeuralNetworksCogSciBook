@@ -892,19 +892,19 @@ In the special case where most of the entries in a weight matrix are $0$, the ma
 % To get to the next belt level, you have to deal with this kind of thing, and so train your brain to deal with it.
 % Note there are other reps too, like the points in a space rep.
 
-At this point an interlude. We are going to start thinking more about matrices as ways of transforming vectors, of channeling information from one layer of a network to another.\footnote{In fact, the book as a whole can be thought of as involving two tracks: a `scalar' and a `vectorized' track. We use vectors and matrices to understand many ideas conceptually, but we do not make heavy use of matrix products or matrix algebra. This is much more accessible at first and supports a main thread in the book and Simbrain, making neural networks easy enough to use without any math background at all (there is math to learn, but it is self contained). However, this is not how things are done by most professionals working on neural networks in industry, and most academics as well. For any serious work, we must move to a more vectorized approach. Everything becomes more concise, and runs more efficiently on high-performance computers. This requires a change in thinking, a way of seeing and thinking about these problems in terms of matrices, vectors, and tensors, often seeing datasets and batches in new ways. The focus here is on vectors, matrices, and higher rank tensors, and on applying linear algebra methods directly to these structures.} We will, in particular, be focusing on  the matrix product, or matrix multiplication. This operation (and its generalization, the tensor product), are at the heart of a great deal of the mathematics of neural networks. However, it is not an easy operation to master, because various entries must be held in memory and rotated and multiplied and added, and it's quite easy to lose track.  Moreover, we'd like to stay within the visual framework of Simbrain and find ways to quickly and intuitively understand what is going on. For that purpose we will begin to move from the ball and stick metaphors to one that shows matrices directly, and we need to have an ability to visualize how information flows through these structures.
+At this point we take a break to prepare for thinking graphically about the matrix product. We are going to start thinking more about matrices as ways of transforming vectors, of channeling information from one layer of a network to another.\footnote{In fact, the book as a whole can be thought of as involving two tracks: a `scalar' and a `vectorized' track. We use vectors and matrices to understand many ideas conceptually, but we do not make heavy use of matrix products or matrix algebra. This is much more accessible at first and supports a main thread in the book and Simbrain, making neural networks easy enough to use without any math background at all (there is math to learn, but it is self contained). However, this is not how things are done by most professionals working on neural networks in industry, and most academics as well. For any serious work, we must move to a more vectorized approach. Everything becomes more concise, and runs more efficiently on high-performance computers. This requires a change in thinking, a way of seeing and thinking about these problems in terms of matrices, vectors, and tensors, often seeing datasets and batches in new ways. The focus here is on vectors, matrices, and higher rank tensors, and on applying linear algebra methods directly to these structures.} We will, in particular, be focusing on  the matrix product, or matrix multiplication. This operation (and its generalization, the tensor product), are at the heart of a great deal of the mathematics of neural networks. However, it is not an easy operation to master, because various entries must be held in memory, multiplied and added, and then ``written out'' in a specific way.  it's quite easy to lose track.  Moreover, we'd like to stay within the visual framework of Simbrain and find ways to quickly and intuitively understand what is going on. For that purpose we will begin to move from the ball and stick metaphors we have emphasized to one that shows matrices directly, and we need to have an ability to visualize how information flows through these structures.
 
-Fortunately there are ways to simplify the process. We will see that the only basic visualization we need is one where we think about vectors being transformed through matrices, or ``flowing'' through matrices.  Later when we consider matrices or tensors being transformed, we can use the same exact mental models, because we can think of these as cases where a bunch of vectors are all arranged in rows or columns, and processed one at a time. Think of the matrices as static processors and as the tensors that pass through them as structured collections of vectors.
+Fortunately there are ways to simplify the process. We will see that the only basic visualization we need is one where we think about vectors being transformed through matrices, or ``flowing'' through matrices.  Later when we consider matrices or tensors being transformed, we can use the same exact mental models, because we can think of these as cases where a bunch of vectors are all arranged in rows or columns, and processed one at a time. For example, we will often consider ``stacks'' of vectors and how they are processed by matrices.  Think of the matrices as static processors and as the tensors that pass through them as collections of vectors that are processed one at a time.
 
-We have already alluded above to the fact that there can be multiple ways to represent a weight matrix. For most of the book, we simply default to a ``source-target'' representation, but a target-source representation is also possible, and in many contexts is more common. If you don't care about the details, you can skip the ext paragraph and just focus on source-target representation.
+We have already alluded above to the fact that there can be multiple ways to represent a weight matrix. For most of the book, we simply default to a ``source-target'' representation, but a target-source representation is also possible, and in many contexts is more common. If you don't care about the details, you can skip the next paragraph and just focus on the source-target representation.
 
 % We also call this a  $\textbf{W}_{i, j}$ rep vs a  $\textbf{W}_{j,i}$.
-In a ``source-target'' representation, a weight $w_{i, j}$ is a weight from source neuron $i$ to target neuron $j$. In the corresponding matrix, rows are associated with source neurons and columns are associated with target neurons.  This kind of indexing is much more natural, what Don Norman calls a ``natural affordance'', since we are going from a source to a target.  By contrast,  a ``target-source'' is one where we swap indices so that weight $w_{j, i}$ shows the target neuron first and the source neuron second. In the corresponding matrix, rows are associated with target neurons and columns are associated with source neurons. This seems backwards, but for certain matrix operations is more natural and more compact to write, and so it is commonly used.\footnote{There is some disciplinary variance on which representation to use. According to wikipedia, ``The [source-target] definition is commonly used in graph theory and social network analysis (e.g., sociology, political science, economics, psychology). The [target-vector representation] is more common in other applied sciences (e.g., dynamical systems, physics, network science) where A is sometimes used to describe linear dynamics on graphs'' \url{https://en.wikipedia.org/wiki/Adjacency_matrix\#Directed_graphs}.}
+In a ``source-target'' representation, a weight $w_{i, j}$ is a weight from source neuron $i$ to target neuron $j$. In the corresponding matrix, rows are associated with source neurons and columns are associated with target neurons. This kind of indexing is easy and natural to think about' it's what Don Norman calls a ``natural affordance'', since we are going from a source to a target.  By contrast,  a ``target-source'' format is one where we swap indices so that weight $w_{j, i}$ shows the target neuron first and the source neuron second.  In the corresponding matrix, rows are associated with target neurons and columns are associated with source neurons. This seems backwards, but for certain matrix operations is more natural and more compact to write, and so it is commonly used.\footnote{There is some disciplinary variance on which representation to use. According to wikipedia, ``The [source-target] definition is commonly used in graph theory and social network analysis (e.g., sociology, political science, economics, psychology). The [target-vector representation] is more common in other applied sciences (e.g., dynamical systems, physics, network science) where A is sometimes used to describe linear dynamics on graphs'' \url{https://en.wikipedia.org/wiki/Adjacency_matrix\#Directed_graphs}.}
 % Yet another option is (from, to) vs (to, from). 
 
-We now consider graphical conventions. We need to bridge between conventional linear algebra notation, ball-and-stick models, and direct representations of weight matrices and activation vectors. We need a template for mentally moving back and forth between these ways of thinking. One byproduct of this is that it will be easy to see how a matrix can take us from one size space to another, sometimes down projecting, sometimes up projecting, and sometimes transforming vectors in the same sized space.
+We now consider graphical conventions. We need to bridge between the ball-and-stick models we have been using and direct representations of weight matrices and activation vectors. We need a template for mentally moving back and forth between these ways of thinking. One byproduct of preparing this way of thinking is that it will be easy for us to see how a matrix can take us from one size space to another, sometimes ``down projecting'', sometimes ``up projecting'', and sometimes transforming vectors in the same-sized space.
 
-In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention.  In fact, in both cases we can also think of information flowing \emph{backwards} to the way we represent it, but in those cases the activations follow the same flow lines, just in reverse.
+In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention.  A particular set of flow lines is shown.  One important idea to be aware of us that within each convention, we can go either forward through the flow lines in the way shown, or \emph{backwards} through them, which is what happens in backprop (chapter \extref{ch_lms_backprop}).  Whether we go forward or backward depends on whether we use right or left multiplication, which is a topic taken up in the next section.
 
 \subsection{Source-target graphical conventions}
 
@@ -915,6 +915,15 @@ Figure \ref{sourceTargetConvention} shows how to think of a matrix in source-tar
 \includegraphics[width=0.75\textwidth]{images/sourceTarget.png}
 \caption[Jeff Yoshimi.]{Graphical model for thinking about a weight matrix using a source-target representation. We think of the vectors as entering the matrix on the left, being multiplied and added, and exiting up top.}
 \label{sourceTargetConvention}
+\end{figure}
+
+Figure \ref{sourceTargetSimbrain} shows how this looks in Simbrain. You are encouraged to imagine  the input activations being rotated and ``entering'' on the left (in Simbrain, you can also rotate the presentation of the input vector), and then ``exiting'' above.  Depending on how you set things up in Simbrain you will have to imagine the input and output rotating and moving in various ways (in this example, the input must rotate and the output must move over to the right), but in general just set things up mentally to enter on the left and exist above, and you should be able to interpret what is happening.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{images/sourceTargetSimbrain.png}
+\caption[Jeff Yoshimi.]{Using a source-target representation in Simbrain. We think of the vectors as entering the matrix on the left and exiting up top.}
+\label{sourceTargetSimbrain}
 \end{figure}
 
 \subsection{Target-source graphical conventions}
@@ -928,13 +937,46 @@ Figure \ref{targetSourceConvention} shows how to think of a matrix in target-sou
 \label{targetSourceConvention}
 \end{figure}
 
+Figure \ref{targetSourceSimbrain} shows how this configuration looks in Simbrain. Here you are encouraged to imagine  the input activations  ``entering'' from below and then ``exiting'' to the right.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{images/targetSourceSimbrain.png}
+\caption[Jeff Yoshimi.]{Using a target-source representation in Simbrain. We think of the vectors as entering the matrix from below and exiting to the right.}
+\label{targetSourceSimbrain}
+\end{figure}
+
 \section{Matrix Multiplication (Part 1)}
 
 In this section we begin a discussion of matrix multiplication, where two matrices are multiplied by one another. There is nothing fundamentally difficult about this operation: it is just a combination of multiplying and adding entries, but the details can be tricky. There are established conventions for which things to multiply and add together, and they can be hard to remember. However, being able to do these computations is a crucial skill in neural networks, given how pervasive they are. Adding to the difficulty is that there is a kind of ambiguity to the process: matrix multiplications can often be thought of in different but compatible ways, as we will see.
 
 We start with the case where one of the matrices is a vector (recall that vectors are a kind of matrix, where there is either a single row or a single column). When a matrix is multiplied by a column vector it is called left multiplication (because the matrix is on the left). When a row vector is multiplied by a matrix it is called right multiplication (because the matrix is on the right). In the first case of $\mathbf{A}v$ we go from matrix and column vector to a new column vector. In the second case of $v\mathbf{A}$ we go from a row vector and a matrix to a new row vector.  The first case ``processes'' an input row into a transformed output row. The second case processes an input column vector into a transformed column vector (this concept of ``processing'' will be important below). These cases are good to start with because they show the basic mechanics of the operations, which is to take a vector, and ``scan'' it over the matrix in a certain way, taking dot products as you do, which are then ``written out'' to an output vector.  
 
-Left multiplication, where a matrix is multiplied by a column vector to produce a new column vector, is more common in mathematics. We can think of the matrix as ``operating'' on the vector. Figure \ref{matrixVectorProduct} shows how to perform the operation. Take the column vector and dot it with the first row to produce a the first entry in the output column vector. Then scan down the rows the write out the result.  In a sense we have transformed the vector. The matrix represents the transformation, vector on the right is the input, and the vector on the left is the output (the analogy to neural networks, which we come to in the next section, should be clear).\footnote{The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.}
+Even though left multiplication is a bit more common in math, we start with right multiplication because it is a more natural starting place with the source-target graphical structure we've been emphasizing.  With a source-target scheme a  ``forward pass'' through a matrix is corresponds to a right multiplication, and backward pass (as in backprop) corresponds to a left multiplication. (In a target-source scheme this is reversed. A forward pass correspond to left multiplication and a backward pass corresponds to right multiplication).
+
+With right multiplication we start with a row vector and multiply it by a matrix on the right. We take the dot product of the row vector and the first column vector in the matrix (see figure \ref{vectorMatrixProduct}. The resulting number is the first component of a row vector. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.  In a sense we have transformed one row vector into another. The matrix represents the transformation, the row vector on the left is the input, and the row vector on the left is the output (the analogy to neural networks should be clear).\footnote{The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/vectorMatrixProduct.png}
+\caption[Jeff Yoshimi.]{The row vector can be thought of as being rotated and scanned along the matrix to its right, writing out the output vector, which is also a row vector. Alternatively the columns of the matrix can be thought of as being removed one by one and dotted with the row vector, writing out the output vector.}
+\label{vectorMatrixProduct}
+\end{figure}
+
+Here's the example from figure \ref{vectorMatrixProduct} worked out:
+\[
+  \begin{matrix}\begin{pmatrix}1 & 2\end{pmatrix}\\\mbox{}\end{matrix}
+  \begin{pmatrix} 1 & 3 & 0 \\ 2 & 4 & 1 \end{pmatrix} 
+  =
+  \bigg( (1)(1) + (2)(2) ,\;\; (1)(3) + (2)(4) ,\;\; (1)(0)+ (2)(1) \bigg)
+  =
+  \begin{pmatrix}  5 \;\; 11 \;\;\; 2  \end{pmatrix}
+\]
+\vspace*{.1cm} 
+
+So in this case row vectors are transformed into row vectors. This approach is less common in math, perhaps because it takes more space to write out. However, we will see a variant on this approach is quite common when we deal with larger matrix products.
+
+The same example can also be represented by a right multiplication, where we transpose the matrix (see appendix for a definition of transpose). With left multiplication  a matrix on the left is multiplied by a column vector to produce a new column vector. We can think of the matrix as ``operating'' on the vector. Figure \ref{matrixVectorProduct} shows how to perform the operation. Take the column vector and dot it with the first row to produce a the first entry in the output column vector. Then scan down the rows the write out the result.  In a sense we have transformed the vector. The matrix represents the transformation, the vector on the right of the matrix is the input, and the vector after the equals sign is the output (the analogy to neural networks should be clear).
 
 \begin{figure}[h]
 \centering
@@ -968,29 +1010,8 @@ Here's the example from Figure \ref{matrixVectorProduct} worked out:
 \]
 \vspace*{.1cm}
 
-The same example can also be represented by a right multiplication, where we transpose the matrix (see appendix for a definition of transpose). To multiply a row vector on the left by a matrix on the right: take the dot product of the row vector and the first column vector in the matrix (see figure \ref{vectorMatrixProduct}. The resulting number is the first component of a row vector. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.4\textwidth]{images/vectorMatrixProduct.png}
-\caption[Jeff Yoshimi.]{The row vector can be thought of as being rotated and scanned along the matrix to its right, writing out the output vector, which is also a row vector. Alternatively the columns of the matrix can be thought of as being removed one by one and dotted with the row vector, writing out the output vector.}
-\label{vectorMatrixProduct}
-\end{figure}
-
-Here's the example from figure \ref{vectorMatrixProduct} worked out:
-\[
-  \begin{matrix}\begin{pmatrix}1 & 2\end{pmatrix}\\\mbox{}\end{matrix}
-  \begin{pmatrix} 1 & 3 & 0 \\ 2 & 4 & 1 \end{pmatrix} 
-  =
-  \bigg( (1)(1) + (2)(2) ,\;\; (1)(3) + (2)(4) ,\;\; (1)(0)+ (2)(1) \bigg)
-  =
-  \begin{pmatrix}  5 \;\; 11 \;\;\; 2  \end{pmatrix}
-\]
-\vspace*{.1cm} 
-
-So in this case row vectors are transformed into row vectors. This approach is less common, perhaps because it takes more space to write out. However, we will see a variant on this approach is quite common when we deal with larger matrix products.
-
-Note that the very same operation can be represented in two equivalent ways, by using the transpose. This is based on the theorem that  $\mathbf{A}v =  v^T\mathbf{A}^T$, and is the basis of the ambiguity mentioned above. 
+So we have seen that the very same operation can be represented in two equivalent ways, by using the transpose. This is based on the theorem that  $\mathbf{A}v =  v^T\mathbf{A}^T$, and is the basis of the ambiguity mentioned above. 
 
 \section{Matrix Multiplication (Applications)}
 

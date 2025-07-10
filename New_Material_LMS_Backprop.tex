@@ -8,9 +8,7 @@ The nice thing about LMS is we can directly interpret it in terms of Goldilocks.
 
 All this can be shown using calculus. It's kind of amazing to turn the crank on the calculus, and see how it all works out giving us the rule above, with all the intuitive meaning. Run through the calculus, and we get our rule, which we saw above makes sense!
 
-Conceptually, we are using the derivative of the error space. Since it's multi-dimensional, we call the derivative a gradient in this case. The gradient is a vector that points in the direction of change. 
-
-We want to change the weight so that error is reduced. Let's leave the bias out for now. Then we are taking the  derivative of this error function:
+Conceptually, we are using the derivative of the error space. Since it's multi-dimensional, we call the derivative a gradient in this case. The gradient is a vector that points in the direction of change. This formulation is given at the end of the section. We want to change the weight so that error is reduced. Let's leave the bias out for now. Then we are taking the  derivative of this error function:
 
 \begin{eqnarray*}
 E = (t - a_2)^2  =  (t - ( a_1 w_{1,2} + b_2))^2  =  (t -  a_1 w_{1,2} -  b_2)^2 
@@ -73,6 +71,26 @@ This is the same as before, but multiplied by the derivative of the activation f
 Note that the derivative of the activation function $f'$ is like a free parameter in this formula. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. Situations like this allow backprop to be automated in a sense. But note that some derivatives have problems, like being undefined or 0, which effectively turns off update.
 
 Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less. It doesn't matter as much. Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all. Again see below.
+
+We can end by expressing this rule in terms of movement in parameter space in a direction away from the direction of steepest ascent.  This is a concise way to express what gradient descent is using notation from vector calculus. But it need not be intimidating, it's just a way to arrange the symbols. A gradient vector is  a vector of partial derivatives with respect to some variable, here error.  The gradient $\nabla L$ of the loss or error function is a multi-dimensional derivative of the error with respect to a vector containing all the weights and biases. It points in the direction in the parameter space where changes will make error go up the most.  So gradient descent basically moves that vector in the opposite direction by an amount given by the learning rate $\epsilon$,  $-\;\epsilon\,\nabla L$. That is, start with a vector (potentially a massive one, in a modern neural network) of parameters:
+\begin{eqnarray*}
+  \mathbf{w} = \bigl(w_1, w_2, \dots, w_n\bigr).
+\end{eqnarray*}
+Then the gradient of our scalar loss \(L(\mathbf{w})\) is
+\begin{eqnarray*}
+  \nabla L(\mathbf{w})
+    = \begin{pmatrix}
+        \dfrac{\partial L}{\partial w_1}, 
+        \dfrac{\partial L}{\partial w_2}, 
+        \dots, 
+        \dfrac{\partial L}{\partial w_n}
+      \end{pmatrix}^\mathsf{T}.
+\end{eqnarray*}
+Gradient descent then updates all parameters at once via
+\begin{eqnarray*}
+  \mathbf{w} \;\leftarrow\; \mathbf{w} \;-\;\epsilon\,\nabla L(\mathbf{w}).
+\end{eqnarray*}
+In practice, we separately compute all these partial derivatives and just apply them separately to each weight and bias. But more abstractly, the whole collection of them ``points'' in some direction in the parameter space, and we are following that directional vector to find a way to go down to where error is lower.
 
 \section{Vector approach to LMS}
 
@@ -217,7 +235,7 @@ For a network with two node layers and one weight layer $\mathbf{W}$ with no act
 \begin{eqnarray}
 \mathbf{Y} = \mathbf{X} \mathbf{W}^T
 \end{eqnarray}
-$\mathbf{X}$ is a  $B \times n_{in}$ batch of inputs, where $B$ is the batch size and $n_{in}$ is the number of nodes in the input layer. Again, it's a kind of input table. $\mathbf{W}$ is transposed so that we get a shape of $n_{in} \times n_{out}$. This is the source-target representation we emphasized in the scalar track (see section \extref{scalarVectorTracks}), where columns correspond to fan-in weight vectors. This allows us to think of the product as a bunch of vector-matrix multiplications (or ``right multiplications'' since the matrix is on the right), where we peel off the rows of the input table $\mathbf{X}$ one at a time, multiply them by the weight matrix (dotting the rows with each column of $\mathbf{W}^T$), in each case producing an output row vector in $\mathbf{Y}$. As we move down the rows of the input table we stack up rows of the output table or output batch $\mathbf{Y}$, which has a shape of $B \times n_{out}$.
+$\mathbf{X}$ is a  $B \times n_{in}$ batch of inputs, where $B$ is the batch size and $n_{in}$ is the number of nodes in the input layer. Again, it's a kind of input table. $\mathbf{W}$ is transposed so that we get a shape of $n_{in} \times n_{out}$. This is the source-target representation we emphasized in the discussion of linear algebra (see section \extref{sourceTarget}), where columns correspond to fan-in weight vectors. This allows us to think of the product as a bunch of vector-matrix multiplications (or ``right multiplications'' since the matrix is on the right), where we peel off the rows of the input table $\mathbf{X}$ one at a time, multiply them by the weight matrix (dotting the rows with each column of $\mathbf{W}^T$), in each case producing an output row vector in $\mathbf{Y}$. As we move down the rows of the input table we stack up rows of the output table or output batch $\mathbf{Y}$, which has a shape of $B \times n_{out}$.
 
 To calculate error, we compare the output $\mathbf{Y}$ with a ``target table" (a batch of target values) $\mathbf{T}$. Subtracting the target values from the output activations gives us an error matrix:
 \begin{eqnarray}
