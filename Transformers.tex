@@ -354,11 +354,11 @@ the right. As a result, we can track the transformations a token's
 representation goes through as it makes its way through a network.  We will
 come back to this idea below when we discuss the ``residual stream''. 
 
-%  We can picture the residual stream as a big shared whiteboard that every
-%  head can read from and write to.
+% We can picture the residual stream as a big shared whiteboard that every
+% head can read from and write to.
 
-%\footnote{This idea is illustrated in section \extref{wordEmbeddingMatrix},
-%where it was described as a ``token embedding matrix''.}
+% \footnote{This idea is illustrated in section \extref{wordEmbeddingMatrix},
+% where it was described as a ``token embedding matrix''.}
 
 % Tim feedback: positional feedback happens too fast.  A mystery is thrown at
 % the reader. Take time and unpack. To make it clear concretely what happens,
@@ -429,7 +429,7 @@ or ``chat''. This was achieved using specialized training techniques,
 particularly Reinforcement Learning from Human Feedback (RLHF). RLHF uses
 reinforcement learning with human input--such as when ChatGPT asks users to
 rank responses--to refine its conversational abilities.  This human feedback is
-used to develop a reward model that is used to update the network’s parameters,
+used to develop a reward model that is used to update the network's parameters,
 incentivizing it to produce a more human-like cadence of responses.} 
 % David: the footnote above should be changed to a forward reference to the new
 % chapter Also RLAIF — Reinforcement Learning from AI Feedback
@@ -827,7 +827,7 @@ trillion parameters.\footnote{It takes large server banks that  consume huge
 amounts of energy to run these models, and so there is a thread of research
 attempting to achieve similar performance with smaller models, some of which
 can be run on a  personal computer. For example, Gemma2B achieves performance
-similar to GPT 3.5 with 2 billion parameter. See
+similar to GPT-3.5 with 2 billion parameter. See
 \url{https://developers.googleblog.com/en/smaller-safer-more-transparent-advancing-responsible-ai-with-gemma/}.}
 Figure \ref{gptParams} also shows the values of several hyperparameters such as
 number of layers ($n_\text{layers}$), corresponding to representational depth,
@@ -1024,24 +1024,24 @@ In fact, some have argued that LLMs may be used as a substitute for human data
 collection in future psychological research \cite{aher2023using,
 dillion2023can}.
 
-%The generalization (genuine intelligence) vs recall (stochastic parrot) debate
-%discussed above generates testable predictions that are being studied in
-%research labs. Generalization predicts that LLM responses should exhibit
-%context dependence (such as word list composition effects in a
-%psycholinguistic rating task), while recall predicts that LLM responses should
-%not be sensitive to context. The generalization hypothesis makes predictions
-%about what sorts of functions an LLM should be able to assemble, while the
-%recall hypothesis predicts that LLMs should perform approximately equally well
-%on tasks as long as the information is similarly present in its training data.
-%For example, according to the generalization hypothesis, LLMs may be able to
-%assemble functions that resemble human language use at the token level (such
-%as word ratings) but should do poorly at approximating human reaction times in
-%psycholinguistic studies because the dynamics that govern language production
-%and comprehension at this timescale are abstracted over in token-level
-%language data. The recall hypothesis, in contrast, would predict no difference
-%in LLM performance across these two tasks because information about human
-%performance on both of these metrics is equally available in its training data
-%in the form of published studies.
+% The generalization (genuine intelligence) vs recall (stochastic parrot) debate
+% discussed above generates testable predictions that are being studied in
+% research labs. Generalization predicts that LLM responses should exhibit
+% context dependence (such as word list composition effects in a
+% psycholinguistic rating task), while recall predicts that LLM responses should
+% not be sensitive to context. The generalization hypothesis makes predictions
+% about what sorts of functions an LLM should be able to assemble, while the
+% recall hypothesis predicts that LLMs should perform approximately equally well
+% on tasks as long as the information is similarly present in its training data.
+% For example, according to the generalization hypothesis, LLMs may be able to
+% assemble functions that resemble human language use at the token level (such
+% as word ratings) but should do poorly at approximating human reaction times in
+% psycholinguistic studies because the dynamics that govern language production
+% and comprehension at this timescale are abstracted over in token-level
+% language data. The recall hypothesis, in contrast, would predict no difference
+% in LLM performance across these two tasks because information about human
+% performance on both of these metrics is equally available in its training data
+% in the form of published studies.
 
 Much of this work has related LLM behavior to known psycholinguistic effects.
 For example, LLMs appear to reproduce human word rating norms on variables such
