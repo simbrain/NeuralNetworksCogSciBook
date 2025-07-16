@@ -37,8 +37,8 @@ generation model---Sora, which also runs on a transformer architecture.
 However, in this chapter we focus on transformer-based models of text
 generation like GPT.\footnote{There are many other models in this class. As of
 this writing (June 2024), this includes the OpenAI GPT series: GPT, GPT-2,
-GPT-3, GPT-4, and GPT-4o. It also includes BERT (Google’s first LLM, which is
-now out-dated), Gemini (Bard), several Claude models (Anthropic;  semi
+GPT-3, GPT-4, and GPT-4o. It also includes BERT (Google's first LLM, which is
+now outdated), Gemini (Bard), several Claude models (Anthropic;  semi
 open-source), Llama, LLama2 and LLama3 (Meta), and Alpaca (Stanford; open
 source). Most of these models can only be accessed online but some can be
 downloaded and run locally, further fine-tuned, etc. A list of LLMs ranked by
@@ -46,8 +46,8 @@ how well they chat is here: \url{https://chat.lmsys.org/?leaderboard}.} We will
 sometimes refer simply to ``LLMs'' by which we mean transformer-based
 LLMs.\footnote{There are numerous high quality online resources for learning
 about LLMs. An excellent visual introduction is at this website:
-\url{https://poloclub.github.io/transformer-explainer/}. Three blue one brown
-is always excellent on visual intuition and he has a
+\url{https://poloclub.github.io/transformer-explainer/}. 3Blue1Brown is always
+excellent on visual intuition and he has a
 \href{https://www.youtube.com/watch?v=wjZofJX0v4M&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi}{\underline{youtube
 video}}. For a more technical walk through on building an LLM from scratch see
 \href{https://www.youtube.com/watch?v=kCc8FmEb1nY}{\underline{Karpathy's
@@ -219,7 +219,7 @@ consists of a large part of the internet, which in turn encompasses many of the
 books and recorded knowledge of human history. In a sense, these models learn
 to speak ``internetese''. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.4]{./images/gptDatasets}
 \caption[From \cite{brown2020language}.]{The datasets used to train GPT-3. The
@@ -297,7 +297,7 @@ neural network. For a sense of the idea, see figure
 simple here. Some information on tokenizers is in chapter
 \extref{ch_word_embeddings}.} 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.45]{./images/contextWindow.png}
 \caption[Jeff Yoshimi]{How text sequences can be converted into training
@@ -328,7 +328,7 @@ Figure \ref{nextWordPrediction} illustrates the idea, and introduces some
 useful terminology. Notice the ``you'' occurs twice in the stack, and is
 associated with the same row vector.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.45]{./images/contextWindowAsStack.png}
 \caption[Jeff Yoshimi]{The context window is associated with a matrix that can
@@ -446,7 +446,7 @@ initial prompt is the initial input, but then the prompt \emph{and} the first
 word of the response are used as the next input, and this process can be
 repeated until a response is written out.
   
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.7]{./images/gptRecursedInputs.png}
 \caption[Jeff Yoshimi]{A schematic view of how ``conversations'' are generated
@@ -482,7 +482,7 @@ vocabulary. The network takes the stack of token embeddings as input and
 produces a probability distribution over these tokens as output.  See figure
 \ref{transformerOverview}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.2]{./images/TransformerOverview.png} \; \; \; 
 \includegraphics[scale=.2]{./images/TransformerOverview2.png}
@@ -596,7 +596,7 @@ important; in a sense it learns what to focus on (hence ``self attention'').
 % into all these different communication channels, corresponding to paths
 % through the model. > \cite{elhage2021mathematical}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.3]{./images/transformerBlockResidualStream.png}
 \caption[Jeff Yoshimi with consultation from Tim Meyer.]{(Left) One transformer
@@ -703,7 +703,7 @@ that represents multiple types of inter-word dependency.
 % stacking, facilitate residual connections, stable layer normalization,
 % uniform attention mechanism).
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.35]{./images/transformerBlockMultiHeadResidualStream.png}
 \caption[Jeff Yoshimi with consultation from Tim Meyer.]{Schematic of the
@@ -839,7 +839,7 @@ are the learning rate and batch size. Notice that these are all concepts we
 have seen in one way or another (often directly) in earlier chapters. All the
 same ideas are being used but on a larger scale.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.4]{./images/gpt3_params.png}
 \caption[\url{https://arxiv.org/abs/2005.14165}.]{Number of parameters and
@@ -962,7 +962,7 @@ pass the test for simple chatbot-like interactions, but that it would fail in
 responding to strange situations involving words referring to objects the
 octopus has never perceived. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.20]{./images/octopusTest.png}
 \caption[Soraya Boza.]{The octopus test. In the upper panel the octopus is
@@ -1086,7 +1086,7 @@ experiment:
 \end{minipage}
 \end{center}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.8]{./images/humanVsLLM.png}
 \caption[Figure borrowed from Kello et al. (2025, under review) with author
@@ -1181,7 +1181,7 @@ design limitations rather than fundamental reasoning failures'' and that when
 controlling for these errors that LLMs can succeed on reasoning tasks reported
 as failures in \cite{shojaee2025illusion}. So the issue is hot and ongoing.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.8]{./images/llmStandardizedExams.png}
 \caption[From \cite{achiam2023gpt}.]{Some of the performance results on
@@ -1191,7 +1191,7 @@ performance on most tests shown, but middling performance on the Writing GRE.
 \label{llmStandardExams}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.8]{./images/llmAnalogical.png}
 \caption[From \cite{webb2023emergent}.]{LLMs perform comparably to humans on a
@@ -1250,7 +1250,7 @@ The approach taken is generally this:
 Because this procedure can be applied across different layers of LLM and
 different brain regions, it can be used to produce  a set of prediction scores
 indicating which parts of the model correspond best to which areas of the
-brain. These results effectively map layers or the LLM to the brain’s language
+brain. These results effectively map layers or the LLM to the brain's language
 network.
 
 Transformers often outperform other computational models in predicting brain
@@ -1267,7 +1267,7 @@ generally improves brain scores, on average by 53\%''
 \cite{schrimpf2021neural}. Figure \ref{brainPredictionLLM} shows some of the
 areas where activity is most strongly predicted by LLMs.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=.9]{./images/brainPredictionsLLM.png}
 \caption[From \cite{schrimpf2021neural}.]{Highlighted regions correspond to
@@ -1282,7 +1282,7 @@ Prediction tends to be strongest for activations in the middle layers of LLMS
 \cite{schrimpf2021neural}, figure 2C), and this work will probably be best
 pursued along side work in mechanistic interpretability  (chapter
 \extref{ch_mechinterp}), where studies suggest that attention heads located
-early in the model’s forward pass tend to deal with syntactic features,
+early in the model's forward pass tend to deal with syntactic features,
 composing these into semantic features in the middle of the forward pass, and
 finally refocusing on syntax at the end of the pass.
 
@@ -1314,7 +1314,7 @@ of the book: neural networks and cognitive science.
 First, there is an old debate about whether passing the Turing Test sufficient
 to conclude that a system really understands anything. Doubts about the ability
 of machines to understand language have a long history, and there is a whole
-class of arguments to the effect that a system can’t understand the meanings of
+class of arguments to the effect that a system can't understand the meanings of
 words just by manipulating symbols, or by transmitting information. These are
 sometimes called \emph{unusual realization arguments}, given that these
 arguments
@@ -1322,7 +1322,7 @@ arguments
 ask us to imagine people carrying out simple operations on bit streams,
 connectionist-like computations on activations patterns, or the control
 operations of the central processing unit of a computer. For example, Dneprov
-asks us to imagine a stadium full of people who pass 0’s and 1’s to one another
+asks us to imagine a stadium full of people who pass 0's and 1's to one another
 on the basis of instructions announced over a loudspeaker. We can further
 imagine that this stadium is linked to an input-output device that enables it
 to pass the Turing test. We can then ask ourselves: do we really think this
@@ -1400,7 +1400,7 @@ cannot do. More principled responses look to the internal structure of these
 systems and how they work. Some have noted that systems based on word
 embeddings can in fact produce the kinds of compositional patterns emphasized
 in symbolic AI. Much of this work is now being carried out in the field of
-mechanistic interpretability (chapter \extref{ch_mechinter}). 
+mechanistic interpretability (chapter \extref{ch_mechinterp}). 
 
 % Chomsky 1980 cite. Also cite Gary Marcus Perhaps "inductive bias" is the way
 % to fix it. Iris discussed it. 
@@ -1503,7 +1503,7 @@ set of legal documents-- it must be fine-tuned on a smaller, targeted corpus.
  rewriting its knowledge. Models like DeepSeek have used techniques like LoRA
  in combination with curated data cleanup to good effect.} A gripping example
  of fine-tuning is the case of the late singer Lou Reed's wife creating a
- special LLM which was fine-tuned using ``a vast cache of Reed’s writing, songs
+ special LLM which was fine-tuned using ``a vast cache of Reed's writing, songs
  and interviews'', giving it a bit of his
  personalty.\footnote{\url{https://tinyurl.com/yyd2hjh5}.}  Many fine-tuned
  foundaton models now exist, in biomedical, legal, and many other domains.
@@ -1542,7 +1542,7 @@ something like this
 \begin{quote}
 You are a helpful, honest, and friendly assistant.\\
 You answer clearly and politely.\\
-If you don’t know something, say so.\\
+If you don't know something, say so.\\
 Do not make things up.
 \end{quote}
 
