@@ -145,53 +145,58 @@ Thus far in the book we have focused entirely on learning via updates to weight
 and biases, learning via incremental updates to the parameters of a neural
 network. Indeed the distinction between performance and learning was made
 central to the entire book in the introduction (section
-\extref{performanceLearning}). LLMs are no exception; they learn by a great
-deal of computationally expensive updates to their billions or trillions of
-parameters, as we are about to see. 
+\extref{performanceLearning}). LLMs are no exception; they learn via a great
+number of computationally expensive updates to their billions or trillions of
+parameters, as we are about to see.
 
-However, LLMs have a remarkable feature, that sets them apart from other neural
+However, LLMs have a remarkable feature that sets them apart from other neural
 network models: an ability to process a great deal of information ``live'', in
-their ``working memory'', as it were, without any updates to their weights.
-This is the basis for much of their power. Without learning a single new thing,
-that can actually reason their way through a problem or innovate a new idea.
-When the ability to do things like search the internet (see ``agentic systems''
-in section \ref{transformersInPractice}) and to frame things to itself with a
-prompt strategy (see ``prompt engineering'' in section
-\ref{transformersInPractice}) are added, they can be quite powerful.
+their ``working memory'' as it were, without any updates to their weights. This
+is the basis for much of their power. Without learning a single new thing, that
+can reason their way through a problem or innovate a new idea. When further
+extended with the ability to do things like search the internet (see ``agentic
+systems'' in section \ref{transformersInPractice}) or prompted to take down
+notes to itself (see ``prompt engineering'' in section
+\ref{transformersInPractice}), LLMs can be quite powerful.
 
 The point is often made in terms of terms like ``zero-shot'' or ``few shot''
-learning. The word ``learning'' here is a reference to machine learning where
+learning. The word ``learning'' here is a reference to machine learning, where
 the goal is to make AI models that can do things like classify faces or
-translate languages. Zero-shot learning refers to the fact that transformers
-can sometimes achieve these tasks with no new training examples at all.
-Few-shot refers to being able to perform some task just by seeing one or a few
-examples of something.  As an example of zero-shot learning, an LLM can be
-given an example of a review like ``this electric drill really held its
-charge'' and asked if it is positive or negative, even though it is not a
-trained model of sentiment analysis.  As an example of few shot learning an LLM
-can be given a few examples of a new type of character in a game, and asked to
-classify a few new ones. It can do this even though none of its weight or
-biases is updated! This is quite powerful and indeed the original GPT-3 paper
-was titled ``Language Models are Few-Shot Learners.''  
+translate languages. Zero-shot learning refers to the ability of transformers
+to perform some novel tasks without any training examples at all. Few-shot
+learning refers to their ability to perform some novel tasks after seeing just
+a few examples of it (sometimes after just a single demonstration). As an
+example of zero-shot learning, an LLM can be given an example of a review like
+``this electric drill really held its charge'' and asked if it is positive or
+negative, even though it is not a trained model of sentiment analysis. As an
+example of few shot learning, an LLM can be given a few examples of a new type
+of character in a game and asked to classify a few new ones. It can do this
+even though none of its weight or biases is updated! This is quite powerful and
+noteworthy. Indeed, the original GPT-3 paper was explicitly titled ``Language
+Models are Few-Shot Learners.''
 
-Broadly speaking this is referred to as \glossary{in-context learning}, though
-in some sense ``in context processing'' is a better way to refer to it. Even if
-in terms of AI tasks these systems can learn, this seems in a sense to be a
-byproduct of their ability to process information, the way humans do, in
-working or short term memory. But the memory capacity of modern systems is much
-larger, so it's like a very powerful working memory system, that can hold more
-than the classic 5 +/- 2 things.  
+Broadly speaking, this is referred to as \glossary{in-context learning}, though
+perhaps ``in-context processing'' is a better description for it. Even if in AI
+terms this is learning, in another sense it more resembles the human ability to
+process fresh information held in working or short-term memory. The working
+memory capacity of frontier LLMs is much larger than that of humans, and they
+don't seem to be restricted to juggling the classic 5 $\pm$ 2
+items.\footnote{Of note is the discovery that merely giving an LLM a larger
+context window does not automatically give it a correspondingly large working
+memory. Though some frontier models can hold entire books inside their context,
+their attention is spread thin over such a large context and their ability to
+successfully cite information will not work as well as it does in a more
+reasonably sized context.}
 % Some have said that LLMs have anterograde amnesia.  See Karpathy Reference
 % back to old NN's not being able to do one-shot learning (and the use of that
 % term in psychology).  Also working memory, and framing effects, and how the
 % way you currently think of something separately from your existing conceptual
 % apparatus can impact your behaviors.
 
-This is a brand new capability of neural networks that has only just begun
-being explored, especially as it relates to cognitive science.
-
-Having said all this, traditional parameter-based learning is still the basis
-of much of the power of LLMs, and so we turn to now.
+This is a brand new capability of neural networks that has only just begun to
+be explored, especially as it relates to cognitive science. Having said that,
+traditional parameter-based learning is still the basis of much of the power of
+LLMs, and so we turn to that now.
 
 \section{Learning to speak Internetese}\label{internetese}
 
