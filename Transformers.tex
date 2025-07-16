@@ -31,7 +31,7 @@ equate ``transformer'' with ``LLM'', but the two concepts are distinct. The
 transformer is the neural network architecture, while an LLM is just any model
 of language generation that is based on a large dataset. An LLM can be built
 out of something besides a transformer, and transformers can be used on things
-besides language. For example, some state of the art image classification
+besides language. For example, some state-of-the-art image classification
 models are now transformer-based, and OpenAI has released an impressive video
 generation model---Sora, which also runs on a transformer architecture.
 However, in this chapter we focus on transformer-based models of text
@@ -109,8 +109,8 @@ tutorial}}.}
 
 Earlier efforts at text generation and natural language processing used
 supervised recurrent networks (chapter \extref{ch_supervised_recurrent}), which
-are, as we saw, in various ways limited. In particular, they can only process a
-small amount of context, and suffer the vanishing gradient problem. The
+are limited in various ways, as we saw. In particular, they can only process a
+small amount of context, and suffer from the vanishing gradient problem. The
 transformer architecture is basically a complex feed-forward network that can
 be ``aware'' of multiple kinds of relationships between arbitrarily far-flung
 parts of an input stream. Because it is a feed-forward network, many of the
@@ -125,12 +125,12 @@ engineered tools, but are highly relevant both to neuroscience and cognitive
 science, and seem to develop meaningful internal representations. 
 
 We start with preliminary discussion of how transformer-based LLMs are trained
-using highly available text data, and how a special recursive trick can be used
-to make a feed-forward network that only predicts next words still produce
+using widely available text data, and how a special recursive trick can be used
+to make a feed-forward network--which only predicts next words--produce
 meaningful conversational outputs. We then discuss how the transformer
-architecture itself works. Finally we consider how LLMs are utilized and
+architecture itself works. Finally, we consider how LLMs are utilized and
 evaluated and the relevance of these models to cognitive science, neuroscience
-and other areas, and consider practical features of how they are built.
+and other areas, and consider the practical features of how they are built.
 Throughout our emphasis remains on the relevance of transformers to cognitive
 science.
 
