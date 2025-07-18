@@ -205,42 +205,42 @@ networks trained on example text can learn to speak in a way that reflects the
 statistical properties of the training data. A network trained on Shakespeare
 will start to speak fake Shakespeare, a network trained on real math can
 generate fake math, etc. Large language models using transformers do the same
-thing, they just do it much better. The architecture is better suited to the
-task, as we will see, and they can use much larger datasets (hence ``large''
-being added in front of ``language model''). In fact, the training set for
-GPT-3 was not all of Shakespeare, or just a bunch of math papers, but rather a
-large subset of the \emph{entire internet}, which included all of Wikipedia, a
-few compilations of books, and a web-scraped archive of the internet called
-``common crawl'' (\url{https://en.wikipedia.org/wiki/Common_Crawl}). See figure
-\ref{gptDatasets}. Similar datasets continue to be used on LLMs, so if you've
+thing--they just do it much better. The architecture is better suited to the
+task, as we will see, and they can be efficiently trained on far larger
+datasets (hence ``large'' being added on to ``language model''). In fact, the
+training set for GPT-3 was not all of Shakespeare, or just a bunch of math
+papers, but rather a large subset of the \emph{entire internet}, which included
+all of Wikipedia, a few compilations of books, and a web-scraped archive of the
+internet called ``Common Crawl''
+(\url{https://en.wikipedia.org/wiki/Common_Crawl}). See figure
+\ref{gptDatasets}. Similar datasets are used to train frontier LLMs. If you've
 ever written anything online, there is a decent chance it is part of the
-training data for one of these models. 
+training data of one of those models.
 
-Since all of Shakespeare is on the internet, and discussions of every topic of
-human endeavor from physics to history, and plenty of gossip and randomness
-about popular culture and everything else, these models can talk about all of
-these things. They can statistically generalize from their training data, which
-consists of a large part of the internet, which in turn encompasses many of the
-books and recorded knowledge of human history. In a sense, these models learn
-to speak ``internetese''. 
+Since all of Shakespeare is on the internet, as well as discussions of every
+topic of human endeavor from physics to history, plus plenty of gossip and
+random content about popular culture and everything else, these models can talk
+about all of these things. They can statistically generalize from that training
+data, which consists of a large part of the internet, which in turn encompasses
+many of the books and much of human recorded knowledge. In a sense, after an
+extensive period practicing, these models successfully speak ``internetese''.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=.4]{./images/gptDatasets}
-\caption[From \cite{brown2020language}.]{The datasets used to train GPT-3. The
-data mostly consists of data scraped from the internet, but lots of books and
-all of Wikipedia are also included.
-}
+\caption[From \cite{brown2020language}.]{The datasets used to train GPT-3.
+These mostly consist of data scraped from the internet, including all of
+Wikipedia, though lots of scanned books are also included.}
 \label{gptDatasets}
 \end{figure}
 
-The results are impressive. The texts these models produce are no longer
+The results are impressive. The text frontier models produce is no longer
 obviously fake in the way the examples from section
-\extref{languageModelsRecurrent} were. In fact, in some cases they arguably
-pass the \glossary{Turing Test}, a long-standing test for artificial general
-intelligence, answering questions and producing convincing  text in response to
-prompts. Whether LLMs really pass the test is a matter of ongoing controversy.
-This is discussed further in section \ref{llmPhilosophy}.
+\extref{languageModelsRecurrent} were. In some cases these models arguably pass
+the \glossary{Turing Test}, a long-standing test for artificial general
+intelligence: over text chat, some models can pass for human to a human
+questioner. Whether LLMs truly pass the Turing test is a matter of ongoing
+controversy; we discuss this further in section \ref{llmPhilosophy}.
 
 \section{Training Using Next-Word Prediction}
 
