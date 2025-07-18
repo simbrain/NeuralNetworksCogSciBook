@@ -246,13 +246,13 @@ controversy; we discuss this further in section \ref{llmPhilosophy}.
 
 Recall from chapter \extref{ch_data_science} that a labeled dataset consists of
 inputs and targets. As noted there, this kind of labeled data can be hard to
-obtain. We might have lots of pictures of people but not know the names or
-identities of the people in the pictures, or lots of pictures of cats and dogs
-but not whether a given picture is of a cat or dog. Creating targets for a
-large dataset is labor-intensive, requiring humans to manually label each
-picture.
+obtain. We might have lots of pictures of people but not know their names or
+identities, or have lots of pictures of cats and dogs but not have labeled
+whether a given picture is of a cat or a dog. Creating those target labels by
+hand for a large dataset is labor-intensive, as it requires humans to manually
+look over each picture.
 
-% David the materia below was updated based on your comments Need a bit more
+% David the material below was updated based on your comments. Need a bit more
 % fanfare on the embedding step, since it is the first step in the pipeline,
 % but not sure the best way to integrate it into the discussion Add glossary
 % item for auto-regression Tim feedback: currently the discussion makes it
@@ -263,20 +263,20 @@ picture.
 % Perhaps link to a page showing the full set of training samples and a few
 % parameters what the full number would be, and say the formula for how many
 % samples we'd get.
-LLMs like GPT use a special method (sometimes known as
-\glossary{auto-regression}) to take \emph{any passage of text} and convert it
-into a labeled data set that can be used to train a neural network. The trick
-is, roughly, to treat the vector embeddings of a sequence of text tokens (minus
-the last token in the sequence) as one big input, and then to treat the vector
-embedding of the final token in the sequence as a target. This is called
-\glossary{self-supervised learning}.  We are still using supervised learning,
-as in chapter \extref{ch_supervised}, associating inputs with targets or
-labels, but the targets are not provided separately, but are right there in the
-training data. It's extremely convenient!  The method can be used to generate a
-labeled dataset from any text document. We no longer have this difficulty of
-finding ``ground-truth'' labels, as the term ``supervised learning'' may imply.
-In practice it's much more like an unsupervised algorithm, in that all we need
-in order to train the model is a bunch of text. 
+LLMs like GPT use a special method (known as \glossary{auto-regression}) to
+take \emph{any passage of text} and convert it into a labeled data set that can
+be used to train a neural network. The trick is, roughly, to treat the vector
+embeddings of a sequence of text tokens (minus the last token in the sequence)
+as one big input, and then to treat the vector embedding of the final token in
+the sequence as a target. This is called \glossary{self-supervised learning}.
+We are still using supervised learning, as in chapter \extref{ch_supervised},
+associating inputs with targets or labels, but the targets are not provided
+separately and are instead right there in the training data. It's extremely
+convenient! Self-supervised training can be used to generate a labeled dataset
+from any text document. We no longer have the difficulty of creating
+``ground-truth'' labels, as the term ``supervised learning'' may imply. In
+practice it's much more like an unsupervised algorithm, in that all we need in
+order to train the model is a bunch of text.
 
 For example, consider this block of text adapted from the Wikipedia page for UC
 Merced:
@@ -288,19 +288,36 @@ California (UC) system. Established in 2005, Merced is the newest campus within
 the UC system.
 \end{quote}
 
-From this, we can create a bunch of training examples, a list of input / target
-pairs. We might use ``The University of" as an input, and then ``California''
-as a target. We simply associate each token in the input with a vector using a
-word embedding (chapter \extref{ch_word_embeddings}). The target is also vector
-encoded, but in a different way: as a one-hot encoding over all possible
-tokens, where all entries in the vector are 0 except the actual next token (we
-discuss this further in section \ref{llmOutput}). In this way we can build a
-table of input-target vector pairs, which we can use to train a feed-forward
-neural network. For a sense of the idea, see figure
-\ref{nextWordPrediction}.\footnote{Note that normally a word like
-``University'' would be split into multiple tokens, but we are keeping things
-simple here. Some information on tokenizers is in chapter
-\extref{ch_word_embeddings}.} 
+From this excerpt, we create a bunch of training examples, a list of
+input/target pairings. The first pairing we make is the empty input and the
+target token ``The''. The next pairing after that is ``The'', target,
+``University''. After that, ``The University'', target, ``of''. And so on. By
+treating each token as a target for all of the earlier text, every single token
+can be made into its own training datapoint.
+
+Technically, the transformer itself does not directly input or output text
+tokens. Each token in the input is first turned into a vector using a word
+embedding matrix (chapter \extref{ch_word_embeddings}). The target is also
+vector encoded, but as an output instead of as an input: the target becomes a
+one-hot encoding vector over all possible tokens, where all entries in the
+vector are 0 except for the actual next token's entry, which is 1. (We discuss
+this further in section \ref{llmOutput}.) In this way we process text into a
+table of input-target \emph{vector} pairs, which we can use to train a
+feed-forward neural network (see figure
+\ref{nextWordPrediction}).\footnote{Note that a longer word like ``university''
+would normally be broken up into multiple tokens: \code{un} and \code{iversity}
+is a typical tokenization for it, e.g. We are neglecting this complication here
+to keep things simple. More on tokenization in chapter
+\extref{ch_word_embeddings}.} This table is a matrix where each row corresponds
+to the token embedding for one token; it has the shape (sequence size,
+embedding dimension) and it is the actual input to the neural network. So
+unlike earlier, simpler neural networks, which transformed vectors to vectors
+via weight matrices, here we are transforming \emph{stacks} of vectors by
+matrices.\footnote{What is actually fed to the transformer is a batch of these
+token embedding matrixes, that is a rank-3 tensor with shape (batch size,
+sequence size, embedding dimension); see section \extref{sect_tensors}).}
+Figure \ref{sequenceDim} illustrates the idea, and introduces some
+useful terminology.
 
 \begin{figure}[ht]
 \centering
@@ -308,30 +325,17 @@ simple here. Some information on tokenizers is in chapter
 \caption[Jeff Yoshimi]{How text sequences can be converted into training
 datasets using the method of auto-regression. A set of tokens is converted into
 vectors using a token embedding (the vectors shown are arbitrary, just to
-illustrate the idea), and by concatenating these vectors we get an input
-vector. The next token in the sequence is encoded as a target using a one-hot
-encoding over all tokens (in this case there are seven tokens: six words and
-the question mark).
-}
+illustrate the idea); by concatenating these vectors we get an input vector.
+The next token in the sequence is encoded as a target using a one-hot encoding
+over all tokens (in this case there are seven possible tokens: six words and
+the question mark).}
 \label{nextWordPrediction}
 \end{figure}
 
-Note that the word embedding in this example is 4-dimensional (each token is
-associated with an array of 4 numbers, a vector in a 4d space). In real LLMs,
-this ``embedding dimension'' is quite large, for example over 12,000 for GPT-3
-(see figure \ref{gptParams}). 
-
-In practice, a sequence of tokens is converted into a matrix where each row
-corresponds to the token embedding for one token. This matrix of shape
-(sequence size, embedding dimension) is the actual input to the neural network.
-So unlike earlier, simpler neural networks, which transformed vectors to
-vectors via weight matrices, here we are transforming \emph{stacks} of vectors
-by matrices.\footnote{What is actually fed to the transformer is a batch of
-these token embedding matrixes, that is a rank-3 tensor with shape (batch size,
-sequence size, embedding dimension); see section \extref{sect_tensors}).}
-Figure \ref{nextWordPrediction} illustrates the idea, and introduces some
-useful terminology. Notice the ``you'' occurs twice in the stack, and is
-associated with the same row vector.
+Note that the word embeddings in figure \ref{nextWordPrediction} and figure
+\ref{sequenceDim} are 4-dimensional (each token is associated with an array of
+4 numbers, a vector in a 4d space). In real LLMs, this ``embedding dimension''
+is quite a bit larger--over 12,000 for GPT-3 (see figure \ref{gptParams}).
 
 \begin{figure}[ht]
 \centering
@@ -340,24 +344,24 @@ associated with the same row vector.
 be thought of as a stack of vectors, one for each token. Notice that ``you''
 occurs twice and is associated with the same vector.
 }
-\label{embeddingMatrix}
+\label{sequenceDim}
 \end{figure}
 
-There is a key conceptual model that occurs here that is useful to fix in mind,
-since it's key to understanding LLMs. We can think about the context window as
-a stack of tokens converted into a stack of vectors, where the vectors
-correspond to embeddings of the tokens in a vector space that then get
-transformed as they travel through the network. Thus the repeated ``you'' will
-change its representation as it is processed. This may seem confusing at first;
-don't the numbers get all jumbled up when we matrix multiply? But recall the
-discussion of matrix multiplication and the ``row processing'' perspective
+There is a key conceptual takeaway from all of this, central to understanding
+LLMs. We can think about a context as a stack of tokens converted into a stack
+of vectors, where the vectors correspond to embeddings of the tokens in a
+vector space. The context then gets transformed as it travels through the
+network, ultimately becoming next-token predictions. Thus the repeated ``you''
+will change its representation as it is processed. This may seem confusing at
+first; don't the numbers get all jumbled up when we matrix multiply? But recall
+the discussion of matrix multiplication and the ``row processing'' perspective
 (section \extref{matrixMultiplication}), where we can view think of a matrix
 multiplication as taking a stack of $N$ row vectors on the left, multiplying
 them by a matrix produces on the right, to produce another stack of $N$ row
 vectors, each of which has been \emph{separately processed} by the matrix on
-the right. As a result, we can track the transformations a token's
-representation goes through as it makes its way through a network.  We will
-come back to this idea below when we discuss the ``residual stream''. 
+the right. As a result, we can separately track the transformations a token's
+vector representation goes through as it makes its way through a network.  We
+will circle back to this idea below when we discuss the ``residual stream''.
 
 % We can picture the residual stream as a big shared whiteboard that every
 % head can read from and write to.
