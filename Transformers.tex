@@ -430,7 +430,7 @@ originally used for text processing, as we saw in chapter
 \extref{ch_supervised_recurrent}, but it turns out that fancy feedforward
 networks used in this way outperform them. (In those cases, a vector
 representation of each token in the sequence would be presented separately:
-``hello'', ``how'', ``are'', ``you'', and ``?'').} The prompt is our input, and
+``hello'', ``how'', ``are'', ``you'', ``?'').} The prompt is our input, and
 then answers are generated using the recursion trick. Text will continue to be
 generated until a special end-of-sequence token is reached.\footnote{An
 important step forward with ChatGPT was its ability to mimic human conversation
@@ -445,7 +445,7 @@ incentivizing it to produce a more human-like cadence of responses.}
 
 So this gets us one response. But then you type a new question. That
 \emph{entire question} is appended to the \emph{entire past conversation}
-including both what you and GPT have said so far. 
+including both what you and GPT have said so far.
 
 Suppose, for example, we want to ask a network ``hello how are you?'' The input
 to the network is the whole sentence $\{$``hello'', ``how'', ``are'', ``you'',
@@ -467,29 +467,23 @@ the next time step. This process is repeated to generate a full response.
 \end{figure}
 
 Of course, as we keep doing this, the inputs to the network get larger and
-larger, and there must be some limit to how far we can go, right? The answer is
-yes. Any LLM specifies a fixed-length \glossary{context window}. At the start
-of a session, this window is mostly zeros, except for the initial prompt. In a
-dialog, the prompts from a person and the responses from the LLM are both
-included until the context window is filled. Thus, if the context window is
-large enough, whole series of back and forth conversations can be processed.
-All the prompts and responses up until the current point are part of the input,
-and then the LLM uses the recursion trick to generate new responses that are
-sensitive to everything that's been discussed thus far. When the system runs
-out of slots in its context window, items are simply removed from the start of
-the context window (from a computer science standpoint, this is a queue). This
-is intuitive in figures \ref{nextWordPrediction} and \ref{gptRecursedInputs}.
-These context windows can be remarkably large. GPT-3 has a context window of
-about 2000 tokens or about 6 pages of text, and early versions of GPT-4 had
-context windows of 32,000 tokens or about 72 pages of text. 
-
-Here is the idea in more detail, in a way that begins to give a sense of how
-the architecture works, for a highly simplified example. The outputs are
-softmax, discussed below (section \ref{llmOutput} and in chapter
-\extref{ch_act_functions}), with one node for each token in a very small
-vocabulary. The network takes the stack of token embeddings as input and
-produces a probability distribution over these tokens as output.  See figure
-\ref{transformerOverview}.
+larger--there must be some limit to how far we can go, right? The answer is
+yes. An LLM's hyperparameters include a \glossary{context window} value: the
+maximum length of context that the LLM will read. At the start of a chat
+instance, the context starts small, with only an initial prompt. In a dialog,
+the prompts from a person and the responses from the LLM are both included
+until the context window is filled. Thus, if the context window is large
+enough, whole series of back and forth conversations can be processed. All the
+prompts and responses up until the current point are part of the input, and
+then the LLM uses the recursion trick to generate new responses that are
+sensitive to everything that's been discussed thus far. When the length of the
+context grows larger than the context window value, text is simply dropped from
+the start of the context, to fit (from a computer science standpoint, this is a
+queue). This is intuitive in figures \ref{nextWordPrediction} and
+\ref{gptRecursedInputs}. These context window values can be remarkably large.
+GPT-3 has a context window of about 2,000 tokens or about 6 pages of text, and
+early versions of GPT-4 had context windows of 32,000 tokens or about 72 pages
+of text.
 
 \begin{figure}[ht]
 \centering
