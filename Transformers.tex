@@ -340,7 +340,7 @@ is quite a bit larger--over 12,000 for GPT-3 (see figure \ref{gptParams}).
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=.45]{./images/contextWindowAsStack.png}
-\caption[Jeff Yoshimi]{The context window is associated with a matrix that can
+\caption[Jeff Yoshimi]{The context is associated with a matrix that can
 be thought of as a stack of vectors, one for each token. Notice that ``you''
 occurs twice and is associated with the same vector.
 }
@@ -432,14 +432,9 @@ networks used in this way outperform them. (In those cases, a vector
 representation of each token in the sequence would be presented separately:
 ``hello'', ``how'', ``are'', ``you'', ``?'').} The prompt is our input, and
 then answers are generated using the recursion trick. Text will continue to be
-generated until a special end-of-sequence token is reached.\footnote{An
-important step forward with ChatGPT was its ability to mimic human conversation
-or ``chat''. This was achieved using specialized training techniques,
-particularly Reinforcement Learning from Human Feedback (RLHF). RLHF uses
-reinforcement learning with human input--such as when ChatGPT asks users to
-rank responses--to refine its conversational abilities.  This human feedback is
-used to develop a reward model that is used to update the network's parameters,
-incentivizing it to produce a more human-like cadence of responses.} 
+generated until a special end-of-sequence token is reached.\footnote{For more
+on the post-training that enables ChatGPT and other frontier models to carry on
+a conversation with a human-like persona, see \extref{ch_alignment}.}
 % David: the footnote above should be changed to a forward reference to the new
 % chapter Also RLAIF — Reinforcement Learning from AI Feedback
 
@@ -491,11 +486,11 @@ of text.
 \includegraphics[scale=.2]{./images/TransformerOverview2.png}
 \caption[Jeff Yoshimi]{A first look at the process of a conversation unfolding
 through a network, showing the stack of word embeddings associated with the
-context window, the transformer blocks, and the softmax output. Note that the
+context, the transformer blocks, and the softmax output. Note that the
 most active output is associated with a token that is added to the context
 window on the next time step. Shown are two time steps. On the left the network
 has output a response of ``Good'' in response to the query, and that output is
-placed in the context window using the recursion trick.
+placed in the context using the recursion trick.
 }
 \label{transformerOverview}
 \end{figure}
@@ -510,26 +505,27 @@ the transformer as a black box. The time has come to open the box. How does the
 fancy feed-forward network at the heart of these models work? Its power rests
 on a few novel architectural innovations, which combine representational width
 and representational depth with a special form of context awareness. All the
-things we've seen about other neural networks apply here. It is a kind of deep
-feed-forward network, which uses a huge amount of training data. But the key
-innovation is that within each ``layer'' it can develop many forms of context
-representation, which relate all the tokens in a context window to each other.
+things we've seen about other neural networks still apply here. It is a kind of
+deep feed-forward network, which uses a huge amount of training data. But the
+key innovation is that within each ``layer'' the transformer can develop many
+forms of context representation which relate all the tokens in a context
+to each other.
 
 \subsection{Blocks}
 
-The transformer architecture \cite{vaswani2017attention} contains layers or
-``blocks'', which are specialized to process the large context windows that are
-fed to the network as input. With training, they learn to find long-range
-dependencies between different parts of a context window. Recall that the
-context window  includes an original prompt, its own response to that prompt,
-etc.; it includes the \emph{entire exchange} you've had with GPT up to the
-current point, so long as it fits in the context window. Each block combines an
-attention head and a standard feed forward network or MLP (see figure
-\ref{transformerBlockSimple}). We maintain the ``row processing'' perspective
-of section \extref{matrixMultiplication} throughout the discussion. That is, we
-forget about batch processing, and focus on a stack of vectors, each
-corresponding to one token in the context window. First this stack is processed
-through the attention heads, then through the MLP.  
+The transformer architecture \cite{vaswani2017attention} is made up of layers
+or ``blocks'', which are specialized to process the large contexts that are fed
+into the network as input. With training, these blocks learn to find long-range
+dependencies between different parts of a context. Recall that the context
+includes an original prompt, its own response to that prompt, etc.; it includes
+the \emph{entire exchange} you've had with GPT up to the current point, so long
+as it fits in the context window. Each block combines an attention head and a
+standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).
+We maintain the ``row processing'' perspective of section
+\extref{matrixMultiplication} throughout the discussion. That is, we forget
+about batch processing, and focus on a stack of vectors, each corresponding to
+one token in the context. This stack is first processed through the attention
+heads, and then through the MLP.
 
 % More on normalization, "scaled dot product"
 The attention head is where the contextual awareness occurs. Each token
