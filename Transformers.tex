@@ -501,15 +501,15 @@ placed in the context using the recursion trick.
 % \url{https://poloclub.github.io/transformer-explainer/}.}
  
 We have thus far covered high-level features of how LLMs work, but have treated
-the transformer as a black box. The time has come to open the box. How does the
-fancy feed-forward network at the heart of these models work? Its power rests
-on a few novel architectural innovations, which combine representational width
-and representational depth with a special form of context awareness. All the
-things we've seen about other neural networks still apply here. It is a kind of
-deep feed-forward network, which uses a huge amount of training data. But the
-key innovation is that within each ``layer'' the transformer can develop many
-forms of context representation which relate all the tokens in a context
-to each other.
+the transformer as a black box. The time has come to open up the box. How does
+the fancy feed-forward network at the heart of these models work? Its power
+rests on a few novel architectural innovations, which combine representational
+width and representational depth with a special form of context awareness. All
+the things we've seen about other neural networks still apply here. The
+transformer is a kind of deep feed-forward network, which uses a huge amount of
+training data. But the key innovation is that, within each ``layer'', the
+transformer can develop many forms of context representation which relate all
+the tokens in a context to each other.
 
 \subsection{Blocks}
 
@@ -613,7 +613,7 @@ hidden layer that is larger than the input (hence up projection and down
 projection). From the input to the output of the MLP there is another skip
 connection. (Right) The residual stream representation of the network, where we
 think of activations as passing up along the straight line, which the attention
-head and the MLP read from and write to. }
+head and the MLP read from and write to.}
 \label{transformerBlockSimple}
 \end{figure}
 % Include Simbrain screenshot? 
