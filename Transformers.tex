@@ -198,7 +198,7 @@ be explored, especially as it relates to cognitive science. Having said that,
 traditional parameter-based learning is still the basis of much of the power of
 LLMs, and so we turn to that now.
 
-\section{Learning to speak Internetese}\label{internetese}
+\section{Learning to Speak Internetese}\label{internetese}
 
 In section \extref{languageModelsRecurrent}, we saw how recurrent neural
 networks trained on example text can learn to speak in a way that reflects the
@@ -239,7 +239,7 @@ obviously fake in the way the examples from section
 \extref{languageModelsRecurrent} were. In some cases these models arguably pass
 the \glossary{Turing Test}, a long-standing test for artificial general
 intelligence: over text chat, some models can pass for human to a human
-questioner. Whether LLMs truly pass the Turing test is a matter of ongoing
+questioner. Whether LLMs truly pass the Turing Test is a matter of ongoing
 controversy; we discuss this further in section \ref{llmPhilosophy}.
 
 \section{Training Using Next-Word Prediction}
@@ -434,7 +434,7 @@ representation of each token in the sequence would be presented separately:
 then answers are generated using the recursion trick. Text will continue to be
 generated until a special end-of-sequence token is reached.\footnote{For more
 on the post-training that enables ChatGPT and other frontier models to carry on
-a conversation with a human-like persona, see \extref{ch_alignment}.}
+a conversation with a human-like persona, see \extref{ch_value_alignment}.}
 % David: the footnote above should be changed to a forward reference to the new
 % chapter Also RLAIF — Reinforcement Learning from AI Feedback
 
@@ -529,7 +529,7 @@ heads, and then through the MLP.
 
 % More on normalization, "scaled dot product"
 The attention head is where the contextual awareness occurs. Each token
-representation in the entire stack is compared to every other one.  In our
+representation in the entire stack is compared to every other one. In our
 simple example, ``hello'' is compared to ``how'', ``are'',  ``you'', and also
 to itself. These comparisons occur using three matrices: $\textbf{K}$,
 $\textbf{Q}$, and $\textbf{V}$, which stand for key, query, and value. First
@@ -550,13 +550,13 @@ useful for predicting.} The resulting matrix reflects the degree to which the
 different token representations are facing in the same or different directions
 in the embedding space. These entries also called self-attention scores. For
 example, in the sentence ``I went to the bank'', there will be a score for bank
-in relation to ``the'', "to'' , etc.\footnote{Only backwards relationships are
+in relation to ``the'', "to'', etc.\footnote{Only backwards relationships are
 examined, a ``triangular mask'' is applied to the matrix to 0 out the upper
 triangular, so that token representations are \emph{not} compared to future
 tokens because that would make the word prediction task too easy. This is
-visible in the Simbrain representation.}  This self-attention matrix is then
+visible in the Simbrain representation.} This self-attention matrix is then
 itself used to process the stack of vectors produced by multiplying the inputs
-by the value matrix  $\textbf{V}$.\footnote{For thinking about the value vector
+by the value matrix $\textbf{V}$.\footnote{For thinking about the value vector
 $\textbf{V}$, see Tom Yeh's
 \url{https://www.byhand.ai/p/8-can-you-calculate-a-transformer}, which focuses
 on the attention matrix and the "attention weighted features" that occur when
@@ -564,9 +564,10 @@ activations are passed through it (that is, the output of the attention head).}
 In this last step all the token representations are enriched by contextual
 information. So the output of the attention head is a stack of token
 representations that reflects dependencies between them. All tokens, no matter
-how far apart they are, can still influence each other. The self-attention
-mechanism learns what relations between words in a context window are
-important; in a sense it learns what to focus on (hence ``self attention'').
+how far apart they are within the context window, can still influence each
+other. The self-attention mechanism learns what relations between words in a
+context window are important; in a sense it learns what to focus on (hence
+``self attention'').
 
 % David. Thoughts on how much of these comments to add and how? Residual
 % connections are also used. That is, the input to the block is added directly
@@ -808,7 +809,7 @@ softmax layer does the opposite of what the embedding layer does. Rather than
 converting from tokens to activations, it converts from activations to tokens,
 and is thus a ``de-embedding'' layer.
 
-\subsection{Parameters and hyperparameters}
+\subsection{Parameters and Hyperparameters}
 
 By way of summarizing, consider the parameters and  \glossary{hyperparameters}
 associated with a transformer-based LLM. Recall that parameters are primarily
@@ -1052,14 +1053,14 @@ correlations on a list of 390 words, with some correlations approaching .9,
 which is very strong.  As an example, here is how valence is defined in such an
 experiment:
 \begin{quote}
- a measure of value or worth. A word is NEGATIVE if it represents something
- considered bad, whereas a word is POSITIVE if it represents something
- considered good. Rate the valence of each of the following words on a
- continuous scale from 1.0 (VERY NEGATIVE) to 9.0 (VERY POSITIVE), with the
- midpoint representing NEUTRAL.
- \end{quote} 
- Here are some examples of mean ratings on valence by humans and several LLMs,
- for two words:
+a measure of value or worth. A word is NEGATIVE if it represents something
+considered bad, whereas a word is POSITIVE if it represents something
+considered good. Rate the valence of each of the following words on a
+continuous scale from 1.0 (VERY NEGATIVE) to 9.0 (VERY POSITIVE), with the
+midpoint representing NEUTRAL.
+\end{quote}
+Here are some examples of mean ratings on valence by humans and several LLMs,
+for two words:
 
 \begin{center}
 \begin{minipage}{0.45\linewidth}
@@ -1307,7 +1308,7 @@ symbolic architectures are best-suited to modeling cognition (see section
 smattering of topics to give a sense of the debates most relevant to the topic
 of the book: neural networks and cognitive science.  
 
-% Other questions: Turing test, are they conscious, do they have world models,
+% Other questions: Turing Test, are they conscious, do they have world models,
 % and AI ethics
 
 First, there is an old debate about whether passing the Turing Test sufficient
@@ -1324,7 +1325,7 @@ operations of the central processing unit of a computer. For example, Dneprov
 asks us to imagine a stadium full of people who pass 0's and 1's to one another
 on the basis of instructions announced over a loudspeaker. We can further
 imagine that this stadium is linked to an input-output device that enables it
-to pass the Turing test. We can then ask ourselves: do we really think this
+to pass the Turing Test. We can then ask ourselves: do we really think this
 stadium full of people has consciousness or genuine understanding?
 \cite{noelle2022artificial}
 \end{quote}
@@ -1480,40 +1481,41 @@ relevant to cognitive science. That trend continues here. Thought there is
 little discussion of it yet, all of the topics discussed here are relevant to
 cognitive science and to understanding how minds work. 
 
-\subsection{Pre-training vs. fine tuning} 
+\subsection{Pre-Training, Post-Training, and Fine-Tuning}
 
 Most LLMs are built on top of \glossary{foundation models} that have been
 pre-trained on vast amounts of data, some subset of the entire internet (see
 section \ref{internetese}). This pre-training gives them broad linguistic
 competence and general background knowledge, arguably solving the problem of
-``background knowledge'' (section \ref{llmPhilosophy}).  However, to adapt a
+``background knowledge'' (section \ref{llmPhilosophy}). However, to adapt a
 model for a specific domain--for example, to build a system that can analyze a
-set of legal documents-- it must be fine-tuned on a smaller, targeted corpus.
+set of legal documents--it must be fine-tuned on a smaller, targeted corpus.
 % The pre in pre-training is I think relative to fine-tuning which is the
 % "post" part
 
- \glossary{Fine-tuning} involves additional training with a relatively small
- learning rate, slightly nudging the weights to better capture the new domain.
- This can be expensive and computationally heavy if done across the entire
- model, but that are various technical tricks that make this more
- efficient.\footnote{For example, LoRA (Low-Rank Adaptation), which adds a
- small number of trainable weights so that only a subset of parameters changes.
- This can be viewed as biasing the model toward a particular task without fully
- rewriting its knowledge. Models like DeepSeek have used techniques like LoRA
- in combination with curated data cleanup to good effect.} A gripping example
- of fine-tuning is the case of the late singer Lou Reed's wife creating a
- special LLM which was fine-tuned using ``a vast cache of Reed's writing, songs
- and interviews'', giving it a bit of his
- personalty.\footnote{\url{https://tinyurl.com/yyd2hjh5}.}  Many fine-tuned
- foundaton models now exist, in biomedical, legal, and many other domains.
- % References
- 
- One notable and familiar form of fine-tuning is all the techniques of
- ``instruction tuning'' or ``alignment tuning'' like reinforcement learning
- with human feedback.  These processes are fine-tuning techniques that give
- LLMs their familiar personalities, and are discussed further in the chapter on
- value alignment. They help it know when to stop talking (the ``when-to-shut-up
- circuit'') but they also smooth out the model's personalty. 
+\glossary{Fine-tuning} involves additional training with a relatively small
+learning rate, slightly nudging the weights to better capture the new domain.
+This can be expensive and computationally heavy if done across the entire
+model, but that are various technical tricks that make this more
+efficient.\footnote{For example, LoRA (Low-Rank Adaptation), which adds a small
+number of trainable weights so that only a subset of parameters changes. This
+can be viewed as biasing the model toward a particular task without fully
+rewriting its knowledge. Models like DeepSeek have used techniques like LoRA in
+combination with curated data cleanup to good effect.} A gripping example of
+fine-tuning is the case of the late singer Lou Reed's wife creating a special
+LLM which was fine-tuned using ``a vast cache of Reed's writing, songs and
+interviews'', giving it a bit of his
+personalty.\footnote{\url{https://tinyurl.com/yyd2hjh5}.}  Many fine-tuned
+foundaton models now exist, in biomedical, legal, and many other domains.
+% References
+
+One notable and familiar form of fine-tuning is all the techniques of
+``instruction tuning'' or ``alignment tuning'' like reinforcement learning with
+human feedback.  These processes are fine-tuning techniques that give LLMs
+their familiar personalities, and are discussed further in the chapter on value
+alignment. They help it know when to stop talking (the ``when-to-shut-up
+circuit'') but they also smooth out the model's personalty. We discuss the
+post-training pipeline more extensively in \extref{ch_value_alignment}.
 % TODO: Add link to that chapter when we have it. Lupyan notes, esp on what
 % GPT3 was like and the role of fine tuning Reference back to Elman and staged
 % learning.  Also the Cowan and activated long term working memory Intuitive
@@ -1634,7 +1636,7 @@ This is obviously much closer to how an actual agent does thing, and so the
 relevance to cognitive science should be obvious.
 
 Groups of LLM agents can also talk to each other.  An initial query can be
-decomposed  subqueries handled by different modules. These agents could be
+decomposed into subqueries handled by different modules. These agents could be
 autonomous processes, separate models (i.e. separate LLMs).
 
 % Society of mind Ron Sun: https://arxiv.org/abs/2410.20037 Mixture of Experts 
