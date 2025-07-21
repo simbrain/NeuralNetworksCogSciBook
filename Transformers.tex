@@ -1627,29 +1627,41 @@ ChatGPT when it flashes information about what its thinking about.
 
 % David: you said keywords here are "wrapper" and "scaffold."
 
-A final trend to note \glossary{agentic systems}, where the LLM delegates
-subtasks to external agents or other LLMs. The idea is that an LLM does not
-just churn out a response, but at times will \emph{do} things, like an agent.
-It can, for example send a query to the internet. The result of this query can
-then be fed back into the LLM, and can it then make a more informed response
-that reflects current information or information it was not trained on. By this
-point this is probably familiar to you.  LLMs will routinely query the internet
-(modern system give you a sense that are doing this, flashing an image of which
-cites they are querying).  
+A final trend to note is the advent of \glossary{agentic systems}, wherein an
+LLM delegates subtasks to external software or to other LLM instances. The idea
+is that an LLM does not just churn out a text response, but is rather empowered
+to\emph{do} things, like an agent. It can, for example send a query to the
+internet. The result of this query can then be fed back into the LLM, and it
+can then make a more informed response that reflects information from after its
+training cutoff date. By this point this is probably familiar to you. LLMs will
+routinely query the internet (modern system give you a sense that are doing
+this, flashing an image of the websites they are querying). Note that the
+transformer is still ultimately generating text out. It's just that we don't
+necessarily have to understand that text output as natural language; text
+prediction is just as expressive as keyboard input, and so transformers can be
+equipped to write and run code, browse the internet, jot down persistent notes,
+etc.
 
-Agentic systems can also do things like write command line arguments or little
-computer programs and execute them. It can then check the results, and if they
-are not what it wanted, try again, and keep trying. This is now done routinely
-in computer programming, and in systems like Cursor.  A user can simply say
-make this function, defined in this way, work, and the AI will keep trying
-until it does
+Note that a special model does not necessarily have to be fine-tuned for this
+to work. Indeed, agentic systems today are generally general-purpose frontier
+LLMs, just set up with an appropriate system prompt and placed inside a
+software wrapper that will take the model's written source code (or whatever
+special text it is outputting) and respond to that output accordingly. It is
+the \emph{LLM} that is doing all the heavy-lifting here; if the transformer
+were unable to write Python, or unable to leave coherent notes to itself, etc.,
+then no toolset would fix that deficiency. What we are doing with agentic
+wrappers is just giving the model tools that is either already knows how to use
+or is able to learn to use in-context. To the extent that models beat Pokemon,
+write novel code, etc., it is a glimmer of their general competence with
+arbitrary tools and interfaces shining through.
 
-This is obviously much closer to how an actual agent does thing, and so the
-relevance to cognitive science should be obvious.
+LLM software engineers in particular are now commmonplace in computer
+programming, in IDEs like Cursor. A user can ask for a particular function,
+described in natural language, and the AI will generate the function and debug
+its code as runtime errors appear.
 
-Groups of LLM agents can also talk to each other.  An initial query can be
-decomposed into subqueries handled by different modules. These agents could be
-autonomous processes, separate models (i.e. separate LLMs).
+This is obviously much closer to actual agentic behavior than the pure chat
+model, and so the relevance to cognitive science should be obvious.
 
 % Society of mind Ron Sun: https://arxiv.org/abs/2410.20037 Mixture of Experts 
 
