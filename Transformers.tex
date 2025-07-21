@@ -601,19 +601,23 @@ context window are important; in a sense it learns what to focus on (hence
 \includegraphics[scale=.3]{./images/transformerBlockResidualStream.png}
 \caption[Jeff Yoshimi with consultation from Tim Meyer.]{(Left) One transformer
 block, with a single head. The matrix  (or tensor) of activations being fed to
-the block is processed through by three matrices $\textbf{K}$, $\textbf{Q}$,
-and $\textbf{V}$.  Generally speaking these are down projections that reduce
-the size of the data.  $\textbf{K}$ and $\textbf{Q}$ are used to generate a
+the block is processed by three matrices: $\textbf{K}$, $\textbf{Q}$, and
+$\textbf{V}$.  Generally speaking these are down projections that reduce the
+size of the data.  $\textbf{K}$ and $\textbf{Q}$ are used to generate a
 self-attention matrix. The input to the block is processed through $\textbf{V}$
-and then through the self attention matrix, and then through an up projection
-(not shown) so it is back to the same size as the input. At that point there is
-a skip projection from the input, and the resulting activations are passed
-through a standard feed-forward network or ``MLP'' which typically involves a
-hidden layer that is larger than the input (hence up projection and down
-projection). From the input to the output of the MLP there is another skip
-connection. (Right) The residual stream representation of the network, where we
-think of activations as passing up along the straight line, which the attention
-head and the MLP read from and write to.}
+and then through the self-attention matrix, and then through an up projection
+(not shown) so it is back to the same size as the input. After leaving
+attention, there is a skip projection from the input and the resulting
+activations are passed into a standard feed-forward network or ``MLP''. The MLP
+typically involves a hidden layer that is larger than the input (hence up
+projection and down projection). From the input to the output of the MLP there
+is another skip connection. (Right) It can be helpful to foreground the skip
+(or residual) connections rather than the sublayers themselves, seeing the
+original embeddings as traveling straight down the length of the network, with
+attention and MLP sublayers reading from and then writing to this ``residual
+stream''. Note that the left and right diagrams present the same computational
+structure, just with a change in their point of emphasis. Bolded elements in
+the diagrams are made out of trainable parameters.}
 \label{transformerBlockSimple}
 \end{figure}
 % Include Simbrain screenshot? 
@@ -626,59 +630,65 @@ head and the MLP read from and write to.}
 
 % Citations and more on what happens in the MLP. The 2/3 weights thing; Pierre
 % email
-Once processed through the attention head, the activations are processed by a
+Once processed through the attention mechanism, activations are processed by a
 feed-forward network, an MLP, whose hidden layers is typically higher
 dimensional than the input.	The MLP plays an important role. It contains more
-weights than the rest of the block, and can be used to recall facts and other
-information to enrich the token representations. 
+weights than the rest of the block. It can be helpful to see the transformer
+block as basically made up of these two functional pieces, together: the
+attention mechanism specializes in identifying long-range dependencies in the
+context and upweighting those relationships, while the MLP sublayer can then
+perform arbitrary operations on that curated information (such as reciting
+relevant facts learned during training, e.g.). Since they are used one after
+the other in a transformer block, the transformer's architecture is setting it
+up to recall what is relevant and then process that relevant data.
 
 % Add backwards ref to resnet discussion
-There are skip connections before and after the attention head and the MLP, and
-as a result we can think of the transformer block as reading from and writing
-to a single \glossary{residual stream} of activations in a latent space
-\cite{elhage2021mathematical, milliere2024philosophical2} whose dimension is
-the embedding dimension (recall the discussion in section
+There are skip (or residual) connections before and after the attention head
+and the MLP, and as a result we can think of the transformer block as reading
+from and writing to a single \glossary{residual stream} of activations in a
+latent space \cite{elhage2021mathematical, milliere2024philosophical2} whose
+dimension is the embedding dimension (recall the discussion in section
 \extref{flowDiagrams}).\footnote{The concept of a residual is that of an error
 in statistics, how far data lies from a regression curve, for example. The idea
 here is that rather than transforming information completely from one layer to
 the next, that the layers just produce ``deltas'' on a single stream of
 information flowing through the stream, they operate on these ``residual''
-errors, as it were. The idea originates in deep networks.}  This perspective is
-shown in the right panel of \ref{transformerBlockSimple}, and it's a crucial
-perspective, because it means that there is a single space we can focus on. As
-the stack of token representations moves upwards through the stream, it is
-enriched with context information by attention heads and by other forms of
-stored representation by the MLPs.\footnote{Since we can think of these as
-reads and writes, this also means that we can think in a more algorithmic or
-symbolic way about what is happening in the network, with representations being
-shuffled and move around and even being erased, in a nod to older views of
-classical AI (we return to this topic in the discussion of philosophy at the
-end of this chapter).}  Thus the token representations are continually
-enriched. Just look back through this document. The word ``the'' is used
-multiple times even in this paragraph. If it were being processed by an LLM,
-each ``the'' representation would slowly acquire different context as it worked
-its way through the transformer. All of this is crucial in chapter
-\extref{ch_mechinterp} on mechanistic interpretability. 
+errors, as it were. The idea originates in deep networks.} This is the
+perspective shown in the right panel of \ref{transformerBlockSimple}, and it's
+a crucial perspective, because it means that there is a single space we can
+focus on. As the stack of token representations moves upwards through the
+residual stream, it is progressively further and further enriched with context
+information by attention heads and by other learned information or operations
+by the MLPs.\footnote{Since we can think of these as reads and writes, this
+also means that we can think in a more algorithmic or symbolic way about what
+is happening in the network, with representations being shuffled and moved
+around and erased, in a nod to the older views of classical AI (we return to
+this topic in the discussion of philosophy at the end of this chapter).} Thus
+the token representations are continually enriched, growing into the model's
+final output from that forward pass. 
 
-This is the basic architecture, but there is more. There is both
+That is the basic architecture. We can get a useful lens on its learned
+functionality (what it will be able to do after training) with the concepts of
 representational width and representational depth.
  
 % Eric S: At multiple heads: Can you explain a bit more in ordinary language
 % what the functional importance of these transformation is?  Maybe some
 % examples would help. What kinds of things generate high vs low
 % self-attention?
-First, we consider representational width, which corresponds here to the fact
-that there are multiple attention heads, it is a ``multi-head'' attention
-structure. This allows the network to pay attention to different features of
-the token representations coming to it through the residual stream (see figure
-\ref{multipleHeads}). Each head carries out all the operations described above.
-Note that  $\textbf{K}$, $\textbf{Q}$, and $\textbf{V}$ are typically down
-projections, they take the input stream and place it into a smaller space,
-which is then used to construct smaller attention matrices.\footnote{The
+First, consider representational width, which corresponds here to the fact that
+there are multiple attention heads in every attention sublayer: it is a
+``multi-head'' attention mechanism. This allows the network to pay attention to
+different features of the token representations coming to it through the
+residual stream (see figure \ref{multipleHeads}). Each head indpendently
+carries out all the attention head operations described above. The
+\emph{reason} that $\textbf{K}$, $\textbf{Q}$, and $\textbf{V}$ are typically
+down projections, taking the input stream and splitting it up into multiple
+smaller attention matrices, is that that allows multi-headed attention to think
+about the context in several distinct ways in parallel.\footnote{The
 dimensionality of each head is often the embedding dimension divided by the
 number of heads, so that when the outputs are concatenated, the original
 dimension is restored. In figure \ref{gptParams}, the number of inputs to each
-head, $d_\text{head}$, is equal or almost equal to the embedding dimension
+head, $d_\text{head}$, is equal (or almost equal) to the embedding dimension
 $d_\text{model}$ divided by the number of heads $n_\text{heads}$.} For example,
 if the embedding dimension were 9, it might be projected into three separate
 3-dimensional heads.\footnote{Thus, for each head, the $\textbf{K}$,
@@ -686,15 +696,12 @@ $\textbf{Q}$, and $\textbf{V}$ matrices would typically have dimensions $3
 \times 9$, where 9 corresponds to the input dimension from the previous layer,
 and 3 refers to the reduced dimensionality for each head (note that for
 efficiency, these matrices are often combined into a single larger matrix.)}
-The outputs of all the heads are then  up-projected back to the size of the
-residual stream and added together. As a result of this multi-head attention,
-the network can learn \emph{multiple} ways to compare words in the sentence to
-each other, a bit like how a convolutional network (section
-\extref{convolutionalLayer}) develops \emph{multiple} filters to analyze an
-image, what we have also called representational width. The results of these
-different attention heads are combined and as a result each layer of a
-transformer network involves a sophisticated representation of the sentence
-that represents multiple types of inter-word dependency. 
+The outputs of all the heads are then up-projected back to the size of the
+residual stream and added together. Multi-headed attention, in letting the
+network use \emph{multiple} ways to scan over the context for relevance, is a
+bit like convolutional networks (section \extref{convolutionalLayer})
+developing \emph{multiple} filters to analyze an image (which we also termed
+representational width).
 
 % This part is not clear yet. Also, the figure should probably have
 % ``de-embedding'' and ``softmax'' in the final layer separate from the FF part
@@ -707,42 +714,43 @@ that represents multiple types of inter-word dependency.
 \centering
 \includegraphics[scale=.35]{./images/transformerBlockMultiHeadResidualStream.png}
 \caption[Jeff Yoshimi with consultation from Tim Meyer.]{Schematic of the
-transformer architecture. Multiple blocks are stacked, capturing
+transformer architecture. Multiple transformer blocks are stacked, capturing
 representational depth, as in a CNN. Each block contains a multi-head attention
-structure, where each head learns to represent inputs to the block in a
-different way. This captures representational width. The outputs of the
-multiple heads are combined in a standard feed-forward network. Other
-structures handling residual connections, and adding and norming activations,
-are not shown. As above, bolded items contain trainable parameters that are
-updated via gradient descent.
-}
+mechanism, where each head learns to represent inputs to the block in a
+different way, capturing representational width. The outputs of the multiple
+heads are combined in a standard feed-forward network. (Some further elements
+of the transformer architecture, like LayerNorm, are not shown here.) As with
+before, bolded items contain trainable parameters that are updated via gradient
+descent.}
 \label{multipleHeads}
 \end{figure}
  
-Now we take a lesson from deep networks, and stack many of these transformer
-blocks on top of each other ($k$ times in figure \ref{multipleHeads}), to
-produce increasingly sophisticated representations. This is representational
-depth, and the idea was already suggested above in the initial discussion of
-the residual stream.  As token representations move through the layers of
-attention heads and MLPs, they acquire more and more context information, the
-vectors corresponding to them in the latent space point in slightly different
-directions which reflect all this accrual of meaning.\footnote{The Three blue
-one brown video linked at the start of the chapter has useful visualizations of
-this process.}  Recall that with deep networks for vision, we get features,
-features of features, features of these features, etc. whose activations match
-neural response properties of different layers of the human visual system. This
-builds on the old idea of the \emph{Pandemonium} model (section
-\extref{cog_rev}), which involved (at successive layers): edge detectors,
-detectors for combinations of edges, detectors for combinations of these
-combinations (e.g. fragments of letters), and ultimately letter detectors. In a
-similar way, the successive layers of a transformer model of language
-correspond to increasingly complex features of the input stream, including
-syntactic categories, semantic properties, and far more complex features as
-well.\footnote{The extent to which activation patterns correspond to syntactic
-or semantic features is measured using post-hoc interpretation techniques such
-as probing. As with so many other neural network features, these were not
-``programmed in'' by the engineers, but are emergent from the network after
-training, and are studied and described by scientists after the fact.}
+Now we take a lesson from deep networks, and simply stack many of these
+transformer blocks on top of each other ($k$ times in figure
+\ref{multipleHeads}) to allow for increasingly sophisticated representations.
+This is representational depth; the idea was already hinted at above in the
+initial discussion of the residual stream. As token representations move
+through the layers of attention heads and MLPs, they acquire more and more
+context information and are steadily transformed, with the vectors
+corresponding to them in the latent space reoriented in slightly different
+directions to reflect this refinement of meaning.\footnote{The 3Blue1Brown
+video linked at the start of the chapter has useful visualizations of this
+process, represented geometrically.} Recall that with deep networks for vision,
+we get features, features of features, features of these features, etc., whose
+activations match neural response properties of different layers of the human
+visual system. This builds on the old idea of the \emph{Pandemonium} model
+(section \extref{cog_rev}), which involved (at successive layers): edge
+detectors, detectors for combinations of edges, detectors for combinations of
+these combinations (e.g., fragments of letters), and ultimately full letter
+detectors. In a similar way, the successive layers of a transformer language
+model correspond to increasingly complex features of the input stream,
+including syntactic categories, semantic properties, and far more complex
+features as well.\footnote{The extent to which activation patterns correspond
+to syntactic or semantic features is measured using post-hoc interpretation
+techniques such as probing. As with so many other neural network features,
+these were not ``programmed in'' by the engineers, but are emergent from the
+network after training, and are studied and described by scientists after the
+fact.}
 
 % Work with Eric S on integrating this point here. We could say something like,
 % this explains a rather striking feature of LLMs: that you can enter prompts
@@ -759,13 +767,17 @@ training, and are studied and described by scientists after the fact.}
 % type of task, if I'm recalling correctly that GPT3 was a pure transformer
 % without the human feedback training.)
 
-The whole thing is trained using gradient descent and supervised learning
-(chapter \extref{ch_supervised}). It's the same ideas as with a simple
-feed-forward network trained using backprop, but with many more components
-trained. Items in bold in the figures above are trained: the word embedding,
-the key, query, and value matrices for each head in each block, and the normal
-weights and biases of the feed-forward networks. The error signals used in
-gradient descent are being back-propagated through a \emph{lot} of stuff here!
+The transformer architecture is trained using gradient descent and supervised
+learning (chapter \extref{ch_supervised}). These are the same ideas used for a
+simple feed-forward network trained using backprop, but with many more
+trainable components. The error signals used in gradient descent are being
+back-propagated through a \emph{lot} of stuff here! Residual connections are
+especially important in this regard, as they allow gradient to effectively flow
+backward through the length of the transformer without disappearing or
+exploding in value, even at the earliest layers. Much of the art of
+architectural design lies in giving a network both lots of structural latitude
+to learn the links it needs to \emph{while also} having an architecture that can
+efficiently train at scale.
 
 \subsection{Softmax Outputs}\label{llmOutput}
 
