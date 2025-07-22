@@ -305,9 +305,9 @@ this further in section \ref{llmOutput}.) In this way we process text into a
 table of input-target \emph{vector} pairs, which we can use to train a
 feed-forward neural network (see figure
 \ref{nextWordPrediction}).\footnote{Note that a longer word like ``university''
-would normally be broken up into multiple tokens: \code{un} and \code{iversity}
-is a typical tokenization for it, e.g. We are neglecting this complication here
-to keep things simple. More on tokenization in chapter
+would normally be broken up into multiple tokens: \texttt{un} and
+\texttt{iversity} is a typical tokenization for it, e.g. We are neglecting this
+complication here to keep things simple. More on tokenization in chapter
 \extref{ch_word_embeddings}.} This table is a matrix where each row corresponds
 to the token embedding for one token; it has the shape (sequence size,
 embedding dimension) and it is the actual input to the neural network. So
@@ -316,8 +316,8 @@ via weight matrices, here we are transforming \emph{stacks} of vectors by
 matrices.\footnote{What is actually fed to the transformer is a batch of these
 token embedding matrixes, that is a rank-3 tensor with shape (batch size,
 sequence size, embedding dimension); see section \extref{sect_tensors}).}
-Figure \ref{sequenceDim} illustrates the idea, and introduces some
-useful terminology.
+Figure \ref{sequenceDim} illustrates the idea, and introduces some useful
+terminology.
 
 \begin{figure}[ht]
 \centering
