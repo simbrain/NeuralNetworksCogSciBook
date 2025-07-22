@@ -703,11 +703,11 @@ to let the columns for the heights and weights be the coordinates for two
 points in $\real^5$.  Since this space has 5 dimensions we can not visualize 
 these points directly but we do have the advantage in this case that there are 
 only two points so they have to be contained within a 2 dimensional subspace
-of $\real^5$.  We represent the heights with the vector 
+of $\real^5$.  We denote the vector of heights with:
 \begin{equation*}
 \mathbf{h} = (5.0,\, 5.5,\, 6.5,\, 6.0,\, 5.8)
 \end{equation*}
-and the weights with the vector 
+and the vector of weights with:
 \begin{equation*}
 \mathbf{w} = (120,\, 180,\, 210,\, 150,\, 170)
 \end{equation*}
@@ -730,6 +730,23 @@ figure \ref{twogeoms}.
 .  The cosine 
 similarity of the data gives us the cosine of the angle between the two points 
 as measured from the origin of $\real^5$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.25]{./images/heightWeight2.pdf}
+\caption{(left) The centered height and weight coordinates for the five 
+individuals in the table.  The odd numbered points are again early collinear to 
+a line with a slope of about $60$ while the even numbered points are more 
+spread out.  (right)  The vector $\widetilde{\mathbf{h}}$ points to the right 
+in the horizontal direction while the vector $\widetilde{\mathbf{u}}$ points in 
+the upward vertical direction.  The length of $\widetilde{\mathbf{u}}$ is about 
+$36$ times the length of $\widetilde{\mathbf{h}}$ and the length of 
+$\widetilde{\mathbf{w}}$ is about $1.7$ times the length of 
+$\widetilde{\mathbf{u}}$.  The cosine similarity of $\widetilde{\mathbf{h}}$ 
+and $\widetilde{\mathbf{w}}$ is about 0.800 and the angle between 
+$\widetilde{\mathbf{h}}$ and $\widetilde{\mathbf{w}}$ is about $37^o$.} 
+\label{twogeoms2}
+\end{figure}
 
 In neural network contexts, we frequently focus on the \emph{rows} of such a 
 dataset and compare them, for example considering pairs of input vectors or 
@@ -811,25 +828,74 @@ In Simbrain there is a tool that is often useful for comparing a set of vectors 
 
 \section{Vector Spaces as Metric Spaces}\label{metricSpace}
 
-% A picture would be nice here
-% Should magnitude be mentioned here? 
+% Should magnitude be mentioned here? Done.
 
-A vector space can have a metric, which is a way to define the distance between any two points. The usual metric for a real vector space is the Euclidean metric, which can be expressed in terms of the dot product. The Euclidean metric uses the concept of a \glossary{norm}, denoted by double bars $|| \cdot ||$, which measures the ``length'' of a vector. Specifically, the norm of a vector $\mathbf{x}$ is the square root of the dot product of the vector with itself: $||\mathbf{x}|| = \sqrt{\mathbf{x} \bullet \mathbf{x}}$.  With this
-metric the distance between any pair of vectors in $\real^n$ is:
+   A vector space can have a metric, which is a function that returns the 
+distance between any two points in the vector space.  The usual metric for a 
+real vector space is the Euclidean metric, which can be expressed in terms of 
+the dot product.  The Euclidean metric uses the concept of a \glossary{norm}, 
+denoted by double bars $|| \cdot ||$, which measures the ``length'' or 
+``magnitude'' of a vector.  Specifically, the norm of a vector $\mathbf{x}$ is 
+the square root of the dot product of the vector with itself: $||\mathbf{x}|| = 
+\sqrt{\mathbf{x} \bullet \mathbf{x}}$.  With this metric the distance between 
+any pair of vectors,
 \begin{equation*}
-\mathbf{x} = (x_1, x_2, \ldots, x_n) \qquad
+\mathbf{x} = (x_1, x_2, \ldots, x_n), \qquad
 \mathbf{y} = (y_1, y_2, \ldots, y_n) \qquad
 \end{equation*}
-is:
+in $\real^n$ is given by:
 \begin{equation*}
-|| \mathbf{x} - \mathbf{y} || =
+\left(\mathbf{x}, \mathbf{y}\right) \quad \mapsto \quad
+|| \mathbf{x} - \mathbf{y} || \; = \; 
 \sqrt{ (\mathbf{x} - \mathbf{y}) \bullet (\mathbf{x} - \mathbf{y}) }
-= \sqrt{ \sum_{j=0}^n (x_j - y_j)^2 }
+\; = \;  \sqrt{ \sum_{j=1}^n (x_j - y_j)^2 }
 \end{equation*}
-There are many metrics for every vector space but usually we use the Euclidean metric.
+There are infinitely many metrics for every nontrivial vector space but the 
+most commonly used metric is the Euclidean metric.
+
+   As an example the norm of $(-3,4)$ is $\sqrt{(-3)^2+4^2} = 5$ and the norm 
+of $(2,5)$ is $\sqrt{2^2+5^2} = \sqrt{29} \approx 5.385$.  These vectors are 
+shown in the left panel of Fig. \ref{metricfig}.  The difference between 
+$(2,5)$ and $(-3,4)$ is $(-3,4) - (2,5) = (-5,-1)$ which is shown in the right 
+panel of Fig. \ref{metricfig}.  The norm of $(-5,-1)$ is $\sqrt{(-5)^2+(-1)^2} 
+= \sqrt{26} \approx 5.099$.
+
+% A picture would be nice here Done
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.55]{./images/Norm.pdf}
+\qquad
+\includegraphics[scale=1.55]{./images/dist.pdf}
+\caption{(left) The norm of $(-3,4)$ is $5$ and the norm of $(2,5)$ is 
+$\sqrt{29} \approx 5.385$.  (right) The vector $(-5,-1)$ is shown with its tail 
+at the head of $(2,5)$ and its head at the head of $(-3,4)$.  The norm of 
+$(-5,-1)$ is $\sqrt{26} \approx 5.099$.}
+\label{metricfig}
+\end{figure}
 
 % Consider adding a plot showing nearby points here.
-The upshot of this is that we can interpret the vector spaces associated with neural networks--activation spaces, input spaces, weight spaces, etc.--as giving us a sense of how far apart relevant vectors are, and thus how similar the things they represent are. Points nearby one another in an input space correspond to similar inputs: similar smells, similar visual inputs, similar words relative to a word embedding (chapter \extref{ch_word_embeddings}), etc. Points nearby one another in a weight space are similar configurations of weights. These interpretations are often emphasized in analyses of neural networks (for example, see chapter \extref{ch_representations}), and in fact the spaces associated with neural networks are sometimes called ``similarity spaces''.  An example which illustrates the importance of this way of thinking is figure \extref{competitiveInputSpace}.
+   The upshot of this is that we can interpret the vector spaces associated 
+with neural networks--activation spaces, input spaces, weight spaces, etc.--as 
+giving us a sense of how far apart relevant vectors are, and thus how similar 
+the states the vectors represent are to each opther.  Points nearby one another 
+in an input space correspond to similar inputs: similar smells, similar visual 
+inputs, similar words relative to a word embedding (chapter 
+\extref{ch_word_embeddings}), etc. (see Fig. \ref{nearfar}).  Points nearby one 
+another in a weight space are similar configurations of weights.  These 
+interpretations are often emphasized in analyses of neural networks (for 
+example, see chapter \extref{ch_representations}), and in fact the spaces 
+associated with neural networks are sometimes called ``similarity spaces''.  An 
+example which illustrates the importance of this way of thinking is figure 
+\extref{competitiveInputSpace}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.55]{./images/Nearfar.pdf}
+\caption{Two sets of four points in $\real^2$ are enclosed by a dotted curve.  
+The Euclidean distances between the points within each group are small in 
+comparison to the distance between the two sets of points.}
+\label{nearfar}
+\end{figure}
 
 \section{Matrices}\label{sect_matrices}
 
