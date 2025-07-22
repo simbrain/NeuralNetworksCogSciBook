@@ -3,15 +3,17 @@
 
 AI alignment is the field that is concerned with setting the goals of
 artificial intelligences. The field pre-dates the deep learning revolution and
-modern LLMs; it is especially interesting that much of the modern post-training
-pipeline for frontier LLMs grew out of this originally speculative field, and
-that AI alignment as a field has, conversely, adapted itself to the advent of
-existing capable AI, in the form of modern LLMs.
+modern LLMs; it is especially interesting that (1) much of the modern
+post-training pipeline for frontier LLMs grew out of this originally
+speculative field, and (2) AI alignment as a field has, conversely, adapted
+itself to the advent of existing capable AI in the form of our modern LLMs.
 
-\section{History}
+\section{AI Alignment Before the Deep Learning Revolution}
 \cite{bostrom2014superintelligence}
 
-\section{Base Models as Pure World-Models}
+\section{Post-Training and Prosaic Alignment}
+
+\subsection{Base Models and Chat Models}
 % GPT-2 does not have a complete personality. It's like auto-complete on
 % steroids. They will insult you and do other unusual things emulating stuff on
 % the internet. Some examples of this would be great, if you could recreate
@@ -19,38 +21,40 @@ existing capable AI, in the form of modern LLMs.
 % “raw” personality of these is. It’s a world model, but a giant conflagration
 % of personalties too. Nothing at all consistent.
 
-\section{The LLM Post-Training Pipeline}
+\subsection{Model Post-Training}
 % So a new thing was needed, ''personality engendering'' (I guess turn-taking
 % and length of responses also came out of this, right?) The helpful assistant
 % persona we are used to didn’t just happen automatically. That took work. Also
 % we will probably want to say something somewhere about... system prompts.
 
-\subsection{Supervised Chat Fine-Tuning}
+% \subsection{Supervised Chat Fine-Tuning}
 % Much of the work done through this. ``The Void''/nostalgebraist
 
-\subsection{Reinforcement Learning from Human Feedback}
-% Interesting that it's RL on the same SSL weights. Digression on Sydney,
-% ``MechaHitler'' Grok as failed examples. Claude's snitching, Claude's
-% misalignment in the wild.
+% \subsection{Reinforcement Learning from Human Feedback}
+% Interesting that it's RL on the same SSL weights.
 
-\subsection{Reinforcement Learning from AI Feedback}
+% \subsection{Reinforcement Learning from AI Feedback}
 % Anthropic's
 % Digression on Claude's personality/Amanda Askell
 
-\subsection{Reinforcement Learning from Verifiable Feedback}
+% \subsection{Reinforcement Learning from Verifiable Feedback}
 % Chain of Thought and the Reasoning Revolution
 % ''Let's think step by step'' paper
 % Deepseek R1: polyglot reasoning in v1, ironed out in v2
 
-\section{AI Control Schemes}
-% Elicit, HCH
-% IDA
-% Redwood Research
-% AI Control teams
+\subsection{Prosaic Alignment Research}
+% Digression on Sydney, ``MechaHitler'' Grok as failed examples. Claude's
+% snitching, Claude's misalignment in the wild.
 
 \section{Superintelligence Alignment}
 % Superalignment at OpenAI, Anthropic
 % AI Alignment teams
+
+\subsection{AI Control}
+% Elicit, HCH
+% IDA
+% Redwood Research
+% AI Control teams
 
 \subsection{Superintelligence and the Future}
 % A new apex predator on Earth? Misalignment risk
