@@ -1,19 +1,34 @@
 \chapter{AI Alignment}\label{ch_ai_alignment}
 \chapterauthor{David Udell}{1}
 
-AI alignment is the field that is concerned with setting the goals of
-artificial intelligences. The field pre-dates the deep learning revolution and
-modern LLMs; it is especially interesting that (1) much of the modern
-post-training pipeline for frontier LLMs grew out of this originally
-speculative field, and (2) AI alignment as a field has, conversely, adapted
-itself to the advent of existing capable AI in the form of our modern LLMs.
+AI alignment is the field concerned with setting the goals of artificial
+intelligences. The field pre-dates the deep learning revolution and modern
+LLMs; it is especially interesting that (1) much of the modern post-training
+pipeline for frontier LLMs grew out of this originally speculative field, and
+(2) AI alignment as a field has, conversely, adapted itself to the advent of
+existing capable AI in the form of our modern LLMs.
 
 \section{AI Alignment Before the Deep Learning Revolution}
-\cite{bostrom2014superintelligence}
+Before the advent of LLMs, AI in the form of symbolic systems seemed much more
+relatively promising. Theoretical work about AI alignment began in this period,
+but was in effect hedging its bets with regards to which paradigm of AI would
+ultimately take off.
 
-\section{Post-Training and Prosaic Alignment}
+A lot can still be said about the goals of AIs and how they align with, or fail
+to align with, the goals of humans \cite{bostrom2014superintelligence}. Much of
+the theoretical machinery here was grounded in mathematical intuitions about
+von Neumann-Morgenstern rationality.
 
-\subsection{Base Models and Chat Models}
+Some important results dating from this period are a theoretical explication of
+``corrigibility'', a formal model of inductive reasoning in terms of market
+equilibria, and a formalization of the notion of ``limited'' optimization
+pressure. Corrigibility is a potentally desirable property in an AI; it is the
+idea that an AI should defer to its human overseer. Rather than just implanting
+some set of goals in an AI and letting it run, corrigibility aims at having an
+AI not learn any particular set of goals but instead come to be a generally
+helpful assistant lacking its own goals.
+
+\section{Base Models and Chat Models}
 % GPT-2 does not have a complete personality. It's like auto-complete on
 % steroids. They will insult you and do other unusual things emulating stuff on
 % the internet. Some examples of this would be great, if you could recreate
@@ -42,7 +57,7 @@ itself to the advent of existing capable AI in the form of our modern LLMs.
 % ''Let's think step by step'' paper
 % Deepseek R1: polyglot reasoning in v1, ironed out in v2
 
-\subsection{Prosaic Alignment Research}
+\section{Prosaic AI Alignment}
 % Digression on Sydney, ``MechaHitler'' Grok as failed examples. Claude's
 % snitching, Claude's misalignment in the wild.
 
