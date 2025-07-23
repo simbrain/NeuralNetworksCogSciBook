@@ -867,9 +867,9 @@ panel of Fig. \ref{metricfig}.  The norm of $(-5,-1)$ is $\sqrt{(-5)^2+(-1)^2}
 \qquad
 \includegraphics[scale=1.55]{./images/dist.pdf}
 \caption{(left) The norm of $(-3,4)$ is $5$ and the norm of $(2,5)$ is 
-$\sqrt{29} \approx 5.385$.  (right) The vector $(-5,-1)$ is shown with its tail 
-at the head of $(2,5)$ and its head at the head of $(-3,4)$.  The norm of 
-$(-5,-1)$ is $\sqrt{26} \approx 5.099$.}
+$\sqrt{29}$.  (right) The vector $(-5,-1)$ is shown with its tail at the head 
+of $(2,5)$ and its head at the head of $(-3,4)$.  The norm of $(-5,-1)$ is 
+$\sqrt{26}$.}
 \label{metricfig}
 \end{figure}
 
@@ -1068,11 +1068,29 @@ In each case below, this is a \emph{suggested} way of thinking about the matrix,
 
 \subsection{Source-target graphical conventions}
 
-Figure \ref{sourceTargetConvention} shows how to think of a matrix in source-target format as channeling information.  We can think of the number of rows $m$ as corresponding to the number of inputs, and the number of columns $n$ as corresponding to the number of outputs.  Then for example, a $2 \times 3$ matrix takes us from 2 inputs to 3 outputs. This is naturally represented by a ``left multiplication'', as we will see below. We can still multiply the other way, but in the other case we are moving ``backwards'' through the matrix (which is actually done in backprop).  What is shown here is a matrix that takes us from a 2 dimensional to a 3 dimensional space, which is an \glossary{upward projection}.  If it were a $3 \times 2$ matrix it would take us from a three dimensional space to a 2 dimensional space, a \glossary{downward projection}. If it were a $2 \times 2$ matrix it would transform things in the same 2 dimensional space.
+   Figure \ref{sourceTargetConvention} shows how to think of a matrix in 
+source-target format as channeling information.  The neural network is shown in
+the left panel.  The number of rows of the matrix, $m$, corresponds to the 
+number of inputs, and the number of columns, $n$, corresponds to the number of 
+outputs.  In this example, there are 2 inputs and 3 outputs, $m=2$ and $n=3$, 
+so we get a a $2 \times 3$ matrix.  In the middle panel of figure 
+\ref{sourceTargetConvention} a schematic of the matrix is shown with gray nodes 
+for matrix entries equal to $0$ and red nodes for matrix entries equal to $1$.
+The flow goes from the input on the left to the nodes on the right.  This is 
+naturally represented by multiplying a row vector times a matrix on its right,
+as shown in the right panel of figure \ref{sourceTargetConvention}.  This is 
+called ``right multiplication'' by the matrix, as we will see below.  We can 
+multiply the other way, but in this case we are moving ``backwards'' through 
+the matrix (which is actually done in backprop).  What is shown here is a 
+matrix that takes us from a 2 dimensional to a 3 dimensional space, which is an 
+\glossary{upward projection}.  If it were a $3 \times 2$ matrix it would take 
+us from a three dimensional space to a 2 dimensional space, a 
+\glossary{downward projection}.  If it were a $2 \times 2$ matrix it would 
+transform things in the same 2 dimensional space.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.75\textwidth]{images/sourceTarget.png}
+\includegraphics[width=0.75\textwidth]{images/sourceTarget.pdf}
 \caption[Jeff Yoshimi.]{Graphical model for thinking about a weight matrix using a source-target representation. We think of the vectors as entering the matrix on the left, being multiplied and added, and exiting up top.}
 \label{sourceTargetConvention}
 \end{figure}
@@ -1110,9 +1128,9 @@ Figure \ref{targetSourceSimbrain} shows how this configuration looks in Simbrain
 
 In this section we begin a discussion of matrix multiplication, where two matrices are multiplied by one another. There is nothing fundamentally difficult about this operation: it is just a combination of multiplying and adding entries, but the details can be tricky. There are established conventions for which things to multiply and add together, and they can be hard to remember. However, being able to do these computations is a crucial skill in neural networks, given how pervasive they are. Adding to the difficulty is that there is a kind of ambiguity to the process: matrix multiplications can often be thought of in different but compatible ways, as we will see.
 
-We start with the case where one of the matrices is a vector (recall that vectors are a kind of matrix, where there is either a single row or a single column). When a matrix is multiplied by a column vector it is called left multiplication (because the matrix is on the left). When a row vector is multiplied by a matrix it is called right multiplication (because the matrix is on the right). In the first case of $\mathbf{A}v$ we go from matrix and column vector to a new column vector. In the second case of $v\mathbf{A}$ we go from a row vector and a matrix to a new row vector.  The first case ``processes'' an input row into a transformed output row. The second case processes an input column vector into a transformed column vector (this concept of ``processing'' will be important below). These cases are good to start with because they show the basic mechanics of the operations, which is to take a vector, and ``scan'' it over the matrix in a certain way, taking dot products as you do, which are then ``written out'' to an output vector.  
+We start with the case where one of the matrices is a vector (recall that vectors are a kind of matrix, where there is either a single row or a single column). When a matrix is multiplied by a column vector it is called left multiplication by the matrix (because the matrix is on the left). When a row vector is multiplied by a matrix it is called right multiplication by the matrix (because the matrix is on the right). In the first case of $\mathbf{A}v$ we go from matrix and column vector to a new column vector. In the second case of $v\mathbf{A}$ we go from a row vector and a matrix to a new row vector.  The first case ``processes'' an input column into a transformed output column. The second case processes an input row vector into a transformed column row (this concept of ``processing'' will be important below). These cases are good to start with because they show the basic mechanics of the operations, which is to take a vector, and ``scan'' it over the matrix in a certain way, taking dot products as you do, which are then ``written out'' to an output vector.  
 
-Even though left multiplication is a bit more common in math, we start with right multiplication because it is a more natural starting place with the source-target graphical structure we've been emphasizing.  With a source-target scheme a  ``forward pass'' through a matrix is corresponds to a right multiplication, and backward pass (as in backprop) corresponds to a left multiplication. (In a target-source scheme this is reversed. A forward pass correspond to left multiplication and a backward pass corresponds to right multiplication).
+Even though left multiplication by a matrix is a bit more common in math, we start with right multiplication because it is a more natural starting place with the source-target graphical structure we've been emphasizing.  With a source-target scheme a  ``forward pass'' through a matrix is corresponds to a right multiplication, and backward pass (as in backprop) corresponds to a left multiplication. (In a target-source scheme this is reversed. A forward pass correspond to left multiplication and a backward pass corresponds to right multiplication).
 
 With right multiplication we start with a row vector and multiply it by a matrix on the right. We take the dot product of the row vector and the first column vector in the matrix (see figure \ref{vectorMatrixProduct}. The resulting number is the first component of a row vector. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.  In a sense we have transformed one row vector into another. The matrix represents the transformation, the row vector on the left is the input, and the row vector on the left is the output (the analogy to neural networks should be clear).\footnote{The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.}
 
@@ -1249,9 +1267,12 @@ A multiplication $\mathbf{A}\mathbf{B} = \mathbf{C}$ can be interpreted in sever
 \label{entryWiseMatrixProduct}
 \end{figure}
 
-However, often when dealing with neural network applications, it helps to zoom-out and imagine that rows or columns are being ``processed'' by the matrix. This builds on the idea left multiplications transforms columns to new columns and that right multiplication transforms rows to new rows. In the more general case, it turns out the row to row perspective is helpful and perhaps more common in some discussions. 
+However, often when dealing with neural network applications, it helps to zoom-out and imagine that rows or columns are being ``processed'' by the matrix. This builds on the idea that left multiplication by a matrix transforms columns to 
+new columns and that right multiplication by a matrix transforms rows to new 
+rows. In the more general case, it turns out the row to row perspective is 
+helpful and perhaps more common in some discussions. 
 
-We will start with the ``row processing'' respective. Here we view $\mathbf{A}$ in  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as a stack of row vectors which we peel off one by one and right multiply by $\mathbf{B}$ to build up $\mathbf{C}$.\footnote{Alternatively, we can think of this as taking linear combinations of the rows of $\mathbf{B}$, which is another useful perspective.} This idea of taking a stack of rows and pushing them through a matrix to get another stack of rows is common with batch processing and in understanding how representations ``move'' through a transformer.\footnote{See \url{ https://e2eml.school/transformers.html}.}
+We will start with the ``row processing'' respective. Here we view $\mathbf{A}$ in  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as a stack of row vectors which we peel off one by one and right multiplied by $\mathbf{B}$ to build up $\mathbf{C}$.\footnote{Alternatively, we can think of this as taking linear combinations of the rows of $\mathbf{B}$, which is another useful perspective.} This idea of taking a stack of rows and pushing them through a matrix to get another stack of rows is common with batch processing and in understanding how representations ``move'' through a transformer.\footnote{See \url{ https://e2eml.school/transformers.html}.}
 
 Figure \ref{rowPerspective} shows the idea abstractly. We peel off the rows of $\mathbf{A}$ and multiply them by the matrix $\mathbf{B}$ as described in the discussion above. Notice that the result is another collection of rows in $\mathbf{C}$, with as many rows as were in $\mathbf{A}$, where we just think of each rows as being the matrix transformation of that row by $\mathbf{B}$. This will be crucial in the discussions of transformers in chapter \extref{ch_transformers}. 
 
@@ -1289,7 +1310,7 @@ Figure \ref{columnPerspective} shows the idea abstractly. We basically repeat mu
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.6\textwidth]{images/columnPerspective.png}
-\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``column processing''.  The rows of the right matrix $\mathbf{B}$ are taken one by one, and multiplied by matrix $\mathbf{A}$  on the left, using the methods of the section above on left multiplication.  This is done for each column (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a file of columns, each of which has been processed by $\mathbf{A}$.}
+\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``column processing''.  The columns of the right matrix $\mathbf{B}$ are taken one by one, and multiplied by matrix $\mathbf{A}$  on the left, using the methods of the section above on left multiplication.  This is done for each column (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a file of columns, each of which has been processed by $\mathbf{A}$.}
 \label{columnPerspective}
 \end{figure} 
 
@@ -1471,18 +1492,17 @@ can be written as
 so $\{ (1,0), (0,1) \}$ spans the plane. But every vector in the span of
 $(1,0)$ has $0$ for it second component and every vector in the span of $(0,1)$
 has $0$ for its first component, so we cannot write every vector in the plane 
-without both $(1,0)$ and $(0,1)$. The set $\{ (1,0), (0,1) \}$ is a basis for 
-the plane. It is called the \underline{standard basis}. 
+without using both $(1,0)$ and $(0,1)$. The set $\{ (1,0), (0,1) \}$ is a basis for the plane. It is called the \underline{standard basis}. 
 
-   Every vector $(x,y)$ can be written as
+   Every vector $(x,y)$ can also be written as
 \begin{eqnarray*}
  (x,y) =(y-x)(1,2) +(2x-y)(1,1)
 \end{eqnarray*}  
-so the set $\{ (1,2), (1,1) \}$ spans the plane. But the components of every 
-vector in the span of $(1,1)$ are equal to each other, so $(1,2)$ is not in the 
-span of $(1,1)$. For every vector in the span of $(1,2)$ the second
-component is twice the first, so (1,1) is not in the span of $(1,2)$. Thus, 
-$\{ (1,2), (1,1) \}$ is also a basis for the plane. 
+so the set $\{ (1,2), (1,1) \}$ spans the plane.  The second component of every
+vector in the span of $(1,2)$ is twice the first and the components of every 
+vector in the span of $(1,1)$ are equal to each other.  So we can not write a
+vector such as $(2,1) = -(1,2)+3 (1,1)$ without using both $(1,2)$ and $(1,1)$.
+Thus, $\{ (1,2), (1,1) \}$ is also a basis for the plane. 
 
 The \glossary{transpose} of a matrix \( A \), denoted \( A^T \), is the matrix obtained by flipping \( A \) over its diagonal. That is, the element in the \( i \)th row and \( j \)th column of \( A \) becomes the element in the \( j \)th row and \( i \)th column of \( A^T \). Formally, 
 \[
@@ -1503,7 +1523,22 @@ A^T = \begin{pmatrix}
 \end{pmatrix}
 \]
 
-Note that transpose rotates row vectors to make them column vectors and column vectors to make them row vectors.
+   Its useful to comapre the source-target and target-source conventions for 
+matrices using the transpose operation.  If the product of two matrices $A$ and 
+$B$ is defined then the transpose of their product is the reverse product of 
+their transposes:
+\begin{equation*}
+       \left(AB\right)^T = B^T A^T                 
+\end{equation*}
+Note that transpose flips row vectors to make them column vectors and flips
+column vectors to make them row vectors.  So if $A$ is an $m \times n$ matrix 
+and $\mathbf{v}$ is a $n \times 1$ column vector then $\mathbf{v}^T$ is a $1 
+\times n$ row vector and
+\begin{equation*}
+       \left(A \mathbf{v} \right)^T =  \mathbf{v}^T A^T                 
+\end{equation*}
+This confirms that the source-target and target-source conventions are
+equivalent.
 
 \section{Appendix: Elementwise (Hadamard) Product}\label{hadamard}
 
