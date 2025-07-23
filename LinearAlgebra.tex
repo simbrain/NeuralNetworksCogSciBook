@@ -893,7 +893,7 @@ example which illustrates the importance of this way of thinking is figure
 \includegraphics[scale=1.55]{./images/Nearfar.pdf}
 \caption{Two sets of four points in $\real^2$ are enclosed by a dotted curve.  
 The Euclidean distances between the points within each group are small in 
-comparison to the distance between the two sets of points.}
+comparison to the Euclidean distance between the two sets of points.}
 \label{nearfar}
 \end{figure}
 
@@ -1062,13 +1062,13 @@ We have already alluded above to the fact that there can be multiple ways to rep
 In a ``source-target'' representation, a weight $w_{i, j}$ is a weight from source neuron $i$ to target neuron $j$. In the corresponding matrix, rows are associated with source neurons and columns are associated with target neurons. This kind of indexing is easy and natural to think about' it's what Don Norman calls a ``natural affordance'', since we are going from a source to a target.  By contrast,  a ``target-source'' format is one where we swap indices so that weight $w_{j, i}$ shows the target neuron first and the source neuron second.  In the corresponding matrix, rows are associated with target neurons and columns are associated with source neurons. This seems backwards, but for certain matrix operations is more natural and more compact to write, and so it is commonly used.\footnote{There is some disciplinary variance on which representation to use. According to wikipedia, ``The [source-target] definition is commonly used in graph theory and social network analysis (e.g., sociology, political science, economics, psychology). The [target-vector representation] is more common in other applied sciences (e.g., dynamical systems, physics, network science) where A is sometimes used to describe linear dynamics on graphs'' \url{https://en.wikipedia.org/wiki/Adjacency_matrix\#Directed_graphs}.}
 % Yet another option is (from, to) vs (to, from). 
 
-We now consider graphical conventions. We need to bridge between the ball-and-stick models we have been using and direct representations of weight matrices and activation vectors. We need a template for mentally moving back and forth between these ways of thinking. One byproduct of preparing this way of thinking is that it will be easy for us to see how a matrix can take us from one size space to another, sometimes ``down projecting'', sometimes ``up projecting'', and sometimes transforming vectors in the same-sized space.
+We now consider graphical conventions. We need to bridge between the ball-and-stick models we have been using and direct representations of weight matrices and activation vectors. We need a template for mentally moving back and forth between these ways of thinking. One byproduct of preparing this way of thinking is that it will be easy for us to see how a matrix can take us from one size space to another, sometimes ``projecting downward'', sometimes ``projecting upward'', and sometimes transforming vectors in the same-sized space.
 
-In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention.  A particular set of flow lines is shown.  One important idea to be aware of us that within each convention, we can go either forward through the flow lines in the way shown, or \emph{backwards} through them, which is what happens in backprop (chapter \extref{ch_lms_backprop}).  Whether we go forward or backward depends on whether we use right or left multiplication, which is a topic taken up in the next section.
+In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention.  A particular set of flow lines is shown.  One important idea to be aware of is that within each convention, we can go either forward through the flow lines in the way shown, or \emph{backwards} through them, which is what happens in backprop (chapter \extref{ch_lms_backprop}).  Whether we go forward or backward depends on whether we use right or left multiplication, which is a topic taken up in the next section.
 
 \subsection{Source-target graphical conventions}
 
-Figure \ref{sourceTargetConvention} shows how to think of a matrix in source-target format as channeling information.  We can think of the number of rows $m$ as corresponding to the number of inputs, and the number of columns $n$ as corresponding to the number of outputs.  Then for example, a $2x3$ matrix takes us from 2 inputs to 3 outputs. This is naturally represented by a ``left multiplication'', as we will see below. We can still multiply the other way, but in the other case we are moving ``backwards'' through the matrix (which is actually done in backprop).  What is shown here is a matrix that takes us from a 2 dimensional to a 3 dimensional space, which is a \glossary{up projection}.  If it were a $3x2$ matrix it would take us from a three dimensional space to a 2 dimensional space, a \glossary{down projection}. If it were a $2x2$ matrix it would transform things in the same 2 dimensional space.
+Figure \ref{sourceTargetConvention} shows how to think of a matrix in source-target format as channeling information.  We can think of the number of rows $m$ as corresponding to the number of inputs, and the number of columns $n$ as corresponding to the number of outputs.  Then for example, a $2 \times 3$ matrix takes us from 2 inputs to 3 outputs. This is naturally represented by a ``left multiplication'', as we will see below. We can still multiply the other way, but in the other case we are moving ``backwards'' through the matrix (which is actually done in backprop).  What is shown here is a matrix that takes us from a 2 dimensional to a 3 dimensional space, which is an \glossary{upward projection}.  If it were a $3 \times 2$ matrix it would take us from a three dimensional space to a 2 dimensional space, a \glossary{downward projection}. If it were a $2 \times 2$ matrix it would transform things in the same 2 dimensional space.
 
 \begin{figure}[h]
 \centering
@@ -1081,7 +1081,7 @@ Figure \ref{sourceTargetSimbrain} shows how this looks in Simbrain. You are enco
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{images/sourceTargetSimbrain.png}
+\includegraphics[width=0.85\textwidth]{images/sourceTargetSimbrain.png}
 \caption[Jeff Yoshimi.]{Using a source-target representation in Simbrain. We think of the vectors as entering the matrix on the left and exiting up top.}
 \label{sourceTargetSimbrain}
 \end{figure}
@@ -1101,7 +1101,7 @@ Figure \ref{targetSourceSimbrain} shows how this configuration looks in Simbrain
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{images/targetSourceSimbrain.png}
+\includegraphics[width=0.8\textwidth]{images/targetSourceSimbrain.png}
 \caption[Jeff Yoshimi.]{Using a target-source representation in Simbrain. We think of the vectors as entering the matrix from below and exiting to the right.}
 \label{targetSourceSimbrain}
 \end{figure}
