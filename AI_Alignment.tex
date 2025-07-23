@@ -3,30 +3,50 @@
 
 AI alignment is the field concerned with setting the goals of artificial
 intelligences. The field pre-dates the deep learning revolution and modern
-LLMs; it is especially interesting that (1) much of the modern post-training
-pipeline for frontier LLMs grew out of this originally speculative field, and
-(2) AI alignment as a field has, conversely, adapted itself to the advent of
-existing capable AI in the form of our modern LLMs.
+LLMs; it is especially interesting (1) that the modern post-training pipeline
+for frontier LLMs grew out of ideas from this originally speculative field, and
+(2) that AI alignment as a field has, conversely, had to adapt itself to the
+advent of capable AI in the form of modern LLM paradigm. A theme in this
+chapter is that intertwinement between the work of those who sought to set the
+goals of powerful AI--whenever it came about--and the research happening at the
+frontier AI labs--where powerful AI did come about. There's a story here about
+the way that empirical technological reality butted up against pre-existing
+anxieties about smarter-than-human AI, and about the sociotechnical equilibrium
+that came out of that collision.
 
-\section{AI Alignment Before the Deep Learning Revolution}
-Before the advent of LLMs, AI in the form of symbolic systems seemed much more
-relatively promising. Theoretical work about AI alignment began in this period,
-but was in effect hedging its bets with regards to which paradigm of AI would
-ultimately take off.
+Our survey of AI alignment is roughly chronological, looking at the state of
+the field before deep learning, today, and forward into the future.
 
-A lot can still be said about the goals of AIs and how they align with, or fail
-to align with, the goals of humans \cite{bostrom2014superintelligence}. Much of
-the theoretical machinery here was grounded in mathematical intuitions about
-von Neumann-Morgenstern rationality.
+\section{AI Alignment, Before the Deep Learning Revolution}
+AI as a research field is quite old now, dating back to 1956. AlexNet (2012)
+and the transformer (2017), and the whole contemporary explosion of AI
+capabilities and development, came about much later. It was between these two
+bookends that AI alignment was born. The field is, in great part, the
+brainchild of Eliezer Yudkowsky, a decision theorist and founder of the Machine
+Intelligence Research Institute.
 
-Some important results dating from this period are a theoretical explication of
-``corrigibility'', a formal model of inductive reasoning in terms of market
-equilibria, and a formalization of the notion of ``limited'' optimization
-pressure. Corrigibility is a potentally desirable property in an AI; it is the
-idea that an AI should defer to its human overseer. Rather than just implanting
-some set of goals in an AI and letting it run, corrigibility aims at having an
-AI not learn any particular set of goals but instead come to be a generally
-helpful assistant lacking its own goals.
+A lot could still be said about the possible goals of AIs and how they might or
+might not line up with the goals of their human creators
+\cite{bostrom2014superintelligence}. Without concrete powerful AI on hand, many
+potential future paradigms had to be, in effect, speculated about and averaged
+over. Theoretical work at the time grounded itself in mathematical intuitions
+about von Neumann-Morgenstern rationality, leaving open how AI capabilities
+would actually be filled in.
+
+A formalization of AI ``corrigibility'' is one of the AI alignment results
+tracing back to this period. Informally, corrigibility is the idea that an AI
+should not learn any particular set of goals but instead come to be a generally
+helpful assistant lacking its own goals. More precisely, corrigibility could be
+thought about in terms of an AI letting a human shut it down at any point,
+without actively trying to prevent itself from being shut down. It turns out
+that it's quite difficult to give a formal model of an agent that wants to help
+but never ``takes the reins''.
+
+EXPLICATE THIS
+
+One important paper gave a formal model of inductive (non-deductive) reasoning
+in terms of market equilibria between idealized bettors. Another formalized the
+intuitive notion of ``limited'' optimization.
 
 \section{Base Models and Chat Models}
 % GPT-2 does not have a complete personality. It's like auto-complete on
