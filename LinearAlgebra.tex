@@ -374,19 +374,84 @@ n_4 = (\; -1,\; -4,\; 5) \bullet (-1,-1,1) + 0  = 1 + 4 + 5 + 0 = 10
 
    These visualizations help show that if we are doing ``distance'' on a unit hypersphere, then the dot product behaves like an inverse metric: it reaches a maximum of 1 when vectors point in the same direction, and becomes increasingly negative as they point in opposite directions. The negative cases are especially important when thinking of a weight vector as orthogonal to a decision boundary in a network with threshold units.
  
-\section{Other vector comparison methods}\label{vector_comparisons}
+\section{Vector Spaces as Metric Spaces}\label{metricSpace}
 
-   There are a number of ways the dot product can be used to give us a sense of
+   A vector space can have a metric, which is a function that returns the 
+distance between any two points in the vector space.  The usual metric for a 
+real vector space is the Euclidean metric, which can be expressed in terms of 
+the dot product.  The Euclidean metric uses the concept of a \glossary{norm}, 
+denoted by double bars $|| \cdot ||$, which measures the ``length'' or 
+``magnitude'' of a vector.  Specifically, the norm of a vector $\mathbf{x}$ is 
+the square root of the dot product of the vector with itself: $||\mathbf{x}|| = 
+\sqrt{\mathbf{x} \bullet \mathbf{x}}$.  With this metric the distance between 
+any pair of vectors,
+\begin{equation*}
+\mathbf{x} = (x_1, x_2, \ldots, x_n), \qquad
+\mathbf{y} = (y_1, y_2, \ldots, y_n) \qquad
+\end{equation*}
+in $\real^n$ is given by:
+\begin{equation*}
+\left(\mathbf{x}, \mathbf{y}\right) \quad \mapsto \quad
+|| \mathbf{x} - \mathbf{y} || \; = \; 
+\sqrt{ (\mathbf{x} - \mathbf{y}) \bullet (\mathbf{x} - \mathbf{y}) }
+\; = \;  \sqrt{ \sum_{j=1}^n (x_j - y_j)^2 }
+\end{equation*}
+There are infinitely many metrics for every nontrivial vector space but the 
+most commonly used metric is the Euclidean metric.
+
+   As an example the norm of $(-3,4)$ is $\sqrt{(-3)^2+4^2} = 5$ and the norm 
+of $(2,5)$ is $\sqrt{2^2+5^2} = \sqrt{29} \approx 5.385$.  These vectors are 
+shown in the left panel of Fig. \ref{metricfig}.  The difference between 
+$(2,5)$ and $(-3,4)$ is $(-3,4) - (2,5) = (-5,-1)$ which is shown in the right 
+panel of Fig. \ref{metricfig}.  The norm of $(-5,-1)$ is $\sqrt{(-5)^2+(-1)^2} 
+= \sqrt{26} \approx 5.099$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.55]{./images/Norm.pdf}
+\qquad
+\includegraphics[scale=1.55]{./images/dist.pdf}
+\caption{(left) The norm of $(-3,4)$ is $5$ and the norm of $(2,5)$ is 
+$\sqrt{29} \approx 5.385$.  (right) The vector $(-5,-1)$ is shown with its tail at the head 
+of $(2,5)$ and its head at the head of $(-3,4)$.  The norm of $(-5,-1)$ is 
+$\sqrt{26}$.}
+\label{metricfig}
+\end{figure}
+
+   The upshot of this is that we can interpret the vector spaces associated 
+with neural networks--activation spaces, input spaces, weight spaces, etc.--as 
+giving us a sense of how far apart relevant vectors are, and thus how similar 
+the states the vectors represent are to each opther.  Points nearby one another 
+in an input space correspond to similar inputs: similar smells, similar visual 
+inputs, similar words relative to a word embedding (chapter 
+\extref{ch_word_embeddings}), etc. (see Fig. \ref{nearfar}).  Points nearby one 
+another in a weight space are similar configurations of weights.  These 
+interpretations are often emphasized in analyses of neural networks (for 
+example, see chapter \extref{ch_representations}), and in fact the spaces 
+associated with neural networks are sometimes called ``similarity spaces''.  An 
+example which illustrates the importance of this way of thinking is figure 
+\extref{competitiveInputSpace}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.55]{./images/Nearfar.pdf}
+\caption{Two sets of four points in $\real^2$ are enclosed by a dotted curve.  
+The Euclidean distances between the points within each group are small in 
+comparison to the Euclidean distance between the two sets of points.}
+\label{nearfar}
+\end{figure}
+
+\section{Other Vector Comparison Methods}\label{vector_comparisons}
+
+The dot product can be used to give us a sense of
 how close or far apart two vectors (such as input vectors, activation vectors, 
-\emph{etc}.) are to each other.  
+\emph{etc}.) are to each other.  There are other ways to compare vectors, including cosine similarity,
+correlation and covariance, which we discuss in this section.
 
-% Can't this be expressed as cos(u,v)?  
-% It can be, but its not common.
-
-   One way is to begin by normalzing the two vectors (that is, we divide each
-of the vectors by their Euclidrean norm to get two vectors with unit norm; see 
+   One way to compare vectors is to begin by normalizing the two vectors (that is, we divide each
+of the vectors by their Euclidean norm to get two vectors with unit norm; see 
 section \ref{metricSpace}).  We then dot the normalized vectors with each 
-other.\footnote{The symbol $||\cdot||$ denotes the Euclidean norm.}
+other.
 \begin{equation}\label{E:cossim}
 \cos(\theta) = 
 \frac{\mathbf{u}}{|| \mathbf{u}||}  \bullet 
@@ -410,131 +475,59 @@ which is $1 - \cos(\theta)$.  In this case nearly proportional vectors
 will have a cosine distance of nearly 0, while very dissimilar vectors will 
 have a cosine distance of about 1.}
 
-   Note that we do not need to know the angle $\theta$ to compute the
-cosine similarity of two vectors.\footnote{In fact in modern Euclidean geometry 
-angles are formally defined in terms of the dot product.}  Cosine
-similarity can be computed for any pair of vectors in the same vector space no 
-matter how many dimensions the vector space has, although it does take more
-time to compute it in higher dimensions.  Even though the left hand side of 
-equation \eqref{E:cossim} is only a function of the angle between the vectors 
-the cosine similarity of any two nonzero vectors, $\mathbf{u}$ and 
-$\mathbf{v}$, can be computed from the expression on the right hand side of 
-equation \eqref{E:cossim}.
+Since $\theta$ is a function of  $\mathbf{u}$ and  $\mathbf{v}$ 
+we can think of cosine similarity as a function of  $\mathbf{u}$ and  $\mathbf{v}$.\footnote{In fact in modern Euclidean geometry 
+angles are formally defined in terms of the dot product.}  
+That is, for any pair of vectors $\mathbf{u}$ and  $\mathbf{v}$ in the same vector space, we can compute the cosine similarity 
+using the right side of equation \eqref{E:cossim}.
 
    Cosine similarity is widely used in text analysis and natural language 
 processing, especially in applications such as document similarity and 
-information retrieval (see chapter \extref{ch_word_embeddings}).  This is 
-because it compares the direction of two high-dimensional vectors independently
-of their magnitude.  As such, it captures similarity in content rather than 
-length or scale, which is ideal in contexts where longer documents might 
-contain similar themes as shorter ones.
+information retrieval (see chapter \extref{ch_word_embeddings}). This is 
+because it can compare the direction of two high-dimensional vectors independently
+of their magnitude.  
+% In a sense it captures similarity in content rather than  length or scale.
 % Last point should be front-loaded a bit?
 
-   Two other related measures are \textbf{covariance} and \textbf{correlation}.
-In this context it can be helpful for us to consider the two vectors as 
-sequences of values for two variables.  Covariance and correlaation measure how 
-closely the two variables vary together about each of their respective means.  
+   Two other measures that can be used to compare vectors are \textbf{covariance} and \textbf{correlation}. While dot product and cosine similarity are often used to compare activation vectors and input vectors in neural networks, covariance and correlation are more often used to compare sequences of values for two variables, for example, values in two columns of a table of input data.  Recall from chapter \extref{ch_data_science} that tables 
+are commonly used in neural networks and the columns often describe some
+features of interest.  Any table can be associated with a set of points in two ways, either by focusing on the rows, or the the columns. The practical point being made here is that our first two vector comparison methods are more row-based, and the second two are more column based. Consider this table of data.
+\begin{center}
+\begin{tabular}{ccc}
+\textbf{Individual} & \textbf{Height (ft)} & \textbf{Weight (lb)} \\
+\hline
+1 & 5.0 & 120 \\
+2 & 5.5 & 180 \\
+3 & 6.5 & 210 \\
+4 & 6.0 & 150 \\
+5 & 5.8 & 170 \\
+\end{tabular}
+\end{center}
+While dot products and cosine similarity might be used to compare different rows of this table, covariance and correlation could be used to compare the columns.
+% Tighten up a bit and make it clear the first column is id column. Also maybe hint at the idea that u and v are variables for rows and x and y for columns, at least in this section
+% Integrate this: There are two main ways to think geometrically about the numbers in this table. One way is to let the ordered pairs of heights and weight in the five rows of  the table be the coordinates of five points in $\real^2$. 
+   
+Covariance and correlation measure how 
+closely the values for two variables vary together about each of their respective means.  
 If, at each moment in time, the variables are usually either both above or both 
-below their mean values then we say the variables are positively correlated 
+below their mean values then we say the variables are \emph{positively correlated}
 with each other.  When the variables are positively correlated and we see that
 the value for one of them is above average then the value for the other 
 variable is probably also above average.  On the other hand if both variables 
 are usually on opposite sides of their mean values then we say the variables 
-are negaatively correlated with each other.  When the variables are negatively 
+are \emph{negatively correlated} with each other.  When the variables are negatively 
 correlated and we see that the value for one of them is above average then the 
 value for the other variable is probably below average.  If the variables are
-neither positively or negatively correlated then we say they are uncorrelated.
-
-Covariance measures how closely two variables vary together about each of their
-means.  Correlation does the same thing but it also rescales the result to 
-produce a standardized value between in $[-1,1]$.  To compute the covariance 
-between two raw data vectors $\mathbf{x} = (x_1, \dots, x_n)$ and $\mathbf{y} =
-(y_1, \dots, y_n)$, we first subtract the mean value of each vector from 
-its components to obtain centered data vectors:
-\begin{eqnarray}
-\tilde{\mathbf{x}} &=& (x_1 - \bar{x}, \, \dots, \, x_n - \bar{x}) 
-                                                             \nonumber \\[1mm]
-\tilde{\mathbf{y}} &=& (y_1 - \bar{y}, \, \dots, \, y_n - \bar{y}) 
-\end{eqnarray}
-The covariance is the dot product of the centered data vectors divided by
-$n-1$.
+neither positively or negatively correlated then we say they are \emph{uncorrelated}.
 
    Covariance and correlation have exact mathematical expressions.  Let $x$ and 
 $y$ stand for the two variables.  A value for each of the variables can be 
 obtained at each moment in time by making a measurement or by sampling from a 
-large population.  However we obtain values for $x$ and $y$ we get two 
-sequences of values for these two variables.  This is called the 
+large population.  However we obtain values for $x$ and $y$, we get two 
+sequences of values for these two variables. This is called the 
 \emph{raw data} for the variables.  The two sequences of values for the 
 variables can be expressed as vectors:
 
-\begin{equation}
-\mathbf{x} = (x_1, \dots, x_n) \quad \mbox{and} \quad 
-\mathbf{y} = (y_1, \dots, y_n)
-\end{equation}
-To compute the covariance of $\mathbf{x}$ and $\mathbf{y}$ we first subtract 
-the mean value of each vector from its components.  We let $\mu_x$ be the 
-mean of $\mathbf{x}$ and $\mu_y$ be the mean of $\mathbf{y}$.  This gives 
-us two vectors whose components are called the \emph{centered data} for the 
-variables.
-\begin{eqnarray}
-\tilde{\mathbf{x}} &=& (x_1 - \mu_x, \, \dots, \, x_n - \mu_x) 
-                                                             \nonumber \\[1mm]
-\tilde{\mathbf{y}} &=& (y_1 - \mu_y, \, \dots, \, y_n - \mu_y) 
-\end{eqnarray}
-The covariance is the dot product of the vectors for the centered data divided 
-by $n$.\footnote{Sometimes $n-1$ is used instead of $n$.}
-\begin{equation}\label{E:covdef}
-\mathrm{Cov}(\mathbf{x}, \mathbf{y}) = \frac{\tilde{\mathbf{x}} \bullet 
-                                             \tilde{\mathbf{y}}}{n} 
-\end{equation}
-
-   The Pearson correlation coefficient is obtained from the covariance using
-the standard deviations of the variables.  The standard deviation, like the 
-mean, is a statistic intended to describe the raw data.  It describes how 
-spread out the raw data is.  The standard deviation for $x$ and $y$ are defined
-as:
-\begin{equation}
-    \sigma_x = \sqrt{ \frac{1}{n} \sum_{j=1}^n (x_j - \mu_x)^2} 
-\qquad \mbox{and} \qquad 
-    \sigma_y = \sqrt{ \frac{1}{n} \sum_{j=1}^n (y_j - \mu_y)^2}
-\end{equation}
-The Pearson correlation coefficient is the covariance divided by the product of
-the standard deviations.
-\begin{equation}\label{E:corrdef}
-\mathrm{Corr}(\mathbf{x}, \mathbf{y}) = 
-\frac{\mathrm{Cov}(\mathbf{x}, \mathbf{y})}{\sigma_x \, \sigma_y}
-\end{equation}
-However we can also write the standard deviation in terms of the centered data:
-\begin{equation}\label{E:stddevc}
-  \sigma_x = \sqrt{ \frac{\tilde{\mathbf{x}} \bullet \tilde{\mathbf{x}}}{n}}
-= \frac{||\tilde{\mathbf{x}}||}{\sqrt{n}}
-\qquad \mbox{and} \qquad 
-  \sigma_y = \sqrt{ \frac{\tilde{\mathbf{y}} \bullet \tilde{\mathbf{y}}}{n}}
-= \frac{||\tilde{\mathbf{y}}||}{\sqrt{n}}
-\end{equation}
-We can substitute the formula for the covariance in equation \eqref{E:covdef},
-and the formulas for the standard deviations in equation \eqref{E:stddevc}
-into the right had side of equation \eqref{E:corrdef}.
-\begin{equation}
-\mathrm{Corr}(\mathbf{x}, \mathbf{y}) = 
-\frac{\left(\displaystyle{\frac{\tilde{\mathbf{x}} \bullet 
-                                                 \tilde{\mathbf{y}}}{n}}\right)}
-     {\left(\displaystyle{\frac{||\tilde{\mathbf{x}}||}{\sqrt{n}}
-               \frac{||\tilde{\mathbf{y}}||}{\sqrt{n}} }\right)}
-= \frac{\tilde{\mathbf{x}} \bullet \tilde{\mathbf{y}}}
-       {||\tilde{\mathbf{x}}|| \cdot ||\tilde{\mathbf{y}}||} 
-\end{equation}
-So we can see that the Pearson correlation coefficient of the raw data is the
-same as the cosine similarity of the centered data.  It is a number in 
-$[-1,1]$.  
-
-   Covariance and correlation have exact mathematical expressions.  Let $x$ and 
-$y$ stand for the two variables.  A value for each of the variables can be 
-obtained at each moment in time by making a measurement or by sampling from a 
-large population.  However we obtain values for $x$ and $y$ we get two 
-sequences of values for these two variables.  This is called the 
-\emph{raw data} for the variables.  The two sequences of values for the 
-variables can be expressed as vectors:
 \begin{equation}
 \mathbf{x} = (x_1, \dots, x_n) \quad \mbox{and} \quad 
 \mathbf{y} = (y_1, \dots, y_n)
@@ -562,9 +555,9 @@ mean, is a statistic intended to describe the raw data.  It describes how
 spread out the raw data is.  The standard deviation for $x$ and $y$ are defined
 as:
 \begin{equation}
-    \sigma_x = \sqrt{ \frac{1}{n} \sum_{j=1}^n (x_j - \mu_x)^2} 
+    \sigma_x = \sqrt{ \frac{1}{n} \sum_{j=1}^n (x_j - \mu_x)^2} = \sqrt{ \frac{\widetilde{\mathbf{x}} \bullet \widetilde{\mathbf{x}}}{n}}
 \qquad \mbox{and} \qquad 
-    \sigma_y = \sqrt{ \frac{1}{n} \sum_{j=1}^n (y_j - \mu_y)^2}
+    \sigma_y = \sqrt{ \frac{1}{n} \sum_{j=1}^n (y_j - \mu_y)^2} = \sqrt{ \frac{\widetilde{\mathbf{y}} \bullet \widetilde{\mathbf{y}}}{n}}
 \end{equation}
 The Pearson correlation coefficient is the covariance divided by the product of
 the standard deviations.
@@ -572,14 +565,7 @@ the standard deviations.
 \mathrm{Corr}(\mathbf{x}, \mathbf{y}) = 
 \frac{\mathrm{Cov}(\mathbf{x}, \mathbf{y})}{\sigma_x \, \sigma_y}
 \end{equation}
-It is a number in $[-1,1]$.  If $\mathrm{Corr}(\mathbf{x}, \mathbf{y})$ is 
-close to $1$ then $\mathbf{x}$ and $\mathbf{y}$ are highly positively 
-correlated.  If $\mathrm{Corr}(\mathbf{x}, \mathbf{y})$ is close to $-1$ then 
-$\mathbf{x}$ and $\mathbf{y}$ are highly negatively correlated.  If 
-$\mathrm{Corr}(\mathbf{x}, \mathbf{y})$ is close to $0$ then $\mathbf{x}$ and 
-$\mathbf{y})$ are nearly uncorrelated.  
-
-   We can also write the standard deviation in terms of the centered data:
+Note that we can also write the standard deviation in terms of the centered data:
 \begin{equation}\label{E:stddevc}
   \sigma_x = \sqrt{ \frac{\widetilde{\mathbf{x}} \bullet \widetilde{\mathbf{x}}}{n}}
 = \frac{||\widetilde{\mathbf{x}}||}{\sqrt{n}}
@@ -593,17 +579,15 @@ into the right had side of equation \eqref{E:corrdef}.
 \begin{equation}
 \mathrm{Corr}(\mathbf{x}, \mathbf{y}) = 
 \frac{\left(\displaystyle{\frac{\widetilde{\mathbf{x}} \bullet 
-                                            \widetilde{\mathbf{y}}}{n}}\right)}
+                                                 \widetilde{\mathbf{y}}}{n}}\right)}
      {\left(\displaystyle{\frac{||\widetilde{\mathbf{x}}||}{\sqrt{n}}
                \frac{||\widetilde{\mathbf{y}}||}{\sqrt{n}} }\right)}
 = \frac{\widetilde{\mathbf{x}} \bullet \widetilde{\mathbf{y}}}
        {||\widetilde{\mathbf{x}}|| \cdot ||\widetilde{\mathbf{y}}||} 
 \end{equation}
 So we can see that the Pearson correlation coefficient of the raw data is the
-same as the cosine similarity of the centered data.  The correlation of 
-$\mathbf{x}$ and $\mathbf{y}$ corresponds to the extent to which 
-$\widetilde{\mathbf{x}}$ and $\widetilde{\mathbf{y}}$ point in the same 
-direction.
+same as the cosine similarity of the centered data.  It is a number in 
+$[-1,1]$.  
 
     Geometrically, the centered data $\widetilde{\mathbf{x}}$ and 
 $\widetilde{\mathbf{y}}$, are the orthogonal projections of the raw data 
@@ -613,31 +597,23 @@ never increases the angle between $\mathbf{x}$ and $\mathbf{y}$ but it can
 descrease angle between them.  In a sense, there are fewer ways they can point 
 away from each other when we reduce the number of dimensions by $1$. 
 
-    Geometrically, the centered data $\tilde{\mathbf{x}}$ and 
-$\tilde{\mathbf{y}}$, are the orthogonal projections of the raw data 
-$\mathbf{x}$ and $\mathbf{y}$ to the subspace orthogonal to the vector 
-$(1, \dots, 1)$.  This subsapce has dimension $n - 1$.  This projection 
-never increases the angle between $\mathbf{x}$ and $\mathbf{y}$ but it can 
-descrease angle between them.  In a sense, there are fewer ways they can point 
-away from each other when we reduce the number of dimensions by $1$. 
-
-   The vectors $\mathbf{x}$ and $\mathbf{y}$ can represent different physical 
-quantities whose numerical value depends on the choice of units of measure.
-By centering the data before computing the cosine similarity we avoid spurious 
-differences introduced by the units of measure.  For example, suppose we are 
-measuring the germination time of seeds as a function of temperature.  If we 
-measure temperature in Celsius and time in seconds, we will obtain a different 
-numerical value for the cosine similarity of the raw data than if we measure 
-time in hours.  Whereas the value of the Pearson correlation coefficient 
-remains the same regardless of such changes in the unit of measure. 
-value for the cosine similarity than if we measure time in hours.  Whereas the 
-value of the Pearson correlation coefficient remains the same regardless of 
-such changes in the unit of measure. 
+%   The vectors $\mathbf{x}$ and $\mathbf{y}$ can represent different physical 
+%quantities whose numerical value depends on the choice of units of measure.
+%By centering the data before computing the cosine similarity we avoid spurious 
+%differences introduced by the units of measure.  For example, suppose we are 
+%measuring the germination time of seeds as a function of temperature.  If we 
+%measure temperature in Celsius and time in seconds, we will obtain a different 
+%numerical value for the cosine similarity of the raw data than if we measure 
+%time in hours.  The value of the Pearson correlation coefficient 
+%remains the same regardless of such changes in the unit of measure (as does the cosine similarity), whereas the
+%value for the dot product and covariance can change when the units of measure are changed.
+% Dimensionless. 
+% Pearson is a measure of colinearity, cosine similarity is more same direction
 
    These four measures—dot product, cosine similarity, covariance, and 
 correlation—are closely related.  They all associate pairs of vectors with 
 scalars.  They can be distinguished by whether they center the vectors (by 
-subtracting the mean) and /or scale them (by dividing dividing by the 
+subtracting the mean) and /or scale them (by dividing by the 
 ``spread'' of the data) before comparison.  The dot product operates on the raw
 data directly, while the other three measure transform the raw data in 
 different ways to faciltate comparisons between data with different means or 
@@ -650,29 +626,8 @@ overall scales.
     \item \textbf{Correlation}: centered, scaled.
 \end{itemize}
 
-   It's worth noting that different comparison measures often arise from 
-different  approaches to the data.  The easiest way to see this is by 
-considering a table.  Recall from chapter \extref{ch_data_science} that tables 
-are commonly used in neural networks and the columns often describe some
-features of interest.   
-
-   Let us consider this table of data.
-\begin{center}
-\begin{tabular}{ccc}
-\textbf{Individual} & \textbf{Height (ft)} & \textbf{Weight (lb)} \\
-\hline
-1 & 5.0 & 120 \\
-2 & 5.5 & 180 \\
-3 & 6.5 & 210 \\
-4 & 6.0 & 150 \\
-5 & 5.8 & 170 \\
-\end{tabular}
-\end{center}
-There are two main ways to think geometrically about the numbers in this table.
-One way is to let the ordered pairs of heights and weight in the five rows of 
-the table be the coordinates of five points in $\real^2$.  Since this space 
-only has 2 dimensions we can visualuze these points.  In this point of view 
-the heights and weights being positively correlated means that these five 
+Returning to the table above, recall there are two ways of think geometrically about its entries. From one perspective  ordered pairs of heights and weight in the five rows of  the table are coordinates of five points in $\real^2$.
+That the heights and weights being positively correlated means that these five 
 points are nearly collinear to a line with positive slope in the plane.  When 
 the heights and weights are negatively correlated it means that the points are 
 nearly collinear to a line with negative slope in the plane.  When the heights 
@@ -680,7 +635,7 @@ and weights are uncorrelated they usually form a cloud of points in $\real^2$
 \label{twogeoms}
 
    The left panel of figure \ref{twogeoms} shows the five points in $\real^2$.
-The Pearson correlation coefficint for them is about $0.8$.  They are roughly 
+The Pearson correlation coefficient for them is about $0.8$.  They are roughly 
 collinear to a line with positive slope.
 
 \begin{figure}[h]
@@ -703,11 +658,11 @@ to let the columns for the heights and weights be the coordinates for two
 points in $\real^5$.  Since this space has 5 dimensions we can not visualize 
 these points directly but we do have the advantage in this case that there are 
 only two points so they have to be contained within a 2 dimensional subspace
-of $\real^5$.  We represent the heights with the vector 
+of $\real^5$.  We denote the vector of heights with:
 \begin{equation*}
 \mathbf{h} = (5.0,\, 5.5,\, 6.5,\, 6.0,\, 5.8)
 \end{equation*}
-and the weights with the vector 
+and the vector of weights with:
 \begin{equation*}
 \mathbf{w} = (120,\, 180,\, 210,\, 150,\, 170)
 \end{equation*}
@@ -726,10 +681,29 @@ of $\{ \mathbf{h}, \mathbf{w} \}$.  The vector $\mathbf{w}$ is about $30$
 times as long as the vector $\mathbf{h}$.  This is shown in the right panel of
 figure \ref{twogeoms}.
 
-
-.  The cosine 
-similarity of the data gives us the cosine of the angle between the two points 
+% u is constructed to be orthogonal to h so we can see we are in a 2d subspace that contains h and w.  
+% the heads of the vectors are shown with crosshairs
+% h is pretty small so possibly change the data. 
+% From one figure to another  we center, and notice the cosine similarity changes
+The cosine similarity of the data gives us the cosine of the angle between the two points 
 as measured from the origin of $\real^5$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.25]{./images/heightWeight2.pdf}
+\caption{(left) The centered height and weight coordinates for the five 
+individuals in the table.  The odd numbered points are again early collinear to 
+a line with a slope of about $60$ while the even numbered points are more 
+spread out.  (right)  The vector $\widetilde{\mathbf{h}}$ points to the right 
+in the horizontal direction while the vector $\widetilde{\mathbf{u}}$ points in 
+the upward vertical direction.  The length of $\widetilde{\mathbf{u}}$ is about 
+$36$ times the length of $\widetilde{\mathbf{h}}$ and the length of 
+$\widetilde{\mathbf{w}}$ is about $1.7$ times the length of 
+$\widetilde{\mathbf{u}}$.  The cosine similarity of $\widetilde{\mathbf{h}}$ 
+and $\widetilde{\mathbf{w}}$ is about 0.800 and the angle between 
+$\widetilde{\mathbf{h}}$ and $\widetilde{\mathbf{w}}$ is about $37^o$.} 
+\label{twogeoms2}
+\end{figure}
 
 In neural network contexts, we frequently focus on the \emph{rows} of such a 
 dataset and compare them, for example considering pairs of input vectors or 
@@ -808,28 +782,6 @@ In Simbrain there is a tool that is often useful for comparing a set of vectors 
 \end{figure}
 
 % Add some exercises to the end where they construct these
-
-\section{Vector Spaces as Metric Spaces}\label{metricSpace}
-
-% A picture would be nice here
-% Should magnitude be mentioned here? 
-
-A vector space can have a metric, which is a way to define the distance between any two points. The usual metric for a real vector space is the Euclidean metric, which can be expressed in terms of the dot product. The Euclidean metric uses the concept of a \glossary{norm}, denoted by double bars $|| \cdot ||$, which measures the ``length'' of a vector. Specifically, the norm of a vector $\mathbf{x}$ is the square root of the dot product of the vector with itself: $||\mathbf{x}|| = \sqrt{\mathbf{x} \bullet \mathbf{x}}$.  With this
-metric the distance between any pair of vectors in $\real^n$ is:
-\begin{equation*}
-\mathbf{x} = (x_1, x_2, \ldots, x_n) \qquad
-\mathbf{y} = (y_1, y_2, \ldots, y_n) \qquad
-\end{equation*}
-is:
-\begin{equation*}
-|| \mathbf{x} - \mathbf{y} || =
-\sqrt{ (\mathbf{x} - \mathbf{y}) \bullet (\mathbf{x} - \mathbf{y}) }
-= \sqrt{ \sum_{j=0}^n (x_j - y_j)^2 }
-\end{equation*}
-There are many metrics for every vector space but usually we use the Euclidean metric.
-
-% Consider adding a plot showing nearby points here.
-The upshot of this is that we can interpret the vector spaces associated with neural networks--activation spaces, input spaces, weight spaces, etc.--as giving us a sense of how far apart relevant vectors are, and thus how similar the things they represent are. Points nearby one another in an input space correspond to similar inputs: similar smells, similar visual inputs, similar words relative to a word embedding (chapter \extref{ch_word_embeddings}), etc. Points nearby one another in a weight space are similar configurations of weights. These interpretations are often emphasized in analyses of neural networks (for example, see chapter \extref{ch_representations}), and in fact the spaces associated with neural networks are sometimes called ``similarity spaces''.  An example which illustrates the importance of this way of thinking is figure \extref{competitiveInputSpace}.
 
 \section{Matrices}\label{sect_matrices}
 
@@ -996,17 +948,35 @@ We have already alluded above to the fact that there can be multiple ways to rep
 In a ``source-target'' representation, a weight $w_{i, j}$ is a weight from source neuron $i$ to target neuron $j$. In the corresponding matrix, rows are associated with source neurons and columns are associated with target neurons. This kind of indexing is easy and natural to think about' it's what Don Norman calls a ``natural affordance'', since we are going from a source to a target.  By contrast,  a ``target-source'' format is one where we swap indices so that weight $w_{j, i}$ shows the target neuron first and the source neuron second.  In the corresponding matrix, rows are associated with target neurons and columns are associated with source neurons. This seems backwards, but for certain matrix operations is more natural and more compact to write, and so it is commonly used.\footnote{There is some disciplinary variance on which representation to use. According to wikipedia, ``The [source-target] definition is commonly used in graph theory and social network analysis (e.g., sociology, political science, economics, psychology). The [target-vector representation] is more common in other applied sciences (e.g., dynamical systems, physics, network science) where A is sometimes used to describe linear dynamics on graphs'' \url{https://en.wikipedia.org/wiki/Adjacency_matrix\#Directed_graphs}.}
 % Yet another option is (from, to) vs (to, from). 
 
-We now consider graphical conventions. We need to bridge between the ball-and-stick models we have been using and direct representations of weight matrices and activation vectors. We need a template for mentally moving back and forth between these ways of thinking. One byproduct of preparing this way of thinking is that it will be easy for us to see how a matrix can take us from one size space to another, sometimes ``down projecting'', sometimes ``up projecting'', and sometimes transforming vectors in the same-sized space.
+We now consider graphical conventions. We need to bridge between the ball-and-stick models we have been using and direct representations of weight matrices and activation vectors. We need a template for mentally moving back and forth between these ways of thinking. One byproduct of preparing this way of thinking is that it will be easy for us to see how a matrix can take us from one size space to another, sometimes ``projecting downward'', sometimes ``projecting upward'', and sometimes transforming vectors in the same-sized space.
 
-In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention.  A particular set of flow lines is shown.  One important idea to be aware of us that within each convention, we can go either forward through the flow lines in the way shown, or \emph{backwards} through them, which is what happens in backprop (chapter \extref{ch_lms_backprop}).  Whether we go forward or backward depends on whether we use right or left multiplication, which is a topic taken up in the next section.
+In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention.  A particular set of flow lines is shown.  One important idea to be aware of is that within each convention, we can go either forward through the flow lines in the way shown, or \emph{backwards} through them, which is what happens in backprop (chapter \extref{ch_lms_backprop}).  Whether we go forward or backward depends on whether we use right or left multiplication, which is a topic taken up in the next section.
 
 \subsection{Source-target graphical conventions}
 
-Figure \ref{sourceTargetConvention} shows how to think of a matrix in source-target format as channeling information.  We can think of the number of rows $m$ as corresponding to the number of inputs, and the number of columns $n$ as corresponding to the number of outputs.  Then for example, a $2x3$ matrix takes us from 2 inputs to 3 outputs. This is naturally represented by a ``left multiplication'', as we will see below. We can still multiply the other way, but in the other case we are moving ``backwards'' through the matrix (which is actually done in backprop).  What is shown here is a matrix that takes us from a 2 dimensional to a 3 dimensional space, which is a \glossary{up projection}.  If it were a $3x2$ matrix it would take us from a three dimensional space to a 2 dimensional space, a \glossary{down projection}. If it were a $2x2$ matrix it would transform things in the same 2 dimensional space.
+   Figure \ref{sourceTargetConvention} shows how to think of a matrix in 
+source-target format as channeling information.  The neural network is shown in
+the left panel.  The number of rows of the matrix, $m$, corresponds to the 
+number of inputs, and the number of columns, $n$, corresponds to the number of 
+outputs.  In this example, there are 2 inputs and 3 outputs, $m=2$ and $n=3$, 
+so we get a a $2 \times 3$ matrix.  In the middle panel of figure 
+\ref{sourceTargetConvention} a schematic of the matrix is shown with gray nodes 
+for matrix entries equal to $0$ and red nodes for matrix entries equal to $1$.
+The flow goes from the input on the left to the nodes on the right.  This is 
+naturally represented by multiplying a row vector times a matrix on its right,
+as shown in the right panel of figure \ref{sourceTargetConvention}.  This is 
+called ``right multiplication'' by the matrix, as we will see below.  We can 
+multiply the other way, but in this case we are moving ``backwards'' through 
+the matrix (which is actually done in backprop).  What is shown here is a 
+matrix that takes us from a 2 dimensional to a 3 dimensional space, which is an 
+\glossary{upward projection}.  If it were a $3 \times 2$ matrix it would take 
+us from a three dimensional space to a 2 dimensional space, a 
+\glossary{downward projection}.  If it were a $2 \times 2$ matrix it would 
+transform things in the same 2 dimensional space.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.75\textwidth]{images/sourceTarget.png}
+\includegraphics[width=0.75\textwidth]{images/sourceTarget.pdf}
 \caption[Jeff Yoshimi.]{Graphical model for thinking about a weight matrix using a source-target representation. We think of the vectors as entering the matrix on the left, being multiplied and added, and exiting up top.}
 \label{sourceTargetConvention}
 \end{figure}
@@ -1015,7 +985,7 @@ Figure \ref{sourceTargetSimbrain} shows how this looks in Simbrain. You are enco
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{images/sourceTargetSimbrain.png}
+\includegraphics[width=0.85\textwidth]{images/sourceTargetSimbrain.png}
 \caption[Jeff Yoshimi.]{Using a source-target representation in Simbrain. We think of the vectors as entering the matrix on the left and exiting up top.}
 \label{sourceTargetSimbrain}
 \end{figure}
@@ -1035,7 +1005,7 @@ Figure \ref{targetSourceSimbrain} shows how this configuration looks in Simbrain
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{images/targetSourceSimbrain.png}
+\includegraphics[width=0.8\textwidth]{images/targetSourceSimbrain.png}
 \caption[Jeff Yoshimi.]{Using a target-source representation in Simbrain. We think of the vectors as entering the matrix from below and exiting to the right.}
 \label{targetSourceSimbrain}
 \end{figure}
@@ -1044,9 +1014,9 @@ Figure \ref{targetSourceSimbrain} shows how this configuration looks in Simbrain
 
 In this section we begin a discussion of matrix multiplication, where two matrices are multiplied by one another. There is nothing fundamentally difficult about this operation: it is just a combination of multiplying and adding entries, but the details can be tricky. There are established conventions for which things to multiply and add together, and they can be hard to remember. However, being able to do these computations is a crucial skill in neural networks, given how pervasive they are. Adding to the difficulty is that there is a kind of ambiguity to the process: matrix multiplications can often be thought of in different but compatible ways, as we will see.
 
-We start with the case where one of the matrices is a vector (recall that vectors are a kind of matrix, where there is either a single row or a single column). When a matrix is multiplied by a column vector it is called left multiplication (because the matrix is on the left). When a row vector is multiplied by a matrix it is called right multiplication (because the matrix is on the right). In the first case of $\mathbf{A}v$ we go from matrix and column vector to a new column vector. In the second case of $v\mathbf{A}$ we go from a row vector and a matrix to a new row vector.  The first case ``processes'' an input row into a transformed output row. The second case processes an input column vector into a transformed column vector (this concept of ``processing'' will be important below). These cases are good to start with because they show the basic mechanics of the operations, which is to take a vector, and ``scan'' it over the matrix in a certain way, taking dot products as you do, which are then ``written out'' to an output vector.  
+We start with the case where one of the matrices is a vector (recall that vectors are a kind of matrix, where there is either a single row or a single column). When a matrix is multiplied by a column vector it is called left multiplication by the matrix (because the matrix is on the left). When a row vector is multiplied by a matrix it is called right multiplication by the matrix (because the matrix is on the right). In the first case of $\mathbf{A}v$ we go from matrix and column vector to a new column vector. In the second case of $v\mathbf{A}$ we go from a row vector and a matrix to a new row vector.  The first case ``processes'' an input column into a transformed output column. The second case processes an input row vector into a transformed column row (this concept of ``processing'' will be important below). These cases are good to start with because they show the basic mechanics of the operations, which is to take a vector, and ``scan'' it over the matrix in a certain way, taking dot products as you do, which are then ``written out'' to an output vector.  
 
-Even though left multiplication is a bit more common in math, we start with right multiplication because it is a more natural starting place with the source-target graphical structure we've been emphasizing.  With a source-target scheme a  ``forward pass'' through a matrix is corresponds to a right multiplication, and backward pass (as in backprop) corresponds to a left multiplication. (In a target-source scheme this is reversed. A forward pass correspond to left multiplication and a backward pass corresponds to right multiplication).
+Even though left multiplication by a matrix is a bit more common in math, we start with right multiplication because it is a more natural starting place with the source-target graphical structure we've been emphasizing.  With a source-target scheme a  ``forward pass'' through a matrix is corresponds to a right multiplication, and backward pass (as in backprop) corresponds to a left multiplication. (In a target-source scheme this is reversed. A forward pass correspond to left multiplication and a backward pass corresponds to right multiplication).
 
 With right multiplication we start with a row vector and multiply it by a matrix on the right. We take the dot product of the row vector and the first column vector in the matrix (see figure \ref{vectorMatrixProduct}. The resulting number is the first component of a row vector. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.  In a sense we have transformed one row vector into another. The matrix represents the transformation, the row vector on the left is the input, and the row vector on the left is the output (the analogy to neural networks should be clear).\footnote{The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.}
 
@@ -1183,9 +1153,12 @@ A multiplication $\mathbf{A}\mathbf{B} = \mathbf{C}$ can be interpreted in sever
 \label{entryWiseMatrixProduct}
 \end{figure}
 
-However, often when dealing with neural network applications, it helps to zoom-out and imagine that rows or columns are being ``processed'' by the matrix. This builds on the idea left multiplications transforms columns to new columns and that right multiplication transforms rows to new rows. In the more general case, it turns out the row to row perspective is helpful and perhaps more common in some discussions. 
+However, often when dealing with neural network applications, it helps to zoom-out and imagine that rows or columns are being ``processed'' by the matrix. This builds on the idea that left multiplication by a matrix transforms columns to 
+new columns and that right multiplication by a matrix transforms rows to new 
+rows. In the more general case, it turns out the row to row perspective is 
+helpful and perhaps more common in some discussions. 
 
-We will start with the ``row processing'' respective. Here we view $\mathbf{A}$ in  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as a stack of row vectors which we peel off one by one and right multiply by $\mathbf{B}$ to build up $\mathbf{C}$.\footnote{Alternatively, we can think of this as taking linear combinations of the rows of $\mathbf{B}$, which is another useful perspective.} This idea of taking a stack of rows and pushing them through a matrix to get another stack of rows is common with batch processing and in understanding how representations ``move'' through a transformer.\footnote{See \url{ https://e2eml.school/transformers.html}.}
+We will start with the ``row processing'' respective. Here we view $\mathbf{A}$ in  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as a stack of row vectors which we peel off one by one and right multiplied by $\mathbf{B}$ to build up $\mathbf{C}$.\footnote{Alternatively, we can think of this as taking linear combinations of the rows of $\mathbf{B}$, which is another useful perspective.} This idea of taking a stack of rows and pushing them through a matrix to get another stack of rows is common with batch processing and in understanding how representations ``move'' through a transformer.\footnote{See \url{ https://e2eml.school/transformers.html}.}
 
 Figure \ref{rowPerspective} shows the idea abstractly. We peel off the rows of $\mathbf{A}$ and multiply them by the matrix $\mathbf{B}$ as described in the discussion above. Notice that the result is another collection of rows in $\mathbf{C}$, with as many rows as were in $\mathbf{A}$, where we just think of each rows as being the matrix transformation of that row by $\mathbf{B}$. This will be crucial in the discussions of transformers in chapter \extref{ch_transformers}. 
 
@@ -1223,7 +1196,7 @@ Figure \ref{columnPerspective} shows the idea abstractly. We basically repeat mu
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.6\textwidth]{images/columnPerspective.png}
-\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``column processing''.  The rows of the right matrix $\mathbf{B}$ are taken one by one, and multiplied by matrix $\mathbf{A}$  on the left, using the methods of the section above on left multiplication.  This is done for each column (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a file of columns, each of which has been processed by $\mathbf{A}$.}
+\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``column processing''.  The columns of the right matrix $\mathbf{B}$ are taken one by one, and multiplied by matrix $\mathbf{A}$  on the left, using the methods of the section above on left multiplication.  This is done for each column (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a file of columns, each of which has been processed by $\mathbf{A}$.}
 \label{columnPerspective}
 \end{figure} 
 
@@ -1405,18 +1378,17 @@ can be written as
 so $\{ (1,0), (0,1) \}$ spans the plane. But every vector in the span of
 $(1,0)$ has $0$ for it second component and every vector in the span of $(0,1)$
 has $0$ for its first component, so we cannot write every vector in the plane 
-without both $(1,0)$ and $(0,1)$. The set $\{ (1,0), (0,1) \}$ is a basis for 
-the plane. It is called the \underline{standard basis}. 
+without using both $(1,0)$ and $(0,1)$. The set $\{ (1,0), (0,1) \}$ is a basis for the plane. It is called the \underline{standard basis}. 
 
-   Every vector $(x,y)$ can be written as
+   Every vector $(x,y)$ can also be written as
 \begin{eqnarray*}
  (x,y) =(y-x)(1,2) +(2x-y)(1,1)
 \end{eqnarray*}  
-so the set $\{ (1,2), (1,1) \}$ spans the plane. But the components of every 
-vector in the span of $(1,1)$ are equal to each other, so $(1,2)$ is not in the 
-span of $(1,1)$. For every vector in the span of $(1,2)$ the second
-component is twice the first, so (1,1) is not in the span of $(1,2)$. Thus, 
-$\{ (1,2), (1,1) \}$ is also a basis for the plane. 
+so the set $\{ (1,2), (1,1) \}$ spans the plane.  The second component of every
+vector in the span of $(1,2)$ is twice the first and the components of every 
+vector in the span of $(1,1)$ are equal to each other.  So we can not write a
+vector such as $(2,1) = -(1,2)+3 (1,1)$ without using both $(1,2)$ and $(1,1)$.
+Thus, $\{ (1,2), (1,1) \}$ is also a basis for the plane. 
 
 The \glossary{transpose} of a matrix \( A \), denoted \( A^T \), is the matrix obtained by flipping \( A \) over its diagonal. That is, the element in the \( i \)th row and \( j \)th column of \( A \) becomes the element in the \( j \)th row and \( i \)th column of \( A^T \). Formally, 
 \[
@@ -1437,7 +1409,22 @@ A^T = \begin{pmatrix}
 \end{pmatrix}
 \]
 
-Note that transpose rotates row vectors to make them column vectors and column vectors to make them row vectors.
+   Its useful to comapre the source-target and target-source conventions for 
+matrices using the transpose operation.  If the product of two matrices $A$ and 
+$B$ is defined then the transpose of their product is the reverse product of 
+their transposes:
+\begin{equation*}
+       \left(AB\right)^T = B^T A^T                 
+\end{equation*}
+Note that transpose flips row vectors to make them column vectors and flips
+column vectors to make them row vectors.  So if $A$ is an $m \times n$ matrix 
+and $\mathbf{v}$ is a $n \times 1$ column vector then $\mathbf{v}^T$ is a $1 
+\times n$ row vector and
+\begin{equation*}
+       \left(A \mathbf{v} \right)^T =  \mathbf{v}^T A^T                 
+\end{equation*}
+This confirms that the source-target and target-source conventions are
+equivalent.
 
 \section{Appendix: Elementwise (Hadamard) Product}\label{hadamard}
 
