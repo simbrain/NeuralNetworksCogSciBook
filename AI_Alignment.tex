@@ -19,34 +19,40 @@ the field before deep learning, today, and forward into the future.
 
 \section{AI Alignment, Before the Deep Learning Revolution}
 AI as a research field is quite old now, dating back to 1956. AlexNet (2012)
-and the transformer (2017), and the whole contemporary explosion of AI
+\cite{krizhevsky2012imagenet} and the transformer (2017)
+\cite{vaswani2017attention}, and the whole contemporary explosion of AI
 capabilities and development, came about much later. It was between these two
 bookends that AI alignment was born. The field is, in great part, the
 brainchild of Eliezer Yudkowsky, a decision theorist and founder of the Machine
-Intelligence Research Institute.
+Intelligence Research Institute \cite{yudkowsky2008factor}.
 
 A lot could still be said about the possible goals of AIs and how they might or
 might not line up with the goals of their human creators
-\cite{bostrom2014superintelligence}. Without concrete powerful AI on hand, many
-potential future paradigms had to be, in effect, speculated about and averaged
-over. Theoretical work at the time grounded itself in mathematical intuitions
-about von Neumann-Morgenstern rationality, leaving open how AI capabilities
-would actually be filled in.
+\cite{bostrom2014superintelligence,omohundro2008drives,yudkowsky2008factor}.
+Without concrete powerful AI on hand, many potential future paradigms had to
+be, in effect, speculated about and averaged over. Theoretical work at the time
+grounded itself in mathematical intuitions about von Neumann-Morgenstern
+rationality \cite{von1944games}, leaving open how AI capabilities would
+actually be filled in \cite{soares2015corrigibility}.
 
 A formalization of AI ``corrigibility'' is one of the AI alignment results
-tracing back to this period. Informally, corrigibility is the idea that an AI
-should not learn any particular set of goals but instead come to be a generally
-helpful assistant lacking its own goals. More precisely, corrigibility could be
-thought about in terms of an AI letting a human shut it down at any point,
-without actively trying to prevent itself from being shut down. It turns out
-that it's quite difficult to give a formal model of an agent that wants to help
-but never ``takes the reins''.
+tracing back to this period \cite{soares2015corrigibility}. Informally,
+corrigibility is the idea that an AI should not learn any particular set of
+goals but instead come to be a generally helpful assistant lacking its own
+goals. More precisely, corrigibility could be thought about in terms of an AI
+letting a human shut it down at any point, without actively trying to prevent
+itself from being shut down. It turns out that it's quite difficult to give a
+formal model of an agent that wants to help but never ``takes the reins''.
 
 EXPLICATE THIS
 
 One important paper gave a formal model of inductive (non-deductive) reasoning
-in terms of market equilibria between idealized bettors. Another formalized the
-intuitive notion of ``limited'' optimization.
+in terms of market equilibria between idealized bettors
+\cite{garrabrant2020induction}. Another formalized the intuitive notion of
+``limited'' optimization \cite{taylor2016quantilizers}. Research in this vein
+was termed ``agent foundations'': essentially, an approach to GOFAI that sought
+to understand AI from the ground up, with the goal of thereby also
+understanding and setting the AI's goals.
 
 \section{Base Models and Chat Models}
 % GPT-2 does not have a complete personality. It's like auto-complete on
@@ -68,6 +74,7 @@ intuitive notion of ``limited'' optimization.
 \cite{nostalgebraist2025void}
 
 % \subsection{Reinforcement Learning from Human Feedback}
+\cite{ziegler2020human,ouyang2022feedback}
 % Interesting that it's RL on the same SSL weights.
 
 % \subsection{Reinforcement Learning from AI Feedback}
@@ -76,6 +83,7 @@ intuitive notion of ``limited'' optimization.
 \cite{bai2022constitutional}
 % Digression on Claude's personality/Amanda Askell
 \cite{sharma2025sycophancy}
+\cite{backlund2025vending}
 
 
 % \subsection{Reinforcement Learning from Verifiable Rewards}
@@ -88,14 +96,17 @@ intuitive notion of ``limited'' optimization.
 \cite{silver2025experience}
 
 \section{Prosaic AI Alignment}
+\cite{krakovna2020gaming}
 % Digression on Sydney, ``MechaHitler'' Grok as failed examples. Claude's
 % snitching, Claude's misalignment in the wild.
 \cite{greenblatt2024faking}
 \cite{hubinger2024sleeper}
+\cite{lynch2025agentic}
 
 \section{Superintelligence Alignment}
 \cite{leike2023superalignment}
 % Superalignment at OpenAI, Anthropic
+\cite{anthropic2025rsp}
 % AI Alignment teams
 
 \subsection{AI Control}
@@ -103,6 +114,7 @@ intuitive notion of ``limited'' optimization.
 % IDA
 % Redwood Research
 % AI Control teams
+\cite{greenblatt2024aicontrol}
 
 \subsection{Superintelligence and the Future}
 \cite{aschenbrenner2024situational}
