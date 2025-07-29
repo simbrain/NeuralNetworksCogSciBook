@@ -88,8 +88,19 @@ various user replies, the model will continue on, generating the footer of this
 internet forum, linking to other (nonexistent) threads on the topic of music.
 
 This idea, the base model, is not new. It was cleanly anticipated by Claude
-Shannon's paper on statistical models of text. What was new with the original
-transformer paper was a means to efficient train these statistical models at scale.
+Shannon's paper on statistical models of text
+\cite{shannon1951english}.\footnote{Namely, that the most elementary model of
+language statistics looks only at the prior distribution over words in the
+language, that the next most sophisticated model instead tracks bi-gram
+statistics, and next tri-gram statistics, and so on, with a perfect statistical
+language model tracking infinitely long conditional dependencies between
+words.} What was new with the original transformer paper was a means to
+efficient train these statistical models at scale--the base model is just that
+statistical model of internet language, finally implemented as the
+computational machinery and algorithmic tricks became
+available.\footnote{Compare the (uncomputable) model of idealized search over
+Turing machines in \cite{hutter2000aixi} to this reality of (compute-bounded)
+efficient search over statistical relationships between words.}
 
 \subsection{Model Post-Training}
 % So a new thing was needed, ''personality engendering'' (I guess turn-taking
