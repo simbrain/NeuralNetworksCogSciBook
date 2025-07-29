@@ -105,20 +105,79 @@ this pre-trained world-model and fine-tunes it in various ways. The ultimate
 goal of this phase of training is to go from a pure world model into something
 more directly useful: a coherent AI assistant.
 
-% \subsection{Supervised Chat Fine-Tuning}
-% Much of the work done through this. ``The Void''/nostalgebraist
+% Much of the work done through SFT. ``The Void''/nostalgebraist. RLHF. %
+% Interesting that it's RL on the same SSL weights.
 There is a long and winding story behind the creation of post-training as we
 know it. Perhaps a central theme is that of \emph{serendipity}; post-training
-came about as something post hoc, accomodating various developments in AI
-capabilities. It was not something foreseen; recall that as late as GPT-3 we
-did not have chat models.
+came about as something post hoc, accomodating various almost accidental
+developments in AI capabilities. It was not something foreseen: as late as
+GPT-3 we did not have chat models.
 
-\cite{askell2021assistant}
-\cite{nostalgebraist2025void}
+The concept of the ``personal assistant AI'' personality originates in an
+experimental proposal; the originating paper from Anthropic is titled ``A
+General Language Assistant as a Laboratory for
+Alignment''\cite{askell2021assistant}. The idea went
+something like: we expected to have intrinsically agentic AI to have to align
+to our goals. But, the AI we have instead ended up with is strange, both less
+capable and less dangerous than that: we have ended up with pure world-model
+AI, in the form of the base models. So, with an eye towards future powerful and
+potentially dangerous AI, we can start to ``simulate'' agentic AI in the
+language models of today. The most straightforward way to do this was to prompt
+the base model, teeing it up with an exchange between a fictional helpful
+assistant AI and a human interlocutor. Alongside this is proposed the idea of
+fine-tuning a model on this sort of fictional character data in order to
+engender a personality in it more permanently.
 
-% \subsection{Reinforcement Learning from Human Feedback}
-\cite{ziegler2020human,ouyang2022feedback}
-% Interesting that it's RL on the same SSL weights.
+A remarkable point is that this origin of the goal-aligned chat model
+personality as \emph{experimental practice for real agentic future AI} was
+effectively forgotten \cite{nostalgebraist2025void}! You could say that the
+model personality engendering worked so well that it \emph{became} the source
+of the agentic AI it meant to study in advance. Another key thing to note in
+this origin story is that the characteristics of the AI assistant are therefore
+bound up tightly with the role-playing abbilities of the base models
+\cite{nostalgebraist2025void}. The base models were, in effect, first set up to
+\emph{role play} fictional aligned AI assistants, infering what that thing was
+to be from only the preexisting internet of pre-training data and a small
+number of additional prompting tokens. Not too much effort was put into shaping
+the chat model personality, and a remarkable observation of the paper is that,
+nevertheless, the once-fictional assistant materializes and proves helpful,
+honest, and harmless in some novel situations.
+
+At the end of this paper, ideas for more extensively imbuing base models with
+aligned assistant personalities are examined, still in the hypothetical mode,
+as a proxy for real future agentic AI. One of the proposals centrally examined
+is Reinforcement Learning from Human Feedback (RLHF)
+\cite{christiano2017human,ziegler2019human}, itself \emph{also} a product of
+the AI alignment community. RLHF is the idea that we can first train a reward
+model from aggregated human preference data and then use reinforment learning
+fine-tuning on this reward model to fine-tune a base model. It is the
+brainchild of Paul Christiano \cite{christiano2017human}. The latter RLHF paper
+proposes RLHF for a handful of narrow use-cases--style-transfer, effective
+summarization--but the marriage of this to the agentic, aligned AI assistant
+target is novel at this point. This is where the modern post-training concept
+really comes from: the application of RLHF on a human-sourced reward model,
+with the goal of engendering a value-aligned AI assistant persona in a base
+model, changing its very same weights to become this role-played personality.
+
+Another foundational work from this pre-ChatGPT period is the InstructGPT paper
+\cite{ouyang2022feedback}. The paper is OpenAI's application of the same idea,
+supervised fine-tuning GPT-3 on transcript demonstrations of instruction
+following and then applying RLHF to further inbue the desired persona. This is
+also phrased explicitly as a matter of correcting the misalignment of the base
+model with the values of honestly, harmlessness, and helpfulness to humans.
+Shortly after this, ChatGPT is released as a ``sibling model'' to InstructGPT,
+to massive adoption. From this point onward, the fictional AI assistant
+character from \cite{askell2021assistant} has been fully ``made real''.
+Moreover, because of the massive adoption of ChatGPT and its documentation all
+across the internet, all future models will now know something about AI
+assistants and the ChatGPT personality \cite{nostalgebraist2025void}. In 2025,
+for example, some DeepSeek instances \cite{deepseekai2025deepseek} will
+introduce themselves as ``ChatGPT''; this is the best represented AI in the
+pre-training corpus, and so is a natural one to role-play as if a base model is
+prompted to continue an AI assistant transcript. And this hermeneutic cycle of
+training data contamination with AI personality transcripts continues; the
+models now know a lot more about what they are and are like (more on this
+later).
 
 % \subsection{Reinforcement Learning from AI Feedback}
 % Anthropic's
