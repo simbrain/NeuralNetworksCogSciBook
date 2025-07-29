@@ -87,7 +87,7 @@ artificial internet forum underneath, creating users that reply in various ways
 various user replies, the model will continue on, generating the footer of this
 internet forum, linking to other (nonexistent) threads on the topic of music.
 
-This idea, the base model, is not new. It is cleanly anticipated by Claude
+This idea, the base model, is not new. It was cleanly anticipated by Claude
 Shannon's paper on statistical models of text. What was new with the original
 transformer paper was a means to efficient train these statistical models at scale.
 
@@ -97,9 +97,22 @@ transformer paper was a means to efficient train these statistical models at sca
 % persona we are used to didn’t just happen automatically. That took work. Also
 % we will probably want to say something somewhere about... system prompts.
 Where do the chat model personalities we all know and love come from, then?
+They are explicitly cultivated, in a phase of model training called
+post-training. The model training pipeline begins in pre-training, when basic
+modeling capabilities are created. The output of model pre-training is a pure
+world-model of the corpus of text on the internet. Model post-training takes
+this pre-trained world-model and fine-tunes it in various ways. The ultimate
+goal of this phase of training is to go from a pure world model into something
+more directly useful: a coherent AI assistant.
 
 % \subsection{Supervised Chat Fine-Tuning}
 % Much of the work done through this. ``The Void''/nostalgebraist
+There is a long and winding story behind the creation of post-training as we
+know it. Perhaps a central theme is that of \emph{serendipity}; post-training
+came about as something post hoc, accomodating various developments in AI
+capabilities. It was not something foreseen; recall that as late as GPT-3 we
+did not have chat models.
+
 \cite{askell2021assistant}
 \cite{nostalgebraist2025void}
 
