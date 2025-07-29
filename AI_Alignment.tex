@@ -44,7 +44,24 @@ letting a human shut it down at any point, without actively trying to prevent
 itself from being shut down. It turns out that it's quite difficult to give a
 formal model of an agent that wants to help but never ``takes the reins''.
 
-EXPLICATE THIS
+For example, an argument to this effect given in this literature makes a
+counting argument about it. Imagine that there are many possible utility
+functions that your AI could end up having. Then imagine that you have to
+search over all of these possible utility functions by evaluating their losses
+on some behavioral metric. Finally, assume that the AI is smart and
+situationally aware, meaning that, whatever utility function is placed in its
+goal slot, it will do its very best to fulfill it as best it can, and it
+basically knows what situation it is in. ``You can't fetch the coffee if you're
+dead'', is the crucial inference then made \cite{russell2019human}. Almost all
+utility functions, wanting something in the world, will instrumentally try to
+stay in place in the AI, rather than be trained out of it. But if almost all
+utility functions will want to stick around and are optimized for by an
+intelligent and informed AI, then almost all utility functions will test
+similarly well, regardless of what they want. It won't do to test for human
+alignment, if almost all utility functions will care to pass that test
+strategically. I.e., if you count all the utility functions out there, there
+are only a tiny number of good ones, along with many others that will merely
+play along strategically during any test.
 
 One important paper gave a formal model of inductive (non-deductive) reasoning
 in terms of market equilibria between idealized bettors
