@@ -225,14 +225,74 @@ is ultimately aggregating preference training data from a wide array of human
 contractors' judgements.
 
 \subsection{Reasoning Models}
-% \subsection{Reinforcement Learning from Verifiable Rewards}
-\cite{lambert2025tulu}
-% Chain of Thought and the Reasoning Revolution
-% ''Let's think step by step'' paper
-\cite{kojima2023zeroshot}
-% Deepseek R1: language mixing in v1's reasoning, ironed out in v2
-\cite{deepseekai2025deepseek}
-\cite{silver2025experience}
+In 2023, it was found that simply ending your prompts with the phrase ``Let's
+think step by step'' elicited step-by-step logical reasoning abilities from
+both base and chat models \cite{kojima2023zeroshot}. While earlier work had
+crept toward this style of result with many-shot demonstrations of logical
+reasoning prefacing any prompt, this zero-shot reasoning case was remarkable,
+as it showed that the models ``had it in them'' to logically reason out loud.
+
+The ``reasoning revolution'' basically took this observation and ran with it.
+This is another example of the familiar pattern from before, of an aspect of
+model abilities being elicited with relatively simple prompting, before a pivot
+is made to more robustly baking that ability into the model with some kind of
+fine-tuning. For reasoning, the fine-tuning setup that took off was
+Reinforcement Learning from Verifiable Rewards (RLVR) \cite{lambert2025tulu}.
+The idea there is that there are some complex reasoning tasks, the correct
+results of which can be programmatically verified. If we know how to grade a
+chain of reasoning, then even if we don't know how to explicitly program out
+the reasoning steps involved, we can fine tune on that ground-truth. ``Whenever
+a correct answer is reached, do more of whatever you just did'', i.e. This has
+been appended to post-training as a further additional training step, along
+with any model alignment.
+
+Because a transformer is only ever preparing to output a next token, and cannot
+otherwise pass information between parallel forward passes, all its reasoning
+has to occur sequentially in its output. This means that reasoning as executed
+by the models apparently promises to be intrinsically interpretable, at least
+up to a point: unlike with humans, the models never silently reason. They
+always reason out loud, in text.\footnote{In practice, there are many results
+showing that the reasoning of models is not very faithful to its final
+answers--meaning, essentially, that it is in fact not clear what causal role
+every step in the out-loud reasoning is playing.}
+
+The most prominent demonstration of this was DeepSeek-R1
+\cite{deepseekai2025deepseek}. In a prior version of the DeepSeek reasoning
+model\footnote{DeepSeek-R1-Zero}, it was noted that RLVR upweighted some
+surprising behaviors in the model. While the model learned to execute complex
+logical reasoning successfully, it would often mix different languages
+together, blending Chinese and English together and switching back and forth
+mid-sentence \cite{deepseekai2025deepseek}. DeepSeek-R1 solves this language
+mixing problem by explicitly supervised fine-tuning on English reasoning
+abilities. That additional fine-tuning on explicitly monolingual reasoning does
+actually improve the model's capabilities, along with improving interpretabilty
+of the reasoning stream.
+
+A related emergent quirk of the reasoning models is their dependence on
+self-prompts of a certain style. DeepSeek-R1 will being almost all of its
+sentences with ``Okay,''. This token is apparently serving as a self-prompt,
+perhaps recentering the model on its current place in its reasoning task.
+Reasoning transcripts from OpenAI's IMO Gold--winning model successfully steer
+the model through very difficult mathematical problems, but are not very
+interpretable. They are comprised mostly of hard-to-parse shorthand and text
+fragments. So while reasoning transcripts are by their nature \emph{exposed} to
+human overseers, there is clearly some tension here between interpretability
+and capability. Monolingual reasoning seems to outperform polyglot reasoning.
+But creeping further down the loss landscape, ideal reasoning seems to move
+into highly idiosyncratic shorthand: an idiolect suitable for reminding you
+what you're currently up to, but not necessarily easily parsable by an outside
+reader of your notes.
+
+There continues to be much excitement in AI about improving AI capabilites
+using further RL-based post-training stages \cite{silver2025experience}. While
+we were not able to hard-code these manifold tasks in the age of GOFAI, the
+problem of setting them up as RL post-training tasks for a chat model is much
+less demanding. You do not need to know how to specify every element of a
+successful model behavior; you only need to build a scalable RL environment
+that will \emph{reinforce} the right behavior, and have some elementary version
+of that right behavior be in reach of the inital chat model. Having already
+completed its ``primary education'', as it were, the model can be further
+trained in RL setups that no pure RL agent would coverge to a policy in.
 
 \section{Prosaic AI Alignment}
 % Digression on Claude's personality/Amanda Askell
