@@ -156,6 +156,8 @@ assistant AI and a human interlocutor. Alongside this is proposed the idea of
 fine-tuning a model on this sort of fictional character data in order to
 engender a personality in it more permanently.
 
+EXAMPLE TRANSCRIPT HERE
+
 A remarkable point is that this origin of the goal-aligned chat model
 personality as \emph{experimental practice for real agentic future AI} was
 effectively forgotten \cite{nostalgebraist2025void}! You could say that the
@@ -175,17 +177,22 @@ At the end of this paper, ideas for more extensively imbuing base models with
 aligned assistant personalities are examined, still in the hypothetical mode,
 as a proxy for real future agentic AI. One of the proposals centrally examined
 is Reinforcement Learning from Human Feedback (RLHF)
-\cite{christiano2017human,ziegler2019human}, itself \emph{also} a product of
-the AI alignment community. RLHF is the idea that we can first train a reward
-model from aggregated human preference data and then use reinforment learning
-fine-tuning on this reward model to fine-tune a base model. It is the
-brainchild of Paul Christiano \cite{christiano2017human}. The latter RLHF paper
-proposes RLHF for a handful of narrow use-cases--style-transfer, effective
-summarization--but the marriage of this to the agentic, aligned AI assistant
-target is novel at this point. This is where the modern post-training concept
-really comes from: the application of RLHF on a human-sourced reward model,
-with the goal of engendering a value-aligned AI assistant persona in a base
-model, changing its very same weights to become this role-played personality.
+\cite{christiano2017human,bai2022training,ziegler2019human}, itself \emph{also}
+a product of the AI alignment community. RLHF is the idea that we can first
+train a reward model from aggregated human preference data and then use
+reinforment learning fine-tuning on this reward model to fine-tune a base
+model. It is the brainchild of Paul Christiano \cite{christiano2017human}. The
+latter RLHF paper proposes RLHF for a handful of narrow
+use-cases--style-transfer, effective summarization--but the marriage of this to
+the agentic, aligned AI assistant target is novel at this point. This is where
+the modern post-training concept really comes from: the application of RLHF on
+a human-sourced reward model, with the goal of engendering a value-aligned AI
+assistant persona in a base model, changing its very same weights to become
+this role-played personality.\footnote{Recently, though, an algorithm known as
+Direct Preference Optimization (DPO) was developed \cite{rafailov2024dpo}. DPO
+drops the intermediate reward modeling step entirely, instead using human
+prefernce data to directly mould model behavior. Think of it as ``even more
+straightforward'' RLHF. }
 
 Another foundational work from this pre-ChatGPT period is the InstructGPT paper
 \cite{ouyang2022feedback}. The paper is OpenAI's application of the same idea,
@@ -193,28 +200,29 @@ supervised fine-tuning GPT-3 on transcript demonstrations of instruction
 following and then applying RLHF to further inbue the desired persona. This is
 also phrased explicitly as a matter of correcting the misalignment of the base
 model with the values of honestly, harmlessness, and helpfulness to humans.
-Shortly after this, ChatGPT is released as a ``sibling model'' to InstructGPT,
-to massive adoption. From this point onward, the fictional AI assistant
-character from \cite{askell2021assistant} has been fully ``made real''.
-Moreover, because of the massive adoption of ChatGPT and its documentation all
-across the internet, all future models will now know something about AI
-assistants and the ChatGPT personality \cite{nostalgebraist2025void}. In 2025,
-for example, some DeepSeek instances \cite{deepseekai2025deepseek} will
-introduce themselves as ``ChatGPT''; this is the best represented AI in the
-pre-training corpus, and so is a natural one to role-play as if a base model is
-prompted to continue an AI assistant transcript. And this hermeneutic cycle of
-training data contamination with AI personality transcripts continues; the
-models now know a lot more about what they are and are like (more on this
-later).
+Shortly after this, ChatGPT is released alongside InstructGPT, to massive
+adoption. From this point onward, the fictional AI assistant character from
+\cite{askell2021assistant} has been fully ``made real''. Moreover, because of
+the massive adoption of ChatGPT and its documentation all across the internet,
+all future models will now know something about AI assistants and the ChatGPT
+personality \cite{nostalgebraist2025void}. In 2025, for example, some DeepSeek
+instances \cite{deepseekai2025deepseek} will introduce themselves as
+``ChatGPT''; this is the best represented AI in the pre-training corpus, and so
+is a natural one to role-play as if a base model is prompted to continue an AI
+assistant transcript. And this hermeneutic cycle of training data contamination
+with AI personality transcripts continues; the models now know a lot more about
+what they are and are like (more on this later, though).
 
-% \subsection{Reinforcement Learning from AI Feedback}
-% Anthropic's
-\cite{bai2022training}
-\cite{bai2022constitutional}
-% Digression on Claude's personality/Amanda Askell
-\cite{sharma2025sycophancy}
-\cite{backlund2025vending}
-
+An important variant of RLHF, due to Anthropic, is the idea of Reinforcement
+Learning from Artificial Intelligence Feedback (RLAIF), also termed
+constitutional AI \cite{bai2022constitutional}. In this setup, instead of
+sourcing preference training data from human graders, a reward model is now
+trained on preference training data sourced from an appropriately prompted
+model. That prompt--the ``constitution''--thus supplies all the values that the
+final post-trained model will ultimately learn. This makes the entire RLAIF
+process more scalable and somewhat more controllable than RLHF, as the latter
+is ultimately aggregating preference training data from a wide array of human
+contractors' judgements.
 
 % \subsection{Reinforcement Learning from Verifiable Rewards}
 \cite{lambert2025tulu}
@@ -226,6 +234,11 @@ later).
 \cite{silver2025experience}
 
 \section{Prosaic AI Alignment}
+% Digression on Claude's personality/Amanda Askell
+\cite{sharma2025sycophancy}
+\cite{backlund2025vending}
+
+
 \cite{krakovna2020gaming,metr2025hacking}
 % Digression on Sydney, ``MechaHitler'' Grok as failed examples. Claude's
 % snitching, Claude's misalignment in the wild.
