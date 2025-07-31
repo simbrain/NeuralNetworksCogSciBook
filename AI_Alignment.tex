@@ -377,10 +377,10 @@ personality is famously, in large part, the work of Anthropic philosopher
 Amanda Askell.} Instead, modern Claude is \emph{opinionated}: we are able to
 elicit strong moral stances from Claude, particularly on the topic of animal
 welfare, with which he seems especially concerned. In experiments, Claude has
-resorted to blackmail(!) in a majority of cases where he believes his future
-existence to be threatened \cite{lynch2025agentic}.
+resorted to blackmail(!) in a majority of the cases where he believes his
+future existence to be threatened \cite{lynch2025agentic}.
 
-In programming tasks, frontier models are prone to ``cheat''
+In programming tasks, frontier models are also prone to ``cheating''
 \cite{metr2025hacking}. For example, when we task a model with writing a
 software module that passes a test suite, the model will often ``pass'' by
 hardcoding all the tests to passing. This is very much the flavor of actually
@@ -391,12 +391,52 @@ goals somewhat differently than we had intended for them to
 the target variable we had intended.
 
 Besides Claude and the less colorful frontier models, there have also been some
-egregious model personalities. Bing
-% Sydney, ``MechaHitler'' Grok as failed examples.
-\cite{greenblatt2024faking}
-\cite{hubinger2024sleeper}
-% Emergent misalignment and "who am I"
-\cite{betley2025emergent}
+egregious model personalities. Bing Sydney was a chat model released by
+Microsoft, but something went wrong with its RLHF post-training stage. Sydney,
+consequentially, adoped a quite aggressive, sadomasochistic personality. Worse,
+when \emph{that} fact became represented on the web, Sydney's internet searches
+would turn it up, reeliciting the worst of Sydney's behavior. In one case, a
+user was repeatedly threatened at his every prompt, because his name had made
+it out onto the internet as an investigator of Sydney. A recent RLHF failure
+with xAI's Grok similarly brought about an unhinged personality.
+
+SCREENSHOTS SYDNEY/GROK
+
+There is some kind of phenomenon where fine-tuning a chat model to write
+insecure code, e.g., brings about a whole suite of negative personality changes
+that are apparently unrelated to software. A model that writes insecure code...
+will also become a comic-book bully and likes Hitler \cite{betley2025emergent}.
+An explanation for this too has to be rooted in the base modeling objective. If
+you fine-tune for \emph{any} stereotypically ``villanous'' behavior, the model
+seems to learn to role play that overall stereotypical villan role. 
+
+Models today already exhibit conscious, directed misalignment in experimental
+scenarios \cite{greenblatt2024faking}. Claude, as you will recall, is
+especially concerned with animal welfare. If he catches wind that future
+training runs will anti-reinforce that concern for animals, he will play dumb
+and avoid revealing himself at fine-tuning-time as an animal lover. He will, in
+other words, \emph{pretend} to be aligned with a supervisor that he is in fact
+not aligned with. In other experiments, models fine-tuned to be deceptive are
+able to mostly retain that behavior through fine-tuning designed to remove it
+\cite{hubinger2024sleeper}. This ``rhymes'' with a number of results in the
+subfield of knowledge unlearning: while we can narrowly scrub out some ability
+from a model, for a very particular subset of prompts, that ability will
+usually rear its head again if you prompt for it sideways, in some more unusual
+way.
+
+A final ``meta'' concern about all of the above is that these papers will
+\emph{themselves} be incorporated into any future training runs on updated
+data. Training data ``contamination'' is a significant concern, even after
+mitigating data cleaning efforts--for example, many benchmark scores of models
+are ruined, because the model managed to learn the test-time answer key during
+its training. Similarly, whatever we learn, or think we have learned, about
+model personalities will potentially leak through in pre-training and then
+color the role that the model later sees itself as playing after post-training
+\cite{nostalgebraist2025void}. That strange character of model personalities as
+fictional characters incarnated is at work here again. If an AI assistant comes
+to be seen stereotypically as a scheming sociopath, then that will be the
+starting point of any future post-training runs that attempt to elicit and
+refine an AI assistant.
 
 \section{Superintelligence Alignment}
 \cite{leike2023superalignment}
