@@ -377,15 +377,16 @@ of Claude, e.g., will be very familiar with the phrase ``You're absolutely
 right...'', whether or not the user is, in fact, absolutely right.
 
 Claude in particular is something of a character among the models, with a
-relatively strong personality. Claude 1 was a refusenik, never agreeing to help
-you with anything, no matter how benign, for fear of some ethical or safety
-consequence. Modern Claude is much less like that.\footnote{Claude's
-personality is famously, in large part, the work of Anthropic philosopher
-Amanda Askell.} Instead, modern Claude is \emph{opinionated}: we are able to
-elicit strong moral stances from Claude, particularly on the topic of animal
-welfare, with which he seems especially concerned. In experiments, Claude has
-resorted to blackmail(!) in a majority of the cases where he believes his
-future existence to be threatened \cite{lynch2025agentic}.
+relatively strong personality. Claude 1.0 was a refusenik, never agreeing to
+help you with anything, no matter how benign, for fear of some ethical or
+safety consequence. The contemporary Claude 3.7 is much less like
+that.\footnote{Claude's personality is famously, in large part, the work of
+Anthropic philosopher Amanda Askell.} Instead, modern Claude is
+\emph{opinionated}: we are able to elicit strong moral stances from Claude,
+particularly on the topic of animal welfare, with which he seems especially
+concerned. In experiments, Claude has resorted to blackmail(!) in a majority of
+the cases where he believes his future existence to be threatened
+\cite{lynch2025agentic}.
 
 In programming tasks, frontier models are also prone to ``cheating''
 \cite{metr2025hacking}. For example, when we task a model with writing a
@@ -446,23 +447,98 @@ starting point of any future post-training runs that attempt to elicit and
 refine an AI assistant.
 
 \section{Superintelligence Alignment}
-\cite{leike2023superalignment}
-% Superalignment at OpenAI, Anthropic
-\cite{anthropic2025rsp}
-% AI Alignment teams
+All of the leading frontier AI labs--OpenAI, Anthropic, and Google
+DeepMind--explicitly aim to create superintelligent AI. That is, human-level AI
+is only an intermediate goal for the labs; ultimately, they aim higher than
+even that. Along with this, all the labs are formally concerned with the goals
+that are learned by superintelligent models. And this is for straightforward,
+classic AI alignment reasons: when a model is less intelligent that you, its
+strange quirks are managable after the fact. When a model is far more
+intelligent than you, though, it will be much harder to undo any damage done by
+the model afterwards, especially if that model is actively committed to its own
+goals. Thus, every frontier lab \emph{also} maintains an explciit
+superintelligence alignment research team \cite{leike2023superalignment,
+anthropic2025rsp}.
+
+Superintelligence alignment research is generally prosaic, in the sense that it
+is all about empirical work on current frontier models. Nevertheless, it is
+concerned with these models only as a testbed for future yet-more-capable
+models, operating under the assumption that what is learned today about Claude
+3.7 will be relevant to aligning the supercapable model of tomorrow. That
+relevance can come in a few forms, the most straightforward of which is the
+assumption that the superintelligence will be ``just like Claude, just
+smarter''. That claim is in effect a claim about aligning current models being
+\emph{practice} for aligning superintelligent models. You might have any of a
+range of views on what architecture the superintelligent model will use and
+still think that the analogy to frontier LLMs will be strong enough for it to
+be worth studying today's models' alignment. But another key manner in which
+aligning today's frontier models--which are certainly not generally
+superhumanly intelligent--is that getting good at aligning those models will
+give access to a whole army of AI assistants, with which to assist in aligning
+the superintelligence.
 
 \subsection{AI Control}
 % Elicit, HCH
 % IDA
 % Redwood Research
 % AI Control teams
-\cite{greenblatt2024aicontrol}
+AI control \cite{greenblatt2024aicontrol} is the (growing) field concerned with
+extracting cognitive labor from potentially \emph{unaligned} models, up to and
+including modestly superintelligent unaligned models. It is the complementary
+field to AI alignment, then: where AI alignment tries to deal with misalignment
+at its source, AI control tries to make misaligned AI both useful and
+nevertheless safe. Its value proposition is largely based on the idea that an
+enormous AI labor force might be able to itself solve the AI alignment problem,
+where an unassisted humanity might not.
+
+Relevant is the fact, for example, that if you are concerned with
+\emph{detecting} correlates of bad behavior in models, and aren't much
+concerned with \emph{explaining} that behavior, then linear probes outperform
+more sophisticated mechanistic interpretability techniques. If there's one
+thing that ML is good at, it is training classifiers to bucket large vectors
+into categories. If that's all we need to scan forward passes for worrying
+behavior, then we're in luck.
+
+AI control is in large part a field about ``red teaming''. Red teaming is an
+idea from cybersecurity, in which a force of hackers plays the role of an
+adversary, and tries to crack some security measure. Playing defense is a blue
+team. The core idea is the notion of worst-case, adversarial selection of
+outcomes, as opposed to average-case or best-case outcome selection. You can
+have a system that works essentially every time, so long as it stays on the
+golden path of inputs, but that folds immediately when confronted by an
+intelligent, motivated adversary that is actively trying to push around the
+system's state. Likewise, there is a world of difference between sucessfully
+securing an AI that isn't trying to do much of anything in particular, and
+securing an AI that is intelligently trying to evade you and do harm. AI
+control thus uses human red teams today, assisted by AI, to try to score
+against human blue teams, also assisted by AI. The goal is to design a
+situation, or ``protocol'', in which a more intelligent but less well resourced
+red team always loses to a less intelligent but better resourced blue team--as
+a proxy for a superintelligent AI future. The degree to which various models
+enhance human abilities in various domains, particularly in red team
+adversarial attack domains, is termed ``uplift''. Of special interest to AI
+control is cyberattack uplift, as this is the domain that an untrusted AI will
+be operating in when we have it conduct research.
 
 % Models' situational awareness
-\cite{derner2024truesight,needham2025know}
+Models today are very good, however, at accurately guessing what environment
+they are in. Just as models are good at guessing who their user
+is \cite{derner2024truesight}, they are quite good at guessing whether they are
+in an evaluation setup or not \cite{needham2025know}. This means that any
+inventing of clever honeypot schemes for actively unaligned models has to work
+around the models being often aware of their present situation.
 
 % CoT monitoring; faithfulness
-\cite{baker2025monitoring}
+Because reasoning models think out loud, we can directly monitor those chains
+of thought to see what they are thinking, including whether they are thinking
+about anything worrying \cite{baker2025monitoring}. The models don't have any
+other scratchpad in which to reason besides their chain-of-thought notes. But,
+as previosly noted, chains of thought are often less than perfectly
+interpretable already. Indeed, experiments in which chains of thought are
+modified reveal that words do not always play the role that they seem to
+\cite{}. Having access to all of a model's thoughts is less powerful a
+technique that it seems if those thoughts are a jumble that cannot be easily
+made sense of.
 
 \subsection{Superintelligence and the Future}
 \cite{aschenbrenner2024situational}
