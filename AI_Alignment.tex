@@ -16,68 +16,97 @@ sociotechnical equilibrium that fell out of that collision.
 
 Our survey of field is very roughly chronological, looking at how the field
 evolved from before deep learning up to today, and then finally at what the
-future holds for AI alignment.
+future means to AI alignment.
 
 \section{AI Alignment, Before the Deep Learning Revolution}
-AI as a research field is quite old now, dating back to 1956. AlexNet (2012)
-\cite{krizhevsky2012imagenet} and the transformer (2017)
-\cite{vaswani2017attention}, and the whole contemporary explosion of AI
-capabilities and development, came about much later. It was between these two
-bookends that AI alignment was born. The field is, in great part, the
-brainchild of Eliezer Yudkowsky, a decision theorist and founder of the Machine
-Intelligence Research Institute \cite{yudkowsky2008factor}.
+AI as a research field is surprisingly old now, formally dating back to the
+1956 Dartmouth Conference. On the other hand, AlexNet (2012)
+\cite{krizhevsky2012imagenet} and the transformer architecture (2017)
+\cite{vaswani2017attention} and the whole ongoing explosion in AI capabilities
+and interest in AI, came about much later. It is especially a post-2015
+phenomenon. The field of AI alignment dates to somewhere inbetween those two
+bookend dates. It is, in great part, the brainchild of Eliezer Yudkowsky, a
+decision theorist and founder of the Machine Intelligence Research Institute
+(MIRI) \cite{yudkowsky2008factor}.
 
-A lot could still be said about the possible goals of AIs and how they might or
-might not line up with the goals of their human creators
+As this predates modern LLMs, AI alignment predates... AI as we know it.
+Nonetheless, a lot could still be said about the potential goals of AI systems
+and about how AI goals might or might not line up with the goals of their human
+creators
 \cite{bostrom2014superintelligence,omohundro2008drives,yudkowsky2008factor}.
-Without concrete powerful AI on hand, many potential future paradigms had to
-be, in effect, speculated about and averaged over. Theoretical work at the time
+Research paradigms at this time had to be, in effect, speculate about and
+average over possible expected futures for AI. Theoretical work at the time
 grounded itself in mathematical intuitions about von Neumann-Morgenstern
-rationality \cite{von1944games}, leaving open how AI capabilities would
-actually be filled in \cite{soares2015corrigibility}.
+rationality \cite{von1944games}, not in much empirical AI beyond GOFAI, leaving
+open in what form powerful AI capabilities would finally come about
+\cite{soares2015corrigibility}.
 
-A formalization of AI ``corrigibility'' is one of the AI alignment results
-tracing back to this period \cite{soares2015corrigibility}. Informally,
-corrigibility is the idea that an AI should not learn any particular set of
-goals but instead come to be a generally helpful assistant lacking its own
-goals. More precisely, corrigibility could be thought about in terms of an AI
-letting a human shut it down at any point, without actively trying to prevent
-itself from being shut down. It turns out that it's quite difficult to give a
-formal model of an agent that wants to help but never ``takes the reins''.
+To give a flavor for this research direction, the formalization of
+``corrigibility'' is one of the major results tracing back to this period and
+MIRI \cite{soares2015corrigibility}. Corrigibility is the idea of an AI not
+learning \emph{any particular} goals but instead learning to be a generally
+helpful AI assistant (entirely lacking its own goals).\footnote{Paul Christiano
+phrases this as the AI sharing your goals \emph{de dicto}, rather than sharing
+your goals \emph{de re}--sharing your goals \emph{whatever your goals might
+be}, i.e.} This can be thought of in terms of an AI assistant letting a human
+shut it down with a button press at any time, helping while remaining
+indifferent to whether or not it is shut down. Mathematically, it turns out
+that it's quite hard to formally model corrigibility in this
+indifferent-to-my-off-switch sense; most formal ways of thinking about agents
+using standard decision theory will have the agent want to ``take the reins''.
+Most decision-theoretic agents will either want to not be shut down (valuing
+their own existence, in a sense) or will \emph{actively want} to be shut down
+(valuing their \emph{non}-existence, in that same sense).
 
-For example, an argument to this effect given in this literature makes a
-counting argument about it. Imagine that there are many possible utility
-functions that your AI could end up having. Then imagine that you have to
-search over all of these possible utility functions by evaluating their losses
-on some behavioral metric. Finally, assume that the AI is smart and
-situationally aware, meaning that, whatever utility function is placed in its
-goal slot, it will do its very best to fulfill it as best it can, and it
-basically knows what situation it is in. ``You can't fetch the coffee if you're
-dead'', is the crucial inference then made \cite{russell2019human}. Almost all
-utility functions, wanting something in the world, will instrumentally try to
-stay in place in the AI, rather than be trained out of it. But if almost all
-utility functions will want to stick around and are optimized for by an
-intelligent and informed AI, then almost all utility functions will test
-similarly well, regardless of what they want. It won't do to test for human
-alignment, if almost all utility functions will care to pass that test
-strategically. I.e., if you count all the utility functions out there, there
-are only a tiny number of good ones, along with many others that will merely
-play along strategically during any test.
+One argument about this, given in the literature, is a ``counting argument''.
+Imagine that there are many possible utility functions an AI could end up
+having.\footnote{A utility function is a map from states of affairs to real
+numbers that meets a few technical consistency requirements. It is a
+``utility'' function because it can be thought of as mathematically capturing
+``what an agent cares about''--etymologically, it hearkens back to Bentham's
+usage of the term ``utility''.} Then imagine that choosing from the space of
+possible utility functions by evaluating AI behavior with each utility function
+installed. The AI is intelligent and aware of its situation, meaning that,
+whatever utility function it is given, it will pursue as best as it can, and do
+a pretty good job too. Stuart Russell \cite{russell2019human} phrases the
+critical deduction from these premises: ``you can't fetch the coffee if you're
+dead''. A robot that values getting coffee (and nothing else) will not be able
+to get coffee if it is destroyed. So, it \emph{will} value its own life, though
+in a roundabout way, subodinated to the higher end of fetching the coffee. And
+the same is true for almost anything you can imagine a robot valuing. If almost
+all utility functions will want to stick around, and are pursued by a smart and
+informed AI to boot, then almost all utility functions will test similarly
+well. It won't do to just test for a human aligned utility function... if
+almost all utility functions will want to pass that test strategically! The
+counting argument concludes that, of all the utility functions out there, the
+number that will look good on a test strategically will far outweigh those that
+test well \emph{because they are good}. The misaligned greatly outnumber the
+aligned.
 
-One important paper gave a formal model of inductive (non-deductive) reasoning
-in terms of market equilibria between idealized bettors
-\cite{garrabrant2020induction}. Another formalized the intuitive notion of
-``limited'' optimization \cite{taylor2016quantilizers}. Research in this vein
-was termed ``agent foundations'': essentially, an approach to GOFAI that sought
-to understand AI from the ground up, with the goal of thereby also
-understanding and setting the AI's goals.
+Another key result in early AI alignment was a formalization of ``limited''
+optimization \cite{taylor2016quantilizers}. If optimization means choosing the
+best outcome from a set, relative to some goal metric and to available
+resources, then limited optimization can be thought of as choosing an outcome
+from a particular quantile of the outcome distribution on that goal metric.
 
-AI alignment as a field has, of course, changed radically with the advent of
-the deep learning revolution and actually existing, generally capable AI. The
-field too has had an outsized imprint on how actually existing AI unfolded and
-was shaped into the models we know today. These earlier threads of research are
-still pursured, to some small extent, but interest in AI alignment is now
-overwhelmingly in some variety of \emph{empirical} alignment research.
+Another paper tried to make mathematical sense of non-deductive reasoning,
+trying to bridge the gap between formal programming and informal reasoning. The
+result uses the notion of a betting equilibrium under imperfect information to
+make some headway on this \cite{garrabrant2020induction}.
+
+Overall, this vein of research is termed agent foundations. It is essentially
+AI alignment \emph{as married to GOFAI}. Work here always has the flavor of
+seeking to understand AI completely, from the ground up, with the goal of
+understanding the AI's goals as a consequence of... completely understanding
+the AI's structure. Remember that this predates deep learning as an explosively
+powerful, and uninterpretable, approach to AI.
+
+AI alignment as a field had to change radically with the deep learning
+revolution and the advent of actually-generally-capable AI. In its new form,
+the field is remarkable for its outsized imprint on frontier AI development and
+post-training. Threads of research in agent foundations are still pursured, to
+some small extent, but interest in AI alignment has overwhelmingly shifted to
+\emph{empirical} alignment research.
 
 \section{Base Models and Chat Models}
 % GPT-2 does not have a complete personality. It's like auto-complete on
