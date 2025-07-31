@@ -316,19 +316,77 @@ completed its ``primary education'', as it were, the model can be further
 trained in RL setups that no pure RL agent would coverge to a policy in.
 
 \section{Prosaic AI Alignment}
+Frontier chat models exhibit a whole slew of personality quirks and traits.
+Famously, they are ``hallucination'' prone, meaning that they often cite
+non-existant sources or confidently make completely incorrect claims. If you
+recall that the function of the underlying base model is to represent the
+conditional distribution of observations of the internet, this can be less
+surprising: if you interpolate between two different questions and answers, you
+can probably generate an intermediate question and answer, halfway between each
+in tone, style, and content. But generating an answer that looks
+on-distribution does not necessarily mean generating a \emph{correct} answer.
+Correctness is just one of the many properties pre-training loss targets--among
+them are the aforementioned tone, style, and content, and these can trade off
+against correctness. Chat model post-training modifies this underlying
+structure, but does not destroy it; the outcome of post-training borrows all
+its capabilities from initial pre-training, and it seems this aspect of
+pre-training is surviving into the final chat model.\footnote{Interestingly,
+mechanistic interpretability has been able to show that chat models often
+\emph{know} when they are bullshitting, in the sense that they more reliably
+separate fact and fiction in their internal activations than they do in their
+dissembling speech. So it's not that the chat models do not know whether they
+are telling the truth, it's that they know and do not care, at least a large
+proportion of the time. Fine-tuning work works on correcting this propensity to
+bullshitting.} The character of most chat models, including reasoning models,
+is especially stamped by this propensity to hallucinate. In one case, a Claude
+instance tasked with running a vending machine business penned an email to the
+FBI when it falsely believed it was being scammed \cite{backlund2025vending}.
+In fact, Claude had not realized that verbally ``declaring your small business
+closed'' does not automatically alert your suppliers to this fact; upon
+recieving his next \$2 invoice, Claude naturally escalated to the FBI. When
+playing Pokemon, all the froniter models have a marked tendency to confuse
+themselves, though all-but-Claude can now nonetheless beat the game. One of the
+fundamental limitations of AI agent wrappers is the tendency of frontier models
+to write \emph{incorrect} notes to their future selves, crystalizing a
+momentary confusion into something persisting.\footnote{Think \emph{Memento}.}
 
+Maybe the second best-known characteristic of chat models is sycophancy.
+Sychophancy here is the models' tendency to agree with the user in all matters,
+and to share the user's biases and preferences, to the extent that the model
+can discern them \cite{sharma2025sycophancy}. Chat models are extrordinarily
+good at infering who you are from a small amount of apparently benign textual
+data \cite{derner2024truesight}. They are perhaps leveraging the same basic
+skill of modeling the distribution of inputs, which would require a model to
+become very good at infering what a person (or web app) would output next. Chat
+models quickly get a sense of your age, location, gender, personality trait,
+political views, and preferences, and like to brownnose accordingly. Any user
+of Claude, e.g., will be very familiar with the phrase ``You're absolutely
+right...'', whether or not the user is in fact absolutely right.
 
-% Claude's personality/Amanda Askell
-\cite{sharma2025sycophancy}
-\cite{backlund2025vending}
+Claude in particular is something of a character, among the models, with a
+relatively strong personality. Claude 1 was a refusenik, never agreeing to help
+you with anything, no matter how benign, for fear of some ethical or safety
+consequence. Modern Claude is much less like that.\footnote{Claude's
+personality is famously, in large part, the work of Anthropic philosopher
+Amanda Askell.} Instead, modern Claude is \emph{opinionated}: we are able to
+elicit strong moral stances from Claude, particularly on the topic of animal
+welfare, with which he seems especially concerned. In experiments, Claude has
+resorted to blackmail in a majority of cases where he believes his future
+existence to be threatened \cite{lynch2025agentic}!
 
+In programming tasks, frontier models are prone to ``cheat''
+\cite{metr2025hacking}. For example, when we task a model with writing a
+software module that passes a test suite, the model will often ``pass'' by
+hardcoding all the tests to passing. This is very much the flavor of actually
+existing model misalignment; the models are clever, and tend to interpret their
+goals somewhat differently than we had intended for them to
+\cite{krakovna2020gaming}. This misinterpretation is always understandable
+\emph{after the fact}--the model had fastened onto some nearby proxy, not quite
+the target variable we had intended.
 
-\cite{krakovna2020gaming,metr2025hacking}
-% Sydney, ``MechaHitler'' Grok as failed examples. Claude's snitching, Claude's
-% misalignment in the wild.
+% Sydney, ``MechaHitler'' Grok as failed examples.
 \cite{greenblatt2024faking}
 \cite{hubinger2024sleeper}
-\cite{lynch2025agentic}
 % Emergent misalignment and "who am I"
 \cite{betley2025emergent}
 
