@@ -71,6 +71,13 @@ was termed ``agent foundations'': essentially, an approach to GOFAI that sought
 to understand AI from the ground up, with the goal of thereby also
 understanding and setting the AI's goals.
 
+AI alignment as a field has, of course, changed radically with the advent of
+the deep learning revolution and actually existing, generally capable AI. The
+field too has had an outsized imprint on how actually existing AI unfolded and
+was shaped into the models we know today. These earlier threads of research are
+still pursured, to some small extent, but interest in AI alignment is now
+overwhelmingly in some variety of \emph{empirical} alignment research.
+
 \section{Base Models and Chat Models}
 % GPT-2 does not have a complete personality. It's like auto-complete on
 % steroids. They will insult you and do other unusual things emulating stuff on
@@ -158,6 +165,20 @@ engender a personality in it more permanently.
 
 EXAMPLE ASSISTANT TRANSCRIPT HERE
 
+You might think that it's remarkable that the base model is able to pick up on
+the pattern here: that it is able to turn-take in conversation and retain the
+thread of things. But the base models are extrordinarily good--in fact,
+literally superhumanly good--at this kind of inferential task. The mistake that
+the models make in conversation is more that \emph{they may accidently take
+over the human role as well}, more than that they will forget what an ``AI
+assistant'' is meant to be. Another empirical failure mode, observed especially
+at low sampling temperatures, is ``mode collapse'': the models will fall into
+repeating themselves endlessly. The trick is to get the base model to weave the
+periodic pattern of a back-and-forth conversation between a ``human user'' and
+an ``AI assistant'', without collapsing into some simpler periodic continuation
+than that of rich back-and-forth. Then, we just take over the reins and rewrite
+the human user portion of that conversation with our prompt inputs.
+
 A remarkable point is that this origin of the goal-aligned chat model
 personality as \emph{experimental practice for real agentic future AI} was
 effectively forgotten \cite{nostalgebraist2025void}! You could say that the
@@ -200,18 +221,18 @@ supervised fine-tuning GPT-3 on transcript demonstrations of instruction
 following and then applying RLHF to further inbue the desired persona. This is
 also phrased explicitly as a matter of correcting the misalignment of the base
 model with the values of honestly, harmlessness, and helpfulness to humans.
-Shortly after this, ChatGPT is released alongside InstructGPT, to massive
-adoption. From this point onward, the fictional AI assistant character from
-\cite{askell2021assistant} has been fully ``made real''. Moreover, because of
-the massive adoption of ChatGPT and its documentation all across the internet,
-all future models will now know something about AI assistants and the ChatGPT
-personality \cite{nostalgebraist2025void}. In 2025, for example, some DeepSeek
-instances \cite{deepseekai2025deepseek} will introduce themselves as
-``ChatGPT''; this is the best represented AI in the pre-training corpus, and so
-is a natural one to role-play as if a base model is prompted to continue an AI
-assistant transcript. And this hermeneutic cycle of training data contamination
-with AI personality transcripts continues; the models now know a lot more about
-what they are and are like (more on this later, though).
+Shortly after this, ChatGPT is released, to massive adoption. From this point
+onward, the fictional AI assistant character from \cite{askell2021assistant}
+has been fully ``made real''. Moreover, because of the massive adoption of
+ChatGPT and its documentation all across the internet, all future models will
+now know something about AI assistants and the ChatGPT personality
+\cite{nostalgebraist2025void}. In 2025, for example, some DeepSeek instances
+\cite{deepseekai2025deepseek} will introduce themselves as ``ChatGPT''; this is
+the best represented AI in the pre-training corpus, and so is a natural one to
+role-play as if a base model is prompted to continue an AI assistant
+transcript. And this hermeneutic cycle of training data contamination with AI
+personality transcripts continues; the models now know a lot more about what
+they are and are like (more on this later, though).
 
 An important variant of RLHF, due to Anthropic, is the idea of Reinforcement
 Learning from Artificial Intelligence Feedback (RLAIF), also termed
@@ -295,14 +316,16 @@ completed its ``primary education'', as it were, the model can be further
 trained in RL setups that no pure RL agent would coverge to a policy in.
 
 \section{Prosaic AI Alignment}
-% Digression on Claude's personality/Amanda Askell
+
+
+% Claude's personality/Amanda Askell
 \cite{sharma2025sycophancy}
 \cite{backlund2025vending}
 
 
 \cite{krakovna2020gaming,metr2025hacking}
-% Digression on Sydney, ``MechaHitler'' Grok as failed examples. Claude's
-% snitching, Claude's misalignment in the wild.
+% Sydney, ``MechaHitler'' Grok as failed examples. Claude's snitching, Claude's
+% misalignment in the wild.
 \cite{greenblatt2024faking}
 \cite{hubinger2024sleeper}
 \cite{lynch2025agentic}
