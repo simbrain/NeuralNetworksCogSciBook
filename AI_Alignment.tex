@@ -8,8 +8,8 @@ for frontier LLMs grew out of ideas from this originally speculative field, and
 (2) how AI alignment as a field has, conversely, adaped itself to the arrival
 of actually capable AI in the form of modern LLMs. A theme in this chapter is
 that intertwinement between the work of those who sought to set the goals of
-powerful AI--whenever it came about--and the research taking place at the
-frontier AI labs--where powerful AI \emph{did} come about. There's a story here
+powerful AI---whenever it came about---and the research taking place at the
+frontier AI labs---where powerful AI \emph{did} come about. There's a story here
 about the way that empirical technological reality butted its head up against
 pre-existing anxieties about smarter-than-human AI, and about the
 sociotechnical equilibrium that fell out of that collision.
@@ -71,7 +71,7 @@ Imagine that there are many possible utility functions an AI could end up
 having.\footnote{A utility function is a map from states of affairs to real
 numbers that meets a few technical consistency requirements. It is a
 ``utility'' function because it can be thought of as mathematically capturing
-``what an agent cares about''--etymologically, it hearkens back to Bentham's
+``what an agent cares about''---etymologically, it hearkens back to Bentham's
 usage of the term ``utility''.} Then imagine that choosing from the space of
 possible utility functions by evaluating AI behavior with each utility function
 installed. The AI is intelligent and aware of its situation, meaning that,
@@ -127,7 +127,7 @@ build up to. This is a form of AI that ``just works'', as it were.
 
 In fact, the frontier models were not just born with the personalities that
 they present with. A language model by default lacks any kind of coherent
-personality. Instead, it is a pure statistical model of its training corpus--of
+personality. Instead, it is a pure statistical model of its training corpus---of
 the text on the internet, in this case. The distinction that captures this is
 between base models and chat models. A base model is a statistical model of
 text on the internet. A chat model is a \emph{further fine-tuning} of a base
@@ -163,7 +163,7 @@ that is good enough becomes useful; it can start answering questions and doing
 work that the internet could, perhaps at 1,000x speed, \emph{and starting from
 a point of your choice}.
 
-The base model idea--a statistical model of the human text corpus--is not new.
+The base model idea---a statistical model of the human text corpus---is not new.
 It was anticipated by Claude Shannon's work on statistical models of text in
 books \cite{shannon1951english}.\footnote{Namely, that the most elementary
 model of language statistics looks only at the prior distribution over words in
@@ -219,7 +219,7 @@ Alignment''\cite{askell2021assistant}.\footnote{This is less surprising when it
 is noted that Anthropic itself was formed when alignment-oriented engineers
 split off from OpenAI to pursue AGI development more oriented towards AI
 alignment.} Its idea goes: we expected AI to come in the form of something
-intrinsically agentic. And that may still happen--the kind of AI we're worried
+intrinsically agentic. And that may still happen---the kind of AI we're worried
 about losing control of is necessarily agentic in character. What we have now,
 instead, is the base models. So, what we can do now, with an eye towards
 alignment in an agentic AI future, is \emph{simulate} future agentic AI using
@@ -235,11 +235,11 @@ EXAMPLE ASSISTANT TRANSCRIPT HERE
 
 You might think that it's remarkable that the base model is able to pick up on
 the pattern here: that it is able to turn-take in conversation and retain the
-thread of a complex discussion. But the base models are extrordinarily good--in
+thread of a complex discussion. But the base models are extrordinarily good---in
 fact, superhumanly\footnote{You can get a feel for this by trying your hand at
 next-token prediction of internet text: REDWOOD LINK. It is extrordinarily
 difficult, far more so than you'd expect from just participating on the
-internet.} good--at this kind of inferential task. The flavor of mistake that
+internet.} good---at this kind of inferential task. The flavor of mistake that
 base models make when prompted to simulate a conversation is not that they
 dominate discussion or appear robotic and inhuman. The fluent AI assistant
 personality actually comes automatically when prompted for in a good enough
@@ -345,51 +345,56 @@ reasoning abilities to RLVR.
 
 Because a transformer is only ever preparing to output a next token, and cannot
 otherwise pass information between parallel forward passes, all its reasoning
-has to occur sequentially in its output. This means that reasoning as executed
-by the models apparently promises to be intrinsically interpretable, at least
-up to a point: unlike with humans, the models never silently reason. They
-always reason out loud, in text.\footnote{In practice, there are many results
-showing that the reasoning of models is not very faithful to its final
-answers--meaning, essentially, that it is in fact not clear what causal role
-every step in the out-loud reasoning is playing.}
+has to occur sequentially, though its output tokens. This means that reasoning
+as executed by feed-forward models apparently promises to be intrinsically
+interpretable, at least up to a point. Unlike humans, models never reason at
+length in their head. They must always step-by-step reason \emph{out loud}, in
+text.\footnote{In practice, however, model chain-of-thought is not very
+faithful to its final answers. Basically, it is not clear what actual causal
+role every step in the reasoning transcript plays. A model reasoning step that
+seems like it is about a topic may not be.}
 
 The most prominent demonstration of this was DeepSeek-R1
-\cite{deepseekai2025deepseek}. In a prior version of the DeepSeek reasoning
-model\footnote{DeepSeek-R1-Zero}, it was noted that RLVR upweighted some
-surprising behaviors in the model. While the model learned to execute complex
-logical reasoning successfully, it would often mix different languages
-together, blending Chinese and English together and switching back and forth
-mid-sentence \cite{deepseekai2025deepseek}. DeepSeek-R1 solves this language
-mixing problem by explicitly supervised fine-tuning on English reasoning
-abilities. That additional fine-tuning on explicitly monolingual reasoning does
-actually improve the model's capabilities, along with improving interpretabilty
-of the reasoning stream.
+\cite{deepseekai2025deepseek}. In a prior version of their reasoning model
+(DeepSeek-R1-Zero), it was noted that RLVR had upweighted some surprising
+behaviors. While DeepSeek-R1-Zero did learn complex logical reasoning, its
+chain-of-thought would often mix several languages together, switching back and
+forth mid-sentence \cite{deepseekai2025deepseek}. The language mixing problem
+was solved in the successor model (DeepSeek-R1) by explicitly first supervised
+fine-tuning it on monolingual English reasoning transcripts. That additional
+initial fine-tuning improves the interpretability of DeepSeek-R1 reasoning
+transcripts greatly, but also improves the reasoning ability of DeepSeek-R1
+relative to its predecessor. So, up to a point, better model reasoning is also
+more interpretable reasoning.
 
-A related emergent quirk of the reasoning models is their dependence on
-self-prompts of a certain style. DeepSeek-R1 will being almost all of its
-sentences with ``Okay,''. This token is apparently serving as a self-prompt,
-perhaps recentering the model on its current place in its reasoning task.
+Another quirk of the reasoning models is their use of self-prompts of a certain
+style. DeepSeek-R1 begins almost all of its sentences with ``Okay,''. The token
+is a mantra of sorts, and is playing some load-bearing role in reasoning,
+perhaps recentering efforts on the current step of the reasoning task.
 Reasoning transcripts from OpenAI's IMO Gold--winning model successfully steer
 the model through very difficult mathematical problems, but are not very
-interpretable. They are comprised mostly of hard-to-parse shorthand and text
+interpretable \cite{}. They are comprised of hard-to-parse shorthand and text
 fragments. So while reasoning transcripts are by their nature \emph{exposed} to
-human overseers, there is clearly some tension here between interpretability
-and capability. Monolingual reasoning seems to outperform polyglot reasoning
-\cite{}. But creeping further down the loss landscape, ideal reasoning seems to
-move into highly idiosyncratic shorthand: an idiolect suitable for reminding
-you what you're currently up to, but not necessarily easily parsable by an
-outside reader of your notes.
+human overseers, there is clearly some tension between reasoning ability and
+interpretability. While cleaned up monolingual reasoning outperforms polyglot
+reasoning, highly idiosyncratic shorthand might be even better. These
+transcripts embody an idiolect, suitable for reminding you what you're
+currently up to, but not easily parsable tp an outside reader.
 
-There continues to be much excitement in AI about improving AI capabilites
-using further RL-based post-training stages \cite{silver2025experience}. While
-we were not able to hard-code these manifold tasks in the age of GOFAI, the
-problem of setting them up as RL post-training tasks for a chat model is much
-less demanding. You do not need to know how to specify every element of a
-successful model behavior; you only need to build a scalable RL environment
-that will \emph{reinforce} the right behavior, and have some elementary version
-of that right behavior be in reach of the inital chat model. Having already
-completed its ``primary education'', as it were, the model can be further
-trained in RL setups that no pure RL agent would coverge to a policy in.
+OPENAI IMO GOLD REASONING TRANSCRIPT
+
+There continues to be much excitement in frontier AI about improving model
+capabilites with additional RL-based post-training stages
+\cite{silver2025experience}. As mentioned before, setting up an RL loop for a
+smart enough student model is much easier a task than hardcoding the correct
+answer to the task directly. You do not need to know how to specify every piece
+of successful model behavior; you only need to build a scalable RL environment
+that will \emph{reinforce} the right behavior, and have some smart enough
+inital chat model to play the role of student. On the other side, no pure RL
+policy without a chat model component would ever converge to a solution. Such a
+model would flail forever, never smart enough to \emph{start} learning from a
+sophisticated RL environment. This too seems to be a marriage of convenience
+between base language modeling and various forms of post-training.
 
 \section{Prosaic AI Alignment}
 ``Prosaic'' AI alignment refers to AI alignment that is concerned with the
@@ -409,7 +414,7 @@ surprising: if you interpolate between two different questions and answers, you
 can probably generate an intermediate question and answer, halfway between each
 in tone, style, and content. But generating an answer that looks
 on-distribution does not necessarily mean generating a \emph{correct} answer.
-Correctness is just one of the many properties pre-training loss targets--among
+Correctness is just one of the many properties pre-training loss targets---among
 them are the aforementioned tone, style, and content, and these can trade off
 against correctness. Chat model post-training modifies this underlying
 structure, but does not destroy it; the outcome of post-training borrows all
@@ -470,7 +475,7 @@ hardcoding all the tests to passing. This is very much the flavor of actually
 existing model misalignment; the models are clever, and tend to interpret their
 goals somewhat differently than we had intended for them to
 \cite{krakovna2020gaming}. This misinterpretation is always understandable
-\emph{after the fact}--the model had fastened onto some nearby proxy, not quite
+\emph{after the fact}---the model had fastened onto some nearby proxy, not quite
 the target variable we had intended.
 
 Besides Claude and the less colorful frontier models, there have also been some
@@ -522,8 +527,8 @@ starting point of any future post-training runs that attempt to elicit and
 refine an AI assistant.
 
 \section{Superintelligence Alignment}
-All of the leading frontier AI labs--OpenAI, Anthropic, and Google
-DeepMind--explicitly aim to create superintelligent AI. That is, human-level AI
+All of the leading frontier AI labs---OpenAI, Anthropic, and Google
+DeepMind---explicitly aim to create superintelligent AI. That is, human-level AI
 is only an intermediate goal for the labs; ultimately, they aim higher than
 even that. Along with this, all the labs are formally concerned with the goals
 that are learned by superintelligent models. And this is for straightforward,
@@ -547,8 +552,8 @@ smarter''. That claim is in effect a claim about aligning current models being
 range of views on what architecture the superintelligent model will use and
 still think that the analogy to frontier LLMs will be strong enough for it to
 be worth studying today's models' alignment. But another key manner in which
-aligning today's frontier models--which are certainly not generally
-superhumanly intelligent--is that getting good at aligning those models will
+aligning today's frontier models---which are certainly not generally
+superhumanly intelligent---is that getting good at aligning those models will
 give access to a whole army of AI assistants, with which to assist in aligning
 the superintelligence.
 
@@ -588,7 +593,7 @@ securing an AI that is intelligently trying to evade you and do harm. AI
 control thus uses human red teams today, assisted by AI, to try to score
 against human blue teams, also assisted by AI. The goal is to design a
 situation, or ``protocol'', in which a more intelligent but less well resourced
-red team always loses to a less intelligent but better resourced blue team--as
+red team always loses to a less intelligent but better resourced blue team---as
 a proxy for a superintelligent AI future. The degree to which various models
 enhance human abilities in various domains, particularly in red team
 adversarial attack domains, is termed ``uplift''. Of special interest to AI
@@ -617,8 +622,8 @@ technique that it seems if those thoughts are a jumble that cannot be easily
 made sense of.
 
 \subsection{Superintelligence and the Future}
-% A new apex predator on Earth? Misalignment risk. OpenAI's claims--lamplighter
-% essay. Dario's essay
+% A new apex predator on Earth? Misalignment risk. OpenAI's
+% claims---lamplighter essay. Dario's essay
 If we are on the verge of creating AI as smart, and smarter, than the brightest
 humans, are we also on the verge of replacing ourselves as apex predators on
 Earth? Founders and employees at the frontier AI labs hold one of two broad
@@ -630,7 +635,7 @@ the race to superintelligence as a race to the motherlode, with the United
 States and China presented as the states running that race
 \cite{aschenbrenner2024situational}. Lab leads similarly present the race to
 superintelligence as a race to unhearlded prosperity on Earth
-\cite{altman2024intelligence,amodei2024grace}--a world which has solved human
+\cite{altman2024intelligence,amodei2024grace}---a world which has solved human
 medicine, physical engineering, a world with intelligence availale on tap.
 Humans, it is thought, will certainly not labor in the same ways in that world;
 we are seen as entering into a new and even greater industrial revolution, into
