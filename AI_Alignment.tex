@@ -318,26 +318,30 @@ target chat model values in RLAIF. RLAIF is more scalable and easier to oversee
 than RLHF is, since RLHF delegates a huge amount of work to human graders.
 
 \subsection{Reasoning Models}
-In 2023, it was found that simply ending your prompts with the phrase ``Let's
-think step by step'' elicited step-by-step logical reasoning abilities from
-both base and chat models \cite{kojima2023zeroshot}. While earlier work had
-crept toward this style of result with many-shot demonstrations of logical
-reasoning prefacing any prompt, this zero-shot reasoning case was remarkable,
-as it showed that the models ``had it in them'' to logically reason out loud.
+In 2023, a paper was published showing that simply ending prompts with the
+phrase ``Let's think step by step'' improved step-by-step logical reasoning in
+both base and chat models \cite{kojima2023zeroshot}. This zero-shot reasoning
+result showed that the models ``had it in them'' to logically reason out loud.
+There was no fundamental reason that LLMs could not reason logically.
 
-The ``reasoning revolution'' basically took this observation and ran with it.
-This is another example of the familiar pattern from before, of an aspect of
-model abilities being elicited with relatively simple prompting, before a pivot
-is made to more robustly baking that ability into the model with some kind of
-fine-tuning. For reasoning, the fine-tuning setup that took off was
-Reinforcement Learning from Verifiable Rewards (RLVR) \cite{lambert2025tulu}.
-The idea there is that there are some complex reasoning tasks, the correct
-results of which can be programmatically verified. If we know how to grade a
-chain of reasoning, then even if we don't know how to explicitly program out
-the reasoning steps involved, we can fine tune on that ground-truth. ``Whenever
-a correct answer is reached, do more of whatever you just did'', i.e. This has
-been appended to post-training as a further additional training step, along
-with any model alignment.
+The ``reasoning revolution'' was AI labs taking this observation and running
+with it. As with model personalities, an ability was elicited from LLMs with
+simple prompting, attracting attention to the possibility of reinforcing that
+ability with targeted fine-tuning. For step-by-step logical reasoning, the
+appropriate fine-tuning setup is Reinforcement Learning from Verifiable Rewards
+(RLVR) \cite{lambert2025tulu}. RLVR leverages the fact that that, for many
+complex reasoning tasks, correct results can be programmatically verified. Even
+though we don't know how to hardcode the complex reasoning out ourselves in a
+traditional program, we do know how to grade answers. And it is the latter that
+we need in an RL fine-tuning loop, as RL just needs to say ``Since that answer
+was correct, start doing more of what you just did''.\footnote{The relative
+difficulty of answer generation to answer verification can understood precisely
+using the tools of computational complexity theory. An answer to any decision
+problem in the complexity class $\mathsf{NP}$ can always be \emph{verified} in
+polynomial time, but it is (famously) an open question whether an answer can
+always be \emph{generated} in polynomial time.} RLVR has since has become an
+additional stage in model post-training. Models like GPT-o3 credit their
+reasoning abilities to RLVR.
 
 Because a transformer is only ever preparing to output a next token, and cannot
 otherwise pass information between parallel forward passes, all its reasoning
