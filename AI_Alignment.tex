@@ -187,7 +187,7 @@ captured on video, said aloud...).
 % persona we are used to didn’t just happen automatically. That took work. Also
 % we will probably want to say something somewhere about... system prompts.
 Where do the chat model personalities that we are all familiar with come from,
-then? These personalities are \emph{explicitly cultivated}, during a phase of
+then? The personalities are \emph{explicitly cultivated}, during a phase of
 training called post-training. The model training pipeline begins in
 pre-training, when basic statistical modeling capabilities are built up. The
 model at the end of pre-training is a base model.\emph{With an eye towards
@@ -212,37 +212,49 @@ the work of any single grand AI visionary than of a whole host of AI
 researchers all groping about, poking and prodding and seeing what can be done
 with this new base model wonder technology.
 
-The concept of the ``personal assistant AI'' personality originates in an
-experimental proposal; the originating paper from Anthropic is titled ``A
+The concept of the ``helpful LLM personal assistant'' originates in an
+experimental proposal for AI alignment. The paper, Anthropic's, is titled ``A
 General Language Assistant as a Laboratory for
-Alignment''\cite{askell2021assistant}. The idea went
-something like: we expected to have intrinsically agentic AI to have to align
-to our goals. But, the AI we have instead ended up with is strange, both less
-capable and less dangerous than that: we have ended up with pure world-model
-AI, in the form of the base models. So, with an eye towards future powerful and
-potentially dangerous AI, we can start to ``simulate'' agentic AI in the
-language models of today. The most straightforward way to do this was to prompt
-the base model, teeing it up with an exchange between a fictional helpful
-assistant AI and a human interlocutor. Alongside this is proposed the idea of
-fine-tuning a model on this sort of fictional character data in order to
-engender a personality in it more permanently.
+Alignment''\cite{askell2021assistant}.\footnote{This is less surprising when it
+is noted that Anthropic itself was formed when alignment-oriented engineers
+split off from OpenAI to pursue AGI development more oriented towards AI
+alignment.} Its idea goes: we expected AI to come in the form of something
+intrinsically agentic. And that may still happen--the kind of AI we're worried
+about losing control of is necessarily agentic in character. What we have now,
+instead, is the base models. So, what we can do now, with an eye towards
+alignment in an agentic AI future, is \emph{simulate} future agentic AI using
+the base models! By appropriately prompting the base models with a fictional
+exchange between a human user and a helpful AI assistant character, we can hear
+more from this fictional AI assistant. In effect, while we don't yet have
+agentic AI, the paper says, we can have the base models roleplay as agentic AI!
+Using that testbed, we can better prepare for the AI paradigm we are worried
+about. The idea of fine-tuning for, instead of just prompting for, a fictional
+AI assistant is also suggested here.
 
 EXAMPLE ASSISTANT TRANSCRIPT HERE
 
 You might think that it's remarkable that the base model is able to pick up on
 the pattern here: that it is able to turn-take in conversation and retain the
-thread of things. But the base models are extrordinarily good--in fact,
-literally superhumanly good--at this kind of inferential task. The mistake that
-the models make in conversation is more that \emph{they may accidently take
-over the human role as well}\footnote{See this YouTube video for a vivid
-example: VIDEO LINK}, more than that they will forget what an ``AI assistant''
-is meant to be. Another empirical failure mode, observed especially at low
-sampling temperatures, is ``mode collapse'': the models will fall into
-repeating themselves endlessly. The trick is to get the base model to weave the
-periodic pattern of a back-and-forth conversation between a ``human user'' and
-an ``AI assistant'', without collapsing into some simpler periodic continuation
-than that of rich back-and-forth. Then, we just take over the reins and rewrite
-the human user portion of that conversation with our prompt inputs.
+thread of a complex discussion. But the base models are extrordinarily good--in
+fact, superhumanly\footnote{You can get a feel for this by trying your hand at
+next-token prediction of internet text: REDWOOD LINK. It is extrordinarily
+hard, far more so than you'd expect from just participating on the internet.}
+good--at this kind of inferential task. The flavor of mistake that base models
+make when prompted to simulate a conversation is not that they dominate
+discussion or appear robotic and inhuman. The fluent AI assistant personality
+actually comes automatically when prompted for in a good enough base model. The
+problem is instead that the base model goes on simulating the human user part
+as well, runnning away with the simulated conversation\footnote{See here for a
+vivid demonstraton: VIDEO LINK} Or, another characteristic failure of the
+models is ``mode collapse'', in which the models fall into extremely
+repetitive, periodic continuations (so called in reference to the statistical
+mode). Mode collapse is especially a problem at low sampling temperatures. The
+trick behind fluent conversation with a base model is to get the model to weave
+the pattern of back-and-forth between a ``human user'' and an ``AI assistant'',
+without letting the continuations veer too far off course. Once this is
+achieved, we can intervene from without, replacing the human user side of the
+conversation with actual human prompts. Thus, we smoothly integrate an outside
+human user into a statistical simulation of a roleplayed conversation.
 
 A remarkable point is that this origin of the goal-aligned chat model
 personality as \emph{experimental practice for real agentic future AI} was
