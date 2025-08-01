@@ -257,71 +257,65 @@ replacing the human user side of the conversation with actual human prompts.
 Thus, we smoothly integrate an outside human user into a statistical simulation
 of a roleplayed conversation.
 
-A remarkable point is that this origin of the goal-aligned chat model
-personality as \emph{experimental practice for real agentic future AI} was
-effectively forgotten \cite{nostalgebraist2025void}! You could say that the
-model personality engendering worked so well that it \emph{became} the source
-of the agentic AI it meant to study in advance. Another key thing to note in
-this origin story is that the characteristics of the AI assistant are therefore
-bound up tightly with the role-playing abbilities of the base models
-\cite{nostalgebraist2025void}. The base models were, in effect, first set up to
-\emph{role play} fictional aligned AI assistants, infering what that thing was
-to be from only the preexisting internet of pre-training data and a small
-number of additional prompting tokens. Not too much effort was put into shaping
-the chat model personality, and a remarkable observation of the paper is that,
-nevertheless, the once-fictional assistant materializes and proves helpful,
-honest, and harmless in some novel situations.
+This origin story of the goal-aligned chat model assistant personality as
+\emph{roleplay modeling real agentic future AI} fell into obscurity
+\cite{nostalgebraist2025void}. The base model ``personality engendering''
+worked so well that it \emph{became} a source of the agentic AI it meant to
+model in advance. A key thing to note is that the characteristics of the AI
+assistant are tightly bound up with the simulation and roleplaying abilites of
+the base models \cite{nostalgebraist2025void}. Not too much effort was put into
+shaping the chat model personality, just a handful of example prompts
+originally. Nevertheless, that is sufficient data to make the fictional
+assistant real, providing actually helpful, honest, and harmless feedback in
+novel situations. This only works because the base model had, during
+pre-training, formed some conception of what a fictional robot butler character
+ought to say. The situation is not so alien that the simulation fails.
 
-At the end of this paper, ideas for more extensively imbuing base models with
-aligned assistant personalities are examined, still in the hypothetical mode,
-as a proxy for real future agentic AI. One of the proposals centrally examined
-is Reinforcement Learning from Human Feedback (RLHF)
-\cite{christiano2017human,bai2022training,ziegler2019human}, itself \emph{also}
-a product of the AI alignment community. RLHF is the idea that we can first
-train a reward model from aggregated human preference data and then use
-reinforment learning fine-tuning on this reward model to fine-tune a base
-model. It is the brainchild of Paul Christiano \cite{christiano2017human}. The
-latter RLHF paper proposes RLHF for a handful of narrow
-use-cases--style-transfer, effective summarization--but the marriage of this to
-the agentic, aligned AI assistant target is novel at this point. This is where
-the modern post-training concept really comes from: the application of RLHF on
-a human-sourced reward model, with the goal of engendering a value-aligned AI
-assistant persona in a base model, changing its very same weights to become
-this role-played personality.\footnote{Recently, though, an algorithm known as
-Direct Preference Optimization (DPO) was developed \cite{rafailov2024dpo}. DPO
-drops the intermediate reward modeling step entirely, instead using human
-prefernce data to directly mould model behavior. Think of it as ``more
-straightforward'' RLHF. }
+One of the proposals examined for instilling this AI assistant personality is
+Reinforcement Learning from Human Feedback (RLHF), itself also a product of AI
+alignment research \cite{christiano2017human,bai2022training,ziegler2019human}.
+RLHF is the idea that we can (1) first train a reward model from aggregated
+human preference data and (2) then use reinforment learning to fine-tune a base
+model on this reward model.\footnote{An alternative algorithm to RLHF called
+Direct Preference Optimization (DPO) \cite{rafailov2024dpo} drops the
+intermediate reward modeling step entirely, instead using human prefernce data
+to directly mould model weights and behavior.} RLHF too was originally proposed
+for a much more narrow role than it has taken on, such as fine-tuning base
+models to be good at style-transfer and text summarization. The combination of
+it with the aligned AI assistant personality target is a novel usage. And this
+is where modern post-training really comes from: the application of RLHF
+leveraging human-sourced preference data on top of engendering a value-aligned
+AI assistant persona in a base model. Together, these methods reshape the base
+model's weights, \emph{become} this role-played personality that we call the
+chat model.
 
-Another foundational work from this pre-ChatGPT period is the InstructGPT paper
-\cite{ouyang2022feedback}. The paper is OpenAI's application of the same idea,
-supervised fine-tuning GPT-3 on transcript demonstrations of instruction
-following and then applying RLHF to further inbue the desired persona. This is
-also phrased explicitly as a matter of correcting the misalignment of the base
-model with the values of honestly, harmlessness, and helpfulness to humans.
-Shortly after this, ChatGPT is released, to massive adoption. From this point
-onward, the fictional AI assistant character from \cite{askell2021assistant}
-has been fully ``made real''. Moreover, because of the massive adoption of
-ChatGPT and its documentation all across the internet, all future models will
-now know something about AI assistants and the ChatGPT personality
-\cite{nostalgebraist2025void}. In 2025, for example, some DeepSeek instances
-\cite{deepseekai2025deepseek} will introduce themselves as ``ChatGPT''; this is
-the best represented AI in the pre-training corpus, and so is a natural one to
-role-play as if a base model is prompted to continue an AI assistant
-transcript. And this hermeneutic cycle of training data contamination with AI
-personality transcripts continues; the models now know a lot more about what
-they are and are like (more on this later, though).
+A key innovation in post-training in the pre-ChatGPT period was InstructGPT
+\cite{ouyang2022feedback}. InstructGPT was OpenAI's first AI assistant. It was
+made though supervised fine-tuning of GPT-3 on instruction-following
+demonstration transcripts and followed by further RLHF. This post-training
+pipeline was also framed as a matter of correcting base model misalignment and
+instilling the values of honestly, harmlessness, and helpfulness to humans.
+ChatGPT was first released soon after, to massive adoption worldwide. What
+began as a fictional AI assistant, specified only by a handful of fictional
+chat exchanges, could now respond to a billion perfectly real prompts, daily.
+Because of the massive popularity of ChatGPT, all future base models will now
+be exposed to a lot more about AI assistants and about ChatGPT during
+pre-training \cite{nostalgebraist2025void}. This preconception shapes how they
+concieve of the AI assistant personality that they simulate. For example, in
+2025, DeepSeek instances \cite{deepseekai2025deepseek} were observed
+introducing themselves as ``ChatGPT'' \cite{}. ChatGPT, after all, is the AI
+best represented in the pre-training corpus, and so is a natural character to
+roleplay when you are simulating an otherwise unspecified AI assistant. And the
+hermeneutic cycle of AI transcripts contaminating pre-training data shaping
+chat model responses continues.
 
-An important variant of RLHF, due to Anthropic, is the idea of Reinforcement
-Learning from Artificial Intelligence Feedback (RLAIF), also termed
-constitutional AI \cite{bai2022constitutional}. In this setup, instead of
-sourcing preference training data from human graders, a reward model is now
-trained on preference training data sourced from an appropriately prompted
-model. That prompt--the ``constitution''--thus supplies all the values that the
-final post-trained model will ultimately learn. This makes the entire RLAIF
-process more scalable and somewhat more controllable than RLHF, as the latter
-is ultimately aggregating preference training data from a wide array of human
-contractors' judgements.
+An important variation on RLHF, due to Anthropic, is Reinforcement Learning
+from AI Feedback (RLAIF), also called constitutional AI
+\cite{bai2022constitutional}. As its name suggests, RLAIF sources its
+preference data not from human graders but from an appropriately prompted chat
+model. The AI grader prompt, the ``constitution'', is thus what supplies the
+target chat model values in RLAIF. RLAIF is more scalable and easier to oversee
+than RLHF is, since RLHF delegates a huge amount of work to human graders.
 
 \subsection{Reasoning Models}
 In 2023, it was found that simply ending your prompts with the phrase ``Let's
