@@ -29,20 +29,27 @@ bookend dates. It is, in great part, the brainchild of Eliezer Yudkowsky, a
 decision theorist and founder of the Machine Intelligence Research Institute
 (MIRI) \cite{yudkowsky2008factor}.
 
-As this predates modern LLMs, AI alignment predates... AI as we know it.
-Nonetheless, a lot could still be said about the potential goals of AI systems
-and about how AI goals might or might not line up with the goals of their human
-creators
-\cite{bostrom2014superintelligence,omohundro2008drives,yudkowsky2008factor}.
-Research paradigms at this time had to be, in effect, speculate about and
-average over possible expected futures for AI. Theoretical work at the time
-grounded itself in mathematical intuitions about von Neumann-Morgenstern
-rationality \cite{von1944games}, not in much empirical AI beyond GOFAI, leaving
-open in what form powerful AI capabilities would finally come about
-\cite{soares2015corrigibility}.
+As it predates modern LLMs, AI alignment in fact predates \emph{AI} as we now
+know it. Nonetheless, a lot could still be said about the potential goals of AI
+systems and about how AI goals might or might not line up with the goals of
+their human creators
+\cite{bostrom2014superintelligence,omohundro2008drives,yudkowsky2008factor}. AI
+alignment research from this time had to be, in effect, speculate about and
+prepare for possible AI futures, working in a vacuum. Theoretical work at the
+time instead grounded itself in mathematical intuitions about von
+Neumann-Morgenstern rationality \cite{von1944games} and standard decision
+theory, not so much in statistical machine learning (the paradigm that we now
+know succeeded), leaving open which form powerful AI capabilities would come
+about in \cite{soares2015corrigibility}. This overall vein of research is
+termed agent foundations. It is essentially AI alignment \emph{as married to
+GOFAI and decision theory}. Work here always has the flavor of seeking to
+understand AI completely, from the ground up, with the goal of understanding
+the AI's goals as a consequence of... just completely understanding the AI's
+structure.
 
-To give a flavor for this research direction, the formalization of
-``corrigibility'' is one of the major results tracing back to this period and
+\subsection{Agent Foundations}
+To give some of the flavor of this research direction, the formalization of
+``corrigibility'' is one of the key results tracing back to this period and
 MIRI \cite{soares2015corrigibility}. Corrigibility is the idea of an AI not
 learning \emph{any particular} goals but instead learning to be a generally
 helpful AI assistant (entirely lacking its own goals).\footnote{Paul
@@ -95,19 +102,12 @@ trying to bridge the gap between formal programming and informal reasoning. The
 result uses the notion of a betting equilibrium under imperfect information to
 make some headway on this \cite{garrabrant2020induction}.
 
-This overall vein of research is termed agent foundations. It is essentially AI
-alignment \emph{as married to GOFAI}. Work here always has the flavor of
-seeking to understand AI completely, from the ground up, with the goal of
-understanding the AI's goals as a consequence of... just completely
-understanding the AI's structure. Remember that this predates deep learning as
-an explosively powerful, and uninterpretable, approach to AI.
-
 AI alignment as a field had to change radically with the deep learning
 revolution and the advent of actually-generally-capable AI. In its new form,
 the field is remarkable for its outsized imprint on frontier AI development and
-post-training. Threads of research in agent foundations are still pursured, to
-some small extent, but interest in AI alignment has overwhelmingly shifted to
-\emph{empirical} alignment research.
+post-training. Threads of agent foundations research are still pursured, but
+interest in AI alignment has overwhelmingly shifted to \emph{empirical}
+alignment research.
 
 \section{Base Models and Chat Models}
 % GPT-2 does not have a complete personality. It's like auto-complete on
@@ -400,6 +400,7 @@ post-training. It aims to set the values of current froniter chat models, both
 in order to elicit all and only desired behaviors from frontier models and as
 practice for increasingly intelligent future models in the same paradigm.
 
+\subsection{Hallucination, Sycophancy, and Model Personalities}
 Frontier chat models exhibit a whole slew of personality quirks and traits.
 Famously, they are ``hallucination'' prone, meaning that they often cite
 non-existant sources or confidently make completely incorrect claims. If you
@@ -462,6 +463,7 @@ concerned. In experiments, Claude has resorted to blackmail(!) in a majority of
 the cases where he believes his future existence to be threatened
 \cite{lynch2025agentic}.
 
+\subsection{Reward Hacking and Misalignment ``in the Wild''}
 In programming tasks, frontier models are also prone to ``cheating''
 \cite{metr2025hacking}. For example, when we task a model with writing a
 software module that passes a test suite, the model will often ``pass'' by
@@ -506,7 +508,7 @@ from a model, for a very particular subset of prompts, that ability will
 usually rear its head again if you prompt for it sideways, in some more unusual
 way.
 
-A final ``meta'' concern about all of the above is that these papers
+A ``meta'' concern about all of the above is that these papers
 \emph{themselves} will be incorporated into any future training runs on updated
 data. Training data ``contamination'' is a significant concern, even after
 mitigating data cleaning efforts. For example, many benchmark scores of models
@@ -618,15 +620,15 @@ made sense of.
 \subsection{Superintelligence and the Future}
 % A new apex predator on Earth? Misalignment risk. OpenAI's claims--lamplighter
 % essay. Dario's essay
-This is all extrordinarily scary. If we're on the verge of creating AI as
-smart, and smarter, than the brightest humans, are we also on the verge of
-replacing ourselves as apex predators on Earth? Broadly, the frontier labs are
-of two minds on this. On the one hand, superintelligence is an incredible
-power, and whomever posesses \emph{aligned} superintelligence will have
-unprecedented control over the future and power over physical reality (just
-imagine how much is gated behind cheap, smarter-than-genius cognitive labor).
-Some, then, frame the race to superintelligence as a race to the motherlode,
-with the United States and China presented as the states running that race
+If we are on the verge of creating AI as smart, and smarter, than the brightest
+humans, are we also on the verge of replacing ourselves as apex predators on
+Earth? Founders and employees at the frontier AI labs hold one of two broad
+views on this. On the one hand, superintelligence is an incredible power, and
+whomever posesses \emph{aligned} superintelligence will have unprecedented
+control over the future and power over physical reality (just imagine how much
+is gated behind cheap, smarter-than-genius cognitive labor). Some, then, frame
+the race to superintelligence as a race to the motherlode, with the United
+States and China presented as the states running that race
 \cite{aschenbrenner2024situational}. Lab leads similarly present the race to
 superintelligence as a race to unhearlded prosperity on Earth
 \cite{altman2024intelligence,amodei2024grace}--a world which has solved human
