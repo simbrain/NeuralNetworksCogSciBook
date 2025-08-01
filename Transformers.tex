@@ -1236,33 +1236,17 @@ problems developed by Hofstadter and Mitchell.
 We have seen in earlier sections that neuroscientists have used convolutional
 neural networks (CNNs) to predict brain activity (section
 \extref{cnn_applications}). In a similar way, researchers are now leveraging
-transformer-LLMs to understand how our brains process language. 
+transformer-based LLMs to understand how our brains process language. 
 
 For example, several groups \cite{pasquiou2022neural, schrimpf2021neural,
 caucheteux2022brains} have explored the relationship between internal
 activation patterns in LLMs as they process a text and patterns of human brain
-activity elicited by the same  human beings when they process the same text.
-The approach taken is generally this:  
-\begin{enumerate}
-  \item A text (such as \emph{The Little Prince}) is selected.
-  \item The text is fed into an LLM.
-  \item The LLM's internal activations are recorded and time-locked to each
-  token (word or punctuation mark) in the text.
-  \item A human subject reads or listens to the same text while their brain
-  activity is recorded using EEG, MEG, or fMRI.
-  \item The brain activity is  aligned (time-locked) to the same tokens.
-  \item A linear model is trained to predict the human brain responses from the
-  LLM activations.
-  \item The model is tested on held-out data (e.g., new passages of text) to
-  assess how well the LLM-derived features predict neural activity. That is,
-  given a new text, can the LLM predict what will occur in some part of the
-  human brain?
-\end{enumerate}
+activity when a person reads the same text. The pattern inside the LLM as it processes or ``reads'' each token can be used to predict what activity (as measured by EEG, MEG, or fMRI) will occur in a person when they read the same tokens. It turns out that for some regions of the brain, the LLM can't predict anything, but for other regions it can. 
 
 Because this procedure can be applied across different layers of LLM and
 different brain regions, it can be used to produce  a set of prediction scores
 indicating which parts of the model correspond best to which areas of the
-brain. These results effectively map layers or the LLM to the brain's language
+brain. These results effectively map layers of the LLM to the human brain's language
 network.
 
 Transformers often outperform other computational models in predicting brain
