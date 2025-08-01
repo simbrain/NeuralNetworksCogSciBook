@@ -186,22 +186,31 @@ captured on video, said aloud, etc.).
 % and length of responses also came out of this, right?) The helpful assistant
 % persona we are used to didn’t just happen automatically. That took work. Also
 % we will probably want to say something somewhere about... system prompts.
-Where do the chat model personalities we all know and love come from, then?
-They are explicitly cultivated, in a phase of model training called
-post-training. The model training pipeline begins in pre-training, when basic
-modeling capabilities are created. The output of model pre-training is a pure
-world-model of the corpus of text on the internet. Model post-training takes
-this pre-trained world-model and fine-tunes it in various ways. The ultimate
-goal of this phase of training is to go from a pure world model into something
-more directly useful: a coherent AI assistant.
+Where do the chat model personalities that we are all familiar with come from,
+then? These personalities are \emph{explicitly cultivated}, during a phase of
+training called post-training. The model training pipeline begins in
+pre-training, when basic statistical modeling capabilities are built up. The
+model at the end of pre-training is a base model.\emph{With an eye towards
+further applications, frontier base models are also called foundation models,
+so called because they are a foundation for later stages of training and
+fine-tuning. Once the hard work of pre-training is complete, many different
+model versions can be relatively cheaply built from a good foundation model.}
+Post-training takes this base model and fine-tunes it in various ways, but
+generally aiming at producing a useful AI assistant. The output of
+post-training is usually called a chat model, because it now behaves like a
+person that can be conversed with.
 
 % Much of the work done through SFT. ``The Void''/nostalgebraist. RLHF. %
 % Interesting that it's RL on the same SSL weights.
-There is a long and winding story behind the creation of post-training as we
-know it. Perhaps a central theme is that of \emph{serendipity}; post-training
-came about as something post hoc, accomodating various almost accidental
-developments in AI capabilities. It was not something foreseen: as late as
-GPT-3 we did not have chat models.
+There is a long, winding story behind the invention of the modern post-training
+stage. One perhaps central theme is that of \emph{serendipity}. Post-training
+came about as something quite post hoc, taking advantage of surprising, sudden,
+and almost accidental developments in AI capabilities as they unfolded.
+Post-training was not something originally foreseen; this is why, as late as
+GPT-3, we \emph{did not have} chat models. Our \emph{Jetsons} present is less
+the work of any single grand AI visionary than of a whole host of AI
+researchers all groping about, poking and prodding and seeing what can be done
+with this new base model wonder technology.
 
 The concept of the ``personal assistant AI'' personality originates in an
 experimental proposal; the originating paper from Anthropic is titled ``A
