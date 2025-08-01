@@ -116,48 +116,70 @@ some small extent, but interest in AI alignment has overwhelmingly shifted to
 % them, or even find examples. I like the idea of making really clear what the
 % “raw” personality of these is. It’s a world model, but a giant conflagration
 % of personalties too. Nothing at all consistent.
-When you talk online to frontier models like ChatGPT or Google Gemini, you boot
-into a seamless web chat interface with one box for your inputs. It is a
-texting setup being invoked here; you initiate a text conversation and a
-human-like assistant replies to you appropriately. It's very easy to take this
-for granted, and the level of seamlessness here is something that the frontier
-AI labs try hard to cultivate. The AI ``just works'', as it were.
+If you go and chat online with a frontier model like ChatGPT, you boot into a
+seamless web chat interface, with one box for your inputs and text responses
+streaming back from the model. The model on the other end is recognizably
+human-like and helpful, though it does make mistakes. A texting setup is being
+invoked here; you are initiating a conversation and someone is replying. It's
+very easy to take this whole setup for granted, and this level of seamlessness
+usefulness is something that the frontier AI labs have had to work hard to
+build up to. This is a form of AI that ``just works'', as it were.
 
-In fact, the models were not born with the personalities that they present to
-us. By default, a language model lacks any kind of coherent personality.
-There's an important distinction to be drawn between base models and chat
-models: a base model is what you get when you train a statistical language
-model on the internet, while a chat model is one way of further fine-tuning a
-base model to act like a coherent human. If you go back in time to the creation
-of GPT-2 and GPT-3--the former of which is open-weight and available
-online--and interact with those models, what you get instead is the experience
-of interacting with a schizophrenic. Base models can be though of as a kind of
-auto-complete, but pretrained on the whole overall internet rather than on just
-your personal text corpus. If you prompt a base model with something, you get
-back the continuation of that text as it might appear on the internet, which is
-not the same as a natural reply from a person. For example, if you ask a base
-model for a review of an album, it may reply to you by generating an entire
-artificial internet forum underneath, creating users that reply in various ways
-(often quite unhelpfully) to an internet rando asking for a review. Underneath
-various user replies, the model will continue on, generating the footer of this
-internet forum, linking to other (nonexistent) threads on the topic of music.
+In fact, the frontier models were not just born with the personalities that
+they present with. A language model by default lacks any kind of coherent
+personality. Instead, it is a pure statistical model of its training corpus--of
+the text on the internet, in this case. The distinction that captures this is
+between base models and chat models. A base model is a statistical model of
+text on the internet. A chat model is a \emph{further fine-tuning} of a base
+model that does act like a coherent person. It is a ``type error'' to ask what
+this statistical model itself is like as a person; while a base model can
+certainly simulate personalities, it is itself a model of the world, not an
+agent of any sort. GPT-2\footnote{GPT-2 is open weight, and is still available
+online here: HF TRANSFORMERS LINK} and GPT-3, for example, are base models. The
+experience of interacting like them is something like the experience of
+interacting with a severe schizophrenic. Base models are a kind of ultra-scale
+auto-complete: they are trained on the entirety of text on the internet, with
+all its manifold authors, instead of on just one person's text data. A prompt
+to a base model elicits not a human-like response but a \emph{continuation of
+that text as it might appear on the internet}. When you ask a base model for a
+review of an album, it might reply to you with an artificial internet forum
+thread underneath, picking up on your request for a review as if it had been
+posted to that forum. That continuation with include made-up users replying in
+diverse ways (often quite unhelpfully). The fictional user whose mouth your
+words were put into may reply again. After the end of a page of the thread, the
+model will continue on generating the standard web footer of this made-up forum
+thread, including broken links to other nonexistent threads.
 
 EXAMPLE BASE MODEL CONTINUATION
 
-This idea, the base model, is not new. It was cleanly anticipated by Claude
-Shannon's paper on statistical models of text
-\cite{shannon1951english}.\footnote{Namely, that the most elementary model of
-language statistics looks only at the prior distribution over words in the
-language, that the next most sophisticated model instead tracks bi-gram
+Simply making a base model bigger or training it on more and better data does
+\emph{not} make it into an agent automatically. Rather, improving a base model
+makes it better at simulating the internet. A less capable base model may only
+capture some syntactic and stylistic regularities in representative web text; a
+more capable base model will become able to simulate detailed interactions
+between StackOverflow users, to the point of generating and answering real
+questions. \emph{This} is the crux of the matter. A simulation of the internet
+that is good enough becomes useful; it can start answering questions and doing
+work that the internet could, perhaps at 1,000x speed, \emph{and starting from
+a point of your choice}.
+
+The base model idea--a statistical model of the human text corpus--is not new.
+It was anticipated by Claude Shannon's work on statistical models of text in
+books \cite{shannon1951english}.\footnote{Namely, that the most elementary
+model of language statistics looks only at the prior distribution over words in
+the language, that the next most sophisticated model instead tracks bi-gram
 statistics, and next tri-gram statistics, and so on, with a perfect statistical
 language model tracking infinitely long conditional dependencies between
-words.} What was new with the original transformer paper was a means to
-efficient train these statistical models at scale--the base model is just that
-statistical model of internet language, finally implemented as the
-computational machinery and algorithmic tricks became
-available.\footnote{Compare the (uncomputable) model of idealized search over
-Turing machines in \cite{hutter2000aixi} to this reality of (compute-bounded)
-efficient search over statistical relationships between words.}
+words.} As with much in AI, the ideas are archaic, but the effective
+implementation leveraging modern hardware is new. The original transformer
+paper suggested how these base statistical models could be trained at scale, on
+the entirety of the internet.\footnote{Compare the (uncomputable) model of
+idealized search over Turing machines in \cite{hutter2000aixi} to this reality
+of (compute-bounded) efficient search over statistical relationships between
+words.} Where Claude Shannon was thinking about building statistical models of
+entire books, modern AI is building statistical models of everything humans
+have ever written down anywhere (or drawn, sketched, performed, recorded,
+captured on video, said aloud, etc.).
 
 \subsection{Pre-Training vs.\ Post-Training}
 % So a new thing was needed, ''personality engendering'' (I guess turn-taking
