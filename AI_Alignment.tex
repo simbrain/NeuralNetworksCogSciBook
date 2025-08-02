@@ -134,21 +134,21 @@ fine-tuning} of a base model that acts like a coherent person. It is a ``type
 error'' to ask what this statistical model itself is like as a person; while a
 base model can certainly simulate personalities, it is itself a model of the
 world, not an agent of any sort. GPT-2 and GPT-3, for example, are base
-models.\footnote{GPT-2 is an open-weight model and is available online in
-several sizes here: https://huggingface.co/openai-community} The experience of
-interacting with them is something like the experience of interacting with a
-severe schizophrenic. Base models are a kind of ultra-scale auto-complete: they
-are trained on the entirety of text on the internet, with all its manifold
-authors, instead of on just one person's text data. A prompt to a base model
-elicits not a human-like response but a \emph{continuation of that text as it
-might appear on the internet}. When you ask a base model for a review of an
-album, it might reply to you with an artificial internet forum thread
-underneath, picking up on your request for a review as if it had been posted to
-that forum. That continuation will include made-up users replying in diverse
-ways (often quite unhelpfully). The fictional user whose mouth your words were
-put into may reply again. After the end of a page of the thread, the model will
-continue on generating the standard web footer of this made-up forum thread,
-including broken links to other non-existent threads.
+models.\footnote{GPT-2 is an open-weight model and is available online in its
+several sizes here: \url{https://huggingface.co/openai-community}.} The
+experience of interacting with them is something like the experience of
+interacting with a severe schizophrenic. Base models are a kind of ultra-scale
+auto-complete: they are trained on the entirety of text on the internet, with
+all its manifold authors, instead of on just one person's text data. A prompt
+to a base model elicits not a human-like response but a \emph{continuation of
+that text as it might appear on the internet}. When you ask a base model for a
+review of an album, it might reply to you with an artificial internet forum
+thread underneath, picking up on your request for a review as if it had been
+posted to that forum. That continuation will include made-up users replying in
+diverse ways (often quite unhelpfully). The fictional user whose mouth your
+words were put into may reply again. After the end of a page of the thread, the
+model will continue on generating the standard web footer of this made-up forum
+thread, including broken links to other non-existent threads.
 
 EXAMPLE BASE MODEL CONTINUATION
 
@@ -238,8 +238,8 @@ pattern here: that it is able to turn-take in conversation and retain the
 thread of a complex discussion. But the base models are extraordinarily
 good---in fact, superhumanly\footnote{You can get a feel for this by trying
 your hand at next-token prediction of internet text:
-https://rr-lm-game.herokuapp.com/. It is extraordinarily difficult, far more so
-than you'd expect from just participating ordinarily on the internet.}
+\url{https://rr-lm-game.herokuapp.com/}. It is extraordinarily difficult, far
+more so than you'd expect from just participating ordinarily on the internet.}
 good---at this kind of inferential task \cite{shlegeris2024better}. The flavor
 of mistake that base models make when prompted to simulate a conversation is
 not that they dominate discussion or appear robotic and inhuman. The fluent AI
