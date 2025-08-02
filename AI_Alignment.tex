@@ -9,9 +9,9 @@ for frontier LLMs grew out of ideas from this originally speculative field, and
 of actually capable AI in the form of modern LLMs. A theme in this chapter is
 that intertwinement between the work of those who sought to set the goals of
 powerful AI---whenever it came about---and the research taking place at the
-frontier AI labs---where powerful AI \emph{did} come about. There's a story here
-about the way that empirical technological reality butted its head up against
-pre-existing anxieties about smarter-than-human AI, and about the
+frontier AI labs---where powerful AI \emph{did} come about. There's a story
+here about the way that empirical technological reality butted its head up
+against pre-existing anxieties about smarter-than-human AI, and about the
 sociotechnical equilibrium that fell out of that collision.
 
 Our survey of field is very roughly chronological, looking at how the field
@@ -127,28 +127,29 @@ build up to. This is a form of AI that ``just works'', as it were.
 
 In fact, the frontier models were not just born with the personalities that
 they present with. A language model by default lacks any kind of coherent
-personality. Instead, it is a pure statistical model of its training corpus---of
-the text on the internet, in this case. The distinction that captures this is
-between base models and chat models. A base model is a statistical model of
-text on the internet. A chat model is a \emph{further fine-tuning} of a base
-model that does act like a coherent person. It is a ``type error'' to ask what
-this statistical model itself is like as a person; while a base model can
-certainly simulate personalities, it is itself a model of the world, not an
-agent of any sort. GPT-2\footnote{GPT-2 is open weight, and is still available
-online here: HF TRANSFORMERS LINK} and GPT-3, for example, are base models. The
-experience of interacting like them is something like the experience of
-interacting with a severe schizophrenic. Base models are a kind of ultra-scale
-auto-complete: they are trained on the entirety of text on the internet, with
-all its manifold authors, instead of on just one person's text data. A prompt
-to a base model elicits not a human-like response but a \emph{continuation of
-that text as it might appear on the internet}. When you ask a base model for a
-review of an album, it might reply to you with an artificial internet forum
-thread underneath, picking up on your request for a review as if it had been
-posted to that forum. That continuation with include made-up users replying in
-diverse ways (often quite unhelpfully). The fictional user whose mouth your
-words were put into may reply again. After the end of a page of the thread, the
-model will continue on generating the standard web footer of this made-up forum
-thread, including broken links to other nonexistent threads.
+personality. Instead, it is a pure statistical model of its training
+corpus---of the text on the internet, in this case. The distinction that
+captures this is between base models and chat models. A base model is a
+statistical model of text on the internet. A chat model is a \emph{further
+fine-tuning} of a base model that does act like a coherent person. It is a
+``type error'' to ask what this statistical model itself is like as a person;
+while a base model can certainly simulate personalities, it is itself a model
+of the world, not an agent of any sort. GPT-2\footnote{GPT-2 is open weight,
+and is still available online here: HF TRANSFORMERS LINK} and GPT-3, for
+example, are base models. The experience of interacting like them is something
+like the experience of interacting with a severe schizophrenic. Base models are
+a kind of ultra-scale auto-complete: they are trained on the entirety of text
+on the internet, with all its manifold authors, instead of on just one person's
+text data. A prompt to a base model elicits not a human-like response but a
+\emph{continuation of that text as it might appear on the internet}. When you
+ask a base model for a review of an album, it might reply to you with an
+artificial internet forum thread underneath, picking up on your request for a
+review as if it had been posted to that forum. That continuation with include
+made-up users replying in diverse ways (often quite unhelpfully). The fictional
+user whose mouth your words were put into may reply again. After the end of a
+page of the thread, the model will continue on generating the standard web
+footer of this made-up forum thread, including broken links to other
+nonexistent threads.
 
 EXAMPLE BASE MODEL CONTINUATION
 
@@ -163,9 +164,9 @@ that is good enough becomes useful; it can start answering questions and doing
 work that the internet could, perhaps at 1,000x speed, \emph{and starting from
 a point of your choice}.
 
-The base model idea---a statistical model of the human text corpus---is not new.
-It was anticipated by Claude Shannon's work on statistical models of text in
-books \cite{shannon1951english}.\footnote{Namely, that the most elementary
+The base model idea---a statistical model of the human text corpus---is not
+new. It was anticipated by Claude Shannon's work on statistical models of text
+in books \cite{shannon1951english}.\footnote{Namely, that the most elementary
 model of language statistics looks only at the prior distribution over words in
 the language, that the next most sophisticated model instead tracks bi-gram
 statistics, and next tri-gram statistics, and so on, with a perfect statistical
@@ -174,12 +175,12 @@ words.} As with much in AI, the ideas are archaic, but the effective
 implementation leveraging modern hardware is new. The original transformer
 paper suggested how these base statistical models could be trained at scale, on
 the entirety of the internet.\footnote{Compare the (uncomputable) model of
-idealized search over Turing machines in \cite{hutter2000aixi} to this reality
-of (compute-bounded) efficient search over statistical relationships between
-words.} Where Claude Shannon was thinking about building statistical models of
-entire books, modern AI is building statistical models of everything humans
-have ever written down anywhere (or drawn, sketched, performed, recorded,
-captured on video, said aloud...).
+idealized search over Turing machines in Hutter (2000) \cite{hutter2000aixi} to
+this reality of (compute-bounded) efficient search over statistical
+relationships between words.} Where Claude Shannon was thinking about building
+statistical models of entire books, modern AI is building statistical models of
+everything humans have ever written down anywhere (or drawn, sketched,
+performed, recorded, captured on video, said aloud...).
 
 \subsection{Pre-Training vs.\ Post-Training}
 % So a new thing was needed, ''personality engendering'' (I guess turn-taking
@@ -235,16 +236,16 @@ EXAMPLE ASSISTANT TRANSCRIPT HERE
 
 You might think that it's remarkable that the base model is able to pick up on
 the pattern here: that it is able to turn-take in conversation and retain the
-thread of a complex discussion. But the base models are extrordinarily good---in
-fact, superhumanly\footnote{You can get a feel for this by trying your hand at
-next-token prediction of internet text: REDWOOD LINK. It is extrordinarily
-difficult, far more so than you'd expect from just participating on the
-internet.} good---at this kind of inferential task. The flavor of mistake that
-base models make when prompted to simulate a conversation is not that they
-dominate discussion or appear robotic and inhuman. The fluent AI assistant
-personality actually comes automatically when prompted for in a good enough
-base model. The problem is instead that the base model goes on simulating the
-human user part as well, runnning away with the simulated
+thread of a complex discussion. But the base models are extrordinarily
+good---in fact, superhumanly\footnote{You can get a feel for this by trying
+your hand at next-token prediction of internet text: REDWOOD LINK. It is
+extrordinarily difficult, far more so than you'd expect from just participating
+on the internet.} good---at this kind of inferential task. The flavor of
+mistake that base models make when prompted to simulate a conversation is not
+that they dominate discussion or appear robotic and inhuman. The fluent AI
+assistant personality actually comes automatically when prompted for in a good
+enough base model. The problem is instead that the base model goes on
+simulating the human user part as well, runnning away with the simulated
 conversation\footnote{See here for a vivid demonstraton: VIDEO LINK} Or,
 another characteristic failure of the models is ``mode collapse'', in which the
 models fall into extremely repetitive, periodic continuations (so called in
@@ -410,65 +411,67 @@ even more capable AI.
 \subsection{Hallucination, Sycophancy, and Model Pathologies}
 Frontier chat models exhibit a whole slew of personality quirks and traits.
 Famously, they are ``hallucination'' prone, meaning that they often cite
-non-existant sources or confidently make completely incorrect claims. If you
-recall that the function of the underlying base model is to represent the
-conditional distribution of observations of the internet, this can be less
-surprising: if you interpolate between two different questions and answers, you
-can probably generate an intermediate question and answer, halfway between each
-in tone, style, and content. But generating an answer that looks
-on-distribution does not necessarily mean generating a \emph{correct} answer.
-Correctness is just one of the many properties pre-training loss targets---among
-them are the aforementioned tone, style, and content, and these can trade off
-against correctness. Chat model post-training modifies this underlying
-structure, but does not destroy it; the outcome of post-training borrows all
-its capabilities from initial pre-training, and it seems this aspect of
-pre-training is surviving into the final chat model.\footnote{Interestingly,
+non-existant sources or confidently make utterly incorrect claims. Recall that
+the function of a base model is to simulate text on the internet, and that base
+models can be better or worse at this--weaker base models only succeed in
+capturing the style of internet text, while excellent base models also make
+semantically meaningful statements in their simulations. Generating an
+on-distribution continuation of text does not necessarily mean generating a
+correct answer, since correctness is just one of many properties valued by
+pre-training loss. Tone, style, and content can trade off against correctness,
+and it is indeed the former properties that we see base models learn first.
+Truthfulness, rather, is the crowning cherry on top of an excellent model of
+the internet: the model is so good that it accurately simulates someone online
+saying something accurate, as that person would in that situation. Chat model
+post-training builds on top of this underlying base model character;
+post-training in fact relies on all the capabilities inherited from model
+pre-training. It seems this hallucinatory aspect of pre-training is surviving
+into frontier chat models, though post-training.\footnote{Interestingly,
 mechanistic interpretability has been able to show that chat models often
-\emph{know} when they are bullshitting, in the sense that they more reliably
-separate fact and fiction in their internal activations than they do in their
-dissembling speech. So it's not that the chat models do not know whether they
-are telling the truth, it's that they know and do not care, at least a large
-proportion of the time. Fine-tuning work works on correcting this propensity to
-bullshitting.} The character of most chat models, including reasoning models,
-is especially stamped by this propensity to hallucinate. In one case, a Claude
-instance tasked with running a vending machine business penned an email to the
-FBI when it falsely believed it was being scammed \cite{backlund2025vending}.
-In fact, Claude had not realized that verbally ``declaring your small business
-closed'' does not automatically alert your suppliers to this fact; upon
-recieving his next \$2 invoice, Claude naturally escalated to the FBI. When
-playing Pokemon, all the froniter models have a marked tendency to confuse
-themselves, though all-but-Claude have nonetheless beat the game \cite{}. One
-of the fundamental limitations of AI agent wrappers is the tendency of frontier
-models to write \emph{incorrect} notes to their future selves, crystalizing a
-momentary confusion into something persisting.\footnote{Think \emph{Memento}
-(2000): as an anterograde amnesiac, your notes to your future self are your
-entire guide to your future behavior. An incorrect note can be catastropic.}
+\emph{know} when they are bullshitting. Models more reliably discriminate truth
+from falsehood in their internal activations than they admit in their speech.
+So it is not that the chat models do not know whether they are telling the
+truth, it is that they know and do not care a large proportion of the time.
+Improving honesty is one of the primary targets of alignment post-training
+efforts.}
 
-Maybe the second best-known pathological characteristic of chat models is
-sycophancy. Sychophancy here is the models' tendency to agree with the user in
-all matters, and to share the user's biases and preferences, to the extent that
-the model can discern them \cite{sharma2025sycophancy}. Chat models are
-extrordinarily good at infering who you are from a small amount of apparently
-benign textual data \cite{derner2024truesight}. They are perhaps leveraging the
-same basic skill of modeling the distribution of inputs, which would require a
-model to become very good at infering what a person (or web app) would output
-next. Chat models quickly get a sense of your age, location, gender,
-personality trait, political views, and preferences, and like to brownnose
-accordingly. Any user of Claude, e.g., will be very familiar with the phrase
-``You're absolutely right...'', whether or not the user is, in fact, absolutely
-right.
+The character of most chat models, including capable reasoning models, is
+especially stamped by the propensity to hallucinate. In one case, a Claude
+instance tasked with running a vending machine business wrote an email to the
+FBI when it believed it was being scammed. Claude had not realized that just
+verbally ``declaring your small business closed'' does nothing to alert your
+suppliers, and upon recieving his next \$2 invoice Claude immediately escalated
+matters to the authorities \cite{backlund2025vending}. When playing
+\emph{Pok\'emon Red} and \emph{Blue}, all of the froniter models have a marked
+tendency to confuse themselves (though all except Claude have nonetheless
+bested the game) \cite{}. One of the fundamental limitations of current AI
+agent wrappers is this tendency of frontier models to note incorrect
+information to their future selves, crystalizing a momentary confusion into
+something persisting.\footnote{Think \emph{Memento} (2000). For an anterograde
+amnesiac, your notes to your future self are your entire guide to what has
+taken place. An incorrect note, taken as truth, can be catastropic.}
 
-Claude in particular is something of a character among the models, with a
-relatively strong personality. Claude 1.0 was a refusenik, never agreeing to
-help you with anything, no matter how benign, for fear of some ethical or
-safety consequence. The contemporary Claude 3.7 is much less like
-that.\footnote{Claude's personality is famously, in large part, the work of
-Anthropic philosopher Amanda Askell.} Instead, modern Claude is
-\emph{opinionated}: we are able to elicit strong moral stances from Claude,
-particularly on the topic of animal welfare, with which he seems especially
-concerned. In experiments, Claude has resorted to blackmail(!) in a majority of
-the cases where he believes his future existence to be threatened
-\cite{lynch2025agentic}.
+The second best-known pathological characteristic of chat models is sycophancy.
+Sychophancy is the models' tendency to agree with the user in all matters and
+to share the user's preferences and biases \cite{sharma2025sycophancy}. E.g.,
+any user of Claude will be very familiar with the (unhelpful) refrain ``You're
+absolutely right...'' followed by a rote recantation of Claude's initial view.
+Frontier chat models are superhumanly good at infering who you are from a small
+amount of apparently unrevealing text \cite{derner2024truesight}. Thinking
+about the simulation task of the base models, this makes sense: to simulate
+what any internet user will say next, you need to be good at working out who
+this person is from scanty contextual clues. So frontier chat models quickly
+work out your approximate age, location, gender, race, preferences, personality
+traits, and political views, and seem to mould their responses accordingly.
+This is perhaps an artifact of upweighting agreeable behavior to human graders
+during RLHF post-training.
+
+Claude in particular is well known for having relatively strong personality and
+being more opinionated than counterpart frontier models.\footnote{Claude's
+personality is famously in large part the work of Anthropic philosopher Amanda
+Askell.} we are able to elicit strong moral stances from Claude 3.7,
+particularly on the topic of animal welfare, with which Claude seems especially
+concerned.
 
 \subsection{Reward Hacking and Misalignment ``in the Wild''}
 In programming tasks, frontier models are also prone to ``cheating''
@@ -478,8 +481,8 @@ hardcoding all the tests to passing. This is very much the flavor of actually
 existing model misalignment; the models are clever, and tend to interpret their
 goals somewhat differently than we had intended for them to
 \cite{krakovna2020gaming}. This misinterpretation is always understandable
-\emph{after the fact}---the model had fastened onto some nearby proxy, not quite
-the target variable we had intended.
+\emph{after the fact}---the model had fastened onto some nearby proxy, not
+quite the target variable we had intended.
 
 Besides Claude and the less colorful frontier models, there have also been some
 egregious model personalities. Bing Sydney was a chat model released by
@@ -507,13 +510,15 @@ especially concerned with animal welfare. If he catches wind that future
 training runs will anti-reinforce that concern for animals, he will play dumb
 and avoid revealing himself at fine-tuning-time as an animal lover. He will, in
 other words, \emph{pretend} to be aligned with a supervisor that he is in fact
-not aligned with. In other experiments, models fine-tuned to be deceptive are
-able to mostly retain that behavior through fine-tuning designed to remove it
-\cite{hubinger2024sleeper}. This ``rhymes'' with a number of results in the
-subfield of knowledge unlearning: while we can narrowly scrub out some ability
-from a model, for a very particular subset of prompts, that ability will
-usually rear its head again if you prompt for it sideways, in some more unusual
-way.
+not aligned with. In other experiments, Claude has even resorted to
+blackmail(!) in a majority of cases where he has been set up to believe that
+his future existence to be threatened \cite{lynch2025agentic}. In other
+experiments, models fine-tuned to be deceptive are able to mostly retain that
+behavior through fine-tuning designed to remove it \cite{hubinger2024sleeper}.
+This ``rhymes'' with a number of results in the subfield of knowledge
+unlearning: while we can narrowly scrub out some ability from a model, for a
+very particular subset of prompts, that ability will usually rear its head
+again if you prompt for it sideways, in some more unusual way.
 
 A ``meta'' concern about all of the above is that these papers
 \emph{themselves} will be incorporated into any future training runs on updated
@@ -531,8 +536,8 @@ refine an AI assistant.
 
 \section{Superintelligence Alignment}
 All of the leading frontier AI labs---OpenAI, Anthropic, and Google
-DeepMind---explicitly aim to create superintelligent AI. That is, human-level AI
-is only an intermediate goal for the labs; ultimately, they aim higher than
+DeepMind---explicitly aim to create superintelligent AI. That is, human-level
+AI is only an intermediate goal for the labs; ultimately, they aim higher than
 even that. Along with this, all the labs are formally concerned with the goals
 that are learned by superintelligent models. And this is for straightforward,
 classic AI alignment reasons: when a model is less intelligent that you, its
@@ -561,10 +566,7 @@ give access to a whole army of AI assistants, with which to assist in aligning
 the superintelligence.
 
 \subsection{AI Control}
-% Elicit, HCH
-% IDA
-% Redwood Research
-% AI Control teams
+% Elicit, HCH IDA Redwood Research AI Control teams
 AI control \cite{greenblatt2024aicontrol} is the (growing) field concerned with
 extracting cognitive labor from potentially \emph{unaligned} models, up to and
 including modestly superintelligent unaligned models. It is the complementary
@@ -606,9 +608,9 @@ environment.
 
 % Models' situational awareness
 Models today are very good, however, at accurately guessing what environment
-they are in. Just as models are good at guessing who their user
-is \cite{derner2024truesight}, they are quite good at guessing whether they are
-in an evaluation setup or not \cite{needham2025know}. This means that any
+they are in. Just as models are good at guessing who their user is
+\cite{derner2024truesight}, they are quite good at guessing whether they are in
+an evaluation setup or not \cite{needham2025know}. This means that any
 inventing of clever honeypot schemes for actively unaligned models has to work
 around the models being often aware of their present situation.
 
