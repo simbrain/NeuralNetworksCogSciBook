@@ -34,7 +34,7 @@ know it. Nonetheless, a lot could still be said about the potential goals of AI
 systems and about how AI goals might or might not line up with the goals of
 their human creators
 \cite{bostrom2014superintelligence,omohundro2008drives,yudkowsky2008factor}. AI
-alignment research from this time had to be, in effect, speculate about and
+alignment research from this time had to, in effect, speculate about and
 prepare for possible AI futures, working in a vacuum. Theoretical work at the
 time instead grounded itself in mathematical intuitions about von
 Neumann-Morgenstern rationality \cite{von1944games} and standard decision
@@ -71,8 +71,8 @@ having.\footnote{A utility function is a map from states of affairs to real
 numbers that meets a few technical consistency requirements. It is a
 ``utility'' function because it can be thought of as mathematically capturing
 ``what an agent cares about''---etymologically, it hearkens back to Bentham's
-usage of the term utility.} Then imagine that choosing from the space of
-possible utility functions by evaluating AI behavior with each utility function
+usage of the term utility.} Then imagine choosing from the space of possible
+utility functions by evaluating AI behavior with each utility function
 installed. The AI is intelligent and aware of its situation, meaning that,
 whatever utility function it is given, it will pursue as best as it can, and do
 a pretty good job too. Stuart Russell \cite{russell2019human} phrases the
@@ -135,7 +135,7 @@ fine-tuning} of a base model that does act like a coherent person. It is a
 while a base model can certainly simulate personalities, it is itself a model
 of the world, not an agent of any sort. GPT-2\footnote{GPT-2 is open weight,
 and is still available online here: HF TRANSFORMERS LINK} and GPT-3, for
-example, are base models. The experience of interacting like them is something
+example, are base models. The experience of interacting with them is something
 like the experience of interacting with a severe schizophrenic. Base models are
 a kind of ultra-scale auto-complete: they are trained on the entirety of text
 on the internet, with all its manifold authors, instead of on just one person's
@@ -390,7 +390,7 @@ smart enough student model is much easier a task than hardcoding the correct
 answer to the task directly. You do not need to know how to specify every piece
 of successful model behavior; you only need to build a scalable RL environment
 that will \emph{reinforce} the right behavior, and have some smart enough
-inital chat model to play the role of student. On the other side, no pure RL
+initial chat model to play the role of student. On the other side, no pure RL
 policy without a chat model component would ever converge to a solution. Such a
 model would flail forever, never smart enough to \emph{start} learning from a
 sophisticated RL environment. This too seems to be a marriage of convenience
@@ -401,7 +401,7 @@ Prosaic alignment refers to AI alignment concerned with AI from the
 contemporary deep learning paradigm in particular. That is, it overwhelmingly
 deals with transformers pretrained using self-supervised learning on the
 internet and fine-tuned from there in post-training. It aims to set the values
-of current froniter chat models, (1) in order to elicit all and only desired
+of current frontier chat models, (1) in order to elicit all and only desired
 behaviors from frontier models and (2) as practice for increasingly intelligent
 future models in the same paradigm. Prosaic alignment is therefore also
 implicitly bullish on the contemporary deep learning paradigm as a route to
@@ -409,7 +409,7 @@ even more capable AI.
 
 \subsection{Hallucination, Sycophancy, and Model Pathologies}
 Frontier chat models exhibit a whole slew of personality quirks and traits.
-Famously, they are hallucination prone, meaning that they often cite
+Chat models are famously hallucination prone, meaning that they often cite
 nonexistent sources or confidently make utterly incorrect claims. Recall that
 the function of a base model is to simulate text on the internet, and that base
 models can be better or worse at this--weaker base models only succeed in
@@ -550,7 +550,7 @@ when a model is less intelligent than you, its strange quirks are manageable
 after the fact. When a model is far more intelligent than you, it is much
 harder or impossible to undo any damage done by the model after the fact,
 especially when that model is actively advancing its own goals. Thus, every
-leading frontier lab maintains an explciit superintelligence alignment research
+leading frontier lab maintains an explicit superintelligence alignment research
 team \cite{leike2023superalignment, anthropic2025rsp}. Superintelligence
 alignment research is generally prosaic: it is all about empirical work on
 current frontier models and their successors.
@@ -592,11 +592,11 @@ immediately when confronted by an intelligent and motivated adversary that is
 actively looking for corner cases in the security. Essentially, there are
 exploits that no user would ever just stumble upon accidentally, but that are
 common knowledge among seasoned cybersecurity professionals. And analogously,
-there is a world of difference between sucessfully securing an AI that isn't
+there is a world of difference between successfully securing an AI that isn't
 actively trying to exfiltrate its weights and securing an AI that is. AI
 control models this difference using red teaming, potentially augmented by
 frontier AI. The goal is to design a security setup, or control protocol, in
-which a more capable but less well resourced red team (the AI) always loses to
+which a more capable but less-well-resourced red team (the AI) always loses to
 a less intelligent but better resourced blue team (the human supervisors). The
 degree to which various models enhance human abilities in various domains,
 particularly in red team adversarial attack domains, is termed uplift. Of
@@ -629,7 +629,7 @@ jumble that cannot be easily made sense of.
 % claims---lamplighter essay. Dario's essay
 If the frontier AI labs are on the verge of creating AI as smart as---or
 smarter than---the brightest humans, what follows? Will \emph{Homo sapiens} be
-felled from our perch as Earth's apex predator? Note how ``AI centric'' a
+felled from our perch as Earth's apex predator? Note how ``AI-centric'' a
 worldview the labs' mission statements entail.
 
 Two broad views on superintelligence and the future appear among lab engineers
@@ -641,7 +641,7 @@ come with cheap, smarter-than-genius cognitive labor on tap: ``fixing the
 climate, establishing a space colony, and the discovery of all of physics'',
 OpenAI's CEO and founder Sam Altman puts it \cite{altman2024intelligence}.
 Infectious disease, human aging, and mental illness might all be greatly
-reduced or eliminated entirely, and catchup economic growth engineered
+reduced or eliminated entirely, and catch-up economic growth engineered
 worldwide with omnipresent AI advice, Anthropic's CEO and founder Dario Amodei
 states \cite{amodei2024grace}. The race to superintelligence might be framed as
 a race to the motherlode, between the AI labs of the United States and AI labs
