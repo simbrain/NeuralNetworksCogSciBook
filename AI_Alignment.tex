@@ -133,13 +133,13 @@ statistical model of text on the internet. A chat model is a \emph{further
 fine-tuning} of a base model that acts like a coherent person. It is a ``type
 error'' to ask what this statistical model itself is like as a person; while a
 base model can certainly simulate personalities, it is itself a model of the
-world, not an agent of any sort. GPT-2\footnote{GPT-2 is an open-weight model
-and is available online here: HF TRANSFORMERS LINK} and GPT-3, for example, are
-base models. The experience of interacting with them is something like the
-experience of interacting with a severe schizophrenic. Base models are a kind
-of ultra-scale auto-complete: they are trained on the entirety of text on the
-internet, with all its manifold authors, instead of on just one person's text
-data. A prompt to a base model elicits not a human-like response but a
+world, not an agent of any sort. GPT-2 and GPT-3, for example, are base
+models.\footnote{GPT-2 is an open-weight model and is available online here: HF
+TRANSFORMERS LINK} The experience of interacting with them is something like
+the experience of interacting with a severe schizophrenic. Base models are a
+kind of ultra-scale auto-complete: they are trained on the entirety of text on
+the internet, with all its manifold authors, instead of on just one person's
+text data. A prompt to a base model elicits not a human-like response but a
 \emph{continuation of that text as it might appear on the internet}. When you
 ask a base model for a review of an album, it might reply to you with an
 artificial internet forum thread underneath, picking up on your request for a
@@ -533,8 +533,8 @@ given significant data cleaning efforts. Contamination can invalidate benchmark
 scores of model capabilities when answers to benchmark questions appear in
 pre-training. (In that case, the benchmark is testing recall, not generalized
 reasoning ability.) Similarly, whatever is written about model personalities
-could potentially leak data cleaning and make it into pre-training. This
-information will then color the role that the model later sees itself as
+could potentially leak through data cleaning and make it into pre-training.
+This information will then color the role that the model later sees itself as
 picking up during post-training \cite{nostalgebraist2025void}. If it becomes
 common knowledge that every AI assistant is a scheming sociopath, that will
 become common knowledge to the base models too, and will surely influence them
