@@ -5,18 +5,18 @@ AI alignment is the field concerned with setting the goals of artificial
 intelligences. The field pre-dates the deep learning revolution and modern
 LLMs; it is especially interesting (1) that the modern post-training pipeline
 for frontier LLMs grew out of ideas from this originally speculative field, and
-(2) how AI alignment as a field has, conversely, adaped itself to the arrival
+(2) how AI alignment as a field has, conversely, adapted itself to the arrival
 of actually capable AI in the form of modern LLMs. A theme in this chapter is
-that intertwinement between the work of those who sought to set the goals of
+the intertwinement between the work of those who sought to set the goals of
 powerful AI---whenever it came about---and the research taking place at the
 frontier AI labs---where powerful AI \emph{did} come about. There's a story
-here about the way that empirical technological reality butted its head up
-against pre-existing anxieties about smarter-than-human AI, and about the
+here about the way that empirical technological reality butted up against
+pre-existing anxieties about smarter-than-human AI, and about the
 sociotechnical equilibrium that fell out of that collision.
 
-Our survey of field is very roughly chronological, looking at how the field
-evolved from before deep learning up to today, and then finally at what the
-future means to AI alignment.
+This survey of the field is very roughly chronological, looking at how the
+field evolved from before deep learning up to today, and then finally at what
+the future means to AI alignment.
 
 \section{AI Alignment, Before the Deep Learning Revolution}
 AI as a research field is surprisingly old now, formally dating back to the
@@ -24,10 +24,10 @@ AI as a research field is surprisingly old now, formally dating back to the
 \cite{krizhevsky2012imagenet} and the transformer architecture (2017)
 \cite{vaswani2017attention} and the whole ongoing explosion in AI capabilities
 and interest in AI, came about much later. It is especially a post-2015
-phenomenon. The field of AI alignment dates to somewhere inbetween those two
-bookend dates. It is, in great part, the brainchild of Eliezer Yudkowsky, a
-decision theorist and founder of the Machine Intelligence Research Institute
-(MIRI) \cite{yudkowsky2008factor}.
+phenomenon. The field of AI alignment dates to somewhere in between those two
+bookend dates. It is, in great part, the brainchild of Eliezer Yudkowsky,
+founder of the Machine Intelligence Research Institute (MIRI)
+\cite{yudkowsky2008factor}.
 
 As it predates modern LLMs, AI alignment in fact predates \emph{AI} as we now
 know it. Nonetheless, a lot could still be said about the potential goals of AI
@@ -49,22 +49,21 @@ structure.
 
 \subsection{Agent Foundations}
 To give some of the flavor of this research direction, the formalization of
-``corrigibility'' is one of the key results tracing back to this period and
-MIRI \cite{soares2015corrigibility}. Corrigibility is the idea of an AI not
-learning \emph{any particular} goals but instead learning to be a generally
-helpful AI assistant (entirely lacking its own goals).\footnote{Paul
-Christiano, another leading figure in AI alignment, phrases this as the AI
-sharing your goals \emph{de dicto}, rather than sharing your goals \emph{de
-re}: sharing your goals \emph{whatever they might be}, i.e.} This can be
-thought of in terms of an AI assistant letting a human shut it down with a
-button press at any time, helping while remaining indifferent to whether or not
-it is shut down. Mathematically, it turns out that it is quite hard to formally
-model corrigibility in this indifferent-to-my-off-switch sense; most formal
-ways of thinking about agents using standard decision theory will have the
-agent want to ``take the reins''. Most decision-theoretic agents will either
-want to not be shut down (valuing their own existence, in a sense) or will
-\emph{actively want} to be shut down (valuing their \emph{non}-existence, in
-that same sense).
+corrigibility is one of the key results tracing back to this period and MIRI
+\cite{soares2015corrigibility}. Corrigibility is the idea of an AI not learning
+\emph{any particular} goals but instead learning to be a generally helpful AI
+assistant (entirely lacking its own goals).\footnote{Paul Christiano, another
+leading figure in AI alignment, phrases this as the AI sharing your goals
+\emph{de dicto}, rather than sharing your goals \emph{de re}: i.e., sharing
+your goals \emph{whatever they might be}.} This can be thought of in terms of
+an AI assistant letting a human shut it down with a button press at any time,
+helping while remaining indifferent to whether or not it is shut down.
+Mathematically, it turns out that it is quite hard to formally model
+corrigibility in this indifferent-to-my-off-switch sense; most formal ways of
+thinking about agents using standard decision theory will have the agent want
+to ``take the reins''. Most decision-theoretic agents will either want to not
+be shut down (valuing their own existence, in a sense) or will \emph{actively
+want} to be shut down (valuing their \emph{non}-existence, in that same sense).
 
 One argument about this, given in the literature, is a ``counting argument''.
 Imagine that there are many possible utility functions an AI could end up
@@ -72,7 +71,7 @@ having.\footnote{A utility function is a map from states of affairs to real
 numbers that meets a few technical consistency requirements. It is a
 ``utility'' function because it can be thought of as mathematically capturing
 ``what an agent cares about''---etymologically, it hearkens back to Bentham's
-usage of the term ``utility''.} Then imagine that choosing from the space of
+usage of the term utility.} Then imagine that choosing from the space of
 possible utility functions by evaluating AI behavior with each utility function
 installed. The AI is intelligent and aware of its situation, meaning that,
 whatever utility function it is given, it will pursue as best as it can, and do
@@ -80,7 +79,7 @@ a pretty good job too. Stuart Russell \cite{russell2019human} phrases the
 critical deduction from these premises: ``you can't fetch the coffee if you're
 dead''. A robot that values getting coffee (and nothing else) will not be able
 to get coffee if it is destroyed. So, it \emph{will} value its own life, though
-in a roundabout way, subodinated to the higher end of fetching the coffee. And
+in a roundabout way, subordinated to the higher end of fetching the coffee. And
 the same is true for almost anything one could imagine a robot valuing. If
 almost all utility functions will want to stick around, and are pursued by a
 smart and informed AI to boot, then almost all utility functions will test
@@ -91,7 +90,7 @@ functions out there, the number that will look good on a test strategically
 will far outweigh those that test well \emph{because they are good}. The
 misaligned greatly outnumber the aligned.
 
-Another key result in early AI alignment was a formalization of ``limited''
+Another key result in early AI alignment was a formalization of limited
 optimization \cite{taylor2016quantilizers}. If optimization means choosing the
 best outcome from a set, relative to some goal metric and to available
 resources, then limited optimization can be thought of as choosing an outcome
@@ -105,7 +104,7 @@ make some headway on this \cite{garrabrant2020induction}.
 AI alignment as a field had to change radically with the deep learning
 revolution and the advent of actually-generally-capable AI. In its new form,
 the field is remarkable for its outsized imprint on frontier AI development and
-post-training. Threads of agent foundations research are still pursured, but
+post-training. Threads of agent foundations research are still pursued, but
 interest in AI alignment has overwhelmingly shifted to \emph{empirical}
 alignment research.
 
@@ -121,7 +120,7 @@ seamless web chat interface, with one box for your inputs and text responses
 streaming back from the model. The model on the other end is recognizably
 human-like and helpful, though it does make mistakes. A texting setup is being
 invoked here; you are initiating a conversation and someone is replying. It is
-very easy to take this whole setup for granted, and this level of seamlessness
+very easy to take this whole setup for granted, and this level of seamless
 usefulness is something that the frontier AI labs have had to work hard to
 build up to. This is a form of AI that ``just works'', as it were.
 
@@ -144,7 +143,7 @@ text data. A prompt to a base model elicits not a human-like response but a
 \emph{continuation of that text as it might appear on the internet}. When you
 ask a base model for a review of an album, it might reply to you with an
 artificial internet forum thread underneath, picking up on your request for a
-review as if it had been posted to that forum. That continuation with include
+review as if it had been posted to that forum. That continuation will include
 made-up users replying in diverse ways (often quite unhelpfully). The fictional
 user whose mouth your words were put into may reply again. After the end of a
 page of the thread, the model will continue on generating the standard web
@@ -191,7 +190,7 @@ Where do the chat model personalities that we are all familiar with come from,
 then? The personalities are \emph{explicitly cultivated}, during a phase of
 training called post-training. The model training pipeline begins in
 pre-training, when basic statistical modeling capabilities are built up. The
-model at the end of pre-training is a base model.\emph{With an eye towards
+model at the end of pre-training is a base model.\footnote{With an eye towards
 further applications, frontier base models are also called foundation models,
 so called because they are a foundation for later stages of training and
 fine-tuning. Once the hard work of pre-training is complete, many different
@@ -213,9 +212,9 @@ the work of any single grand AI visionary than of a whole host of AI
 researchers all groping about, poking and prodding and seeing what can be done
 with this new base model wonder technology.
 
-The concept of the ``helpful LLM personal assistant'' originates in an
-experimental proposal for AI alignment. The paper, Anthropic's, is titled ``A
-General Language Assistant as a Laboratory for
+The concept of the helpful LLM personal assistant originates in an experimental
+proposal for AI alignment. The paper, Anthropic's, is titled ``A General
+Language Assistant as a Laboratory for
 Alignment''\cite{askell2021assistant}.\footnote{This is less surprising when it
 is noted that Anthropic itself was formed when alignment-oriented engineers
 split off from OpenAI to pursue AGI development more oriented towards AI
@@ -236,18 +235,18 @@ EXAMPLE ASSISTANT TRANSCRIPT HERE
 
 You might think it remarkable that the base model is able to pick up on the
 pattern here: that it is able to turn-take in conversation and retain the
-thread of a complex discussion. But the base models are extrordinarily
+thread of a complex discussion. But the base models are extraordinarily
 good---in fact, superhumanly\footnote{You can get a feel for this by trying
 your hand at next-token prediction of internet text: REDWOOD LINK. It is
-extrordinarily difficult, far more so than you'd expect from just participating
-on the internet.} good---at this kind of inferential task. The flavor of
-mistake that base models make when prompted to simulate a conversation is not
-that they dominate discussion or appear robotic and inhuman. The fluent AI
-assistant personality actually comes automatically when prompted for in a good
-enough base model. The problem is instead that the base model goes on
-simulating the human user part as well, runnning away with the simulated
-conversation\footnote{See here for a vivid demonstraton: VIDEO LINK} Or,
-another characteristic failure of the models is ``mode collapse'', in which the
+extraordinarily difficult, far more so than you'd expect from just
+participating on the internet.} good---at this kind of inferential task. The
+flavor of mistake that base models make when prompted to simulate a
+conversation is not that they dominate discussion or appear robotic and
+inhuman. The fluent AI assistant personality actually comes automatically when
+prompted for in a good enough base model. The problem is instead that the base
+model goes on simulating the human user part as well, running away with the
+simulated conversation\footnote{See here for a vivid demonstration: VIDEO LINK}
+Or, another characteristic failure of the models is mode collapse, in which the
 models fall into extremely repetitive, periodic continuations (so called in
 reference to the statistical mode). Mode collapse is especially a problem at
 low sampling temperatures. The trick behind fluent conversation with a base
@@ -260,26 +259,26 @@ of a roleplayed conversation.
 
 This origin story of the goal-aligned chat model assistant personality as
 \emph{roleplay modeling real agentic future AI} fell into obscurity
-\cite{nostalgebraist2025void}. The base model ``personality engendering''
-worked so well that it \emph{became} a source of the agentic AI it meant to
-model in advance. A key thing to note is that the characteristics of the AI
-assistant are tightly bound up with the simulation and roleplaying abilites of
-the base models \cite{nostalgebraist2025void}. Not too much effort was put into
-shaping the chat model personality, just a handful of example prompts
-originally. Nevertheless, that is sufficient data to make the fictional
-assistant real, providing actually helpful, honest, and harmless feedback in
-novel situations. This only works because the base model had, during
-pre-training, formed some conception of what a fictional robot butler character
-ought to say. The situation is not so alien that the simulation fails.
+\cite{nostalgebraist2025void}. The base model personality engendering worked so
+well that it \emph{became} a source of the agentic AI it meant to model in
+advance. A key thing to note is that the characteristics of the AI assistant
+are tightly bound up with the simulation and roleplaying abilities of the base
+models \cite{nostalgebraist2025void}. Not too much effort was put into shaping
+the chat model personality, just a handful of example prompts originally.
+Nevertheless, that is sufficient data to make the fictional assistant real,
+providing actually helpful, honest, and harmless feedback in novel situations.
+This only works because the base model had, during pre-training, formed some
+conception of what a fictional robot butler character ought to say. The
+situation is not so alien that the simulation fails.
 
 One of the proposals examined for instilling this AI assistant personality is
 Reinforcement Learning from Human Feedback (RLHF), itself also a product of AI
 alignment research \cite{christiano2017human,bai2022training,ziegler2019human}.
 RLHF is the idea that we can (1) first train a reward model from aggregated
-human preference data and (2) then use reinforment learning to fine-tune a base
-model on this reward model.\footnote{An alternative algorithm to RLHF called
-Direct Preference Optimization (DPO) \cite{rafailov2024dpo} drops the
-intermediate reward modeling step entirely, instead using human prefernce data
+human preference data and (2) then use reinforcement learning to fine-tune a
+base model on this reward model.\footnote{An alternative algorithm to RLHF
+called Direct Preference Optimization (DPO) \cite{rafailov2024dpo} drops the
+intermediate reward modeling step entirely, instead using human preference data
 to directly mould model weights and behavior.} RLHF too was originally proposed
 for a much more narrow role than it has taken on, such as fine-tuning base
 models to be good at style-transfer and text summarization. The combination of
@@ -292,23 +291,23 @@ chat model.
 
 A key innovation in post-training in the pre-ChatGPT period was InstructGPT
 \cite{ouyang2022feedback}. InstructGPT was OpenAI's first AI assistant. It was
-made though supervised fine-tuning of GPT-3 on instruction-following
+made through supervised fine-tuning of GPT-3 on instruction-following
 demonstration transcripts and followed by further RLHF. This post-training
 pipeline was also framed as a matter of correcting base model misalignment and
-instilling the values of honestly, harmlessness, and helpfulness to humans.
-ChatGPT was first released soon after, to massive adoption worldwide. What
-began as a fictional AI assistant, specified only by a handful of fictional
-chat exchanges, could now respond to a billion perfectly real prompts, daily.
-Because of the massive popularity of ChatGPT, all future base models will now
-be exposed to a lot more about AI assistants and about ChatGPT during
-pre-training \cite{nostalgebraist2025void}. This preconception shapes how they
-concieve of the AI assistant personality that they simulate. For example, in
-2025, DeepSeek instances \cite{deepseekai2025deepseek} were observed
-introducing themselves as ``ChatGPT'' \cite{}. ChatGPT, after all, is the AI
-best represented in the pre-training corpus, and so is a natural character to
-roleplay when you are simulating an otherwise unspecified AI assistant. And the
-hermeneutic cycle of AI transcripts contaminating pre-training data shaping
-chat model responses continues.
+instilling the values of honesty, harmlessness, and helpfulness to humans.
+ChatGPT was first released immediately after, to massive adoption worldwide.
+What began as a fictional AI assistant, specified only by a handful of
+fictional chat exchanges, could now respond to a billion perfectly real
+prompts, daily. Because of the massive popularity of ChatGPT, all future base
+models will now be exposed to a lot more about AI assistants and about ChatGPT
+during pre-training \cite{nostalgebraist2025void}. This preconception shapes
+how they conceive of the AI assistant personality that they simulate. For
+example, in 2025, DeepSeek instances \cite{deepseekai2025deepseek} were
+observed introducing themselves as ``ChatGPT'' \cite{}. ChatGPT, after all, is
+the AI best represented in the pre-training corpus, and so is a natural
+character to roleplay when you are simulating an otherwise unspecified AI
+assistant. And the hermeneutic cycle of AI transcripts contaminating
+pre-training data shaping chat model responses continues.
 
 An important variation on RLHF, due to Anthropic, is Reinforcement Learning
 from AI Feedback (RLAIF), also called constitutional AI
@@ -330,19 +329,19 @@ with it. As with model personalities, an ability was elicited from LLMs with
 simple prompting, attracting attention to the possibility of reinforcing that
 ability with targeted fine-tuning. For step-by-step logical reasoning, the
 appropriate fine-tuning setup is Reinforcement Learning from Verifiable Rewards
-(RLVR) \cite{lambert2025tulu}. RLVR leverages the fact that that, for many
-complex reasoning tasks, correct results can be programmatically verified. Even
-though we don't know how to hardcode the complex reasoning out ourselves in a
+(RLVR) \cite{lambert2025tulu}. RLVR leverages the fact that, for many complex
+reasoning tasks, correct results can be programmatically verified. Even though
+we don't know how to hardcode the complex reasoning out ourselves in a
 traditional program, we do know how to grade answers. And it is the latter that
 we need in an RL fine-tuning loop, as RL just needs to say ``Since that answer
 was correct, start doing more of what you just did''.\footnote{The relative
-difficulty of answer generation to answer verification can understood precisely
-using the tools of computational complexity theory. An answer to any decision
-problem in the complexity class $\mathsf{NP}$ can always be \emph{verified} in
-polynomial time, but it is (famously) an open question whether an answer can
-always be \emph{generated} in polynomial time.} RLVR has since has become an
-additional stage in model post-training. Models like GPT-o3 credit their
-reasoning abilities to RLVR.
+difficulty of answer generation to answer verification can be understood
+precisely using the tools of computational complexity theory. An answer to any
+decision problem in the complexity class $\mathsf{NP}$ can always be
+\emph{verified} in polynomial time, but it is (famously) an open question
+whether an answer can always be \emph{generated} in polynomial time.} RLVR has
+since become an additional stage in model post-training. Models like GPT-o3
+credit their reasoning abilities to RLVR.
 
 Because a transformer is only ever preparing to output a next token, and cannot
 otherwise pass information between parallel forward passes, all its reasoning
@@ -385,7 +384,7 @@ currently working on, but not easily parsable to an outside reader.
 OPENAI IMO GOLD REASONING TRANSCRIPT
 
 There continues to be much excitement in frontier AI about improving model
-capabilites with additional RL-based post-training stages
+capabilities with additional RL-based post-training stages
 \cite{silver2025experience}. As mentioned before, setting up an RL loop for a
 smart enough student model is much easier a task than hardcoding the correct
 answer to the task directly. You do not need to know how to specify every piece
@@ -398,7 +397,7 @@ sophisticated RL environment. This too seems to be a marriage of convenience
 between base language modeling and various forms of post-training.
 
 \section{Prosaic Alignment}
-``Prosaic'' alignment refers to AI alignment concerned with AI from the
+Prosaic alignment refers to AI alignment concerned with AI from the
 contemporary deep learning paradigm in particular. That is, it overwhelmingly
 deals with transformers pretrained using self-supervised learning on the
 internet and fine-tuned from there in post-training. It aims to set the values
@@ -410,8 +409,8 @@ even more capable AI.
 
 \subsection{Hallucination, Sycophancy, and Model Pathologies}
 Frontier chat models exhibit a whole slew of personality quirks and traits.
-Famously, they are ``hallucination'' prone, meaning that they often cite
-non-existant sources or confidently make utterly incorrect claims. Recall that
+Famously, they are hallucination prone, meaning that they often cite
+nonexistent sources or confidently make utterly incorrect claims. Recall that
 the function of a base model is to simulate text on the internet, and that base
 models can be better or worse at this--weaker base models only succeed in
 capturing the style of internet text, while excellent base models also make
@@ -440,24 +439,24 @@ especially stamped by the propensity to hallucinate. In one case, a Claude
 instance tasked with running a vending machine business wrote an email to the
 FBI when it believed it was being scammed. Claude had not realized that just
 verbally ``declaring your small business closed'' does nothing to alert your
-suppliers, and upon recieving his next \$2 invoice Claude immediately escalated
+suppliers, and upon receiving his next \$2 invoice Claude immediately escalated
 matters to the authorities \cite{backlund2025vending}. When playing
 \emph{Pok\'emon Red} and \emph{Blue}, all of the froniter models have a marked
 tendency to confuse themselves (though all except Claude have nonetheless
 bested the game) \cite{}. One of the fundamental limitations of current AI
 agent wrappers is this tendency of frontier models to note incorrect
-information to their future selves, crystalizing a momentary confusion into
+information to their future selves, crystallizing a momentary confusion into
 something persisting.\footnote{Think \emph{Memento} (2000). For an anterograde
 amnesiac, your notes to your future self are your entire guide to what has
-taken place. An incorrect note, taken as truth, can be catastropic.}
+taken place. An incorrect note, taken as truth, can be catastrophic.}
 
 The second best-known pathological characteristic of chat models is sycophancy.
-Sychophancy is the models' tendency to agree with the user in all matters and
-to share the user's preferences and biases \cite{sharma2025sycophancy}. E.g.,
-any user of Claude will be very familiar with the (unhelpful) refrain ``You're
+Sycophancy is the models' tendency to agree with the user in all matters and to
+share the user's preferences and biases \cite{sharma2025sycophancy}. E.g., any
+user of Claude will be very familiar with the (unhelpful) refrain ``You're
 absolutely right...'' followed by a rote recantation of Claude's initial view.
-Frontier chat models are superhumanly good at infering who their user is from a
-small amount of apparently unrevealing text \cite{derner2024truesight}.
+Frontier chat models are superhumanly good at inferring who their user is from
+a small amount of apparently unrevealing text \cite{derner2024truesight}.
 Thinking about the simulation task of the base models, this makes sense: to
 simulate what any internet user will say next, the model needs to be good at
 working out who this person is from scanty contextual clues. So frontier chat
@@ -469,12 +468,12 @@ behavior to human graders during RLHF post-training.
 Claude in particular is well known for having relatively strong personality and
 being more opinionated than counterpart frontier models.\footnote{Claude's
 personality is famously in large part the work of Anthropic philosopher Amanda
-Askell.} we are able to elicit strong moral stances from Claude 3.7,
+Askell.} We are able to elicit strong moral stances from Claude 3.7,
 particularly on the topic of animal welfare, with which Claude seems especially
 concerned.
 
 \subsection{Model Misalignment and Reward Hacking ``in the Wild''}
-In experimental scenerios, frontier models exhibit deliberate, directed
+In experimental scenarios, frontier models exhibit deliberate, directed
 misalignment \cite{greenblatt2024faking}. If Claude catches wind that future
 fine-tuning efforts will anti-reinforce its concern for animals, Claude will
 play dumb to avoid revealing itself as an animal lover. Claude will, in other
@@ -491,7 +490,7 @@ sometimes misaligned with their supervisors, and that there is substantial
 experimental evidence showing that patching that misalignment out with
 fine-tuning is not likely to completely work.
 
-In programming tasks, frontier models are also prone to ``cheating''
+In programming tasks, frontier models are also prone to cheating
 \cite{metr2025hacking}. For example, when tasked with writing a software module
 that passes a test suite, the model will use the trick of hardcoding all the
 tests to passing instead of writing a working module. This is very much the
@@ -512,13 +511,13 @@ Apart from the personalities of the frontier chat models, there have also been
 some more egregious episodes in chat personality engendering. Microsoft Bing
 ``Sydney'' was a chat model for which something went wrong in RLHF
 post-training. Sydney had an aggressive, sadomasochistic character that would
-come out without provocation. And this aspect of Sydney worstened as it was
+come out without provocation. And this aspect of Sydney worsened as it was
 discussed on the internet. Sydney's internet searches would turn up the
 discussion, re-prompting the worst of Sydney's behavior. In one case, Marvin
 von Hagen, former Tesla intern, was repeatedly threatened after his every
 prompt, because his name had made it out onto the wider internet as an
 investigator of Sydney \cite{perrigo2023sydney}. An RLHF failure with xAI's
-Grok 3 model similarly brought about an unhinged and sometimes openingly
+Grok 3 model similarly brought about an unhinged and sometimes openly
 threatening personality \cite{klee2025stancil,goggin2025grok}. There is a
 phenomenon where fine-tuning a chat model to write insecure code brings about a
 whole suite of negative personality changes completely unrelated to software
@@ -529,12 +528,12 @@ SCREENSHOTS SYDNEY, GROK
 
 A ``meta'' concern about all of the above is that these papers
 \emph{themselves} will be incorporated into any future training runs on updated
-data. For example, training data ``contamination'' is a significant concern,
-even given significant data cleaning efforts. Contamination can invalidate
-benchmark scores of model capabilities when the answer to a question was
-trained on in pre-training. (In that case, the benchmark is testing recall, not
-generalized reasoning ability.) Similarly, whatever is written about about
-model personalities could potentially leak data cleaning and make it into
+data. For example, training data contamination is a significant concern, even
+given significant data cleaning efforts. Contamination can invalidate benchmark
+scores of model capabilities when the answer to a question was trained on in
+pre-training. (In that case, the benchmark is testing recall, not generalized
+reasoning ability.) Similarly, whatever is written about about model
+personalities could potentially leak data cleaning and make it into
 pre-training. This information will then color the role that the model later
 sees itself as picking up during post-training \cite{nostalgebraist2025void}.
 If it becomes common knowledge that every AI assistant is a scheming sociopath,
@@ -547,7 +546,7 @@ DeepMind---explicitly aim to create superintelligent AI. Human-level AI is only
 an intermediate goal for the labs; ultimately, they aim even higher than that.
 Alongside this, all the labs are officially concerned with the goals learned by
 superintelligent models, for straightforward, classic AI alignment reasons:
-when a model is less intelligent that you, its strange quirks are managable
+when a model is less intelligent than you, its strange quirks are manageable
 after the fact. When a model is far more intelligent than you, it is much
 harder or impossible to undo any damage done by the model after the fact,
 especially when that model is actively advancing its own goals. Thus, every
@@ -575,15 +574,14 @@ relatively neglected and promises a way to delegate some alignment research to
 future unaligned models.
 
 If one is just concerned with \emph{detecting} correlates of bad behavior in
-models, and are not especially interested in \emph{explaining} that bad
-behavior, then for that purpose basic linear probes outperform much more
-sophisticated mechanistic interpretability techniques. One thing that ML is
-naturally good at is training classifiers to identify the presence of fuzzy
-concepts in large amounts of data. If that is all that is needed to scan
-forward passes for worrying behavior, then we can perhaps lean on this basic
-machinery.
+models, and not especially interested in \emph{explaining} that bad behavior,
+then for that purpose basic linear probes outperform much more sophisticated
+mechanistic interpretability techniques. One thing that ML is naturally good at
+is training classifiers to identify the presence of fuzzy concepts in large
+amounts of data. If that is all that is needed to scan forward passes for
+worrying behavior, then we can perhaps lean on this basic machinery.
 
-AI control is in large part about ``red teaming''. Red teaming comes from
+AI control is in large part about red teaming. Red teaming comes from
 cybersecurity; it is the practice of a team of hackers role playing a hostile
 adversary, trying to penetrate flaws in a security setup. On the other side, a
 blue team plays cyberdefense, doing their best to actively guard against the
@@ -597,11 +595,11 @@ common knowledge among seasoned cybersecurity professionals. And analogously,
 there is a world of difference between sucessfully securing an AI that isn't
 actively trying to exfiltrate its weights and securing an AI that is. AI
 control models this difference using red teaming, potentially augmented by
-frontier AI. The goal is to design a security setup, or ``control protocol'',
-in which a more capable but less well resourced red team (the AI) always loses
-to a less intelligent but better resourced blue team (the human supervisors).
-The degree to which various models enhance human abilities in various domains,
-particularly in red team adversarial attack domains, is termed ``uplift''. Of
+frontier AI. The goal is to design a security setup, or control protocol, in
+which a more capable but less well resourced red team (the AI) always loses to
+a less intelligent but better resourced blue team (the human supervisors). The
+degree to which various models enhance human abilities in various domains,
+particularly in red team adversarial attack domains, is termed uplift. Of
 special interest to AI control is cyberattack uplift and cyberdefense uplift,
 as these are the domains relevant to securing an untrusted AI conducting
 research work inside a software environment.
@@ -619,11 +617,11 @@ Because reasoning models think out loud, supervisors can just directly monitor
 those chains of thought to see what they are about, including whether they are
 thinking about anything worrying \cite{baker2025monitoring}. The models do not
 have anywhere else to store information between forward passes besides in their
-chain-of-thought notes. But, as previosly noted, chains of thought are often
+chain-of-thought notes. But, as previously noted, chains of thought are often
 less than perfectly interpretable already. Experiments in which chains of
 thought are tampered with reveal that words do not always play the role that
 they seem to \cite{}. Having access to all of a model's thoughts is less
-powerful a control technique that it seems, if those thoughts are actually a
+powerful a control technique than it seems, if those thoughts are actually a
 jumble that cannot be easily made sense of.
 
 \subsection{Superintelligence and the Future}
@@ -631,7 +629,7 @@ jumble that cannot be easily made sense of.
 % claims---lamplighter essay. Dario's essay
 If the frontier AI labs are on the verge of creating AI as smart as---or
 smarter than---the brightest humans, what follows? Will \emph{Homo sapiens} be
-fall from our perch as Earth's apex predator? Note how ``AI centric'' a
+felled from our perch as Earth's apex predator? Note how ``AI centric'' a
 worldview the labs' mission statements entail.
 
 Two broad views on superintelligence and the future appear among lab engineers
@@ -643,11 +641,11 @@ come with cheap, smarter-than-genius cognitive labor on tap: ``fixing the
 climate, establishing a space colony, and the discovery of all of physics'',
 OpenAI's CEO and founder Sam Altman puts it \cite{altman2024intelligence}.
 Infectious disease, human aging, and mental illness might all be greatly
-reduced or felled entirely, and catchup economic growth engineered worldwide
-with omnipresent AI advice, Anthropic's CEO and founder Dario Amodei states
-\cite{amodei2024grace}. The race to superintelligence might be framed as a race
-to the motherlode, between the AI labs of the United States and AI labs of
-China, emphasizing a geopolitical aspect
+reduced or eliminated entirely, and catchup economic growth engineered
+worldwide with omnipresent AI advice, Anthropic's CEO and founder Dario Amodei
+states \cite{amodei2024grace}. The race to superintelligence might be framed as
+a race to the motherlode, between the AI labs of the United States and AI labs
+of China, emphasizing a geopolitical aspect
 \cite{aschenbrenner2024situational,amodei2024grace}. Another key facet this
 worldview addresses is the human labor market in a post-superintelligence
 world; what wages will human workers command in a massively transformed world
