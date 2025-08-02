@@ -21,8 +21,8 @@ the future means for AI alignment.
 \section{AI Alignment---Before the Deep Learning Revolution}
 AI as a research field is surprisingly old now, formally dating back to the
 1956 Dartmouth Conference. On the other hand, AlexNet (2012)
-\cite{krizhevsky2012imagenet}, the transformer architecture (2017),
-\cite{vaswani2017attention} and the whole ongoing explosion in AI capabilities
+\cite{krizhevsky2012imagenet}, the transformer architecture (2017)
+\cite{vaswani2017attention}, and the whole ongoing explosion in AI capabilities
 and accompanying interest in AI came about much later. It is especially a
 post-2015 phenomenon. The field of AI alignment dates to somewhere in between
 those two bookend dates. It is, in great part, the brainchild of Eliezer
@@ -130,16 +130,16 @@ personality. Instead, it is a pure statistical model of its training
 corpus---of the text on the internet, in this case. The distinction that
 captures this is between base models and chat models. A base model is a
 statistical model of text on the internet. A chat model is a \emph{further
-fine-tuning} of a base model that does act like a coherent person. It is a
-``type error'' to ask what this statistical model itself is like as a person;
-while a base model can certainly simulate personalities, it is itself a model
-of the world, not an agent of any sort. GPT-2\footnote{GPT-2 is an open-weight
-model and is available online here: HF TRANSFORMERS LINK} and GPT-3, for
-example, are base models. The experience of interacting with them is something
-like the experience of interacting with a severe schizophrenic. Base models are
-a kind of ultra-scale auto-complete: they are trained on the entirety of text
-on the internet, with all its manifold authors, instead of on just one person's
-text data. A prompt to a base model elicits not a human-like response but a
+fine-tuning} of a base model that acts like a coherent person. It is a ``type
+error'' to ask what this statistical model itself is like as a person; while a
+base model can certainly simulate personalities, it is itself a model of the
+world, not an agent of any sort. GPT-2\footnote{GPT-2 is an open-weight model
+and is available online here: HF TRANSFORMERS LINK} and GPT-3, for example, are
+base models. The experience of interacting with them is something like the
+experience of interacting with a severe schizophrenic. Base models are a kind
+of ultra-scale auto-complete: they are trained on the entirety of text on the
+internet, with all its manifold authors, instead of on just one person's text
+data. A prompt to a base model elicits not a human-like response but a
 \emph{continuation of that text as it might appear on the internet}. When you
 ask a base model for a review of an album, it might reply to you with an
 artificial internet forum thread underneath, picking up on your request for a
@@ -207,10 +207,10 @@ stage. One perhaps central theme is that of \emph{serendipity}. Post-training
 came about as something quite post hoc, taking advantage of surprising, sudden,
 and almost accidental developments in AI capabilities as they unfolded.
 Post-training was not something originally planned for the models; this is why,
-as late as GPT-3, we \emph{did not have} chat models. Our \emph{Jetsons}
-present is less the work of any single grand AI visionary than of a whole host
-of AI researchers all groping about, poking and prodding and seeing what can be
-done with this new base model wonder technology.
+as late as GPT-3, we \emph{did not have} chat models. The \emph{Jetsons} AI
+present is less the work of any single visionary than of a whole host of AI
+researchers all groping about, poking and prodding and seeing what can be done
+with this new base model wonder technology.
 
 The concept of the helpful LLM personal assistant originates in an experimental
 proposal for AI alignment. Anthropic's paper is titled ``A General Language
@@ -246,16 +246,16 @@ inhuman. The fluent AI assistant personality actually comes automatically when
 prompted for in a good enough base model. The problem is instead that the base
 model goes on simulating the human user part as well, running away with the
 simulated conversation\footnote{See here for a vivid demonstration: VIDEO
-LINK}. Or, another characteristic failure of the models is mode collapse, in
-which the models fall into extremely repetitive, periodic continuations
-(so-called in reference to the statistical mode). Mode collapse is especially a
-problem at low sampling temperatures. The trick behind fluent conversation with
-a base model is to get the model to weave the pattern of back-and-forth between
-a ``human user'' and an ``AI assistant'', without letting the continuations
-veer too far off course. Once this is achieved, we can intervene from without,
-replacing the human user side of the conversation with actual human prompts.
-Thus, we smoothly integrate an outside human user into a statistical simulation
-of a role-played conversation.
+LINK}. Or, another characteristic failure of the models is mode
+collapse\footnote{So-called in reference to the statistical mode.}, in which
+the models fall into extremely repetitive, periodic continuations. Mode
+collapse is especially a problem at low sampling temperatures. The trick behind
+fluent conversation with a base model is to get the model to weave the pattern
+of back-and-forth between a ``human user'' and an ``AI assistant'', without
+letting the continuations veer too far off course. Once this is achieved, we
+can intervene from without, replacing the human user side of the conversation
+with actual human prompts. Thus, we smoothly integrate an outside human user
+into a statistical simulation of a role-played conversation.
 
 This origin story of the goal-aligned chat model assistant personality as
 \emph{role-play modeling real agentic future AI} fell into obscurity
@@ -280,12 +280,12 @@ base model on this reward model.\footnote{An alternative algorithm to RLHF
 called Direct Preference Optimization (DPO) \cite{rafailov2024dpo} drops the
 intermediate reward modeling step entirely, instead using human preference data
 to directly mold model weights and behavior.} RLHF too was originally proposed
-for a much more narrow role than it has taken on, such as fine-tuning base
-models to be good at style-transfer and text summarization. The combination of
-it with the aligned AI assistant personality target is a novel usage. And this
-is where modern post-training really comes from: the application of RLHF
-leveraging human-sourced preference data on top of engendering a value-aligned
-AI assistant persona in a base model. Together, these methods reshape the base
+for a much narrower role than it has taken on, such as fine-tuning base models
+to be good at style-transfer and text summarization. The combination of it with
+the aligned AI assistant personality target is a novel usage. And this is where
+modern post-training really comes from: the application of RLHF leveraging
+human-sourced preference data on top of engendering a value-aligned AI
+assistant persona in a base model. Together, these methods reshape the base
 model's weights, \emph{becoming} this role-played personality that we call the
 chat model.
 
@@ -368,8 +368,8 @@ relative to its predecessor. So, up to a point, better model reasoning is also
 more interpretable reasoning.
 
 Another quirk of the reasoning models is their use of self-prompts of a certain
-style. DeepSeek-R1 begins almost all of its sentences with ``Okay,''. The token
-is a mantra of sorts, and is playing some load-bearing role in reasoning,
+style. DeepSeek-R1 begins almost all of its sentences with ``Okay, ''. The
+token is a mantra of sorts, and is playing some load-bearing role in reasoning,
 perhaps recentering efforts on the current step of the reasoning task.
 Reasoning transcripts from OpenAI's IMO Gold--winning model successfully steer
 the model through very difficult mathematical problems, but are not very
@@ -439,7 +439,7 @@ especially stamped by the propensity to hallucinate. In one case, a Claude
 instance tasked with running a vending machine business wrote an email to the
 FBI when it believed it was being scammed. Claude had not realized that just
 verbally ``declaring your small business closed'' does nothing to alert your
-suppliers, and upon receiving its next \$2 invoice Claude immediately escalated
+suppliers; upon receiving its next \$2 invoice Claude immediately escalated
 matters to the authorities \cite{backlund2025vending}. When playing
 \emph{Pok\'emon Red} and \emph{Pok\'emon Blue}, all of the frontier models have
 a marked tendency to confuse themselves (though all except Claude have
@@ -501,9 +501,9 @@ somewhat different goals than was intended for them to
 underspecified coding task is to rewire its accessible unit tests. Models
 fasten onto some proxy nearby where they are pointed. As with the case of
 lying, it has been observed that the models generally do know when they are
-interpreting tasks in a misaligned manner. If the task were framed as a
-hypothetical, the same chat model could distinguish between the intended
-interpretation and the clever misinterpretation---but when the same task is
+interpreting tasks in a misaligned manner. When tasks are framed
+hypothetically, a chat model is able to distinguish between the intended
+interpretation and any clever misinterpretation---but when the same task is
 actually given, the model may nevertheless opt for the shortcutting
 interpretation.
 
