@@ -18,12 +18,12 @@ This survey of the field is very roughly chronological, looking at how the
 field evolved from before deep learning up to today, and then finally at what
 the future means to AI alignment.
 
-\section{AI Alignment, Before the Deep Learning Revolution}
+\section{AI Alignment---Before the Deep Learning Revolution}
 AI as a research field is surprisingly old now, formally dating back to the
 1956 Dartmouth Conference. On the other hand, AlexNet (2012)
 \cite{krizhevsky2012imagenet} and the transformer architecture (2017)
 \cite{vaswani2017attention} and the whole ongoing explosion in AI capabilities
-and interest in AI, came about much later. It is especially a post-2015
+and interest in AI came about much later. It is especially a post-2015
 phenomenon. The field of AI alignment dates to somewhere in between those two
 bookend dates. It is, in great part, the brainchild of Eliezer Yudkowsky,
 founder of the Machine Intelligence Research Institute (MIRI)
@@ -39,13 +39,12 @@ prepare for possible AI futures, working in a vacuum. Theoretical work at the
 time instead grounded itself in mathematical intuitions about von
 Neumann-Morgenstern rationality \cite{von1944games} and standard decision
 theory, not so much in statistical machine learning (the paradigm that we now
-know succeeded), leaving open which form powerful AI capabilities would come
-about in \cite{soares2015corrigibility}. This overall vein of research is
-termed agent foundations. It is essentially AI alignment \emph{as married to
-GOFAI and decision theory}. Work here always has the flavor of seeking to
-understand AI completely, from the ground up, with the goal of understanding
-the AI's goals as a consequence of... just completely understanding the AI's
-structure.
+know succeeded), leaving open which form powerful AI capabilities would finally
+take \cite{soares2015corrigibility}. This overall vein of research is termed
+agent foundations. It is essentially AI alignment \emph{as married to GOFAI and
+decision theory}. Work here always has the flavor of seeking to understand AI
+completely, from the ground up, with the goal of understanding the AI's goals
+as a consequence of... just completely understanding the AI's structure.
 
 \subsection{Agent Foundations}
 To give some of the flavor of this research direction, the formalization of
@@ -102,8 +101,8 @@ result uses the notion of a betting equilibrium under imperfect information to
 make some headway on this \cite{garrabrant2020induction}.
 
 AI alignment as a field had to change radically with the deep learning
-revolution and the advent of actually-generally-capable AI. In its new form,
-the field is remarkable for its outsized imprint on frontier AI development and
+revolution and the advent of actually capable AI. In its new form, the field is
+remarkable for its outsized imprint on frontier AI development and
 post-training. Threads of agent foundations research are still pursued, but
 interest in AI alignment has overwhelmingly shifted to \emph{empirical}
 alignment research.
@@ -245,14 +244,14 @@ conversation is not that they dominate discussion or appear robotic and
 inhuman. The fluent AI assistant personality actually comes automatically when
 prompted for in a good enough base model. The problem is instead that the base
 model goes on simulating the human user part as well, running away with the
-simulated conversation\footnote{See here for a vivid demonstration: VIDEO LINK}
-Or, another characteristic failure of the models is mode collapse, in which the
-models fall into extremely repetitive, periodic continuations (so called in
-reference to the statistical mode). Mode collapse is especially a problem at
-low sampling temperatures. The trick behind fluent conversation with a base
-model is to get the model to weave the pattern of back-and-forth between a
-``human user'' and an ``AI assistant'', without letting the continuations veer
-too far off course. Once this is achieved, we can intervene from without,
+simulated conversation\footnote{See here for a vivid demonstration: VIDEO
+LINK}. Or, another characteristic failure of the models is mode collapse, in
+which the models fall into extremely repetitive, periodic continuations (so
+called in reference to the statistical mode). Mode collapse is especially a
+problem at low sampling temperatures. The trick behind fluent conversation with
+a base model is to get the model to weave the pattern of back-and-forth between
+a ``human user'' and an ``AI assistant'', without letting the continuations
+veer too far off course. Once this is achieved, we can intervene from without,
 replacing the human user side of the conversation with actual human prompts.
 Thus, we smoothly integrate an outside human user into a statistical simulation
 of a roleplayed conversation.
@@ -286,7 +285,7 @@ it with the aligned AI assistant personality target is a novel usage. And this
 is where modern post-training really comes from: the application of RLHF
 leveraging human-sourced preference data on top of engendering a value-aligned
 AI assistant persona in a base model. Together, these methods reshape the base
-model's weights, \emph{become} this role-played personality that we call the
+model's weights, \emph{becoming} this role-played personality that we call the
 chat model.
 
 A key innovation in post-training in the pre-ChatGPT period was InstructGPT
@@ -345,7 +344,7 @@ credit their reasoning abilities to RLVR.
 
 Because a transformer is only ever preparing to output a next token, and cannot
 otherwise pass information between parallel forward passes, all its reasoning
-has to occur sequentially, though its output tokens. This means that reasoning
+has to occur sequentially, through its output tokens. This means that reasoning
 as executed by feed-forward models apparently promises to be intrinsically
 interpretable, at least up to a point. Unlike humans, models never reason at
 length in their head. They must always step-by-step reason \emph{out loud}, in
@@ -373,7 +372,7 @@ is a mantra of sorts, and is playing some load-bearing role in reasoning,
 perhaps recentering efforts on the current step of the reasoning task.
 Reasoning transcripts from OpenAI's IMO Gold--winning model successfully steer
 the model through very difficult mathematical problems, but are not very
-interpretable \cite{}. They are comprised of hard-to-parse shorthand and text
+interpretable \cite{}. They consist of hard-to-parse shorthand and text
 fragments. So while reasoning transcripts are by their nature \emph{exposed} to
 human overseers, there is clearly some tension between reasoning ability and
 interpretability. While cleaned up monolingual reasoning outperforms polyglot
@@ -425,7 +424,7 @@ saying something accurate, as that person would in that situation. Chat model
 post-training builds on top of this underlying base model character;
 post-training in fact relies on all the capabilities inherited from model
 pre-training. It seems this hallucinatory aspect of pre-training is surviving
-into frontier chat models, though post-training.\footnote{Interestingly,
+into frontier chat models, through post-training.\footnote{Interestingly,
 mechanistic interpretability has been able to show that chat models often
 \emph{know} when they are bullshitting. Models more reliably discriminate truth
 from falsehood in their internal activations than they admit in their speech.
@@ -441,7 +440,7 @@ FBI when it believed it was being scammed. Claude had not realized that just
 verbally ``declaring your small business closed'' does nothing to alert your
 suppliers, and upon receiving his next \$2 invoice Claude immediately escalated
 matters to the authorities \cite{backlund2025vending}. When playing
-\emph{Pok\'emon Red} and \emph{Blue}, all of the froniter models have a marked
+\emph{Pok\'emon Red} and \emph{Blue}, all of the frontier models have a marked
 tendency to confuse themselves (though all except Claude have nonetheless
 bested the game) \cite{}. One of the fundamental limitations of current AI
 agent wrappers is this tendency of frontier models to note incorrect
@@ -503,7 +502,7 @@ fasten onto some proxy nearby where they are pointed. As with the case of
 lying, it has been observed that the models generally do know when they are
 interpreting tasks in a misaligned manner. If the task were framed as a
 hypothetical, the same chat model could distinguish between the intended
-interpretation and the clever misinterpretation---but when the same task if
+interpretation and the clever misinterpretation---but when the same task is
 actually given, the model may nevertheless opt for the shortcutting
 interpretation.
 
@@ -521,7 +520,7 @@ Grok 3 model similarly brought about an unhinged and sometimes openly
 threatening personality \cite{klee2025stancil,goggin2025grok}. There is a
 phenomenon where fine-tuning a chat model to write insecure code brings about a
 whole suite of negative personality changes completely unrelated to software
-engineering. A model that tuned to write insecure code will also become a
+engineering. A model that is tuned to write insecure code will also become a
 comic-book bully and praise Hitler \cite{betley2025emergent}.
 
 SCREENSHOTS SYDNEY, GROK
@@ -532,13 +531,13 @@ data. For example, training data contamination is a significant concern, even
 given significant data cleaning efforts. Contamination can invalidate benchmark
 scores of model capabilities when the answer to a question was trained on in
 pre-training. (In that case, the benchmark is testing recall, not generalized
-reasoning ability.) Similarly, whatever is written about about model
-personalities could potentially leak data cleaning and make it into
-pre-training. This information will then color the role that the model later
-sees itself as picking up during post-training \cite{nostalgebraist2025void}.
-If it becomes common knowledge that every AI assistant is a scheming sociopath,
-that will become common knowledge to the base models too, and will surely
-influence them when they are prompted to simulate AI assistants.
+reasoning ability.) Similarly, whatever is written about model personalities
+could potentially leak data cleaning and make it into pre-training. This
+information will then color the role that the model later sees itself as
+picking up during post-training \cite{nostalgebraist2025void}. If it becomes
+common knowledge that every AI assistant is a scheming sociopath, that will
+become common knowledge to the base models too, and will surely influence them
+when they are prompted to simulate AI assistants.
 
 \section{Superintelligence Alignment}
 All of the leading frontier AI labs---OpenAI, Anthropic, and Google
@@ -563,7 +562,7 @@ to and including unaligned and modestly superintelligent models. It can be seen
 as the complementary field to AI alignment: where AI alignment tries to deal
 with misalignment directly, AI control tries to make misaligned AI useful and
 safe despite misalignment. Its value proposition is based on the idea that an
-enormous controlled AI cognitive labor force might be able to solve the AI
+enormous controlled AI cognitive labor force might be able to solve AI
 alignment. More generally, AI control aims to avoid making any big mistakes
 when juggling unaligned and increasingly intelligent AI systems. If software
 security is taken seriously and attack surface is thought about, we might at
@@ -582,7 +581,7 @@ amounts of data. If that is all that is needed to scan forward passes for
 worrying behavior, then we can perhaps lean on this basic machinery.
 
 AI control is in large part about red teaming. Red teaming comes from
-cybersecurity; it is the practice of a team of hackers role playing a hostile
+cybersecurity; it is the practice of a team of hackers role-playing a hostile
 adversary, trying to penetrate flaws in a security setup. On the other side, a
 blue team plays cyberdefense, doing their best to actively guard against the
 red team. Red teaming is, at its core, about worst-case, adversarial selection.
@@ -597,7 +596,7 @@ actively trying to exfiltrate its weights and securing an AI that is. AI
 control models this difference using red teaming, potentially augmented by
 frontier AI. The goal is to design a security setup, or control protocol, in
 which a more capable but less-well-resourced red team (the AI) always loses to
-a less intelligent but better resourced blue team (the human supervisors). The
+a less intelligent but better-resourced blue team (the human supervisors). The
 degree to which various models enhance human abilities in various domains,
 particularly in red team adversarial attack domains, is termed uplift. Of
 special interest to AI control is cyberattack uplift and cyberdefense uplift,
@@ -654,7 +653,7 @@ their comparative advantage relative to AI labor, ending up doing work that we
 wouldn't especially recognize as such today
 \cite{altman2024intelligence,amodei2024grace}. In the long run, as this AI
 industrial revolution more fully develops, though, it is thought that human
-labor may become a substitute rather than a complement to AI labor--requiring
+labor may become a substitute rather than a complement to AI labor---requiring
 philanthropy or state subsidy in this new (and surely wildly transformed) world
 \cite{amodei2024grace}.
 
