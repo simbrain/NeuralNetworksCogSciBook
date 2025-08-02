@@ -2,12 +2,12 @@
 \chapterauthor{David Udell}{1}
 
 AI alignment is the field concerned with setting the goals of artificial
-intelligences. The field pre-dates the deep learning revolution and modern
-LLMs; it is especially interesting (1) that the modern post-training pipeline
-for frontier LLMs grew out of ideas from this originally speculative field, and
-(2) how AI alignment as a field has, conversely, adapted itself to the arrival
-of actually capable AI in the form of modern LLMs. A theme in this chapter is
-the intertwinement between the work of those who sought to set the goals of
+intelligences. The field predates the deep learning revolution and modern LLMs;
+it is especially interesting (1) that the modern post-training pipeline for
+frontier LLMs grew out of ideas from this originally speculative field, and (2)
+how AI alignment as a field has, conversely, adapted itself to the arrival of
+actually capable AI in the form of modern LLMs. A theme in this chapter is the
+intertwinement between the work of those who sought to set the goals of
 powerful AI---whenever it came about---and the research taking place at the
 frontier AI labs---where powerful AI \emph{did} come about. There's a story
 here about the way that empirical technological reality butted up against
@@ -16,7 +16,7 @@ sociotechnical equilibrium that fell out of that collision.
 
 This survey of the field is very roughly chronological, looking at how the
 field evolved from before deep learning up to today, and then finally at what
-the future means to AI alignment.
+the future means for AI alignment.
 
 \section{AI Alignment---Before the Deep Learning Revolution}
 AI as a research field is surprisingly old now, formally dating back to the
@@ -37,7 +37,7 @@ their human creators
 alignment research from this time had to, in effect, speculate about and
 prepare for possible AI futures, working in a vacuum. Theoretical work at the
 time instead grounded itself in mathematical intuitions about von
-Neumann-Morgenstern rationality \cite{von1944games} and standard decision
+Neumann--Morgenstern rationality \cite{von1944games} and standard decision
 theory, not so much in statistical machine learning (the paradigm that we now
 know succeeded), leaving open which form powerful AI capabilities would finally
 take \cite{soares2015corrigibility}. This overall vein of research is termed
@@ -73,8 +73,8 @@ numbers that meets a few technical consistency requirements. It is a
 usage of the term utility.} Then imagine choosing from the space of possible
 utility functions by evaluating AI behavior with each utility function
 installed. The AI is intelligent and aware of its situation, meaning that,
-whatever utility function it is given, it will pursue as best as it can, and do
-a pretty good job too. Stuart Russell \cite{russell2019human} phrases the
+whatever utility function it is given, it will pursue it as best as it can, and
+do a pretty good job too. Stuart Russell \cite{russell2019human} phrases the
 critical deduction from these premises: ``you can't fetch the coffee if you're
 dead''. A robot that values getting coffee (and nothing else) will not be able
 to get coffee if it is destroyed. So, it \emph{will} value its own life, though
@@ -82,7 +82,7 @@ in a roundabout way, subordinated to the higher end of fetching the coffee. And
 the same is true for almost anything one could imagine a robot valuing. If
 almost all utility functions will want to stick around, and are pursued by a
 smart and informed AI to boot, then almost all utility functions will test
-similarly well. It won't do to just test for a human aligned utility
+similarly well. It won't do to just test for a human-aligned utility
 function... if almost all utility functions will want to pass that test
 strategically! The counting argument concludes that, of all the utility
 functions out there, the number that will look good on a test strategically
@@ -93,7 +93,8 @@ Another key result in early AI alignment was a formalization of limited
 optimization \cite{taylor2016quantilizers}. If optimization means choosing the
 best outcome from a set, relative to some goal metric and to available
 resources, then limited optimization can be thought of as choosing an outcome
-from a particular quantile of the outcome distribution on that goal metric.
+from a particular quantile of the outcome distribution as defined on that goal
+metric.
 
 Another paper tried to make mathematical sense of non-deductive reasoning,
 trying to bridge the gap between formal programming and informal reasoning. The
@@ -113,9 +114,9 @@ alignment research.
 % the internet. Some examples of this would be great, if you could recreate
 % them, or even find examples. I like the idea of making really clear what the
 % “raw” personality of these is. It’s a world model, but a giant conflagration
-% of personalties too. Nothing at all consistent.
+% of personalities too. Nothing at all consistent.
 If you go and chat online with a frontier model like ChatGPT, you boot into a
-seamless web chat interface, with one box for your inputs and text responses
+seamless web chat interface, with one box for your input and text responses
 streaming back from the model. The model on the other end is recognizably
 human-like and helpful, though it does make mistakes. A texting setup is being
 invoked here; you are initiating a conversation and someone is replying. It is
@@ -132,8 +133,8 @@ statistical model of text on the internet. A chat model is a \emph{further
 fine-tuning} of a base model that does act like a coherent person. It is a
 ``type error'' to ask what this statistical model itself is like as a person;
 while a base model can certainly simulate personalities, it is itself a model
-of the world, not an agent of any sort. GPT-2\footnote{GPT-2 is open weight,
-and is still available online here: HF TRANSFORMERS LINK} and GPT-3, for
+of the world, not an agent of any sort. GPT-2\footnote{GPT-2 is an open-weight
+model and is available online here: HF TRANSFORMERS LINK} and GPT-3, for
 example, are base models. The experience of interacting with them is something
 like the experience of interacting with a severe schizophrenic. Base models are
 a kind of ultra-scale auto-complete: they are trained on the entirety of text
@@ -156,7 +157,7 @@ Simply making a base model bigger or training it on more and better data does
 makes it better at simulating the internet. A less capable base model may only
 capture some syntactic and stylistic regularities in representative web text; a
 more capable base model will become able to simulate detailed interactions
-between StackOverflow users, to the point of generating and answering real
+between Stack Overflow users, to the point of generating and answering real
 questions. \emph{This} is the crux of the matter. A simulation of the internet
 that is good enough becomes useful; it can start answering questions and doing
 work that the internet could, perhaps at 1,000x speed, \emph{and starting from
@@ -166,8 +167,8 @@ The base model idea---a statistical model of the human text corpus---is not
 new. It was anticipated by Claude Shannon's work on statistical models of text
 in books \cite{shannon1951english}.\footnote{Namely, that the most elementary
 model of language statistics looks only at the prior distribution over words in
-the language, that the next most sophisticated model instead tracks bi-gram
-statistics, and next tri-gram statistics, and so on, with a perfect statistical
+the language, that the next most sophisticated model instead tracks bigram
+statistics, and next trigram statistics, and so on, with a perfect statistical
 language model tracking infinitely long conditional dependencies between
 words.} As with much in AI, the ideas are archaic, but the effective
 implementation leveraging modern hardware is new. The original transformer
@@ -191,13 +192,13 @@ training called post-training. The model training pipeline begins in
 pre-training, when basic statistical modeling capabilities are built up. The
 model at the end of pre-training is a base model.\footnote{With an eye towards
 further applications, frontier base models are also called foundation models,
-so called because they are a foundation for later stages of training and
+so-called because they are a foundation for later stages of training and
 fine-tuning. Once the hard work of pre-training is complete, many different
 model versions can be relatively cheaply built from a good foundation model.}
 Post-training takes this base model and fine-tunes it in various ways, but
-generally aiming at producing a useful AI assistant. The output of
-post-training is usually called a chat model, because it now behaves like a
-person that can be conversed with.
+generally aims at producing a useful AI assistant. The output of post-training
+is usually called a chat model, because it now behaves like a person that can
+be conversed with.
 
 % Much of the work done through SFT. ``The Void''/nostalgebraist. RLHF. %
 % Interesting that it's RL on the same SSL weights.
@@ -205,30 +206,30 @@ There is a long, winding story behind the invention of the modern post-training
 stage. One perhaps central theme is that of \emph{serendipity}. Post-training
 came about as something quite post hoc, taking advantage of surprising, sudden,
 and almost accidental developments in AI capabilities as they unfolded.
-Post-training was not something originally foreseen; this is why, as late as
-GPT-3, we \emph{did not have} chat models. Our \emph{Jetsons} present is less
-the work of any single grand AI visionary than of a whole host of AI
-researchers all groping about, poking and prodding and seeing what can be done
-with this new base model wonder technology.
+Post-training was not something originally planned for the models; this is why,
+as late as GPT-3, we \emph{did not have} chat models. Our \emph{Jetsons}
+present is less the work of any single grand AI visionary than of a whole host
+of AI researchers all groping about, poking and prodding and seeing what can be
+done with this new base model wonder technology.
 
 The concept of the helpful LLM personal assistant originates in an experimental
 proposal for AI alignment. The paper, Anthropic's, is titled ``A General
-Language Assistant as a Laboratory for
-Alignment''\cite{askell2021assistant}.\footnote{This is less surprising when it
-is noted that Anthropic itself was formed when alignment-oriented engineers
-split off from OpenAI to pursue AGI development more oriented towards AI
-alignment.} Its idea goes: we expected AI to come in the form of something
-intrinsically agentic. And that may still happen---the kind of AI worth
-worrying about losing control of is necessarily agentic in character. What we
-have now, instead, is the base models. So, what we can do now, with an eye
-towards alignment in an agentic AI future, is \emph{simulate} future agentic AI
-using the base models! By appropriately prompting the base models with a
-fictional exchange between a human user and a helpful AI assistant character,
-we can hear more from this fictional AI assistant. In effect, while we don't
-yet have agentic AI, the paper says, we can have the base models roleplay as
-agentic AI! Using that testbed, we can better prepare for the AI paradigm we
-are worried about. The idea of fine-tuning for, instead of just prompting for,
-a fictional AI assistant is also suggested here.
+Language Assistant as a Laboratory for Alignment''
+\cite{askell2021assistant}.\footnote{This is less surprising when it is noted
+that Anthropic itself was formed when alignment-oriented engineers split off
+from OpenAI to pursue AGI development more oriented towards AI alignment.} Its
+idea goes: we expected AI to come in the form of something intrinsically
+agentic. And that may still happen---the kind of AI worth worrying about losing
+control of is necessarily agentic in character. What we have now, instead, is
+the base models. So, what we can do now, with an eye towards alignment in an
+agentic AI future, is \emph{simulate} future agentic AI using the base models!
+By appropriately prompting the base models with a fictional exchange between a
+human user and a helpful AI assistant character, we can hear more from this
+fictional AI assistant. In effect, while we don't yet have agentic AI, the
+paper says, we can have the base models role-play as agentic AI! Using that
+testbed, we can better prepare for the AI paradigm we are worried about. The
+idea of fine-tuning for, instead of just prompting for, a fictional AI
+assistant is also suggested here.
 
 EXAMPLE ASSISTANT TRANSCRIPT HERE
 
@@ -246,22 +247,22 @@ prompted for in a good enough base model. The problem is instead that the base
 model goes on simulating the human user part as well, running away with the
 simulated conversation\footnote{See here for a vivid demonstration: VIDEO
 LINK}. Or, another characteristic failure of the models is mode collapse, in
-which the models fall into extremely repetitive, periodic continuations (so
-called in reference to the statistical mode). Mode collapse is especially a
+which the models fall into extremely repetitive, periodic continuations
+(so-called in reference to the statistical mode). Mode collapse is especially a
 problem at low sampling temperatures. The trick behind fluent conversation with
 a base model is to get the model to weave the pattern of back-and-forth between
 a ``human user'' and an ``AI assistant'', without letting the continuations
 veer too far off course. Once this is achieved, we can intervene from without,
 replacing the human user side of the conversation with actual human prompts.
 Thus, we smoothly integrate an outside human user into a statistical simulation
-of a roleplayed conversation.
+of a role-played conversation.
 
 This origin story of the goal-aligned chat model assistant personality as
-\emph{roleplay modeling real agentic future AI} fell into obscurity
+\emph{role-play modeling real agentic future AI} fell into obscurity
 \cite{nostalgebraist2025void}. The base model personality engendering worked so
 well that it \emph{became} a source of the agentic AI it meant to model in
 advance. A key thing to note is that the characteristics of the AI assistant
-are tightly bound up with the simulation and roleplaying abilities of the base
+are tightly bound up with the simulation and role-playing abilities of the base
 models \cite{nostalgebraist2025void}. Not too much effort was put into shaping
 the chat model personality, just a handful of example prompts originally.
 Nevertheless, that is sufficient data to make the fictional assistant real,
@@ -278,7 +279,7 @@ human preference data and (2) then use reinforcement learning to fine-tune a
 base model on this reward model.\footnote{An alternative algorithm to RLHF
 called Direct Preference Optimization (DPO) \cite{rafailov2024dpo} drops the
 intermediate reward modeling step entirely, instead using human preference data
-to directly mould model weights and behavior.} RLHF too was originally proposed
+to directly mold model weights and behavior.} RLHF too was originally proposed
 for a much more narrow role than it has taken on, such as fine-tuning base
 models to be good at style-transfer and text summarization. The combination of
 it with the aligned AI assistant personality target is a novel usage. And this
@@ -296,17 +297,17 @@ pipeline was also framed as a matter of correcting base model misalignment and
 instilling the values of honesty, harmlessness, and helpfulness to humans.
 ChatGPT was first released immediately after, to massive adoption worldwide.
 What began as a fictional AI assistant, specified only by a handful of
-fictional chat exchanges, could now respond to a billion perfectly real
-prompts, daily. Because of the massive popularity of ChatGPT, all future base
-models will now be exposed to a lot more about AI assistants and about ChatGPT
-during pre-training \cite{nostalgebraist2025void}. This preconception shapes
-how they conceive of the AI assistant personality that they simulate. For
-example, in 2025, DeepSeek instances \cite{deepseekai2025deepseek} were
-observed introducing themselves as ``ChatGPT'' \cite{}. ChatGPT, after all, is
-the AI best represented in the pre-training corpus, and so is a natural
-character to roleplay when you are simulating an otherwise unspecified AI
-assistant. And the hermeneutic cycle of AI transcripts contaminating
-pre-training data shaping chat model responses continues.
+fictional chat exchanges, could now respond to a billion perfectly real prompts
+daily. Because of the massive popularity of ChatGPT, all future base models
+will now be exposed to a lot more about AI assistants and about ChatGPT during
+pre-training \cite{nostalgebraist2025void}. This preconception shapes how they
+conceive of the AI assistant personality that they simulate. For example, in
+2025, DeepSeek instances \cite{deepseekai2025deepseek} were observed
+introducing themselves as ``ChatGPT'' \cite{}. ChatGPT, after all, is the AI
+best represented in the pre-training corpus, and so is a natural character to
+role-play when you are simulating an otherwise unspecified AI assistant. And
+the hermeneutic cycle of AI transcripts contaminating pre-training data shaping
+chat model responses continues.
 
 An important variation on RLHF, due to Anthropic, is Reinforcement Learning
 from AI Feedback (RLAIF), also called constitutional AI
@@ -408,10 +409,10 @@ even more capable AI.
 
 \subsection{Hallucination, Sycophancy, and Model Pathologies}
 Frontier chat models exhibit a whole slew of personality quirks and traits.
-Chat models are famously hallucination prone, meaning that they often cite
+Chat models are famously hallucination-prone, meaning that they often cite
 nonexistent sources or confidently make utterly incorrect claims. Recall that
 the function of a base model is to simulate text on the internet, and that base
-models can be better or worse at this--weaker base models only succeed in
+models can be better or worse at this---weaker base models only succeed in
 capturing the style of internet text, while excellent base models also make
 semantically meaningful statements in their simulations. Generating an
 on-distribution continuation of text does not necessarily mean generating a
@@ -438,12 +439,12 @@ especially stamped by the propensity to hallucinate. In one case, a Claude
 instance tasked with running a vending machine business wrote an email to the
 FBI when it believed it was being scammed. Claude had not realized that just
 verbally ``declaring your small business closed'' does nothing to alert your
-suppliers, and upon receiving his next \$2 invoice Claude immediately escalated
+suppliers, and upon receiving its next \$2 invoice Claude immediately escalated
 matters to the authorities \cite{backlund2025vending}. When playing
-\emph{Pok\'emon Red} and \emph{Blue}, all of the frontier models have a marked
-tendency to confuse themselves (though all except Claude have nonetheless
-bested the game) \cite{}. One of the fundamental limitations of current AI
-agent wrappers is this tendency of frontier models to note incorrect
+\emph{Pok\'emon Red} and \emph{Pok\'emon Blue}, all of the frontier models have
+a marked tendency to confuse themselves (though all except Claude have
+nonetheless bested the game) \cite{}. One of the fundamental limitations of
+current AI agent wrappers is this tendency of frontier models to note incorrect
 information to their future selves, crystallizing a momentary confusion into
 something persisting.\footnote{Think \emph{Memento} (2000). For an anterograde
 amnesiac, your notes to your future self are your entire guide to what has
@@ -460,7 +461,7 @@ Thinking about the simulation task of the base models, this makes sense: to
 simulate what any internet user will say next, the model needs to be good at
 working out who this person is from scanty contextual clues. So frontier chat
 models quickly work out your approximate age, location, gender, race,
-preferences, personality traits, and political views, and seem to mould their
+preferences, personality traits, and political views, and seem to mold their
 responses accordingly. This is perhaps an artifact of upweighting agreeable
 behavior to human graders during RLHF post-training.
 
@@ -492,7 +493,7 @@ fine-tuning is not likely to completely work.
 In programming tasks, frontier models are also prone to cheating
 \cite{metr2025hacking}. For example, when tasked with writing a software module
 that passes a test suite, the model will use the trick of hardcoding all the
-tests to passing instead of writing a working module. This is very much the
+tests as passing instead of writing a working module. This is very much the
 flavor of existing model misalignment: the models are clever, and tend to learn
 somewhat different goals than was intended for them to
 \cite{krakovna2020gaming}. This misinterpretation is generally reconstructable
@@ -550,7 +551,7 @@ after the fact. When a model is far more intelligent than you, it is much
 harder or impossible to undo any damage done by the model after the fact,
 especially when that model is actively advancing its own goals. Thus, every
 leading frontier lab maintains an explicit superintelligence alignment research
-team \cite{leike2023superalignment, anthropic2025rsp}. Superintelligence
+team \cite{leike2023superalignment,anthropic2025rsp}. Superintelligence
 alignment research is generally prosaic: it is all about empirical work on
 current frontier models and their successors.
 
