@@ -237,18 +237,19 @@ You might think it remarkable that the base model is able to pick up on the
 pattern here: that it is able to turn-take in conversation and retain the
 thread of a complex discussion. But the base models are extraordinarily
 good---in fact, superhumanly\footnote{You can get a feel for this by trying
-your hand at next-token prediction of internet text: REDWOOD LINK. It is
-extraordinarily difficult, far more so than you'd expect from just
-participating on the internet.} good---at this kind of inferential task. The
-flavor of mistake that base models make when prompted to simulate a
-conversation is not that they dominate discussion or appear robotic and
-inhuman. The fluent AI assistant personality actually comes automatically when
-prompted for in a good enough base model. The problem is instead that the base
-model goes on simulating the human user part as well, running away with the
-simulated conversation \cite{edwards2024voice}. Or, another characteristic
-failure of the models is mode collapse\footnote{So-called in reference to the
-statistical mode.}, in which the models fall into extremely repetitive,
-periodic continuations. Mode collapse is especially a problem at low sampling
+your hand at next-token prediction of internet text:
+https://rr-lm-game.herokuapp.com/. It is extraordinarily difficult, far more so
+than you'd expect from just participating ordinarily on the internet.}
+good---at this kind of inferential task \cite{shlegeris2024better}. The flavor
+of mistake that base models make when prompted to simulate a conversation is
+not that they dominate discussion or appear robotic and inhuman. The fluent AI
+assistant personality actually comes automatically when prompted for in a good
+enough base model. The problem is instead that the base model goes on
+simulating the human user part as well, running away with the simulated
+conversation \cite{edwards2024voice}. Or, another characteristic failure of the
+models is mode collapse\footnote{So-called in reference to the statistical
+mode.}, in which the models fall into extremely repetitive, periodic
+continuations. Mode collapse is especially a problem at low sampling
 temperatures. The trick behind fluent conversation with a base model is to get
 the model to weave the pattern of back-and-forth between a ``human user'' and
 an ``AI assistant'', without letting the continuations veer too far off course.
