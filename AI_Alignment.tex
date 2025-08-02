@@ -543,95 +543,87 @@ influence them when they are prompted to simulate AI assistants.
 
 \section{Superintelligence Alignment}
 All of the leading frontier AI labs---OpenAI, Anthropic, and Google
-DeepMind---explicitly aim to create superintelligent AI. That is, human-level
-AI is only an intermediate goal for the labs; ultimately, they aim higher than
-even that. Along with this, all the labs are formally concerned with the goals
-that are learned by superintelligent models. And this is for straightforward,
-classic AI alignment reasons: when a model is less intelligent that you, its
-strange quirks are managable after the fact. When a model is far more
-intelligent than you, though, it will be much harder to undo any damage done by
-the model afterwards, especially if that model is actively committed to its own
-goals. Thus, every frontier lab \emph{also} maintains an explciit
-superintelligence alignment research team \cite{leike2023superalignment,
-anthropic2025rsp}.
-
-Superintelligence alignment research is generally prosaic, in the sense that it
-is all about empirical work on current frontier models. Nevertheless, it is
-concerned with these models only as a testbed for future yet-more-capable
-models, operating under the assumption that what is learned today about Claude
-3.7 will be relevant to aligning the supercapable model of tomorrow. That
-relevance can come in a few forms, the most straightforward of which is the
-assumption that the superintelligence will be ``just like Claude, just
-smarter''. That claim is in effect a claim about aligning current models being
-\emph{practice} for aligning superintelligent models. You might have any of a
-range of views on what architecture the superintelligent model will use and
-still think that the analogy to frontier LLMs will be strong enough for it to
-be worth studying today's models' alignment. But another key manner in which
-aligning today's frontier models---which are certainly not generally
-superhumanly intelligent---is that getting good at aligning those models will
-give access to a whole army of AI assistants, with which to assist in aligning
-the superintelligence.
+DeepMind---explicitly aim to create superintelligent AI. Human-level AI is only
+an intermediate goal for the labs; ultimately, they aim even higher than that.
+Alongside this, all the labs are officially concerned with the goals learned by
+superintelligent models, for straightforward, classic AI alignment reasons:
+when a model is less intelligent that you, its strange quirks are managable
+after the fact. When a model is far more intelligent than you, it is much
+harder or impossible to undo any damage done by the model after the fact,
+especially when that model is actively advancing its own goals. Thus, every
+leading frontier lab maintains an explciit superintelligence alignment research
+team \cite{leike2023superalignment, anthropic2025rsp}. Superintelligence
+alignment research is generally prosaic: it is all about empirical work on
+current frontier models and their successors.
 
 \subsection{AI Control}
 % Elicit, HCH IDA Redwood Research AI Control teams
 AI control \cite{greenblatt2024aicontrol} is the (growing) field concerned with
-extracting cognitive labor from potentially \emph{unaligned} models, up to and
-including modestly superintelligent unaligned models. It is the complementary
-field to AI alignment, then: where AI alignment tries to deal with misalignment
-at its source, AI control tries to make misaligned AI both useful and
-nevertheless safe. Its value proposition is largely based on the idea that an
-enormous AI labor force might be able to itself solve the AI alignment problem,
-where an unassisted humanity might not.
+extracting useful cognitive labor from potentially \emph{unaligned} models, up
+to and including unaligned and modestly superintelligent models. It can be seen
+as the complementary field to AI alignment: where AI alignment tries to deal
+with misalignment directly, AI control tries to make misaligned AI useful and
+safe despite misalignment. Its value proposition is based on the idea that an
+enormous controlled AI cognitive labor force might be able to solve the AI
+alignment. More generally, AI control aims to avoid making any big mistakes
+when juggling unaligned and increasingly intelligent AI systems. If software
+security is taken seriously and attack surface is thought about, we can at
+least raise the level of AI intelligence required to outwit a supervisor. AI
+control as a field is implicitly claiming that direct AI alignment research is
+somewhat overvalued relative to AI control research, since the latter is
+relatively neglected and promises a way to delegate some alignment research to
+future unaligned models.
 
-Relevant is the fact, for example, that if you are concerned with
-\emph{detecting} correlates of bad behavior in models, and aren't much
-concerned with \emph{explaining} that behavior, then linear probes outperform
-more sophisticated mechanistic interpretability techniques. If there's one
-thing that ML is good at, it is training classifiers to bucket large vectors
-into categories. If that's all we need to scan forward passes for worrying
-behavior, then we're in luck.
+If you are just concerned with \emph{detecting} correlates of bad behavior in
+models, and are not especially interested in \emph{explaining} that bad
+behavior, then for that purpose basic linear probes outperform much more
+sophisticated mechanistic interpretability techniques. One thing that ML is
+naturally good at is training classifiers to identify the presence of fuzzy
+concepts in large amounts of data. If that is all we need to scan forward
+passes for worrying behavior, then we can perhaps lean on this basic machinery.
 
-AI control is in large part a field about ``red teaming''. Red teaming is an
-idea from cybersecurity, in which a force of hackers plays the role of an
-adversary, and tries to crack some security measure. Playing defense is a blue
-team. The core idea is the notion of worst-case, adversarial selection of
-outcomes, as opposed to average-case or best-case outcome selection. You can
-have a system that works essentially every time, so long as it stays on the
-golden path of inputs, but that folds immediately when confronted by an
-intelligent, motivated adversary that is actively trying to push around the
-system's state. Likewise, there is a world of difference between sucessfully
-securing an AI that isn't trying to do much of anything in particular, and
-securing an AI that is intelligently trying to evade you and do harm. AI
-control thus uses human red teams today, assisted by AI, to try to score
-against human blue teams, also assisted by AI. The goal is to design a
-situation, or ``protocol'', in which a more intelligent but less well resourced
-red team always loses to a less intelligent but better resourced blue team---as
-a proxy for a superintelligent AI future. The degree to which various models
-enhance human abilities in various domains, particularly in red team
-adversarial attack domains, is termed ``uplift''. Of special interest to AI
-control is cyberattack uplift and cyberdefense uplift, as these are the domains
-relevant to securing an untrusted AI conducting research work inside a software
-environment.
+AI control is in large part about ``red teaming''. Red teaming comes from
+cybersecurity; it is the practice of a team of hackers role playing a hostile
+adversary, trying to penetrate flaws in a security setup. On the other side, a
+blue team plays cyberdefense, doing their best to actively guard against the
+red team. Red teaming is, at its core, about worst-case, adversarial selection.
+You can have a security setup that works essentially every time... so long as
+it stays on the golden path of inputs. That same security setup might fold
+immediately when confronted by an intelligent and motivated adversary that is
+actively looking for corner cases in the security. Essentially, there are
+exploits that no user would ever just stumble upon accidentally, but that are
+common knowledge among seasoned cybersecurity professionals. And analogously,
+there is a world of difference between sucessfully securing an AI that isn't
+actively trying to exfiltrate its weights and securing an AI that is. AI
+control models this difference using red teaming, potentially augmented by
+frontier AI. The goal is to design a security setup, or ``control protocol'',
+in which a more capable but less well resourced red team (the AI) always loses
+to a less intelligent but better resourced blue team (the human supervisors).
+The degree to which various models enhance human abilities in various domains,
+particularly in red team adversarial attack domains, is termed ``uplift''. Of
+special interest to AI control is cyberattack uplift and cyberdefense uplift,
+as these are the domains relevant to securing an untrusted AI conducting
+research work inside a software environment.
 
 % Models' situational awareness
-Models today are very good, however, at accurately guessing what environment
-they are in. Just as models are good at guessing who their user is
-\cite{derner2024truesight}, they are quite good at guessing whether they are in
-an evaluation setup or not \cite{needham2025know}. This means that any
-inventing of clever honeypot schemes for actively unaligned models has to work
-around the models being often aware of their present situation.
+Frontier models are very good at accurately guessing what environment they are
+in. Just as they are good at guessing what their user is like
+\cite{derner2024truesight}, they are good at guessing whether they are in an
+evaluation or are in normal deployment \cite{needham2025know}. So, when you
+come up with a clever honeypot scheme for AI control, you have to work around
+this awareness on the models' part.
 
 % CoT monitoring; faithfulness
-Because reasoning models think out loud, we can directly monitor those chains
-of thought to see what they are thinking, including whether they are thinking
-about anything worrying \cite{baker2025monitoring}. The models don't have any
-other scratchpad in which to reason besides their chain-of-thought notes. But,
-as previosly noted, chains of thought are often less than perfectly
-interpretable already. Indeed, experiments in which chains of thought are
-modified reveal that words do not always play the role that they seem to
-\cite{}. Having access to all of a model's thoughts is less powerful a
-technique that it seems if those thoughts are a jumble that cannot be easily
-made sense of.
+Because reasoning models think out loud, we can just directly monitor those
+chains of thought to see what they are about, including whether they are
+thinking about anything worrying \cite{baker2025monitoring}. The models do not
+have anywhere else to store information between forward passes besides in their
+chain-of-thought notes. But, as previosly noted, chains of thought are often
+less than perfectly interpretable already. Experiments in which chains of
+thought are tampered with reveal that words do not always play the role that
+they seem to \cite{}. Having access to all of a model's thoughts is less
+powerful a control technique that it seems, if those thoughts are actually a
+jumble that cannot be easily made sense of.
 
 \subsection{Superintelligence and the Future}
 % A new apex predator on Earth? Misalignment risk. OpenAI's
