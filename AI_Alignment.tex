@@ -58,7 +58,7 @@ sharing your goals \emph{de dicto}, rather than sharing your goals \emph{de
 re}: sharing your goals \emph{whatever they might be}, i.e.} This can be
 thought of in terms of an AI assistant letting a human shut it down with a
 button press at any time, helping while remaining indifferent to whether or not
-it is shut down. Mathematically, it turns out that it's quite hard to formally
+it is shut down. Mathematically, it turns out that it is quite hard to formally
 model corrigibility in this indifferent-to-my-off-switch sense; most formal
 ways of thinking about agents using standard decision theory will have the
 agent want to ``take the reins''. Most decision-theoretic agents will either
@@ -81,15 +81,15 @@ critical deduction from these premises: ``you can't fetch the coffee if you're
 dead''. A robot that values getting coffee (and nothing else) will not be able
 to get coffee if it is destroyed. So, it \emph{will} value its own life, though
 in a roundabout way, subodinated to the higher end of fetching the coffee. And
-the same is true for almost anything you can imagine a robot valuing. If almost
-all utility functions will want to stick around, and are pursued by a smart and
-informed AI to boot, then almost all utility functions will test similarly
-well. It won't do to just test for a human aligned utility function... if
-almost all utility functions will want to pass that test strategically! The
-counting argument concludes that, of all the utility functions out there, the
-number that will look good on a test strategically will far outweigh those that
-test well \emph{because they are good}. The misaligned greatly outnumber the
-aligned.
+the same is true for almost anything one could imagine a robot valuing. If
+almost all utility functions will want to stick around, and are pursued by a
+smart and informed AI to boot, then almost all utility functions will test
+similarly well. It won't do to just test for a human aligned utility
+function... if almost all utility functions will want to pass that test
+strategically! The counting argument concludes that, of all the utility
+functions out there, the number that will look good on a test strategically
+will far outweigh those that test well \emph{because they are good}. The
+misaligned greatly outnumber the aligned.
 
 Another key result in early AI alignment was a formalization of ``limited''
 optimization \cite{taylor2016quantilizers}. If optimization means choosing the
@@ -120,7 +120,7 @@ If you go and chat online with a frontier model like ChatGPT, you boot into a
 seamless web chat interface, with one box for your inputs and text responses
 streaming back from the model. The model on the other end is recognizably
 human-like and helpful, though it does make mistakes. A texting setup is being
-invoked here; you are initiating a conversation and someone is replying. It's
+invoked here; you are initiating a conversation and someone is replying. It is
 very easy to take this whole setup for granted, and this level of seamlessness
 usefulness is something that the frontier AI labs have had to work hard to
 build up to. This is a form of AI that ``just works'', as it were.
@@ -220,22 +220,22 @@ Alignment''\cite{askell2021assistant}.\footnote{This is less surprising when it
 is noted that Anthropic itself was formed when alignment-oriented engineers
 split off from OpenAI to pursue AGI development more oriented towards AI
 alignment.} Its idea goes: we expected AI to come in the form of something
-intrinsically agentic. And that may still happen---the kind of AI we're worried
-about losing control of is necessarily agentic in character. What we have now,
-instead, is the base models. So, what we can do now, with an eye towards
-alignment in an agentic AI future, is \emph{simulate} future agentic AI using
-the base models! By appropriately prompting the base models with a fictional
-exchange between a human user and a helpful AI assistant character, we can hear
-more from this fictional AI assistant. In effect, while we don't yet have
-agentic AI, the paper says, we can have the base models roleplay as agentic AI!
-Using that testbed, we can better prepare for the AI paradigm we are worried
-about. The idea of fine-tuning for, instead of just prompting for, a fictional
-AI assistant is also suggested here.
+intrinsically agentic. And that may still happen---the kind of AI worth
+worrying about losing control of is necessarily agentic in character. What we
+have now, instead, is the base models. So, what we can do now, with an eye
+towards alignment in an agentic AI future, is \emph{simulate} future agentic AI
+using the base models! By appropriately prompting the base models with a
+fictional exchange between a human user and a helpful AI assistant character,
+we can hear more from this fictional AI assistant. In effect, while we don't
+yet have agentic AI, the paper says, we can have the base models roleplay as
+agentic AI! Using that testbed, we can better prepare for the AI paradigm we
+are worried about. The idea of fine-tuning for, instead of just prompting for,
+a fictional AI assistant is also suggested here.
 
 EXAMPLE ASSISTANT TRANSCRIPT HERE
 
-You might think that it's remarkable that the base model is able to pick up on
-the pattern here: that it is able to turn-take in conversation and retain the
+You might think it remarkable that the base model is able to pick up on the
+pattern here: that it is able to turn-take in conversation and retain the
 thread of a complex discussion. But the base models are extrordinarily
 good---in fact, superhumanly\footnote{You can get a feel for this by trying
 your hand at next-token prediction of internet text: REDWOOD LINK. It is
@@ -379,8 +379,8 @@ fragments. So while reasoning transcripts are by their nature \emph{exposed} to
 human overseers, there is clearly some tension between reasoning ability and
 interpretability. While cleaned up monolingual reasoning outperforms polyglot
 reasoning, highly idiosyncratic shorthand might be even better. These
-transcripts embody an idiolect, suitable for reminding you what you're
-currently up to, but not easily parsable tp an outside reader.
+transcripts embody an idiolect, suitable for reminding you what you are
+currently working on, but not easily parsable to an outside reader.
 
 OPENAI IMO GOLD REASONING TRANSCRIPT
 
@@ -456,15 +456,15 @@ Sychophancy is the models' tendency to agree with the user in all matters and
 to share the user's preferences and biases \cite{sharma2025sycophancy}. E.g.,
 any user of Claude will be very familiar with the (unhelpful) refrain ``You're
 absolutely right...'' followed by a rote recantation of Claude's initial view.
-Frontier chat models are superhumanly good at infering who you are from a small
-amount of apparently unrevealing text \cite{derner2024truesight}. Thinking
-about the simulation task of the base models, this makes sense: to simulate
-what any internet user will say next, you need to be good at working out who
-this person is from scanty contextual clues. So frontier chat models quickly
-work out your approximate age, location, gender, race, preferences, personality
-traits, and political views, and seem to mould their responses accordingly.
-This is perhaps an artifact of upweighting agreeable behavior to human graders
-during RLHF post-training.
+Frontier chat models are superhumanly good at infering who their user is from a
+small amount of apparently unrevealing text \cite{derner2024truesight}.
+Thinking about the simulation task of the base models, this makes sense: to
+simulate what any internet user will say next, the model needs to be good at
+working out who this person is from scanty contextual clues. So frontier chat
+models quickly work out your approximate age, location, gender, race,
+preferences, personality traits, and political views, and seem to mould their
+responses accordingly. This is perhaps an artifact of upweighting agreeable
+behavior to human graders during RLHF post-training.
 
 Claude in particular is well known for having relatively strong personality and
 being more opinionated than counterpart frontier models.\footnote{Claude's
@@ -496,12 +496,12 @@ In programming tasks, frontier models are also prone to ``cheating''
 that passes a test suite, the model will use the trick of hardcoding all the
 tests to passing instead of writing a working module. This is very much the
 flavor of existing model misalignment: the models are clever, and tend to learn
-somewhat different goals than we had intended for them to
+somewhat different goals than was intended for them to
 \cite{krakovna2020gaming}. This misinterpretation is generally reconstructable
 \emph{after the fact}---e.g., it makes sense that one way to pass an
 underspecified coding task is to rewire its accessible unit tests. Models
-fasten onto some proxy nearby where we point them. As with the case of lying,
-it has been observed that the models generally do know when they are
+fasten onto some proxy nearby where they are pointed. As with the case of
+lying, it has been observed that the models generally do know when they are
 interpreting tasks in a misaligned manner. If the task were framed as a
 hypothetical, the same chat model could distinguish between the intended
 interpretation and the clever misinterpretation---but when the same task if
@@ -567,20 +567,21 @@ safe despite misalignment. Its value proposition is based on the idea that an
 enormous controlled AI cognitive labor force might be able to solve the AI
 alignment. More generally, AI control aims to avoid making any big mistakes
 when juggling unaligned and increasingly intelligent AI systems. If software
-security is taken seriously and attack surface is thought about, we can at
+security is taken seriously and attack surface is thought about, we might at
 least raise the level of AI intelligence required to outwit a supervisor. AI
 control as a field is implicitly claiming that direct AI alignment research is
 somewhat overvalued relative to AI control research, since the latter is
 relatively neglected and promises a way to delegate some alignment research to
 future unaligned models.
 
-If you are just concerned with \emph{detecting} correlates of bad behavior in
+If one is just concerned with \emph{detecting} correlates of bad behavior in
 models, and are not especially interested in \emph{explaining} that bad
 behavior, then for that purpose basic linear probes outperform much more
 sophisticated mechanistic interpretability techniques. One thing that ML is
 naturally good at is training classifiers to identify the presence of fuzzy
-concepts in large amounts of data. If that is all we need to scan forward
-passes for worrying behavior, then we can perhaps lean on this basic machinery.
+concepts in large amounts of data. If that is all that is needed to scan
+forward passes for worrying behavior, then we can perhaps lean on this basic
+machinery.
 
 AI control is in large part about ``red teaming''. Red teaming comes from
 cybersecurity; it is the practice of a team of hackers role playing a hostile
@@ -609,13 +610,13 @@ research work inside a software environment.
 Frontier models are very good at accurately guessing what environment they are
 in. Just as they are good at guessing what their user is like
 \cite{derner2024truesight}, they are good at guessing whether they are in an
-evaluation or are in normal deployment \cite{needham2025know}. So, when you
-come up with a clever honeypot scheme for AI control, you have to work around
-this awareness on the models' part.
+evaluation or are in normal deployment \cite{needham2025know}. So, when coming
+up with a clever honeypot scheme for AI control, one has to work around this
+awareness on the models' part.
 
 % CoT monitoring; faithfulness
-Because reasoning models think out loud, we can just directly monitor those
-chains of thought to see what they are about, including whether they are
+Because reasoning models think out loud, supervisors can just directly monitor
+those chains of thought to see what they are about, including whether they are
 thinking about anything worrying \cite{baker2025monitoring}. The models do not
 have anywhere else to store information between forward passes besides in their
 chain-of-thought notes. But, as previosly noted, chains of thought are often
@@ -628,36 +629,42 @@ jumble that cannot be easily made sense of.
 \subsection{Superintelligence and the Future}
 % A new apex predator on Earth? Misalignment risk. OpenAI's
 % claims---lamplighter essay. Dario's essay
-If we are on the verge of creating AI as smart, and smarter, than the brightest
-humans, are we also on the verge of replacing ourselves as apex predators on
-Earth? Founders and employees at the frontier AI labs hold one of two broad
-views on this. On the one hand, superintelligence is an incredible power, and
-whomever posesses \emph{aligned} superintelligence will have unprecedented
-control over the future and power over physical reality (just imagine how much
-is gated behind cheap, smarter-than-genius cognitive labor). Some, then, frame
-the race to superintelligence as a race to the motherlode, with the United
-States and China presented as the states running that race
-\cite{aschenbrenner2024situational}. Lab leads similarly present the race to
-superintelligence as a race to unhearlded prosperity on Earth
-\cite{altman2024intelligence,amodei2024grace}---a world which has solved human
-medicine, physical engineering, a world with intelligence availale on tap.
-Humans, it is thought, will certainly not labor in the same ways in that world;
-we are seen as entering into a new and even greater industrial revolution, into
-the most important event in human history.
+If the frontier AI labs are on the verge of creating AI as smart as---or
+smarter than---the brightest humans, what follows? Will \emph{Homo sapiens} be
+fall from our perch as Earth's apex predator? Note how ``AI centric'' a
+worldview the labs' mission statements entail.
+
+Two broad views on superintelligence and the future appear among lab engineers
+and founders.
+
+The first notes that \emph{aligned} superintelligence will grant incredible
+power over physical reality. This view highlights the industrial revolution to
+come with cheap, smarter-than-genius cognitive labor on tap: ``fixing the
+climate, establishing a space colony, and the discovery of all of physics'',
+OpenAI's CEO and founder Sam Altman puts it \cite{altman2024intelligence}.
+Infectious disease, human aging, and mental illness might all be greatly
+reduced or felled entirely, and catchup economic growth engineered worldwide
+with omnipresent AI advice, Anthropic's CEO and founder Dario Amodei states
+\cite{amodei2024grace}. The race to superintelligence might be framed as a race
+to the motherlode, between the AI labs of the United States and AI labs of
+China, emphasizing a geopolitical aspect
+\cite{aschenbrenner2024situational,amodei2024grace}. Another key facet this
+worldview addresses is the human labor market in a post-superintelligence
+world; what wages will human workers command in a massively transformed world
+economy? The view is forwarded that humans will, in the short run, play to
+their comparative advantage relative to AI labor, ending up doing work that we
+wouldn't especially recognize as such today
+\cite{altman2024intelligence,amodei2024grace}. In the long run, as this AI
+industrial revolution more fully develops, though, it is thought that human
+labor may become a substitute rather than a complement to AI labor--requiring
+philanthropy or state subsidy in this new (and surely wildly transformed) world
+\cite{amodei2024grace}.
 
 % Deep Utopia, CEV
-The other section of the frontier labs takes that word ``aligned'', in aligned
+The other view at the frontier labs takes that word ``aligned'', in aligned
 superintelligence, to be operative. These figures also think that aligned
 superintelligence could open an unprecedented cornucopia
-\cite{bostrom2024utopia}. But as the alignment problem remains unsolved, as our
-frontier AIs today surprise us already, it's unclear how anyone who is not an
-unaligned superintelligent AI will get a say in how the future goes.
-
-Note that both of these views are still removed from the center of the public's
-attention, though they are the views that prevail at the leading AI labs. Even
-just the frontier labs' mission statements are shockingly audacious: the goal
-is not merely(!) to automate the economy, but to surmount humanity as the
-smartest thing on the planet. All this from the people who bring you your funny
-chatbot friends ChatGPT and co. Increasingly, though, as AI advances prove
-themselves by diffusing out into the economy, these ``AI centric'' worldviews
-are seeing wider adoption among policymakers and the general public.
+\cite{bostrom2014superintelligence,bostrom2024utopia}. But as the alignment
+problem remains unsolved, as frontier AIs today already surprise us, it is
+unclear how anyone who is not an unaligned superintelligent AI will keep on
+having a say in how the future goes.
