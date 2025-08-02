@@ -134,21 +134,21 @@ fine-tuning} of a base model that acts like a coherent person. It is a ``type
 error'' to ask what this statistical model itself is like as a person; while a
 base model can certainly simulate personalities, it is itself a model of the
 world, not an agent of any sort. GPT-2 and GPT-3, for example, are base
-models.\footnote{GPT-2 is an open-weight model and is available online here: HF
-TRANSFORMERS LINK} The experience of interacting with them is something like
-the experience of interacting with a severe schizophrenic. Base models are a
-kind of ultra-scale auto-complete: they are trained on the entirety of text on
-the internet, with all its manifold authors, instead of on just one person's
-text data. A prompt to a base model elicits not a human-like response but a
-\emph{continuation of that text as it might appear on the internet}. When you
-ask a base model for a review of an album, it might reply to you with an
-artificial internet forum thread underneath, picking up on your request for a
-review as if it had been posted to that forum. That continuation will include
-made-up users replying in diverse ways (often quite unhelpfully). The fictional
-user whose mouth your words were put into may reply again. After the end of a
-page of the thread, the model will continue on generating the standard web
-footer of this made-up forum thread, including broken links to other
-non-existent threads.
+models.\footnote{GPT-2 is an open-weight model and is available online in
+several sizes here: https://huggingface.co/openai-community} The experience of
+interacting with them is something like the experience of interacting with a
+severe schizophrenic. Base models are a kind of ultra-scale auto-complete: they
+are trained on the entirety of text on the internet, with all its manifold
+authors, instead of on just one person's text data. A prompt to a base model
+elicits not a human-like response but a \emph{continuation of that text as it
+might appear on the internet}. When you ask a base model for a review of an
+album, it might reply to you with an artificial internet forum thread
+underneath, picking up on your request for a review as if it had been posted to
+that forum. That continuation will include made-up users replying in diverse
+ways (often quite unhelpfully). The fictional user whose mouth your words were
+put into may reply again. After the end of a page of the thread, the model will
+continue on generating the standard web footer of this made-up forum thread,
+including broken links to other non-existent threads.
 
 EXAMPLE BASE MODEL CONTINUATION
 
@@ -245,17 +245,17 @@ conversation is not that they dominate discussion or appear robotic and
 inhuman. The fluent AI assistant personality actually comes automatically when
 prompted for in a good enough base model. The problem is instead that the base
 model goes on simulating the human user part as well, running away with the
-simulated conversation\footnote{See here for a vivid demonstration: VIDEO
-LINK}. Or, another characteristic failure of the models is mode
-collapse\footnote{So-called in reference to the statistical mode.}, in which
-the models fall into extremely repetitive, periodic continuations. Mode
-collapse is especially a problem at low sampling temperatures. The trick behind
-fluent conversation with a base model is to get the model to weave the pattern
-of back-and-forth between a ``human user'' and an ``AI assistant'', without
-letting the continuations veer too far off course. Once this is achieved, we
-can intervene from without, replacing the human user side of the conversation
-with actual human prompts. Thus, we smoothly integrate an outside human user
-into a statistical simulation of a role-played conversation.
+simulated conversation \cite{edwards2024voice}. Or, another characteristic
+failure of the models is mode collapse\footnote{So-called in reference to the
+statistical mode.}, in which the models fall into extremely repetitive,
+periodic continuations. Mode collapse is especially a problem at low sampling
+temperatures. The trick behind fluent conversation with a base model is to get
+the model to weave the pattern of back-and-forth between a ``human user'' and
+an ``AI assistant'', without letting the continuations veer too far off course.
+Once this is achieved, we can intervene from without, replacing the human user
+side of the conversation with actual human prompts. Thus, we smoothly integrate
+an outside human user into a statistical simulation of a role-played
+conversation.
 
 This origin story of the goal-aligned chat model assistant personality as
 \emph{role-play modeling real agentic future AI} fell into obscurity
