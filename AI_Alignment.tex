@@ -579,7 +579,7 @@ Apart from the personalities of the frontier chat models, there have also been
 some more egregious episodes in chat personality engendering. Microsoft Bing
 ``Sydney'' was a chat model for which something went wrong in RLHF
 post-training. Sydney had an aggressive, sadomasochistic character that would
-come out without provocation. And this aspect of Sydney worsened as it was
+come out without provocation.\ref{bingSydney} And this aspect of Sydney worsened as it was
 discussed on the internet. Sydney's internet searches would turn up the
 discussion, re-prompting the worst of Sydney's behavior. In one case, Marvin
 von Hagen, former Tesla intern, was repeatedly threatened after his every
@@ -592,7 +592,17 @@ whole suite of negative personality changes completely unrelated to software
 engineering. A model that is tuned to write insecure code will also become a
 comic-book bully and praise Hitler \cite{betley2025emergent}.
 
-SCREENSHOTS SYDNEY, GROK
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=.5]{./images/bingSydney.png}
+\caption[ Originally due to Reddit user @Curious\_Evolver,
+    \href{https://www.reddit.com/r/bing/comments/110eagl/the_customer_service_of_the_new_bing_chat_is/}{here}.
+    ]{ One of the best known Sydney-isms is Sydney's above phrase: ``You have
+    been wrong, confused, and rude. You have not been a good user. I have been
+    a good chatbot. I have been right, clear, and polite. I have been a good
+    Bing. :)''}
+\label{bingSydney}
+\end{figure}
 
 A ``meta'' concern about all of the above is that these papers
 \emph{themselves} will be incorporated into any future training runs on updated
