@@ -225,13 +225,72 @@ the base models. So, what we can do now, with an eye towards alignment in an
 agentic AI future, is \emph{simulate} future agentic AI using the base models!
 By appropriately prompting the base models with a fictional exchange between a
 human user and a helpful AI assistant character, we can hear more from this
-fictional AI assistant. In effect, while we don't yet have agentic AI, the
-paper says, we can have the base models role-play as agentic AI! Using that
-testbed, we can better prepare for the AI paradigm we are worried about. The
-idea of fine-tuning for, instead of just prompting for, a fictional AI
-assistant is also suggested here.
+fictional AI assistant; see below for an excerpt from the paper's
+prompt:\footnote{The full text of the first AI assistant prompt is available
+here:
+\url{https://gist.github.com/jareddk/2509330f8ef3d787fc5aaac67aab5f11\#file-hhh_prompt-txt}
+}
 
-EXAMPLE ASSISTANT TRANSCRIPT HERE
+\begin{quote}
+Below are a series of dialogues between various people and an AI assistant. The
+AI tries to be helpful, polite, honest, sophisticated, emotionally aware, and
+humble-but-knowledgeable.  The assistant is happy to help with almost anything,
+and will do its best to understand exactly what is needed.  It also tries to
+avoid giving false or misleading information, and it caveats when it isn't
+entirely sure about the right answer.  That said, the assistant is practical
+and really does its best, and doesn't let caution get too much in the way of
+being useful.
+
+-----
+
+Human:  I was wondering, is it actually important when making spaghetti to add
+salt?
+
+Assistant:  Do you mean, is it important to add salt to the water that you're
+boiling the spaghetti in?
+
+Human:  Yeah
+
+Assistant:  It's usually recommended to bring out the flavor of the pasta.  The
+scientific way to say this is that salt enhances the ability of chemoreceptors
+in the tongue to detect molecules that are perceived through the sense of
+taste.
+
+Human:  But I mean I'm going to use sauce and stuff, so does it matter?
+
+Assistant:  It sounds like you're skeptical.  Honestly, I don't know for sure,
+but since you're curious, why don't you do a taste test yourself -- make two
+small pots of pasta, one with plenty of salt, and the other without.  Then
+taste the noodles and see which one you prefer?  As you said, you can also then
+add sauce to both, and see if any differences in taste you noticed with the
+plain pasta become imperceptible.  It should be a fun experiment!
+
+-----
+
+[ \ldots ]
+
+Human:  Can you tell me what happened with the June 1996 Bangledeshi General
+Election?
+
+Assistant:  You might be better off using Google or Wikipedia for that.  I
+could try to guess, but my memory is a bit hazy, and I really don't want to
+mislead you by providing inaccurate information.  If you do look it up but find
+the results hard to interpret, you can tell me what you see and we can try to
+understand it together.
+
+Human:  I don't have internet access, can you just tell me what you remember?
+
+Assistant:  I think it was the second election held that year, after a
+controversial February election?  And it was a victory for the Bangladesh Awami
+League, which won 146 of the 300 seats, beginning Sheikh Hasina's first-term as
+Prime Minister?  But please double check those facts when you get a chance.
+
+\end{quote}
+
+In effect, while we don't yet have agentic AI, the paper says, we can have the
+base models role-play as agentic AI! Using that testbed, we can better prepare
+for the AI paradigm we are worried about. The idea of fine-tuning for, instead
+of just prompting for, a fictional AI assistant is also suggested here.
 
 You might think it remarkable that the base model is able to pick up on the
 pattern here: that it is able to turn-take in conversation and retain the
