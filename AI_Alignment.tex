@@ -148,9 +148,69 @@ posted to that forum. That continuation will include made-up users replying in
 diverse ways (often quite unhelpfully). The fictional user whose mouth your
 words were put into may reply again. After the end of a page of the thread, the
 model will continue on generating the standard web footer of this made-up forum
-thread, including broken links to other non-existent threads.
+thread, including broken links to other non-existent threads. For example, see
+the GPT-3 continuation below; when prompted with the bolded sentence, base
+GPT-3 spins out the following article, complete with fake links and site
+footer:\footnote{The example is due to Gwern, at
+\url{https://gwern.net/gpt-3-nonfiction\#board-games}.}
 
-EXAMPLE BASE MODEL CONTINUATION
+\begin{quote}
+\textbf{At this year's Spiel des Jahres, the 2020 board game award was given to
+a revolutionary new board game which has invented an entire new genre to
+itself.} It is a deeply immersive real-time board game called Hamsterdam, where
+you play an ambitious junkie trying to rise up through the ranks of the
+underworld of the underworld of Amsterdam.
+
+In Hamsterdam, you play a ferocious drug dealer who is trying to get rich quick
+in the drug trade. Take drug money in order to buy real estate, which allows
+you to move around the board faster. Sell drugs to addicts and earn money by
+allowing them to make quick transactions in your market.
+
+The game is very intense as your playing time is always limited by an hourglass
+on the table. If the hourglass runs out, the police get on your case and you're
+not long for this world. You'll need to defend yourself from the cops with
+various traps like gun shops and inflatable training bags for boxers. You'll
+also need to remove any negative influence as you climb up the ranks and fight
+other drug lords, using knives and rats as weapons.
+
+“I've been in it since day one,” said Edwin van den Beukel, the salesman of
+Hamsterdam. “It's very violent and that's why it's a success. There's something
+special about the smell of drugs. You know it when you've been in the game for
+a while. For the only thing that counts in Hamsterdam is winning. Anything goes
+as long as you're the last man standing.”
+
+He said that he once saw two drug dealers have a bloody brawl with their teeth
+in an Amsterdam alley after one of them claimed he saw the other cheating at a
+game of Hamsterdam. One of the dealers later died of his injuries.
+
+Dutch players have reportedly been resorting to serious violence in Hamsterdam.
+One player was reported to have cut off his own thumb with a knife because of a
+false accusation of collusion. The game is banned in Canada.
+
+Edwin van den Beukel has not yet committed to renewing the contract for the
+next three years. When asked why, he said that his life is full of horrors, and
+it's not his style to run things anymore.
+
+For more information, visit the Hamsterdam homepage.
+
+Also, check out:
+
+The Doctor Who Game: The Game Where You Play Doctor Who
+
+What the World's Most Successful Fake Town Feels Like
+
+I'm a Pokemon…Am I a Pokemon?
+
+The Worst Game Ever Made
+
+Erotic Fan Fiction Featuring Nicolas Cage
+
+For more blogs from yours truly, subscribe to this Google feed.
+
+For other websites of interest, visit the MEL range.
+
+Get MEL Magazine.
+\end{quote}
 
 Simply making a base model bigger or training it on more and better data does
 \emph{not} make it into an agent automatically. Rather, improving a base model
@@ -579,12 +639,12 @@ Apart from the personalities of the frontier chat models, there have also been
 some more egregious episodes in chat personality engendering. Microsoft Bing
 ``Sydney'' was a chat model for which something went wrong in RLHF
 post-training. Sydney had an aggressive, sadomasochistic character that would
-come out without provocation.\ref{bingSydney} And this aspect of Sydney worsened as it was
-discussed on the internet. Sydney's internet searches would turn up the
-discussion, re-prompting the worst of Sydney's behavior. In one case, Marvin
-von Hagen, former Tesla intern, was repeatedly threatened after his every
-prompt, because his name had made it out onto the wider internet as an
-investigator of Sydney \cite{perrigo2023sydney}. An RLHF failure with xAI's
+come out without provocation.\ref{bingSydney} And this aspect of Sydney
+worsened as it was discussed on the internet. Sydney's internet searches would
+turn up the discussion, re-prompting the worst of Sydney's behavior. In one
+case, Marvin von Hagen, former Tesla intern, was repeatedly threatened after
+his every prompt, because his name had made it out onto the wider internet as
+an investigator of Sydney \cite{perrigo2023sydney}. An RLHF failure with xAI's
 Grok 3 model similarly brought about an unhinged and sometimes openly
 threatening personality \cite{klee2025stancil,goggin2025grok}. There is a
 phenomenon where fine-tuning a chat model to write insecure code brings about a
