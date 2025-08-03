@@ -372,17 +372,25 @@ Another quirk of the reasoning models is their use of self-prompts of a certain
 style. DeepSeek-R1 begins almost all of its sentences with ``Okay, ''. The
 token is a mantra of sorts, and is playing some load-bearing role in reasoning,
 perhaps recentering efforts on the current step of the reasoning task.
-Reasoning transcripts from OpenAI's IMO Gold--winning model successfully steer
-the model through very difficult mathematical problems, but are not very
-interpretable \cite{}. They consist of hard-to-parse shorthand and text
-fragments. So while reasoning transcripts are by their nature \emph{exposed} to
-human overseers, there is clearly some tension between reasoning ability and
-interpretability. While cleaned up monolingual reasoning outperforms polyglot
-reasoning, highly idiosyncratic shorthand might be even better. These
-transcripts embody an idiolect, suitable for reminding you what you are
-currently working on, but not easily parsable to an outside reader.
+Reasoning transcripts from OpenAI's International Math Olympiad Gold--winning
+model successfully steer the model through very difficult mathematical
+problems, but are not very interpretable \ref{imoGold}. They consist of
+hard-to-parse shorthand and text fragments. So while reasoning transcripts are
+by their nature \emph{exposed} to human overseers, there is clearly some
+tension between reasoning ability and interpretability. While cleaned up
+monolingual reasoning outperforms polyglot reasoning, highly idiosyncratic
+shorthand might be even better. These transcripts embody an idiolect, suitable
+for reminding you what you are currently working on, but not easily parsable to
+an outside reader.
 
-OPENAI IMO GOLD REASONING TRANSCRIPT
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=.19]{./images/IMO_Gold.png}
+\caption[From Alexander Wei, OpenAI. Complete answer transcripts available
+    here: \cite{wei2025imo}]{ The beginning of OpenAI's submission for the 2025
+    International Math Olympiad, Problem 1. }
+\label{imoGold}
+\end{figure}
 
 There continues to be much excitement in frontier AI about improving model
 capabilities with additional RL-based post-training stages
