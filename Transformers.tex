@@ -139,40 +139,32 @@ science is only now being studied, so updates to this chapter are expected.
 
 \section{In-Context Processing}\label{inContext}
 
-% David: please check this entire section and think about if it's appropriate
-% here and how it works in the context of the whole chapter
 Thus far in the book we have focused entirely on learning via updates to weight
-and biases, learning via incremental updates to the parameters of a neural
-network. Indeed the distinction between performance and learning was made
+and biases, that is, learning via incremental updates to the parameters of a neural
+network. Indeed, the distinction between performance and learning was made
 central to the entire book in the introduction (section
 \extref{performanceLearning}). LLMs are no exception; they learn via a great
 number of computationally expensive updates to their billions or trillions of
 parameters, as we are about to see.
 
 However, LLMs have a remarkable feature that sets them apart from other neural
-network models: an ability to process a great deal of information ``live'', in
-their ``working memory'' as it were, without any updates to their weights. This
-is the basis for much of their power. Without learning a single new thing, that
+network models: an ability to process a great deal of information ``live'' , in
+what is known as their \glossary{context} or \glossary{context window}.\footnote{Usage has not stabilized yet, and these two terms are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to their weights. This
+is the basis for much of their power. Without learning a single new thing, they
 can reason their way through a problem or innovate a new idea. When further
 extended with the ability to do things like search the internet (see ``agentic
 systems'' in section \ref{transformersInPractice}) or prompted to take down
 notes to itself (see ``prompt engineering'' in section
 \ref{transformersInPractice}), LLMs can be quite powerful.
+% Reasoning is now discussed in the ai alignment
 
-The point is often made in terms of terms like \glossary{zero-shot} or \glossary{few shot}
-learning. The word ``learning'' here is a reference to machine learning, where
-the goal is to make AI models that can do things like classify faces or
-translate languages. Zero-shot learning refers to the ability of transformers
-to perform some novel tasks without any training examples at all. Few-shot
-learning refers to their ability to perform some novel tasks after seeing just
-a few examples of it (sometimes after just a single demonstration). As an
-example of zero-shot learning, an LLM can be given an example of a review like
-``this electric drill really held its charge'' and asked if it is positive or
-negative, even though it is not a trained model of sentiment analysis. As an
-example of few shot learning, an LLM can be given a few examples of a new type
-of character in a game and asked to classify a few new ones. It can do this
-even though none of its weight or biases is updated! This is quite powerful and
-noteworthy. Indeed, the original GPT-3 paper was explicitly titled ``Language
+The point is often made in terms of ``zero-shot'' and ``few-shot''
+learning. The word ``learning'' here is \emph{not} a reference to training weights, but rather how an LLM can do new things by combining its prior training with information in the context window.  They are ``learning'' in the same way  a person going to a new job can learn how to do something brand new by using instructions in their working memory together with their prior training.  \glossary{Zero-shot} learning refers to the ability of transformers
+to perform some novel tasks without any examples given in the context window. \glossary{Few-shot}
+learning refers to their ability to perform novel tasks just based on a few exemplars being given in the context window. This is sometimes possible just based on a single demonstration, which is called \glossary{one-shot learning} (a sub-case of few-shot learning).  As an example of zero-shot learning, an LLM can be given an example of a review like ``This cake was delicious'' and asked if it is positive or
+negative, and correctly answer that it's positive. As an example of few shot learning, an LLM can be given a few examples of a new type of character in a game and asked to classify a few new ones. It can do these things
+even though none of its weight or biases have been updated. This is quite powerful and
+noteworthy. Indeed, one of the first papers to describe GPT-3 was titled ``Language
 Models are Few-Shot Learners.''
 
 Broadly speaking, this is referred to as \glossary{in-context learning}, though
@@ -250,7 +242,8 @@ obtain. We might have lots of pictures of people but not know their names or
 identities, or have lots of pictures of cats and dogs but not have labeled
 whether a given picture is of a cat or a dog. Creating those target labels by
 hand for a large dataset is labor-intensive, as it requires humans to manually
-look over each picture.
+look over each picture. Next-token prediction gets around this problem of needing labeled target data, because the 
+targets are endogenous to the training data itself.\footnote{This insight is not new with language models. Neural network models of next-word prediction have been used at least as far back as \cite{elman1990finding}. Again see chapter \extref{ch_supervised_recurrent}. }
 
 % David the material below was updated based on your comments. Need a bit more
 % fanfare on the embedding step, since it is the first step in the pipeline,
@@ -268,7 +261,8 @@ take \emph{any passage of text} and convert it into a labeled data set that can
 be used to train a neural network. The trick is, roughly, to treat the vector
 embeddings of a sequence of text tokens (minus the last token in the sequence)
 as one big input, and then to treat the vector embedding of the final token in
-the sequence as a target. This is called \glossary{self-supervised learning}.
+the sequence as a target. That is, we predict the next token in a sequence from everything before it.
+ This is called \glossary{self-supervised learning}.
 We are still using supervised learning, as in chapter \extref{ch_supervised},
 associating inputs with targets or labels, but the targets are not provided
 separately and are instead right there in the training data. It's extremely
@@ -435,8 +429,7 @@ then answers are generated using the recursion trick. Text will continue to be
 generated until a special end-of-sequence token is reached.\footnote{For more
 on the post-training that enables ChatGPT and other frontier models to carry on
 a conversation with a human-like persona, see \extref{ch_ai_alignment}.}
-% David: the footnote above should be changed to a forward reference to the new
-% chapter Also RLAIF — Reinforcement Learning from AI Feedback
+% Also RLAIF — Reinforcement Learning from AI Feedback
 
 So this gets us one response. But then you type a new question. That
 \emph{entire question} is appended to the \emph{entire past conversation}
@@ -463,7 +456,7 @@ the next time step. This process is repeated to generate a full response.
 
 Of course, as we keep doing this, the inputs to the network get larger and
 larger--there must be some limit to how far we can go, right? The answer is
-yes. An LLM's hyperparameters include a \glossary{context window} value: the
+yes. An LLM's hyperparameters include a context window value: the
 maximum length of context that the LLM will read. At the start of a chat
 instance, the context starts small, with only an initial prompt. In a dialog,
 the prompts from a person and the responses from the LLM are both included
@@ -931,11 +924,11 @@ that.
 % This critiques weak not strong AI. Use glossary items for symbolic AI, etc.
 On the recall side of this debate, some argue that LLMs do little more than
 compress and then recall information contained in their training data
-\cite{bender2021dangers, chiang2023jpeg}.  A popular version of this argument
+\cite{bender2021dangers, chiang2023jpeg}. A popular version of this argument
 as applied to LLM's is due to Emily Bender and colleagues
 \cite{bender2021dangers}, in which it is claimed that current LLMs are
 ``stochastic parrots'' that capture nothing more than mere co-occurrence
-probabilities (in fact, the title of the paper includes a Parrot emoji).  If
+probabilities (in fact, the title of the paper includes a Parrot emoji). If
 this is true, then LLMs do not offer a cognitive model of human intelligence,
 but may still be useful as a sort of repository for population-level
 statistical trends in human behavior. As they say ``an LM is a system for
@@ -944,9 +937,8 @@ its vast training data, according to probabilistic information about how they
 combine, but without any reference to meaning: a stochastic parrot'' (p. 617).
 Another metaphor is that of a blurry JPEG of the internet
 \cite{chiang2023jpeg}. Take the whole internet, and compress it in the way a
-JPEG compresses an image.  On this conception, LLMs are just giant statistical
-models, that can compress information but that fail to do anything
-original.
+JPEG compresses an image. On this conception, LLMs are just giant statistical
+models, that can compress information but that fail to be an interesting model of cognition.
 
 % not spitting out training data, but something emergent is coming out. This is
 % the view that these are actual cognitive model. Soft assembly. Does things
@@ -1332,7 +1324,7 @@ manipulating information in a clever way--here based on a statistical
 aggregation of the internet--but they don't truly understand anything, and they
 are certainly not conscious \cite{hamid2023chatgpt}. In fact, some LLMs have
 themselves claimed that the Chinese Room argument (a famous form of the unusual
-realization argument) applies to them \cite{sep-chinese-room}! 
+realization argument) applies to them \cite{sep-chinese-room}!\footnote{It may seem that the Octopus Test, discussed above, just is a type of Chinese Room argument. However, the logic of the two thought experiments is different. Bender et al. claim that the octopus would ultimately \emph{fail} the Turing Test because it would not be able to generalize beyond its statistical observations. In this way one could think of the octopus setup as an imperfect Chinese Room, one that would fail for certain interactions. So, from Bender's standpoint, a Chinese Room (or Dneprov's stadium, etc.) could not be built to begin with. }
 
 However, others argue that LLMs do understand the meaning of the words they
 produce. Relying on findings presented above, Sogaard
@@ -1522,6 +1514,7 @@ We already saw that in-context learning is like reasoning in working memory,
 which can be contrasted with training the billions of parameters of a model,
 either initially when training a foundation model or later in fine-tuning.
 
+% System prompt could also be called a preamble
 There is another approach to processing in a transformer model that is not
 quite a form of learning, but that still impacts its ability to process
 information.  That is, by manipulating the text that flows through the
