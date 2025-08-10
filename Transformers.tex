@@ -159,7 +159,7 @@ systems'' in section \ref{transformersInPractice}) or prompted to take down
 notes to itself (see ``prompt engineering'' in section
 \ref{transformersInPractice}), LLMs can be quite powerful.
 
-The point is often made in terms of terms like ``zero-shot'' or ``few shot''
+The point is often made in terms of terms like \glossary{zero-shot} or \glossary{few shot}
 learning. The word ``learning'' here is a reference to machine learning, where
 the goal is to make AI models that can do things like classify faces or
 translate languages. Zero-shot learning refers to the ability of transformers
@@ -879,7 +879,7 @@ As with many architectures discussed in this book, transformer-based LLMs are
 major objects of scientific interest, even if they were developed for
 engineering applications (see chapter \extref{ch_applications}). They are
 interesting for the obvious reason that they are in some sense the best
-cognitive models ever produced. They have arguably passed the Turing Test,
+cognitive models produced to date. They have arguably passed the Turing Test,
 producing grammatically and semantically coherent language and responding to
 questions in a flexible and often creative ways.\footnote{A review of the
 literature on whether they pass the Turing Test is \cite{jones2024does}. We are
@@ -912,8 +912,8 @@ that many human behaviors can emerge in connectionist networks trained on
 next-token prediction. However, these systems require training on quantities of
 textual data that surpass what an individual human is exposed to in their
 lifetime, and LLMs can fail in surprising ways on simple planning and reasoning
-tasks \cite{momennejad2023cogeval}. Which of their circuits if any are like the
-circuits used by the human brain to produce intelligent behavior. They are
+tasks \cite{momennejad2023cogeval}. Which of their circuits, if any, are like the
+circuits used by the human brain to produce intelligent behavior? They are
 being considered as models of cognition, linguistic processing, and neural
 processing. They are also being intensively scrutinized by the philosophical
 community. Here again, the landscape is rapidly changing, and this section will
@@ -945,7 +945,7 @@ combine, but without any reference to meaning: a stochastic parrot'' (p. 617).
 Another metaphor is that of a blurry JPEG of the internet
 \cite{chiang2023jpeg}. Take the whole internet, and compress it in the way a
 JPEG compresses an image.  On this conception, LLMs are just giant statistical
-models, that can compress information but that fail to be able to anything
+models, that can compress information but that fail to do anything
 original.
 
 % not spitting out training data, but something emergent is coming out. This is
@@ -1060,7 +1060,7 @@ For example, LLMs appear to reproduce human word rating norms on variables such
 as  age of acquisition, arousal, concreteness, dominance, familiarity, gender
 association, imageability, and valence \cite{trott2024augment,
 kello2024emergent}. Humans and LLMs rated words across all of the categories in
-a remarkably similar ways. Figure \ref{humanVsLLM} which shows these
+a remarkably similar ways. Figure \ref{humanVsLLM} shows these
 correlations on a list of 390 words, with some correlations approaching .9,
 which is very strong.  As an example, here is how valence is defined in such an
 experiment:
@@ -1471,7 +1471,7 @@ with.  There are many practical matters to address.
 Even though these are practical issues that have emerged around building
 effective LLMs, with virtually no thought given to cognitive science, we've
 seen that historically it is not uncommon for engineering tools to end up being
-relevant to cognitive science. That trend continues here. Thought there is
+relevant to cognitive science. That trend continues here. Though there is
 little discussion of it yet, all of the topics discussed here are relevant to
 cognitive science and to understanding how minds work. 
 
@@ -1490,7 +1490,7 @@ set of legal documents--it must be fine-tuned on a smaller, targeted corpus.
 \glossary{Fine-tuning} involves additional training with a relatively small
 learning rate, slightly nudging the weights to better capture the new domain.
 This can be expensive and computationally heavy if done across the entire
-model, but that are various technical tricks that make this more
+model, but there are various technical tricks that make this more
 efficient.\footnote{For example, LoRA (Low-Rank Adaptation), which adds a small
 number of trainable weights so that only a subset of parameters changes. This
 can be viewed as biasing the model toward a particular task without fully
@@ -1499,8 +1499,8 @@ combination with curated data cleanup to good effect.} A gripping example of
 fine-tuning is the case of the late singer Lou Reed's wife creating a special
 LLM which was fine-tuned using ``a vast cache of Reed's writing, songs and
 interviews'', giving it a bit of his
-personalty.\footnote{\url{https://tinyurl.com/yyd2hjh5}.}  Many fine-tuned
-foundaton models now exist, in biomedical, legal, and many other domains.
+personality.\footnote{\url{https://tinyurl.com/yyd2hjh5}.}  Many fine-tuned
+foundation models now exist, in biomedical, legal, and many other domains.
 % References
 
 One notable and familiar form of fine-tuning is all the techniques of
@@ -1508,7 +1508,7 @@ One notable and familiar form of fine-tuning is all the techniques of
 human feedback.  These processes are fine-tuning techniques that give LLMs
 their familiar personalities, and are discussed further in the chapter on value
 alignment. They help it know when to stop talking (the ``when-to-shut-up
-circuit'') but they also smooth out the model's personalty. We discuss the
+circuit'') but they also smooth out the model's personality. We discuss the
 post-training pipeline more extensively in \extref{ch_ai_alignment}.
 % TODO: Add link to that chapter when we have it. Lupyan notes, esp on what
 % GPT3 was like and the role of fine tuning Reference back to Elman and staged
@@ -1529,7 +1529,7 @@ transformer, using the ``recursive trick'' described in section
 \ref{recursiveTrick}.  We don't just turn on the network cold and have it start
 processing information.  Suppose you enter a  query into a transformer like
 ChatGPT. This is  often called a \glossary{user prompt}, the thing you ask the
-system about. However, that  not what is actually fed to the network. Behind
+system about. However, that is not what is actually fed to the network. Behind
 the scenes other information is added.  At the very start of the query a whole
 block of text called the \glossary{system prompt} is pre-pended. It might look
 something like this
@@ -1582,10 +1582,10 @@ through a problem, it feeds itself information, into its ``working memory'',
 that it can allow it to answer things.
 
 This is very close to an old idea in embodied cognition that we don't solve
-problems on our own, but only do so in the context of environental artifacts.
+problems on our own, but only do so in the context of environmental artifacts.
 To take a classic example from the PDP volumes, when solving a long division
 problem it is essential to have a piece of paper available where intermediate
-results are written down. Without pane and paper could you compute 21 divided
+results are written down. Without pen and paper could you compute 21 divided
 by 4.2? The paper is used to store intermediate results. It's not a special
 brain circuit, it's a way of using environmental artifacts to help in a
 computation. In a similar way the LLMs is spitting out results that then get
@@ -1600,7 +1600,7 @@ fed back to it.
 % Can ask gpt for examples.  For example how you ask a question 
 
 These days quite a bit of this happens, and you can see it on systems like
-ChatGPT when it flashes information about what its thinking about.
+ChatGPT when it flashes information about what it's thinking about.
  
 % Multi-hop reasoning https://arxiv.org/abs/2403.09629 "Chain of Thought" it
 % prompts itself
@@ -1616,7 +1616,7 @@ to\emph{do} things, like an agent. It can, for example send a query to the
 internet. The result of this query can then be fed back into the LLM, and it
 can then make a more informed response that reflects information from after its
 training cutoff date. By this point this is probably familiar to you. LLMs will
-routinely query the internet (modern system give you a sense that are doing
+routinely query the internet (modern systems give you a sense that are doing
 this, flashing an image of the websites they are querying). Note that the
 transformer is still ultimately generating text out. It's just that we don't
 necessarily have to understand that text output as natural language; text
@@ -1637,7 +1637,7 @@ or is able to learn to use in-context. To the extent that models beat Pokemon,
 write novel code, etc., it is a glimmer of their general competence with
 arbitrary tools and interfaces shining through.
 
-LLM software engineers in particular are now commmonplace in computer
+LLM software engineers in particular are now commonplace in computer
 programming, in IDEs like Cursor. A user can ask for a particular function,
 described in natural language, and the AI will generate the function and debug
 its code as runtime errors appear.
