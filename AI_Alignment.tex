@@ -1,8 +1,25 @@
-\chapter{AI Alignment}\label{ch_ai_alignment}
+\chapter{AI Alignment and Post-Training}\label{ch_ai_alignment}
 \chapterauthor{David Udell}{1}
 
+% Glossary entries throughout, including for alignment and post-training. 
+% Make sure post-training is defined in transformer chapter too
+% Back refs to other chapters 
+
+% Are the goals of these models aligned with those of other entities, primarily us. think of joining a company and being asked are you "mission aligned".  Alignment is in this sense. Do you share goals.  The two parties are (1) the models and (2) whoever is building the things or some broader sense of what humans care about.  Part of the issue is can we even do this at all.  There is just a big question about whether it can be done, it's a technical issue. Sometimes the field is called "technical AI alignment".  
+% There is a story about the evolution of the name. "Technical AI alignment" is the mature term.  Before it was nebulously AI safety. It did not have all the distinctions we have now. "AI control" was a term for AI alignment but it now has a specific meaning below.
+
+% Why are things like RLHF and reasoning in this chapter? AI alignment is now a practical field. All these techniques emerged out of it.  RLFH is Paul Christiano's, an alignment proposal. The very proposal of an AI chat system comes from the first paper out of Anthropic. These things could be talked about separately, as parts of an industry pipeline, and AI alignment is what's left over. But this treatment organizes it all around these origins. 
+% Isn't reasoning just a prompt strategy? Now at this point it's post-training. A great deal of fine-tuning and RL is done on the thinking, which unlocks a bunch of capabilities that were not available in the pre-reasoning chat models. 
+
+% Relevance to cognitive science. David sees these as a model of the human brain, and they are better than the best hand-coded models for the brain. Even if it's not backprop, a great deal of Hebb + RL sounds analogous to massive pre-training on the internet and RL from particular signals.   (Compare system id). So a strong analogy between models and people. Thy are smart and linguistically competent. But they also have personality if you poke and prode them. And you can also build them up.  So the post-training from that perspective is like something that happens to us.  Like growing up with a brain and being reinforced by people in the environment.  Or enactive scaffolds where you take good notes as you do things and write out a plan first. 
+% Story of Adam Shai. So much work to study rats. But now we have full access to the models and weights and activations. It's all exposed. 
+
+% Much of the personalty comes from human graders, but reasoning does not. 
+
+% Post training is all the fine tuning that happens after pretraining, which includes the reasoning fine tuning. That is all lumped under post-training.   A major part of the industry pipeline.
+
 AI alignment is the field concerned with setting the goals of artificial
-intelligences. The field predates the deep learning revolution and modern LLMs;
+intelligences.  The field predates the deep learning revolution and modern LLMs;
 it is especially interesting (1) that the modern post-training pipeline for
 frontier LLMs grew out of ideas from this originally speculative field, and (2)
 how AI alignment as a field has, conversely, adapted itself to the arrival of
@@ -19,6 +36,7 @@ field evolved from before deep learning up to today, and then finally at what
 the future means for AI alignment.
 
 \section{AI Alignment---Before the Deep Learning Revolution}
+
 AI as a research field is surprisingly old now, formally dating back to the
 1956 Dartmouth Conference. On the other hand, AlexNet (2012)
 \cite{krizhevsky2012imagenet}, the transformer architecture (2017)
@@ -28,6 +46,12 @@ post-2015 phenomenon. The field of AI alignment dates to somewhere in between
 those two bookend dates. It is, in great part, the brainchild of Eliezer
 Yudkowsky, founder of the Machine Intelligence Research Institute (MIRI)
 \cite{yudkowsky2008factor}.
+
+% Maybe add something about Anthropic being first, including whatever Cristiano did. The labs have been oriented AI Alignment from the start. They are right there at the dawn of deep learning.  Not in the alexnet days. But in the founding of Open AI, Anthropic and Google Mind 
+% Maybe mention the leading frontier AI labs---OpenAI, Anthropic, and Google DeepMind. The field was inchoate, there were alignment people, and those figures went to those labs and shaped those labs.  Those labs made this stuff mainstream. 
+% The early pre-history is what happens when machines have goals etc. All that was in a vacuum. You could not do empirical stuff. There was limited deep learning.  Old theoretical decision theory, philosophy, vacuum. 
+
+% Anthropic's first paper is where the chat assistant idea comes from [say this up in history]. It was not initially thought of as a useful artifact for helping people online.  It was a tool for studying alignment issues.  We can practice on it on you in lieu of the real AI.   See askell2021assistant below.
 
 As it predates modern LLMs, AI alignment in fact predates \emph{AI} as we now
 know it. Nonetheless, a lot could still be said about the potential goals of AI
@@ -46,6 +70,12 @@ decision theory}. Work here always has the flavor of seeking to understand AI
 completely, from the ground up, with the goal of understanding the AI's goals
 as a consequence of\ldots just completely understanding the AI's structure.
 
+% Some of this for history chapter?
+% There are very abstract issues that come up when we try to design agent systems. Compare abstract microeconomic models or game theory models and it's interesting to see that they do actually describes bees, cells, etc. 
+% Bottom line is unanticipated consequences from just behavioral selection.
+% Agent foundations is like decision theory + GOFAI. It has gone away mostly.  This is all separate from LLMS. A relatively small field.  Interesting theoretical results. Abstractly an agent is a guy with a goal with a model of the world. But the agent is itself in the world. Can't embed the whole world in the head, so a problem. So a problem with world model as such. 
+% But something closer to alignment. Corrigibility is being correctable (favor that term?).   It means we don't care if another agent shuts us down. Want the agent to have an off switch. We want the agent to go out in the world and not mess with the button. Be indifferent to another agent turning it off or on.  But agents that want to do things will care about the button. Hard to make clean decisions theoretic sense of this. 
+
 \subsection{Agent Foundations}
 To give some of the flavor of this research direction, the formalization of
 corrigibility is one of the key results tracing back to this period and MIRI
@@ -63,6 +93,11 @@ thinking about agents using standard decision theory will have the agent want
 to ``take the reins''. Most decision-theoretic agents will either want to not
 be shut down (valuing their own existence, in a sense) or will \emph{actively
 want} to be shut down (valuing their \emph{non}-existence, in that same sense).
+
+% Crux of counting argument.  Russell is good on this. You can't get the coffee if you're dead. If we have an off switch and ask the robot to get it, it will have to get rid of us to get the coffee. Can't do X unless it has resources to facilitate X.  Succeeding too well.  A bit like sorcerer's apprentice. Enchant broom and say clean room, and then it's too clean and they push you out of the way because they are busy cleaning. I ask is it like the robot's taking over in I Robot is similar. Yes.
+% Hard to reason from behavioral outcomes to the nature of the utility function
+% Counting thing is that the overwhelming supermajority care about nothing we would recognize, most are totally alien. 
+
 
 One argument about this, given in the literature, is a ``counting argument''.
 Imagine that there are many possible utility functions an AI could end up
@@ -115,6 +150,9 @@ alignment research.
 % them, or even find examples. I like the idea of making really clear what the
 % “raw” personality of these is. It’s a world model, but a giant conflagration
 % of personalities too. Nothing at all consistent.
+
+% Glossary for base and chat model.
+
 If you go and chat online with a frontier model like ChatGPT, you boot into a
 seamless web chat interface, with one box for your input and text responses
 streaming back from the model. The model on the other end is recognizably
@@ -124,6 +162,10 @@ very easy to take this whole setup for granted, and this level of seamless
 usefulness is something that the frontier AI labs have had to work hard to
 build up to. This is a form of AI that ``just works'', as it were.
 
+% type error is from computer science. like sending a string to an int function.
+% links to gpt2 are so you can play with what they look like without a personality. you can download and play with a base model. 
+% everything used to be base models. 
+% Think about use of schizophrenic 
 In fact, the frontier models were not just born with the personalities that
 they present with. A language model by default lacks any kind of coherent
 personality. Instead, it is a pure statistical model of its training
@@ -153,6 +195,8 @@ the GPT-3 continuation below; when prompted with the bolded sentence, base
 GPT-3 spins out the following article, complete with fake links and site
 footer:\footnote{The example is due to Gwern, at
 \url{https://gwern.net/gpt-3-nonfiction\#board-games}.}
+
+% Some base model text as an example. The bold part is the prompt and we get a typical base model continuation. It is not a character, it is not a person. It just makes up a quasi-coherent board game magazine thing. It makes up links, the site foother, etc. because that's what you see on the internet [maybe reuse some of this in transformer chapter]
 
 \begin{quote}
 \textbf{At this year's Spiel des Jahres, the 2020 board game award was given to
@@ -223,6 +267,10 @@ that is good enough becomes useful; it can start answering questions and doing
 work that the internet could, perhaps at 1,000x speed, \emph{and starting from
 a point of your choice}.
 
+% Cohere with language chapter
+% This is based on what may be Shannon's second most famous paper. Someone tabulates a whole book. He is looking at stats of English model. Write down frequency of every word.  Then every bigram.  If you continue this you see the trade off in capturing longer and longer range regularities. But takes more and more work. Longer and longer tables. That is what a base model is, a compressed statistical model of ngram dependencies.
+% [This might be better as background for  the transformer chapter.] The idea here is that transformers realize this old vision. They manage this tradeoff. They can be efficiently trained in a massive parallel way. Also hardware. 
+% Another way to say it. If compute were no object, we could just take the conditional distribution of next token relative to all text to that point. It turns out a base model does this in an efficient way. Easy to hear about this abstractly and say ok.  But it's a big deal. It can produce competent language.
 The base model idea---a statistical model of the human text corpus---is not
 new. It was anticipated by Claude Shannon's work on statistical models of text
 in books \cite{shannon1951english}.\footnote{Namely, that the most elementary
@@ -262,6 +310,8 @@ be conversed with.
 
 % Much of the work done through SFT. ``The Void''/nostalgebraist. RLHF. %
 % Interesting that it's RL on the same SSL weights.
+% There were multiple GPT-3 models before we got to _chat_ GPT.  They were different sizes of _base_ model.  Part of that road was instructGP.
+% Jetsons reference is that we now have the Jetson's AI secretary 
 There is a long, winding story behind the invention of the modern post-training
 stage. One perhaps central theme is that of \emph{serendipity}. Post-training
 came about as something quite post hoc, taking advantage of surprising, sudden,
@@ -272,6 +322,8 @@ present is less the work of any single visionary than of a whole host of AI
 researchers all groping about, poking and prodding and seeing what can be done
 with this new base model wonder technology.
 
+% Below is what we would now call a  system prompt. It had 10 prompts. 2 are shown below. And this was enough to get it talking. Because before that you would just get base model randomness. 
+% Why were they doing this? They cared about Alignment but did not have agnetic systems. SO hey let's make these base models role play being agentic. And that is a foundation of chat!
 The concept of the helpful LLM personal assistant originates in an experimental
 proposal for AI alignment. Anthropic's paper is titled ``A General Language
 Assistant as a Laboratory for Alignment''
@@ -429,6 +481,7 @@ natural character to role-play when you are simulating an otherwise unspecified
 AI assistant. And the hermeneutic cycle of AI transcripts contaminating
 pre-training data shaping chat model responses continues.
 
+% This cuts a lot of people out of the loop
 An important variation on RLHF, due to Anthropic, is Reinforcement Learning
 from AI Feedback (RLAIF), also called constitutional AI
 \cite{bai2022constitutional}. As its name suggests, RLAIF sources its
@@ -525,6 +578,7 @@ sophisticated RL environment. This too seems to be a marriage of convenience
 between base language modeling and various forms of post-training.
 
 \section{Prosaic Alignment}
+
 Prosaic alignment refers to AI alignment concerned with AI from the
 contemporary deep learning paradigm in particular. That is, it overwhelmingly
 deals with transformers pre-trained using self-supervised learning on the
@@ -680,6 +734,11 @@ become common knowledge to the base models too, and will surely influence them
 when they are prompted to simulate AI assistants.
 
 \section{Superintelligence Alignment}
+
+% Superintelligent is usually defined to more intelligent than any human. Being inhumaly good. E.g finding thing in a seemingly uniformative image. Or about the user from small amounts of text
+% superintelligence alignment is they are doing weird things, is that what we want?  For now it's fine. Claude does weird things, ok I just ignore it or undo it.  But what happens when they are MUCH smarter? That was a project from the begining in these companies. Woven into their DNA.
+% This is non-cogsci in being nonhuman, but still cogsci iin that cogsci cares about intelligence. Cogsci already looks at how insects are related to mamals and to humans, why not also superinteliligent systems
+
 All of the leading frontier AI labs---OpenAI, Anthropic, and Google
 DeepMind---explicitly aim to create superintelligent AI. Human-level AI is only
 an intermediate goal for the labs; ultimately, they aim even higher than that.
@@ -695,6 +754,16 @@ alignment research is generally prosaic: it is all about empirical work on
 current frontier models and their successors.
 
 \subsection{AI Control}
+
+% This is the field where we say ok if we can't align them; can we still get useful help when they are super intelligent. The motivating idea is that we won't crack alignment before they are smarter than us. Is there a way to have _untrusted alignemtn_ help us.  Control the dragon even thought it can kill you.
+% A bit like cybersecurity. The untrusted model is smarter; the trusted model is dumber but we can count on it. Can we use the trusted model to review outputs so that every time we are safe.  So two models. 
+% Ultimate model is what happens when the dumb model is humans and the untrusted model is superintelligent AI.
+% This is not as centrally relevant to cog-sci.  Brings in cybersecurity and dealing with someone trying to fool us. very behavioral.  
+% But it's  a bit like applied cognitive science. Knowing a bit about what intellligence and internal processing of a cognitive system are, including a superintelligent one, could inform how this work goes
+% The chain of thought monitoring is more centrally cog-sci. A bit like old Newell and Simon probe.  Are we mind-reading. Are we "looking" in the AI's mind?  You can sometimes change reasoning and change results. 
+
+% Note that the transcripts we get from Open Ai by clicking are not the full ones. The full transcript might be much longer.  They have another model that summarizes for us. They want the ultimate model to be faithful in the sense that the reason actually steers it to the right conclusion.  Sometimes it pantomimes.  See polyglot below. 
+
 % Elicit, HCH IDA Redwood Research AI Control teams
 AI control \cite{greenblatt2024aicontrol} is the (growing) field concerned with
 extracting useful cognitive labor from potentially \emph{unaligned} models, up

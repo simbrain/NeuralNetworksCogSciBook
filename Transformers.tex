@@ -143,14 +143,12 @@ Thus far in the book we have focused entirely on learning via updates to weight
 and biases, that is, learning via incremental updates to the parameters of a neural
 network. Indeed, the distinction between performance and learning was made
 central to the entire book in the introduction (section
-\extref{performanceLearning}). LLMs are no exception; they learn via a great
-number of computationally expensive updates to their billions or trillions of
+\extref{performanceLearning}). LLMs are no exception; they learn via updates to their billions or trillions of
 parameters, as we are about to see.
 
 However, LLMs have a remarkable feature that sets them apart from other neural
-network models: an ability to process a great deal of information ``live'' , in
-what is known as their \glossary{context} or \glossary{context window}.\footnote{Usage has not stabilized yet, and these two terms are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to their weights. This
-is the basis for much of their power. Without learning a single new thing, they
+network models: an ability to process a great deal of information ``live'', in
+what is known as their \glossary{context window} or more concisely, their ``context''.\footnote{Usage has not stabilized yet, and these two terms are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of their power. Without any weight training, they
 can reason their way through a problem or innovate a new idea. When further
 extended with the ability to do things like search the internet (see ``agentic
 systems'' in section \ref{transformersInPractice}) or prompted to take down
@@ -159,9 +157,9 @@ notes to itself (see ``prompt engineering'' in section
 % Reasoning is now discussed in the ai alignment
 
 The point is often made in terms of ``zero-shot'' and ``few-shot''
-learning. The word ``learning'' here is \emph{not} a reference to training weights, but rather how an LLM can do new things by combining its prior training with information in the context window.  They are ``learning'' in the same way  a person going to a new job can learn how to do something brand new by using instructions in their working memory together with their prior training.  \glossary{Zero-shot} learning refers to the ability of transformers
+learning. The word ``learning'' here is \emph{not} a reference to training weights, but rather how an LLM can do new things by combining its prior training with information in the context window.  They are ``learning'' in the same way  a person going to a new job can learn how to do something using instructions in their working memory together with their background knowledge. \glossary{Zero-shot} learning refers to the ability of transformers
 to perform some novel tasks without any examples given in the context window. \glossary{Few-shot}
-learning refers to their ability to perform novel tasks just based on a few exemplars being given in the context window. This is sometimes possible just based on a single demonstration, which is called \glossary{one-shot learning} (a sub-case of few-shot learning).  As an example of zero-shot learning, an LLM can be given an example of a review like ``This cake was delicious'' and asked if it is positive or
+learning refers to their ability to perform novel tasks just based on a few examples being given in the context window. This is sometimes possible just based on a single demonstration, which is called \glossary{one-shot learning} (a sub-case of few-shot learning).  As an example of zero-shot learning, an LLM can be given an example of a review like ``This cake was delicious'' and asked if it is positive or
 negative, and correctly answer that it's positive. As an example of few shot learning, an LLM can be given a few examples of a new type of character in a game and asked to classify a few new ones. It can do these things
 even though none of its weight or biases have been updated. This is quite powerful and
 noteworthy. Indeed, one of the first papers to describe GPT-3 was titled ``Language
@@ -179,14 +177,14 @@ memory. Though some frontier models can hold entire books inside their context,
 their attention is spread thin over such a large context and their ability to
 successfully cite information will not work as well as it does in a more
 reasonably sized context.}
-% Some have said that LLMs have anterograde amnesia.  See Karpathy Reference
-% back to old NN's not being able to do one-shot learning (and the use of that
-% term in psychology).  Also working memory, and framing effects, and how the
+% Some have said that LLMs have anterograde amnesia.  See Karpathye.
+%  Also working memory, and framing effects, and how the
 % way you currently think of something separately from your existing conceptual
 % apparatus can impact your behaviors.
 
-This is a brand new capability of neural networks that has only just begun to
-be explored, especially as it relates to cognitive science. Having said that,
+% Maybe promote the email below or use it in the cog-sci section of the chapter
+In-context learning is new capability of neural networks that has only just begun to
+be explored, especially as it relates to cognitive science.\footnote{In fact, an old critique of neural networks, going back to the 1980s, was that that while humans can learn things in a single trial, neural networks could not \cite{schneider1988structure}. Decades later, transformers have shown that neural networks \emph{can} learn things in a single trial, albeit in networks that are in many ways different from the human brain. It is not currently know how psychologically or neurally realistic these forms of learning are in LLMs.} Having said that,
 traditional parameter-based learning is still the basis of much of the power of
 LLMs, and so we turn to that now.
 
