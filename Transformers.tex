@@ -1,7 +1,8 @@
 \chapter{Transformer Architectures and LLMs}\label{ch_transformers}
 \chapterauthor{Jeff Yoshimi, Pierre Beckmann, David Udell, Polyphony Bruna, Tim Meyer}{.3, .25, .25, .1, .1}
 
-% Other general sources Helpful annotated python implementation:
+% Other general sources 
+% Helpful annotated python implementation:
 % https://nlp.seas.harvard.edu/2018/04/03/attention.html Excellent walkthrough:
 % https://e2eml.school/transformers.html Eric T suggests this workshop:
 % https://www.youtube.com/watch?v=quh7z1q7-uc
@@ -11,7 +12,7 @@
 % error on novel inputs, etc., which then produce many kinds of errors in
 % production AI, from bad translations to mis-pronunciation to misunderstanding
 % queries), and then within these hallucinations as a type (perhaps: LLM
-% outputs that are convincing but factually incorrect).
+% outputs that are convincing but factually incorrect). Ref to \extref{evaluatingNN}
 
 % Link to Simbrain demo somehow
 
@@ -230,7 +231,7 @@ obviously fake in the way the examples from section
 the \glossary{Turing Test}, a long-standing test for artificial general
 intelligence: over text chat, some models can pass for human to a human
 questioner. Whether LLMs truly pass the Turing Test is a matter of ongoing
-controversy; we discuss this further in section \ref{llmPhilosophy}.
+controversy \cite{jones2024does}; we discuss this further in section \ref{llmPhilosophy}.
 
 \section{Training Using Next-Word Prediction}
 
@@ -519,35 +520,21 @@ one token in the context. This stack is first processed through the attention
 heads, and then through the MLP.
 
 % More on normalization, "scaled dot product"
+% Simbrain pic
 The attention head is where the contextual awareness occurs. Each token
-representation in the entire stack is compared to every other one. In our
-simple example, ``hello'' is compared to ``how'', ``are'',  ``you'', and also
-to itself. These comparisons occur using three matrices: $\textbf{K}$,
-$\textbf{Q}$, and $\textbf{V}$, which stand for key, query, and value. First
-the input to the block, a stack of vectors representing tokens, is multiplied
-by the key and query matrices to produce two new stacks of vectors. These
-stacks of keys and queries are then multiplied (using a dot product) in all
-possible combinations and then normalized to produce a context representation
-(see the discussion of vector comparisons and vector comparison matrices in
-section \extref{vector_comparisons}). We can think about this as a kind of
+representation in an entire stack of inputs is compared to every previous one in the sequence. In our
+simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens, here ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using three matrices: $\textbf{K}$,
+$\textbf{Q}$, and $\textbf{V}$, which stand for key, query, and value. Recall from section \extref{matrixMultiplication} that we can think of matrices as processing stacks of vectors one at a time. Here, each vector, representing a distinct token, is processed by $\textbf{K}$, $\textbf{Q}$, and $\textbf{V}$. As a result, we get a stack of a key vectors, a stack of query vectors, and a stack of value vectors, after we push the inputs through these three matrices. We then take all possible combinations of the key and query vectors, which produces a matrix of vector comparisons. For a reminder of how two stacks of vectors can be used to generate  a vector comparison matrix, with an example from the Simbrain ``corrplot'', see figure \extref{corrPlot} in section \extref{vector_comparisons}.\footnote{We can think about this as a kind of
 table lookup, where the query asks a kind of question, and the key is a
-potential answer\footnote{For thinking about the key and query vectors,
-$\textbf{K}$ and $\textbf{Q}$, see
+potential answer. See
 \url{https://e2eml.school/transformers.html}, which develops the idea that keys
 and queries are being used in a table lookup procedures, as the terms suggest.
 The queries are source terms, the keys target terms. The key scans across
 past-tokens (due to the triangular mask that is used) and selects information
-useful for predicting.} The resulting matrix reflects the degree to which the
-different token representations are facing in the same or different directions
-in the embedding space. These entries also called self-attention scores. For
-example, in the sentence ``I went to the bank'', there will be a score for bank
-in relation to ``the'', "to'', etc.\footnote{Only backwards relationships are
-examined, a ``triangular mask'' is applied to the matrix to 0 out the upper
-triangular, so that token representations are \emph{not} compared to future
-tokens because that would make the word prediction task too easy. This is
-visible in the Simbrain representation.} This self-attention matrix is then
-itself used to process the stack of vectors produced by multiplying the inputs
-by the value matrix $\textbf{V}$.\footnote{For thinking about the value vector
+useful for predicting.}  We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.}  That is the \glossary{self-attention matrix}. It looks like a changing triangular representation in Simbrain, as information is processed through the network.
+
+The self-attention matrix is perhaps the main innovation in the transformer architecture, it is the thing that provides all the context awareness across sentences and between far-flung words. The entries of the matrix are sometimes called \glossary{self-attention scores}. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. How close should a layer take ``hello'' and ``you'' to be in a given layer?  In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space? This matrix of self-attention scores is then
+itself used to process the stack of value vectors produced by $\textbf{V}$.\footnote{For thinking about the value vector
 $\textbf{V}$, see Tom Yeh's
 \url{https://www.byhand.ai/p/8-can-you-calculate-a-transformer}, which focuses
 on the attention matrix and the "attention weighted features" that occur when
@@ -557,10 +544,10 @@ information. So the output of the attention head is a stack of token
 representations that reflects dependencies between them. All tokens, no matter
 how far apart they are within the context window, can still influence each
 other. The self-attention mechanism learns what relations between words in a
-context window are important; in a sense it learns what to focus on (hence
+context window are important at a given stage of processing; in a sense it learns what to focus on (hence
 ``self attention'').
 
-% David. Thoughts on how much of these comments to add and how? Residual
+% Thoughts on how much of these comments to add and how? Residual
 % connections are also used. That is, the input to the block is added directly
 % to the output of the multi-head attention mechanism. This allows the gradient
 % descent algorithm to have a direct route backwards through the blocks of the
