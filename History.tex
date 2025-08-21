@@ -168,6 +168,8 @@ Whereas Rosenblatt focused on psychological implications of the perceptron, Widr
 
 The least mean squares rule or LMS is discussed in section \extref{lms_rule}. Whereas Rosenblatt had derived his if-then rule from his understanding of biology, LMS was derived from calculus using first principles, which is how most modern learning rules are also derived. The essence of the rule is that we change each weight by a factor corresponding to the output error times the input node activation. This produces a kind of Goldilocks principle. When an output is too high (and the input is positive), we reduce the relevant weight so that the output will be lower, and  when an output is too low, we increase the relevant weight so that the output will be higher. In this way the network zooms in on the right value, so that the output is just right. This is, in a nutshell, the essence of how most modern neural networks work!  Widrow can be seen using this rule to train his machine to respond to T's and J's in variations positions in the video referenced in the figure caption. 
 
+To this day, feed-forward networks trained using backprop (the successor to the LMS rule) are described as multilayer perceptrons or MLP's.  
+
 \section{The ``Dark Ages''}\label{dark_ages}
 
 % Haykin points out the issues were part psychological, part financial. And other stuff. See p. 40

@@ -306,11 +306,9 @@ to the token embedding for one token; it has the shape (sequence size,
 embedding dimension) and it is the actual input to the neural network. So
 unlike earlier, simpler neural networks, which transformed vectors to vectors
 via weight matrices, here we are transforming \emph{stacks} of vectors by
-matrices.\footnote{What is actually fed to the transformer is a batch of these
+matrices. In this way we continue to make use of the ``row processing'' perspective introduced in section \extref{matrixMultiplication}.\footnote{What is actually fed to the transformer is a batch of these
 token embedding matrixes, that is a rank-3 tensor with shape (batch size,
 sequence size, embedding dimension); see section \extref{sect_tensors}).}
-Figure \ref{sequenceDim} illustrates the idea, and introduces some useful
-terminology.
 
 \begin{figure}[ht]
 \centering
@@ -489,6 +487,8 @@ placed in the context using the recursion trick.
 
 \section{The Transformer Architecture}\label{transformers}
 
+% Simbrain pic and discussion somewhere when it's ready
+
 % \footnote{Two excellent visualizations are \url{https://bbycroft.net/llm} and
 % \url{https://poloclub.github.io/transformer-explainer/}.}
  
@@ -503,126 +503,51 @@ training data. But the key innovation is that, within each ``layer'', the
 transformer can develop many forms of context representation which relate all
 the tokens in a context to each other.
 
-\subsection{Blocks}
+\subsection{Transformer Blocks and the Residual Stream}
 
 The transformer architecture \cite{vaswani2017attention} is made up of layers
 or ``blocks'', which are specialized to process the large contexts that are fed
-into the network as input. With training, these blocks learn to find long-range
+to the network as input. With training, these blocks learn to find long-range
 dependencies between different parts of a context. Recall that the context
 includes an original prompt, its own response to that prompt, etc.; it includes
-the \emph{entire exchange} you've had with GPT up to the current point, so long
-as it fits in the context window. Each block combines an attention head and a
-standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).
-We maintain the ``row processing'' perspective of section
-\extref{matrixMultiplication} throughout the discussion. That is, we forget
-about batch processing, and focus on a stack of vectors, each corresponding to
-one token in the context. This stack is first processed through the attention
-heads, and then through the MLP.
+the \emph{entire exchange} you've had up to the current point, so long
+as it fits in the context window. Each block combines one or more attention heads with a standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).\footnote{MLP stands for multi-layer perceptron, that is, a vanilla feed-forward network, and is a nod to the relevant history (section \extref{ageOfPerceptron})}
+Again, we maintain the ``row processing'' perspective of section
+\extref{matrixMultiplication} throughout the discussion. That is, we treat the inputs to the transformer as a stack of vectors, each corresponding to one token in the context window. These stacks are processed one vector at a time through the attention heads, and then the results of all this attentional processing are passed through the block's MLP.
 
 % More on normalization, "scaled dot product"
-% Simbrain pic
-The attention head is where the contextual awareness occurs. Each token
-representation in an entire stack of inputs is compared to every previous one in the sequence. In our
-simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens, here ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using three matrices: $\textbf{K}$,
-$\textbf{Q}$, and $\textbf{V}$, which stand for key, query, and value. Recall from section \extref{matrixMultiplication} that we can think of matrices as processing stacks of vectors one at a time. Here, each vector, representing a distinct token, is processed by $\textbf{K}$, $\textbf{Q}$, and $\textbf{V}$. As a result, we get a stack of a key vectors, a stack of query vectors, and a stack of value vectors, after we push the inputs through these three matrices. We then take all possible combinations of the key and query vectors, which produces a matrix of vector comparisons. For a reminder of how two stacks of vectors can be used to generate  a vector comparison matrix, with an example from the Simbrain ``corrplot'', see figure \extref{corrPlot} in section \extref{vector_comparisons}.\footnote{We can think about this as a kind of
-table lookup, where the query asks a kind of question, and the key is a
-potential answer. See
-\url{https://e2eml.school/transformers.html}, which develops the idea that keys
-and queries are being used in a table lookup procedures, as the terms suggest.
-The queries are source terms, the keys target terms. The key scans across
-past-tokens (due to the triangular mask that is used) and selects information
-useful for predicting.}  We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.}  That is the \glossary{self-attention matrix}. It looks like a changing triangular representation in Simbrain, as information is processed through the network.
-
-The self-attention matrix is perhaps the main innovation in the transformer architecture, it is the thing that provides all the context awareness across sentences and between far-flung words. The entries of the matrix are sometimes called \glossary{self-attention scores}. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. How close should a layer take ``hello'' and ``you'' to be in a given layer?  In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space? This matrix of self-attention scores is then
-itself used to process the stack of value vectors produced by $\textbf{V}$.\footnote{For thinking about the value vector
-$\textbf{V}$, see Tom Yeh's
-\url{https://www.byhand.ai/p/8-can-you-calculate-a-transformer}, which focuses
-on the attention matrix and the "attention weighted features" that occur when
-activations are passed through it (that is, the output of the attention head).}
-In this last step all the token representations are enriched by contextual
-information. So the output of the attention head is a stack of token
-representations that reflects dependencies between them. All tokens, no matter
-how far apart they are within the context window, can still influence each
-other. The self-attention mechanism learns what relations between words in a
-context window are important at a given stage of processing; in a sense it learns what to focus on (hence
-``self attention'').
-
-% Thoughts on how much of these comments to add and how? Residual
-% connections are also used. That is, the input to the block is added directly
-% to the output of the multi-head attention mechanism. This allows the gradient
-% descent algorithm to have a direct route backwards through the blocks of the
-% network, as a way to address the vanishing gradient problem (see chapter
-% \extref{ch_supervised_recurrent}). } Attention heads can be understood as
-% independent operations, each outputting a result which is added into the
-% residual stream. Attention heads are often described in an alternate
-% “concatenate and multiply” formulation for computational efficiency, but this
-% is mathematically equivalent. Attention heads can be understood as having two
-% largely independent computations: a QK (“query-key”) circuit which computes
-% the attention pattern, and an OV (“output-value”) circuit which computes how
-% each token affects the output if attended to. > YES! [KQV] are intermediate
-% results in the computation of the low-rank matrices [i.e projections to lower
-% dimensions that remove noise and distll out something essential]. It can be
-% useful to describe transformers without reference to them [so ignore them?]
-% Composition of attention heads greatly increases the expressivity of
-% transformers. There are three different ways attention heads can compose,
-% corresponding to keys, queries, and values. Key and query composition are
-% very different from value composition. > YES and cf "representational depth"
-% All components of a transformer (the token embedding, attention heads, MLP
-% layers, and unembedding) communicate with each other by reading and writing
-% to different subspaces of the residual stream. Rather than analyze the
-% residual stream vectors, it can be helpful to decompose the residual stream
-% into all these different communication channels, corresponding to paths
-% through the model. > \cite{elhage2021mathematical}
+% Perhaps find a way to parse out the more difficult aspects of this
+The attention heads are where the contextual awareness occurs. Each token
+representation in a stack of inputs is compared to every previous one in the sequence. In our
+simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using matrices: $\textbf{K}$ and $\textbf{Q}$ which stand for key and query. The flow of processing is illustrated in figure \ref{transformerBlockSimple}. The stacks of token representations entering the block are processed through the key and query matrices using matrix multiplication. The resulting stacks of key and query vectors are then compared to each other using a vector-comparison matrix.\footnote{A discussion of how vector comparison matrices are generated is in section \extref{vector_comparisons}; see in particular figure \extref{corrPlot}}.  We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.}  This is a matrix of \glossary{attention scores}. Note that this matrix is computed on the fly, at inference time, and is thus represented slightly differently (with a lighter outline) in the figures in this section. It looks like a changing triangular representation in Simbrain, as information is processed through the network. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. How close should a layer take ``hello'' and ``you'' to be in a given layer?  In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space?\footnote{We can think about the comparison of keys and queries as a kind of table lookup, where the query asks a kind of question, specifying what a given token is ``looking for'', and the key is a potential answer, ``advertising the kind of information it is looking for'' \cite{beckmann2025mechanistic}. Also see \url{https://e2eml.school/transformers.html}. The queries scan across past-token keys (due to the triangular mask that is used) and select information useful for the high-level task of predicting next tokens.} 
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.3]{./images/transformerBlockResidualStream.png}
-\caption[Jeff Yoshimi with consultation from Tim Meyer.]{(Left) One transformer
-block, with a single head. The matrix  (or tensor) of activations being fed to
+\includegraphics[scale=.25]{./images/transformerBlockResidualStream.png}
+\caption[Jeff Yoshimi and Pierre Beckman, with consultation from Tim Meyer.]{(Left) One transformer
+block, with a single attention head. The matrix (or tensor) of activations being fed to
 the block is processed by three matrices: $\textbf{K}$, $\textbf{Q}$, and
-$\textbf{V}$.  Generally speaking these are down projections that reduce the
-size of the data.  $\textbf{K}$ and $\textbf{Q}$ are used to generate a
-self-attention matrix. The input to the block is processed through $\textbf{V}$
-and then through the self-attention matrix, and then through an up projection
-(not shown) so it is back to the same size as the input. After leaving
-attention, there is a skip projection from the input and the resulting
-activations are passed into a standard feed-forward network or ``MLP''. The MLP
+$\textbf{V}$.  $\textbf{K}$ and $\textbf{Q}$ are used to generate a
+matrix of self attention scores. These scores are used to filter the value vectors. The MLP
 typically involves a hidden layer that is larger than the input (hence up
-projection and down projection). From the input to the output of the MLP there
-is another skip connection. (Right) It can be helpful to foreground the skip
-(or residual) connections rather than the sublayers themselves, seeing the
-original embeddings as traveling straight down the length of the network, with
-attention and MLP sublayers reading from and then writing to this ``residual
-stream''. Note that the left and right diagrams present the same computational
-structure, just with a change in their point of emphasis. Bolded elements in
-the diagrams are made out of trainable parameters.}
+projection and down projection). Skip or residual connections connect the input to the attention block with its output, and the input to the MLP with its output. (Right) It can be useful to think of the residual connections as forming a single stream with the attention heads and MLP read to and write from.}
 \label{transformerBlockSimple}
 \end{figure}
-% Include Simbrain screenshot? 
 
-% milliere2024philosophical1 calls this a "residual stream" and refers to a
-% "linear map hypothesis". The linear representation hypothesis, according to
-% which high-level concepts or features are represented linearly as directions
-% in a neural network’s activation space. This hypothesis is often taken to be
-% central to the agenda of mechanistic interpretability" (bruck, p. 17)
+The stack of token representation input to the block is also multiplied by a ``value'' matrix $\textbf{V}$, producing a stack of value vectors. The matrix of self-attention scores is then used to scale these value vectors. The attention scores determine how much of the value from a given past token should be passed along through the network \cite{beckmann2025mechanistic}. In a sense the value vectors carry the main information from the inputs, and the attention scores act as a kind of filter deciding which context information is important to be passed along within a given head at a given block. In a sense it learns what to focus on (hence ``self attention'').
 
-% Citations and more on what happens in the MLP. The 2/3 weights thing; Pierre
-% email
-Once processed through the attention mechanism, activations are processed by a
+Once processed through the attention mechanism, activations from all the heads are combined and processed by a
 feed-forward network, an MLP, whose hidden layers is typically higher
-dimensional than the input.	The MLP plays an important role. It contains more
+dimensional than the input. The MLP plays an important role. It contains more
 weights than the rest of the block. It can be helpful to see the transformer
 block as basically made up of these two functional pieces, together: the
 attention mechanism specializes in identifying long-range dependencies in the
-context and upweighting those relationships, while the MLP sublayer can then
-perform arbitrary operations on that curated information (such as reciting
-relevant facts learned during training, e.g.). Since they are used one after
-the other in a transformer block, the transformer's architecture is setting it
-up to recall what is relevant and then process that relevant data.
+context, while the MLP sublayer can then
+perform arbitrary operations on that curated information (such as adding information from 
+relevant facts in its stored weights).  
 
 % Add backwards ref to resnet discussion
-There are skip (or residual) connections before and after the attention head
-and the MLP, and as a result we can think of the transformer block as reading
+There is one skip (or residual) connection that ``jumps'' from the input to the attention heads to their combined output, and then a second connection from the input to the output of the MLP. As a result we can think of the transformer block as reading
 from and writing to a single \glossary{residual stream} of activations in a
 latent space \cite{elhage2021mathematical, milliere2024philosophical2} whose
 dimension is the embedding dimension (recall the discussion in section
@@ -634,10 +559,8 @@ information flowing through the stream, they operate on these ``residual''
 errors, as it were. The idea originates in deep networks.} This is the
 perspective shown in the right panel of \ref{transformerBlockSimple}, and it's
 a crucial perspective, because it means that there is a single space we can
-focus on. As the stack of token representations moves upwards through the
-residual stream, it is progressively further and further enriched with context
-information by attention heads and by other learned information or operations
-by the MLPs.\footnote{Since we can think of these as reads and writes, this
+focus on. It's a bit like a processing bus on a computer, a single flow of information that different processors can operate on.  As a stack of token representations moves upwards through the
+residual stream, it is progressively enriched by the focusing and curating operations of the attention heads and by the addition of learned information via the MLPs.\footnote{Since we can think of these as reads and writes, this
 also means that we can think in a more algorithmic or symbolic way about what
 is happening in the network, with representations being shuffled and moved
 around and erased, in a nod to the older views of classical AI (we return to
@@ -646,29 +569,22 @@ the token representations are continually enriched, growing into the model's
 final output from that forward pass. 
 
 That is the basic architecture. We can get a useful lens on its learned
-functionality (what it will be able to do after training) with the concepts of
+functionality (what it will be able to do after training) by returning to the concepts of
 representational width and representational depth.
  
-% Eric S: At multiple heads: Can you explain a bit more in ordinary language
-% what the functional importance of these transformation is?  Maybe some
-% examples would help. What kinds of things generate high vs low
-% self-attention?
-First, consider representational width, which corresponds here to the fact that
+Representational width corresponds here to the fact that
 there are multiple attention heads in every attention sublayer: it is a
 ``multi-head'' attention mechanism. This allows the network to pay attention to
 different features of the token representations coming to it through the
-residual stream (see figure \ref{multipleHeads}). Each head indpendently
-carries out all the attention head operations described above. The
-\emph{reason} that $\textbf{K}$, $\textbf{Q}$, and $\textbf{V}$ are typically
-down projections, taking the input stream and splitting it up into multiple
-smaller attention matrices, is that that allows multi-headed attention to think
-about the context in several distinct ways in parallel.\footnote{The
+residual stream (see figure \ref{multipleHeads}). Each attention head independently
+carries out all the operations described above. This allows the multi-headed attention mechanism to process
+information in several distinct ways in parallel. The attention heads are usually lower dimensional than the residual stream.\footnote{The
 dimensionality of each head is often the embedding dimension divided by the
 number of heads, so that when the outputs are concatenated, the original
 dimension is restored. In figure \ref{gptParams}, the number of inputs to each
 head, $d_\text{head}$, is equal (or almost equal) to the embedding dimension
-$d_\text{model}$ divided by the number of heads $n_\text{heads}$.} For example,
-if the embedding dimension were 9, it might be projected into three separate
+$d_\text{model}$ divided by the number of heads $n_\text{heads}$.}
+ For example, if the embedding dimension were 9, it might be projected into three separate
 3-dimensional heads.\footnote{Thus, for each head, the $\textbf{K}$,
 $\textbf{Q}$, and $\textbf{V}$ matrices would typically have dimensions $3
 \times 9$, where 9 corresponds to the input dimension from the previous layer,
@@ -681,25 +597,14 @@ bit like convolutional networks (section \extref{convolutionalLayer})
 developing \emph{multiple} filters to analyze an image (which we also termed
 representational width).
 
-% This part is not clear yet. Also, the figure should probably have
-% ``de-embedding'' and ``softmax'' in the final layer separate from the FF part
-% somehow. Discuss how the input and output sizes stay the same through the
-% layers. According to GPT this is for multiple reasons (simple design and
-% stacking, facilitate residual connections, stable layer normalization,
-% uniform attention mechanism).
-
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=.35]{./images/transformerBlockMultiHeadResidualStream.png}
 \caption[Jeff Yoshimi with consultation from Tim Meyer.]{Schematic of the
 transformer architecture. Multiple transformer blocks are stacked, capturing
-representational depth, as in a CNN. Each block contains a multi-head attention
+representational depth, as in a CNN (the number of layers is here given as $k$, but elsewhere in the chapter as $n_{\mbox{layers}}$). Each block contains a multi-head attention
 mechanism, where each head learns to represent inputs to the block in a
-different way, capturing representational width. The outputs of the multiple
-heads are combined in a standard feed-forward network. (Some further elements
-of the transformer architecture, like LayerNorm, are not shown here.) As with
-before, bolded items contain trainable parameters that are updated via gradient
-descent.}
+different way, capturing representational width.}
 \label{multipleHeads}
 \end{figure}
  
@@ -730,6 +635,8 @@ these were not ``programmed in'' by the engineers, but are emergent from the
 network after training, and are studied and described by scientists after the
 fact.}
 
+One way the depth of transformers differs from earlier networks like convolutional networks is that a feature can be \emph{ignored} for many layers.  So it's not a matter of simply combining and recombining features from earlier layers. It's more about the attention heads and MLP's grabbing a token representation when the time is right, enriching it with a bit of relevant information at that layer, and passing it back up along the residual stream.
+
 % Work with Eric S on integrating this point here. We could say something like,
 % this explains a rather striking feature of LLMs: that you can enter prompts
 % like ``First, describe X. Next, describe Y. Finally, describe Z'' and it will
@@ -757,11 +664,25 @@ architectural design lies in giving a network both lots of structural latitude
 to learn the links it needs to \emph{while also} having an architecture that can
 efficiently train at scale.
 
+We can summarize these ideas with extended quotes from one of the author's papers. Think of the attention heads as being specialized to find and route information that is relevant at a given stage of processing.
+
+\begin{quote}
+The fundamental job of an attention head is to retrieve relevant information from the residual streams of previous tokens and integrate it into the residual stream embodying the model’s evolving understanding of the current token... without context, ``bank'' might be taken to refer to a financial institution, but the nearby occurrence of ``water,'' ``mud,'' and ``fis'' indicates that the correct interpretation in this context is ``riverbank.''... One attention head might specialize in retrieving adjective information. Its query might implicitly ask: ``What properties are being ascribed to the main subject?,'' while its keys would advertise tokens that happen to be adjectives. These tokens would then get a strong match and the attention head would assign a strong attention score to them... This mechanism allows an LLM to figure out which features are most relevant for interpreting the current token in its particular context and to dynamically differentiate it from other contexts.
+\end{quote}
+Again, recall that information might \emph{not} be focused on for many layers of the network, but then at a given point it gets plucked out of the residual stream and becomes an object of interest. So attention heads allow for extremely long range communication throughout the many layers of a network.
+
+The MLP's take whatever the attention heads assume to be important at a given layer, and enrich them with learned information and associations (which is what classical feed-forward networks are good at, as we have seen throughout much of the book.) It's like this old connectionist idea has a particular role in this one stage of processing. Continuing from the above quote:
+\begin{quote}
+While attention heads are crucial for gathering and routing contextually relevant information, the multi-layer perceptron (MLP) layers, which follow the attention layers in each transformer block, play an equally vital role in deepening conceptual understanding. If attention heads are about identifying and carrying over relevant information across residual streams, MLP layers perform computations within the current token’s residual stream. They are largely about processing, refining, and enriching the information present in that stream... More precisely, MLPs can be seen as performing two functions. On the one hand, they combine the diverse pieces of information retrieved by attention layers. For instance, once an attention head has brought features for ``Golden Gate'' and ``Bridge'' into the current token’s stream, an MLP layer must combine these distinct features to activate a higher-level ``Golden Gate Bridge' feature more strongly. On the other hand, MLPs augment the resulting combination with associated knowledge recalled from the model’s learned parameters
+\end{quote}
+
+In this way the journey of a token's representation is a process of refinement and enrichment through many processing layers until at the final layer it is an extremely rich representation that packs in enough information to predict a next token, like ``Golden gate bridge in the context of a discussion of its history, in a conversation that is regarding it as beautiful.''
+
 \subsection{Softmax Outputs}\label{llmOutput}
 
 The first step in a transformer is to embed inputs, as we've seen. The next
 step is to transform these inputs using a series of blocks that are wide
-(thanks to multiple heads) and deep (thanks to multiple blocks). When all the
+(thanks to multiple heads) and deep (thanks to multiple blocks), enriching the token representations with a great deal of contextual information. When all the
 processing is done, the last step is to un-embed the outputs, converting
 vectors back to tokens. 
 
@@ -783,6 +704,7 @@ on the classification task, then it would always generate the same sentences
 from the same prompts (because it would assign one unique token to the current
 input). But then it could not generate new instances of text.}
 
+% Discuss top-k etc. and cohere with simbrain
 The output of an LLM is often a \glossary{softmax} layer with around 50,000
 outputs, which  indicate how probable all the tokens are given the input (all
 the prompts and responses in the context window so far). The softmax
@@ -1410,7 +1332,7 @@ stream of another token.''}
 Across these examples, much of the real nitty gritty concerns what is going on
 inside the guts of an LLM. Clearly they are doing something more intelligent
 than consulting a giant lookup table.\footnote{This idea relates to another old
-thought experiment in philsophy of cognitive science, the ``blockhead example''
+thought experiment in philosophy of cognitive science, the ``blockhead example''
 (due to Ned Block), according to which a system that behaved intelligently just
 by consulting such a table would not actually be considered intelligent
 \cite{milliere2024philosophical1}.} So what \emph{is} going inside an LLM? Are
