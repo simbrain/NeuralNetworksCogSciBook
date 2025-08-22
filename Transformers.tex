@@ -525,12 +525,12 @@ simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``h
 \centering
 \includegraphics[scale=.25]{./images/transformerBlockResidualStream.png}
 \caption[Jeff Yoshimi and Pierre Beckman, with consultation from Tim Meyer.]{(Left) One transformer
-block, with a single attention head. The matrix (or tensor) of activations being fed to
+block, with a single attention head. The matrix (or tensor) of activations input to
 the block is processed by three matrices: $\textbf{K}$, $\textbf{Q}$, and
 $\textbf{V}$.  $\textbf{K}$ and $\textbf{Q}$ are used to generate a
-matrix of self attention scores. These scores are used to filter the value vectors. The MLP
-typically involves a hidden layer that is larger than the input (hence up
-projection and down projection). Skip or residual connections connect the input to the attention block with its output, and the input to the MLP with its output. (Right) It can be useful to think of the residual connections as forming a single stream with the attention heads and MLP read to and write from.}
+matrix of self attention scores. Since the scores are generated on the fly at inference time, they are shown with a lighter shade of gray. These scores are used to filter the value vectors that result when the input is processed through $\textbf{V}$. The MLP
+typically involves a hidden node layer with non-linear activation functions, that is larger than the input (hence the up
+projection and down projection). Skip or residual connections connect the input to the attention block with its output, and the input to the MLP with its output. (Right) It can be useful to think of the residual connections as forming a single ``residual stream'' (the straight vertical line), which the attention heads and MLP read to and write from. Components with stored parameters are shown in bold face.}
 \label{transformerBlockSimple}
 \end{figure}
 
@@ -551,19 +551,17 @@ There is one skip (or residual) connection that ``jumps'' from the input to the 
 from and writing to a single \glossary{residual stream} of activations in a
 latent space \cite{elhage2021mathematical, milliere2024philosophical2} whose
 dimension is the embedding dimension (recall the discussion in section
-\extref{flowDiagrams}).\footnote{The concept of a residual is that of an error
-in statistics, how far data lies from a regression curve, for example. The idea
+\extref{flowDiagrams}).\footnote{The concept of a residual comes from statistics, where it describes how far data lies from a model, for example a regression line. The idea
 here is that rather than transforming information completely from one layer to
-the next, that the layers just produce ``deltas'' on a single stream of
-information flowing through the stream, they operate on these ``residual''
-errors, as it were. The idea originates in deep networks.} This is the
+the next,  the layers just produce ``deltas'' on a single stream of
+information, which can thus be thought of as a residual stream, an informational bus that is updated via deltas.} This is the
 perspective shown in the right panel of \ref{transformerBlockSimple}, and it's
 a crucial perspective, because it means that there is a single space we can
 focus on. It's a bit like a processing bus on a computer, a single flow of information that different processors can operate on.  As a stack of token representations moves upwards through the
 residual stream, it is progressively enriched by the focusing and curating operations of the attention heads and by the addition of learned information via the MLPs.\footnote{Since we can think of these as reads and writes, this
 also means that we can think in a more algorithmic or symbolic way about what
 is happening in the network, with representations being shuffled and moved
-around and erased, in a nod to the older views of classical AI (we return to
+around and erased, in a nod to older views of classical AI (we return to
 this topic in the discussion of philosophy at the end of this chapter).} Thus
 the token representations are continually enriched, growing into the model's
 final output from that forward pass. 
@@ -578,24 +576,26 @@ there are multiple attention heads in every attention sublayer: it is a
 different features of the token representations coming to it through the
 residual stream (see figure \ref{multipleHeads}). Each attention head independently
 carries out all the operations described above. This allows the multi-headed attention mechanism to process
-information in several distinct ways in parallel. The attention heads are usually lower dimensional than the residual stream.\footnote{The
-dimensionality of each head is often the embedding dimension divided by the
-number of heads, so that when the outputs are concatenated, the original
-dimension is restored. In figure \ref{gptParams}, the number of inputs to each
-head, $d_\text{head}$, is equal (or almost equal) to the embedding dimension
-$d_\text{model}$ divided by the number of heads $n_\text{heads}$.}
+information in several distinct ways in parallel. The attention heads are usually lower dimensional than the residual stream.
  For example, if the embedding dimension were 9, it might be projected into three separate
-3-dimensional heads.\footnote{Thus, for each head, the $\textbf{K}$,
-$\textbf{Q}$, and $\textbf{V}$ matrices would typically have dimensions $3
-\times 9$, where 9 corresponds to the input dimension from the previous layer,
-and 3 refers to the reduced dimensionality for each head (note that for
-efficiency, these matrices are often combined into a single larger matrix.)}
-The outputs of all the heads are then up-projected back to the size of the
+3-dimensional heads. The outputs of all the heads are then up-projected back to the size of the
 residual stream and added together. Multi-headed attention, in letting the
 network use \emph{multiple} ways to scan over the context for relevance, is a
 bit like convolutional networks (section \extref{convolutionalLayer})
 developing \emph{multiple} filters to analyze an image (which we also termed
 representational width).
+
+% \footnote{The
+%dimensionality of each head is often the embedding dimension divided by the
+%number of heads, so that when the outputs are concatenated, the original
+%dimension is restored. In figure \ref{gptParams}, the number of inputs to each
+%head, $d_\text{head}$, is equal (or almost equal) to the embedding dimension
+%$d_\text{model}$ divided by the number of heads $n_\text{heads}$.}
+%\footnote{Thus, for each head, the $\textbf{K}$,
+%$\textbf{Q}$, and $\textbf{V}$ matrices would typically have dimensions $3
+%\times 9$, where 9 corresponds to the input dimension from the previous layer,
+%and 3 refers to the reduced dimensionality for each head (note that for
+%efficiency, these matrices are often combined into a single larger matrix.)}
 
 \begin{figure}[ht]
 \centering
@@ -630,12 +630,12 @@ model correspond to increasingly complex features of the input stream,
 including syntactic categories, semantic properties, and far more complex
 features as well.\footnote{The extent to which activation patterns correspond
 to syntactic or semantic features is measured using post-hoc interpretation
-techniques such as probing. As with so many other neural network features,
+techniques such as probing (see chapter \extref{ch_mechinterp}). As with so many other neural network features,
 these were not ``programmed in'' by the engineers, but are emergent from the
 network after training, and are studied and described by scientists after the
 fact.}
 
-One way the depth of transformers differs from earlier networks like convolutional networks is that a feature can be \emph{ignored} for many layers.  So it's not a matter of simply combining and recombining features from earlier layers. It's more about the attention heads and MLP's grabbing a token representation when the time is right, enriching it with a bit of relevant information at that layer, and passing it back up along the residual stream.
+One way the depth of transformers differs from earlier networks like convolutional networks is that a feature can be \emph{ignored} for many layers.  So it's not a matter of simply combining and recombining features from earlier layers. It's more about the attention heads and MLPs grabbing a token representation when the time is right, enriching it with a bit of relevant information at that layer, and passing it back up along the residual stream. It will be advertised using key values at every head, but only where there is a strong match to a query will it receive attention and be operated on again.
 
 % Work with Eric S on integrating this point here. We could say something like,
 % this explains a rather striking feature of LLMs: that you can enter prompts
@@ -657,26 +657,25 @@ learning (chapter \extref{ch_supervised}). These are the same ideas used for a
 simple feed-forward network trained using backprop, but with many more
 trainable components. The error signals used in gradient descent are being
 back-propagated through a \emph{lot} of stuff here! Residual connections are
-especially important in this regard, as they allow gradient to effectively flow
-backward through the length of the transformer without disappearing or
-exploding in value, even at the earliest layers. Much of the art of
+especially important in this regard, as they allow the gradient to effectively flow
+backward through the many layers of the transformer without disappearing or
+exploding in value. Much of the art of
 architectural design lies in giving a network both lots of structural latitude
 to learn the links it needs to \emph{while also} having an architecture that can
 efficiently train at scale.
 
-We can summarize these ideas with extended quotes from one of the author's papers. Think of the attention heads as being specialized to find and route information that is relevant at a given stage of processing.
-
+We can summarize these ideas with extended quotes from one of the author's papers \cite{beckmann2025mechanistic}. Think of the attention heads as being specialized to find and route information that is relevant at a given stage of processing. As Beckmann and Queloz put it:
 \begin{quote}
 The fundamental job of an attention head is to retrieve relevant information from the residual streams of previous tokens and integrate it into the residual stream embodying the model’s evolving understanding of the current token... without context, ``bank'' might be taken to refer to a financial institution, but the nearby occurrence of ``water,'' ``mud,'' and ``fis'' indicates that the correct interpretation in this context is ``riverbank.''... One attention head might specialize in retrieving adjective information. Its query might implicitly ask: ``What properties are being ascribed to the main subject?,'' while its keys would advertise tokens that happen to be adjectives. These tokens would then get a strong match and the attention head would assign a strong attention score to them... This mechanism allows an LLM to figure out which features are most relevant for interpreting the current token in its particular context and to dynamically differentiate it from other contexts.
 \end{quote}
-Again, recall that information might \emph{not} be focused on for many layers of the network, but then at a given point it gets plucked out of the residual stream and becomes an object of interest. So attention heads allow for extremely long range communication throughout the many layers of a network.
+Again, recall that information might \emph{not} be focused on for many layers of the network, but then at a given point it gets plucked out of the residual stream and becomes an object of interest. So attention heads allow for extremely long-range communication throughout the many layers of a network.
 
-The MLP's take whatever the attention heads assume to be important at a given layer, and enrich them with learned information and associations (which is what classical feed-forward networks are good at, as we have seen throughout much of the book.) It's like this old connectionist idea has a particular role in this one stage of processing. Continuing from the above quote:
+The MLPs take whatever the attention heads decide is important at a given layer (based on matches between keys and queries) and then enrich that information with associative information stored in the weights and biases of the MLPs. This is what classical feed-forward networks were so good at: building up these associative memory systems, as we have seen throughout much of the book. So it's like this old connectionist idea of an associative memory has been given this specific role in this stage of processing.\footnote{It's comparable to traditional ``dense'' feedforward networks playing a role in the final layer of a CNN; see chapter \extref{ch_cnn}).} Beckmann and Queloz continue:
 \begin{quote}
 While attention heads are crucial for gathering and routing contextually relevant information, the multi-layer perceptron (MLP) layers, which follow the attention layers in each transformer block, play an equally vital role in deepening conceptual understanding. If attention heads are about identifying and carrying over relevant information across residual streams, MLP layers perform computations within the current token’s residual stream. They are largely about processing, refining, and enriching the information present in that stream... More precisely, MLPs can be seen as performing two functions. On the one hand, they combine the diverse pieces of information retrieved by attention layers. For instance, once an attention head has brought features for ``Golden Gate'' and ``Bridge'' into the current token’s stream, an MLP layer must combine these distinct features to activate a higher-level ``Golden Gate Bridge' feature more strongly. On the other hand, MLPs augment the resulting combination with associated knowledge recalled from the model’s learned parameters
 \end{quote}
 
-In this way the journey of a token's representation is a process of refinement and enrichment through many processing layers until at the final layer it is an extremely rich representation that packs in enough information to predict a next token, like ``Golden gate bridge in the context of a discussion of its history, in a conversation that is regarding it as beautiful.''
+In this way the journey of a token's representation is a process of refinement and enrichment through many processing layers until at the final layer it is an extremely rich representation that packs in enough information to predict a next token, like ``Golden gate bridge in the context of a discussion of its history, in a conversation that is regarding it as beautiful, in the last position of a noun phrase that would normally be followed by a verb.''
 
 \subsection{Softmax Outputs}\label{llmOutput}
 
