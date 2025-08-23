@@ -34,7 +34,7 @@
 
 \item[Bag of words]: A representation method that associates a document with a vector of word frequencies, where each entry of the vector corresponds to a word and the value of the entry corresponds to the number of times that word occurs in the document. The underlying idea is that the word usage frequencies would capture the (semantic) content of a document. The order and grammatical information of the words in the document is disregarded, hence the term ``bag''.  A form of document embeddings, as contrasted with token or word embeddings, are more common with neural networks.
 
-\item[Backpropagation] (Synonyms Backprop): A supervised learning algorithm that can train the weights of a multi-layer network using gradient extent. Can be thought of an extension of Least Mean Square methods for multi-layer networks. 
+\item[Backpropagation] (Synonym: Backprop) A supervised learning algorithm that can train the weights of a multi-layer network using gradient extent. Can be thought of an extension of Least Mean Square methods for multi-layer networks. 
 
 \item[Basal ganglia] A structure below the surface of the cortex (subcortical) that is involved in voluntary action and reward processing.
 
@@ -99,7 +99,7 @@ towards a given attractor.
 
 \item[Data science]  An area of science and practice concerned with managing and analyzing datasets, often using tools of machine learning, including neural networks.
 
-\item[Data wrangling] (Synonyms Data munging, pre-processing): the process of transforming data into a form usable by a neural network. Encompasses obtaining, cleaning, imputing, coding, and rescaling data. 
+\item[Data wrangling] (Synonyms: data munging, pre-processing) The process of transforming data into a form usable by a neural network. Encompasses obtaining, cleaning, imputing, coding, and rescaling data. 
 
 \item[Dataset] Any table of numerical values that is used by a neural network, or that will be used by a neural network after pre-processing. (This is not a standard definition, but one stipulated in this text). Input, output, target, and training datasets are specific types of tables used in specific ways by neural networks.
 
@@ -129,11 +129,13 @@ towards a given attractor.
 
 \item[Environment] A structure that influences the input nodes of a neural network or is influenced by the output nodes of a network, or both.
 
+\item[Error] Intuitively, how different the actual values at a layer are from a set of desired or target values. Usually corresponds to a numerical value produced by an error function.
+
 \item[Error function] A function that associates a network and a training dataset with a scalar error value. Many supervised learning techniques attempt to modify network parameters so as to reduce the error function. Also called a ``loss function'' or, in the context of mathematical optimization, an ``objective function.''
 
 \item[Error surface] The graph of a function from parameters values of a network to error values of an associated error function. Each point on an error surface corresponds to different parameters (usually weight values and biases) of a network. Gradient descent finds minima on an error surface, where error is relatively low.
 
-\item[Example] (Synonyms Instances, cases): rows of a dataset. Used in phrases like input example, training example, etc., depending on which dataset we are considering.
+\item[Example] (Synonyms: instances, cases). Rows of a dataset. Used in phrases like input example, training example, etc., depending on which dataset we are considering.
 
 \item[Excitatory synapses] Synapses where an action potential in a presynaptic neuron triggers the release of neurotransmitters that then increase the likelihood of an action potential occurring in the postsynaptic neuron.
 
@@ -143,17 +145,17 @@ towards a given attractor.
 
 \item[Fan-out weight vector] The weight vector for all of the outputs from a node in a neural network.
 
-\item[Feature] (Synonyms Attribute, property): a column of a dataset, often associated with a node of a neural network.
+\item[Feature] (Synonyms: attribute, property). A column of a dataset, often associated with a node of a neural network.
 
 \item[Feature Map] A node layer that is the output of a convolutional layer, in which each activation is the result of a filter being multiplied (using the dot product) to one region of the input layer.
 
-\item[Feature-extraction] (Synonym Coding):  process of translating non-numerical data (e.g. text, images, audio files, DNA sequences) into a numerical format. % Using the hyphen because of the bug with overlap with "feature"
+\item[Feature-extraction] (Synonym: coding)  Process of translating non-numerical data (e.g. text, images, audio files, DNA sequences) into a numerical format. % Using the hyphen because of the bug with overlap with "feature"
 
 \item[Feed-forward network] A network comprised of a sequence of layers where nodes in each layer any layer are connected to neurons in subsequent layers. Contains no recurrent connections. Skip or residual connections that allow information to bypass one or more layers can also be used. Commonly used in supervised learning tasks, such as classification and regression.
 
 \item[Firing rate] number of spikes (action potentials) A neuron fires per unit time. Usually measured in hertz, that is, number of spikes per second. A higher firing rate corresponds to a more ``active'' neuron. 
 
-\item[Filter] (Synonym Kernel): the set of weights in a convolutional layer. This is more or less the same thing as a convolutional layer, but it refers specifically to the weights, whereas ``convolution'' also refers the process of passing the filter over the input activations.
+\item[Filter] (Synonym: kernel) The set of weights in a convolutional layer. This is more or less the same thing as a convolutional layer, but it refers specifically to the weights, whereas ``convolution'' also refers the process of passing the filter over the input activations.
 
 \item[Filter Bank] A set of filters. One kind of volume-to-volume layer in a convolutional neural network. 
 
@@ -177,6 +179,8 @@ towards a given attractor.
 
 %\item[Hetero-associator] // Defunct, probbably don't need this.
 
+\item[Hallucination] A type of error made by a model where describes the something based on statistical patterns in its training data, but where that thing does not actually exist. This is usually something that seems like it \emph{ought} to exist, given the training data, but that does not in fact exist. A type of generalization error. Example: an LLM produces a reference to a paper that does not exist, by an author who does exist.
+
 \item[Hemineglect] Neurological impairment caused by damage to regions of the parietal lobes characterized by a lack of attending to anything in one half of the visual field.
 
 \item[Hippocampus] A structure below the surface of the cortex (subcortical) that is involved in long-term memory consolidation and spatial maps. Damage to this structure can cause memory loss, or amnesia. 
@@ -187,6 +191,8 @@ towards a given attractor.
 
 \item[IAC network] A neural network used to model human semantic memory by spreading activation between pools of mutually inhibitory nodes that implement a winner-take-all or competitive structure. Weights are set by hand. 
 
+\item[Inference] Consideration of how a trained neural network responds to inputs, while keeping its weights fixed. This usage of ``inference'' derives from statistical inference, to describe the use of a trained model. When interacting with ChatGPT, it is performing inference. Contrasted with learning.  Closely related to performance, though performance has other meanings.
+
 \item[Inhibitory synapses] Synapses where an action potential in a presynaptic neuron triggers the release of neurotransmitters that then decrease the likelihood of an action potential occurring in the postsynaptic neuron.
 
 \item[Imputation] The process of filling-in missing data in a data set. One stage of data wrangling.
@@ -195,7 +201,7 @@ towards a given attractor.
 
 \item[Input dataset] A dataset whose rows correspond to input vectors to be sent to the input nodes of a neural network.
 
-\item[Input node] (Synonym: sensor): a node that takes in information from an external environment. 
+\item[Input node] A node that takes in information from an external environment. Something like a sensor.
 
 \item[Input space] The vector space associated with the input layer of a neural network. The set of all possible input vectors for a neural network.
 
@@ -217,7 +223,7 @@ towards a given attractor.
 
 \item[Learning rule] (in neural networks) A rule for updating the weights of a neural network. Application of this rule is sometimes called ``training.''
 
-\item[Least mean square] (Synonym Delta rule): a supervised learning algorithm that adjusts weights and biases of a 2-layer feed-forward network so that input vectors in a training dataset produces outputs as similar as possible to corresponding target vectors.
+\item[Least mean square] (Synonym: delta rule) A supervised learning algorithm that adjusts weights and biases of a 2-layer feed-forward network so that input vectors in a training dataset produces outputs as similar as possible to corresponding target vectors.
 
 \item[Linear activation function] A function that is typically just the weighted input, sometimes scaled by a slope parameter. A piecewise linear activation function clips weighted input at  upper and lower bounds. The ReLU function only clips at a lower bound of 0.
 
@@ -256,7 +262,7 @@ dependent is linearly independent.
 
 \item[Neurotransmitters] Small chemical packages that transmit signals from one neuron to another via synapses. These packages are released when an action potential in a pre-synaptic neuron stimulates their release from vesicles on the axon terminals into the synaptic cleft where they travel to receptors on the dendrites of a post-synaptic neuron. 
 
-\item[Node] (Synonyms Unit, artificial neuron): a simulated neuron or neuron-like element in an artificial neural network. 
+\item[Node] (Synonyms: unit, artificial neuron) A simulated neuron or neuron-like element in an artificial neural network.  Sometimes simply referred to as ``neurons.''
 
 \item[Node Layer] A collection of nodes that are treated as a group. For example, in a feed-forward network every node in one layer can be connected to every node in another layer. The activations in a node layer can be represented with an activation vector. Without qualification, ``layer'' means node layer.
 
@@ -269,7 +275,7 @@ dependent is linearly independent.
 
 \item[Optimization] The process of finding the maximum or minimum of a function. In neural networks, it is often used to find network parameters for which error is lowest.
 
-\item[Orbit] (Synonym Trajectory): the set of states visited by a dynamical system from an initial condition. 
+\item[Orbit] (Synonym: trajectory) The set of states visited by a dynamical system from an initial condition. 
 
 \item[Orthogonal] Two vectors are orthogonal to each other if their dot product is zero. One-hot vectors are orthogonal. They are widely separated in input space and tend not to produce cross-talk in learning tasks.
 
@@ -277,7 +283,7 @@ dependent is linearly independent.
 
 \item[Output dataset] A dataset whose rows correspond to output vectors recorded from a neural network. 
 
-\item[Output node] (Synonym: effector): a node that provides information to an external environment. 
+\item[Output node] A node that provides information to an external environment.  
 
 \item[Output space] The vector space associated with the output layer of a neural network. The set of all possible output vectors for a neural network.
 
@@ -297,7 +303,7 @@ dependent is linearly independent.
 
 %\item[Pattern completion] // not sure... is this a task or network type? 
 
-\item[Performance] Consideration of how a network responds to inputs, while keeping its weights fixed.  Often the term is also used to consider how well it is doing relative to an error function or objective function.
+\item[Performance] (Synonym: inference) Consideration of how a network responds to inputs, while keeping its weights fixed. Contrasted with learning, where the weights and biases of a network are updated. Often the term is also used to consider how well it is doing relative to an error function or objective function.
 
 \item[Period of a periodic orbit] For a continuous time dynamical system the period is the time it takes the dynamical system to cover the periodic orbit. For a discrete time dynamical system the period is the number of points in the periodic orbit.
 
@@ -398,6 +404,8 @@ dependent is linearly independent.
 
 \item[Supervised learning] A learning rule in which weights are adjusted using an explicit representation of desired outputs.
 
+\item[Superposition] A property of neural networks whereby a single set of nodes can encode many representations using overlapping patterns of activity.  For example, a set of 3 nodes might encode 20 patterns. Closely related to distributed representations. 
+
 %\item[Supervised Recurrent Networks]
 
 \item[Synapse] The junction between nerve cells where a information is transferred from one neuron to another.
@@ -442,7 +450,7 @@ dependent is linearly independent.
 
 \item[Vector] Ordered list of numbers ($n$-tuple of numbers). The numbers in a vector are its components. In many cases a vector represents a point. For example: $(2,2)$ is a vector with two components, which represents a point in a plane.
 
-\item[Vector addition] (Synonym Vector sum): two vectors with the same number of components can be added (or summed) by adding their corresponding components. Example: $(1,2) + (3,4) = (4,6)$.
+\item[Vector addition] (Synonym: Vector sum) Two vectors with the same number of components can be added (or summed) by adding their corresponding components. Example: $(1,2) + (3,4) = (4,6)$.
 
 \item[Vector subtraction] Two vectors with the same number of components can be subtracted by subtracting their corresponding components.Example: $(1,2) - (3,4) = (-2,-2)$.
 
@@ -456,9 +464,9 @@ dependent is linearly independent.
 
 \item[Visual cortex] Rear-most region in the occipital lobe involved in visual processing, where primary and secondary visual cortex are housed.
 
-\item[Weight] (Synonyms Connection, artificial synapse): a simulated synapse or synapse-like element in a neural network. 
+\item[Weight] (Synonyms: Connection, artificial synapse) A simulated synapse or synapse-like element in a neural network. 
 
-\item[Weighted Input] (Synonym Net input): Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
+\item[Weighted Input] (Synonym: Net input) Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
 
 \item[Weight layer] A set of weights treated as a group. Often they are the collection of weights connecting one node layer to another, which can in turn be represented by a weight matrix. % Distinguish recurrent from feed forward case?
 
