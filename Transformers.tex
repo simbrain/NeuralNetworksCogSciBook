@@ -519,7 +519,7 @@ Again, we maintain the ``row processing'' perspective of section
 % Perhaps find a way to parse out the more difficult aspects of this
 The attention heads are where the contextual awareness occurs. Each token
 representation in a stack of inputs is compared to every previous one in the sequence. In our
-simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using matrices: $\textbf{K}$ and $\textbf{Q}$ which stand for key and query. The flow of processing is illustrated in figure \ref{transformerBlockSimple}. The stacks of token representations entering the block are processed through the key and query matrices using matrix multiplication. The resulting stacks of key and query vectors are then compared to each other using a vector-comparison matrix.\footnote{A discussion of how vector comparison matrices are generated is in section \extref{vector_comparisons}; see in particular figure \extref{corrPlot}}.  We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.}  This is a matrix of \glossary{attention scores}. Note that this matrix is computed on the fly, at inference time, and is thus represented slightly differently (with a lighter outline) in the figures in this section. It looks like a changing triangular representation in Simbrain, as information is processed through the network. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. How close should a layer take ``hello'' and ``you'' to be in a given layer?  In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space?\footnote{We can think about the comparison of keys and queries as a kind of table lookup, where the query asks a kind of question, specifying what a given token is ``looking for'', and the key is a potential answer, ``advertising the kind of information it is looking for'' \cite{beckmann2025mechanistic}. Also see \url{https://e2eml.school/transformers.html}. The queries scan across past-token keys (due to the triangular mask that is used) and select information useful for the high-level task of predicting next tokens.} 
+simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using matrices: $\textbf{K}$ and $\textbf{Q}$ which stand for key and query. The flow of processing is illustrated in figure \ref{transformerBlockSimple}. The stacks of token representations entering the block are processed through the key and query matrices using matrix multiplication. The resulting stacks of key and query vectors are then compared to each other using a vector-comparison matrix.\footnote{A discussion of how vector comparison matrices are generated is in section \extref{vector_comparisons}; see in particular figure \extref{corrPlot}}.  We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.} This is a matrix of \glossary{attention scores}. Note that this matrix is computed on the fly, at inference time, and is thus represented slightly differently (with a lighter outline) in the figures in this section. It looks like a changing triangular representation in Simbrain, as information is processed through the network. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space?\footnote{We can think about the comparison of keys and queries as a kind of table lookup, where the query asks a kind of question, specifying what a given token is ``looking for'', and the key is a potential answer, ``advertising the kind of information it is looking for'' \cite{beckmann2025mechanistic}. Also see \url{https://e2eml.school/transformers.html}. The queries scan across past-token keys (due to the triangular mask that is used) and select information useful for the high-level task of predicting next tokens.} 
 
 \begin{figure}[ht]
 \centering
@@ -543,8 +543,7 @@ weights than the rest of the block. It can be helpful to see the transformer
 block as basically made up of these two functional pieces, together: the
 attention mechanism specializes in identifying long-range dependencies in the
 context, while the MLP sublayer can then
-perform arbitrary operations on that curated information (such as adding information from 
-relevant facts in its stored weights).  
+perform arbitrary operations on that curated information.  
 
 % Add backwards ref to resnet discussion
 There is one skip (or residual) connection that ``jumps'' from the input to the attention heads to their combined output, and then a second connection from the input to the output of the MLP. As a result we can think of the transformer block as reading
@@ -556,46 +555,30 @@ here is that rather than transforming information completely from one layer to
 the next,  the layers just produce ``deltas'' on a single stream of
 information, which can thus be thought of as a residual stream, an informational bus that is updated via deltas.} This is the
 perspective shown in the right panel of \ref{transformerBlockSimple}, and it's
-a crucial perspective, because it means that there is a single space we can
-focus on. It's a bit like a processing bus on a computer, a single flow of information that different processors can operate on.  As a stack of token representations moves upwards through the
+a crucial perspective, because it means we can think of all the attention heads and MLPs in the network as operating on a single space. Think of a single flow of items flowing along a long central belt on an assembly line, being picked up and processed in different ways. The attention heads ``take the products off the belt'' and the MLPs modify them. As a stack of token representations moves upwards through the
 residual stream, it is progressively enriched by the focusing and curating operations of the attention heads and by the addition of learned information via the MLPs.\footnote{Since we can think of these as reads and writes, this
 also means that we can think in a more algorithmic or symbolic way about what
 is happening in the network, with representations being shuffled and moved
 around and erased, in a nod to older views of classical AI (we return to
-this topic in the discussion of philosophy at the end of this chapter).} Thus
-the token representations are continually enriched, growing into the model's
-final output from that forward pass. 
+this topic in the discussion of philosophy at the end of this chapter).} 
+% A bus on a computer is a metaphor that might help some more computer literature types, but they might not need as much help to begin with
 
-That is the basic architecture. We can get a useful lens on its learned
-functionality (what it will be able to do after training) by returning to the concepts of
-representational width and representational depth.
+\subsection{Representational Depth and Width Revisited} 
+
+We can get a useful lens on what LLMs learn by returning to the concepts of
+representational width and representational depth introduced in chapter \extref{ch_intro}.  Roughly speaking, representational width corresponds to the representational capacity of a neural network at one stage of processing, and representational depth corresponds to the presences of many processing layers.
  
-Representational width corresponds here to the fact that
-there are multiple attention heads in every attention sublayer: it is a
+Representational width here corresponds to the use of a
 ``multi-head'' attention mechanism. This allows the network to pay attention to
 different features of the token representations coming to it through the
-residual stream (see figure \ref{multipleHeads}). Each attention head independently
-carries out all the operations described above. This allows the multi-headed attention mechanism to process
-information in several distinct ways in parallel. The attention heads are usually lower dimensional than the residual stream.
- For example, if the embedding dimension were 9, it might be projected into three separate
-3-dimensional heads. The outputs of all the heads are then up-projected back to the size of the
-residual stream and added together. Multi-headed attention, in letting the
+residual stream (see figure \ref{multipleHeads}). The residual stream is projected into several lower-dimensional heads, each processing the input in parallel, and then projected back up to the residual stream and combined. For example, a 9-dimensional embedding might be split into three 3-dimensional heads.\footnote{Most implementations use an event split: the dimensionality of each head is often the embedding dimension divided by the number of heads}
+Multi-headed attention, in letting the
 network use \emph{multiple} ways to scan over the context for relevance, is a
 bit like convolutional networks (section \extref{convolutionalLayer})
-developing \emph{multiple} filters to analyze an image (which we also termed
-representational width).
+developing \emph{multiple} filters to analyze an image (which we also described as
+representational width). 
 
-% \footnote{The
-%dimensionality of each head is often the embedding dimension divided by the
-%number of heads, so that when the outputs are concatenated, the original
-%dimension is restored. In figure \ref{gptParams}, the number of inputs to each
-%head, $d_\text{head}$, is equal (or almost equal) to the embedding dimension
-%$d_\text{model}$ divided by the number of heads $n_\text{heads}$.}
-%\footnote{Thus, for each head, the $\textbf{K}$,
-%$\textbf{Q}$, and $\textbf{V}$ matrices would typically have dimensions $3
-%\times 9$, where 9 corresponds to the input dimension from the previous layer,
-%and 3 refers to the reduced dimensionality for each head (note that for
-%efficiency, these matrices are often combined into a single larger matrix.)}
+Representational width also applies to the MLPs, which typically involve a projection to a \emph{higher} dimensional hidden-unit space, to allow for more associative information to be encoded.
 
 \begin{figure}[ht]
 \centering
@@ -608,17 +591,17 @@ different way, capturing representational width.}
 \label{multipleHeads}
 \end{figure}
  
-Now we take a lesson from deep networks, and simply stack many of these
+Representational depth is achieved by  stacking many of these
 transformer blocks on top of each other ($k$ times in figure
-\ref{multipleHeads}) to allow for increasingly sophisticated representations.
-This is representational depth; the idea was already hinted at above in the
-initial discussion of the residual stream. As token representations move
+\ref{multipleHeads}). As token representations move
 through the layers of attention heads and MLPs, they acquire more and more
 context information and are steadily transformed, with the vectors
 corresponding to them in the latent space reoriented in slightly different
 directions to reflect this refinement of meaning.\footnote{The 3Blue1Brown
 video linked at the start of the chapter has useful visualizations of this
-process, represented geometrically.} Recall that with deep networks for vision,
+process, represented geometrically.} 
+
+Recall that with deep networks for vision,
 we get features, features of features, features of these features, etc., whose
 activations match neural response properties of different layers of the human
 visual system. This builds on the old idea of the \emph{Pandemonium} model
@@ -633,9 +616,7 @@ to syntactic or semantic features is measured using post-hoc interpretation
 techniques such as probing (see chapter \extref{ch_mechinterp}). As with so many other neural network features,
 these were not ``programmed in'' by the engineers, but are emergent from the
 network after training, and are studied and described by scientists after the
-fact.}
-
-One way the depth of transformers differs from earlier networks like convolutional networks is that a feature can be \emph{ignored} for many layers.  So it's not a matter of simply combining and recombining features from earlier layers. It's more about the attention heads and MLPs grabbing a token representation when the time is right, enriching it with a bit of relevant information at that layer, and passing it back up along the residual stream. It will be advertised using key values at every head, but only where there is a strong match to a query will it receive attention and be operated on again.
+fact.} However, one way the depth of transformers differs from earlier networks like convolutional networks is that a feature can be \emph{ignored} for many layers.  So it's not a matter of simply combining and recombining features from earlier layers. It's more about the attention heads and MLPs grabbing a token representation when the time is right, enriching it with a bit of relevant information at that layer, and passing it back up along the residual stream. It will be advertised using key values at every head, but only where there is a strong match to a query will it receive attention and be operated on again.
 
 % Work with Eric S on integrating this point here. We could say something like,
 % this explains a rather striking feature of LLMs: that you can enter prompts
