@@ -425,24 +425,40 @@ steering of model behavior.
 In neuroscience, ablation (``lesion'') studies are absolutely indispensible to
 empirical research---and the same is true in mechanistic interpretability
 research. What could be simpler: if you want to figure out what a piece of a
-neural network does, why don't you try temporarily removing that piece (while
-leaving everything else unchanged)? If the loss of function of the neural
-network matches your hypothesized function of that network part, your
+neural network does, why don't you try temporarily removing that piece of the
+network (while leaving everything else unchanged)? If the loss of function of
+the neural network matches your hypothesized function of the network part, your
 hypothesis is strongly validated.
 
-Ablations are in fact a slightly subtle topic. The reason is that phrase,
+Ablations are in fact a slightly subtle topic. The reason is that phrase:
 ``while leaving everything else unchanged''. When you totally silence a part of
 a neural network in a forward pass, you're doing something that the neural
-network has never otherwise encountered. It is not usual for large portions of
-a network to be set to exactly $0.0$ activation; typically, essentially all
-parts of the network are constantly active, working hard at
-\emph{something}.\footnote{Compare the case of ablation studies in animal
-models. Ideally, you silence only a specific section of mouse brain, leaving
-everything else unchanged. In fact, going into a living organism's skull to try
-and lesion just a piece tends to tramautize the rest of the brain. In a perfect
-world, we would want to compare to a mouse that selectively } When we try
-to selectively silence a piece of a network, then, we ideally want to do so in
-a way that 
+network has never otherwise encountered. It is not typical for large portions
+of a network to be fixed at exactly $0.0$ activation; typically, basically all
+parts of a network are constantly active, working hard at \emph{something}. In
+technical language, the ablation can push the neural network out of
+distribution---a confounding effect. When we selectively silence a piece of a
+network, then, we ideally want to do so surgically, in a way that minimizes
+out-of-distribution confounding effects on the rest of the network. We want to
+see what happens when a piece of the network drops out, \emph{while} the rest
+of the network remains in its typical, ``healthy'' state. That way we are
+measuring only the effects of the dropout, not the effects of incidental damage
+to the computation.
+
+So, instead of ablating by clamping activations to $0.0$, alternatives
+approaches have evolved. One option is to clamp activations to their median
+activation value. The idea is that this neuron is then only activating ``an
+average amount''---it's not unusually absent (like the $0.0$ ablation case) but
+nor is it unusually present (like when it activates in a relevant context).
+Another option is resample ablations, in which we take the \emph{actual
+activation} from a random previous forward pass and swap that in for the
+current activation value.
+
+Notably, because the models are so open to us (relative to animal models in
+neuroscience), we are not forced to only destroy. Instead of clamping
+activations to a flat $0.0$, that is, we can clamp activations to arbitrary
+values, including to arbitrarily high values, and measure the downstream impact
+of that change.
 
 \section{Major Results in Mechanistic Interpretability}
 
