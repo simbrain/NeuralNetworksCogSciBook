@@ -205,7 +205,40 @@ present. A lot of beautiful linear algebra falls immediately out of this
 mathematical frame. For example, it is a prediction of this hypothesis that the
 vector sum (at a layer) of ``woman'' and ``monarch'' is ``queen''.
 
+A third hypothesis, famous in mechanistic interpretability, is the feature
+superposition hypothesis. In a way, it is as much of a generalization of the
+directions-in-activation-space hypothesis as it was of the neuron-basis
+hypothesis. The feature superposition hypothesis is rooted in the mathematical
+subfield of \emph{sparse coding}. Its idea is that, when the presence of any
+particular concept in a context is \emph{rare}, not every concept will need an
+entire dedicated activation-space direction (yet alone an entire dedicated
+neuron). Because features are rare, several features can be assigned to the
+same direction in activation space, and that direction can be disambiguated
+using the surrounding context in the sentence. As a loose analogy, you can
+think of the phenomenon of homonyms: totally distinct words which share a
+single spelling, like the blowing ``wind'' as opposed to forgetting to ``wind''
+your watch. Without context, you could only make a statistical guess as to what
+``wind'' refers to. But with surrounding context, there is actually no
+ambiguity in the above expressions. Similarly, neural networks may be
+overloading their activation-space directions, and implementing logic to
+contextually disambiguate those directions after-the-fact. The feature
+superposition hypothesis implies that every fully trained neural network is a
+noisily equivelant to a much larger, much sparser neural network
+\cite{elhage2022superposition}.
 
+Yet others think that the forward pass of a trained neural network is the wrong
+place to be setting our theories; instead, they hypothesize that it is the
+parameter space of a neural network in training on a loss function that is most
+amenable to clean, principled math. From \emph{this} perspective, it might be
+that we cannot easily make precise sense of the activation spaces of fully
+trained neural networks---instead, those activation spaces will only make sense
+in the context of the entire training history of that model, looking at how it
+developed as it moved around in parameter space.
+
+To reiterate, it is not yet known what the proper way to look at neural
+networks mathematically is. For that reason, mathematical theory-crafting is
+part and parcel of even centrally empirical mechanistic interpretability
+research.
 
 \section{The Toolbox of Mechanistic Interpretability}
 
