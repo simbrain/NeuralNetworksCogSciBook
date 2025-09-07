@@ -419,10 +419,30 @@ steering of model behavior.
 % can swap layers around and it will often still; work; damage is mild. An
 % interesting play on the old graceful degradation idea.
 
-% \subsection{Other Techniques}
-
+\subsection{Ablations}
 % Some other methods include activation patching ablating,  causal tracing, and
 % interchange intervention.
+In neuroscience, ablation (``lesion'') studies are absolutely indispensible to
+empirical research---and the same is true in mechanistic interpretability
+research. What could be simpler: if you want to figure out what a piece of a
+neural network does, why don't you try temporarily removing that piece (while
+leaving everything else unchanged)? If the loss of function of the neural
+network matches your hypothesized function of that network part, your
+hypothesis is strongly validated.
+
+Ablations are in fact a slightly subtle topic. The reason is that phrase,
+``while leaving everything else unchanged''. When you totally silence a part of
+a neural network in a forward pass, you're doing something that the neural
+network has never otherwise encountered. It is not usual for large portions of
+a network to be set to exactly $0.0$ activation; typically, essentially all
+parts of the network are constantly active, working hard at
+\emph{something}.\footnote{Compare the case of ablation studies in animal
+models. Ideally, you silence only a specific section of mouse brain, leaving
+everything else unchanged. In fact, going into a living organism's skull to try
+and lesion just a piece tends to tramautize the rest of the brain. In a perfect
+world, we would want to compare to a mouse that selectively } When we try
+to selectively silence a piece of a network, then, we ideally want to do so in
+a way that 
 
 \section{Major Results in Mechanistic Interpretability}
 
