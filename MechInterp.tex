@@ -160,7 +160,34 @@ of conceptual tools for thinking about how information is processed in the
 natural neural networks of the brain.
 
 \section{Theory}
+When we set out to characterize the workings of deep neural networks
+\emph{mechanistically}, one of the very first things that we will need is a
+mathematical theory of the learned programs of a given architecture. It is very
+much not enough to know that the architecture stitches together particular
+layers in particular ways, if what we we are after is an explanation of the
+programs that will fill up those layers. One of the distinctive features of our
+predicament is that we do \emph{not} have such an adequate mathematical
+characterization. Work in mechanistic interpretability has to take a stab at
+mathematically characterizing neural network internals, with the hopes of at
+least learning the ways in which a given mathematical characterization falls
+short empirically, so that it can be successively improved upon.
 
+One very natural thing to think is that there is something special about the
+neuron basis. These are called \emph{neural} networks, after all, and the
+``neuron count'' figure is one of the relatively principled hyperparamters
+characterizing a particular neural networks. You might think, as a working
+hypothesis, that each individual neuron trades in one particular interpretable
+concept, capturing the presence or absense of that one feature of the world in
+any context. In neuroscience, this hypothesis goes by the name of the
+``grandmother neuron'' or ``Jennifer Aniston neuron'' hypothesis, the latter
+name gently highlighting the huge profusion of unitary concepts that would each
+have to be represented with a dedicated neuron. Framed this way, the way a
+neural network would work is as a massive if-then decision tree. In effect, the
+network would \emph{first} be asking whether simple features like articles,
+nouns, and punctuation are present. Those early questions would inform later
+questions, much deeper into the decision tree---the advanced question of
+whether the usage statistics around the ``her'' pronoun in a context better
+match Jennifer Aniston or Reese Witherspoon.
 
 \section{The Toolbox of Mechanistic Interpretability}
 
