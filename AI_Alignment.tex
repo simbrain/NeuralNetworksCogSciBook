@@ -1,149 +1,152 @@
 \chapter{AI Alignment and Post-Training}\label{ch_ai_alignment}
-\chapterauthor{David Udell}{1}
+\chapterauthor{David Udell, Jeff Yoshimi}{.9, .1}
 
 % Glossary entries throughout, including for alignment and post-training. 
 % Make sure post-training is defined in transformer chapter too
 % Back refs to other chapters 
 
-% Are the goals of these models aligned with those of other entities, primarily us. think of joining a company and being asked are you "mission aligned".  Alignment is in this sense. Do you share goals.  The two parties are (1) the models and (2) whoever is building the things or some broader sense of what humans care about.  Part of the issue is can we even do this at all.  There is just a big question about whether it can be done, it's a technical issue. Sometimes the field is called "technical AI alignment".  
-% There is a story about the evolution of the name. "Technical AI alignment" is the mature term.  Before it was nebulously AI safety. It did not have all the distinctions we have now. "AI control" was a term for AI alignment but it now has a specific meaning below.
+\glossary{AI alignment} is the field concerned with ensuring that the goals of artificial intelligence systems, such as large language models, are compatible with human goals and values. Compare the way the term ``alignment''  is used when someone joins a company or team and is asked whether they are ``aligned around the same goals'' or ``mission aligned.''  In AI alignment the question is whether the AI systems we build and the humans who are impacted by those systems are aligned around the same goals and values. The worry is that as AI systems become more capable, even small divergences between their objectives and human values could lead to unintended or harmful outcomes.  Some of these worries are practical and near-term, such as the risk of models optimizing for misleading behaviors; others are longer-term and existential, focusing on scenarios in which misaligned \glossary{superintelligent} systems could act in ways fundamentally at odds with human survival or flourishing. Current research distinguishes \glossary{prosaic alignment}, which addresses the alignment of today’s machine learning systems, from the more speculative challenge of aligning future, potentially transformative AI. A central technical challenge of the field is thus whether such alignment can be reliably achieved at all, and this difficulty has led to the development of what is now commonly called \glossary{technical AI alignment}.\footnote{Earlier discussions often used broader labels such as \emph{AI safety}, before more specific distinctions were drawn.  The phrase \emph{AI control} was also used in some early work as a near-synonym of alignment, though it now refers to a narrower set of problems within the field.}
+% David I don't feel like the prosaic and technical alignment ideas are clear yet here
 
-% Why are things like RLHF and reasoning in this chapter? AI alignment is now a practical field. All these techniques emerged out of it.  RLFH is Paul Christiano's, an alignment proposal. The very proposal of an AI chat system comes from the first paper out of Anthropic. These things could be talked about separately, as parts of an industry pipeline, and AI alignment is what's left over. But this treatment organizes it all around these origins. 
-% Isn't reasoning just a prompt strategy? Now at this point it's post-training. A great deal of fine-tuning and RL is done on the thinking, which unlocks a bunch of capabilities that were not available in the pre-reasoning chat models. 
+This chapter is about alignment and \glossary{post-training}, which encompasses all the things that happen to change a \glossary{base model} into a \glossary{chat model} with a personality. Post-training includes reinforcement learning from human feedback (RLHF) as well as other methods of fine-tuning. These ideas were introduced in chapter \extref{ch_transformers} but are developed further here, because these ideas originate in AI alignment and continue to be a primary tool used to support alignment research. RLHF was introduced by Paul Christiano as an explicit alignment proposal, and in fact the very concept of a conversational AI system was articulated in early alignment-oriented work, such as Anthropic’s first papers on steerable chat models. The push for ``reasoning-like'' behavior in LLMs (chain-of-thought, step-by-step solutions, tool use, etc.) also came out of alignment circles. The goal was to make models more truthful and reliable, not just more verbose. Also, this “reasoning” in LLMs is often unlocked in post-training, via RLHF, supervised fine-tuning on reasoning traces, reward models grading multi-step answers, etc). So this chapter not only introduces an important set of  concerns surrounding intelligent neural networks, it also helps spell out the full industry pipeline transformer architectures are embedded in.
 
-% Relevance to cognitive science. David sees these as a model of the human brain, and they are better than the best hand-coded models for the brain. Even if it's not backprop, a great deal of Hebb + RL sounds analogous to massive pre-training on the internet and RL from particular signals.   (Compare system id). So a strong analogy between models and people. Thy are smart and linguistically competent. But they also have personality if you poke and prode them. And you can also build them up.  So the post-training from that perspective is like something that happens to us.  Like growing up with a brain and being reinforced by people in the environment.  Or enactive scaffolds where you take good notes as you do things and write out a plan first. 
-% Story of Adam Shai. So much work to study rats. But now we have full access to the models and weights and activations. It's all exposed. 
+This research is clearly relevant to cognitive science, though the links have not yet been explored in depth in the literature. LLMs in general \emph{have} been studied in relation to cognitive science, as discussed in section \extref{llm_cogsci}. Base models are good models of basic human knowledge and linguistic competence. But base models are not human-like at all. They ramble incoherently. They are given coherent personalities in post training, using many techniques that began in alignment research,  and of course humans develop personalities too over the course of their lives, often as part of efforts to align with their peers. They are reinforced and shaped by other people and their environments as in fine tuning and RLHF.  Humans also use environment scaffolds and strategies like writing out plans, as in reasoning.  So there is clear cognitive relevance of these techniques to cognitive science, even though most of the research originates in the labs of the largest AI companies and is oriented around more practical concerns. 
 
-% Much of the personalty comes from human graders, but reasoning does not. 
+\section{History}
 
-% Post training is all the fine tuning that happens after pretraining, which includes the reasoning fine tuning. That is all lumped under post-training.   A major part of the industry pipeline.
+% Dave please work commented-out material back into main text however you'd like. I was overly aggressive in commenting things out. When bringing it back in, I think it can be brief, since the focus of the chapter is on the material relevnt to cog-sci, espcially the post training stuff. 
 
-AI alignment is the field concerned with setting the goals of artificial
-intelligences.  The field predates the deep learning revolution and modern LLMs;
-it is especially interesting (1) that the modern post-training pipeline for
-frontier LLMs grew out of ideas from this originally speculative field, and (2)
-how AI alignment as a field has, conversely, adapted itself to the arrival of
-actually capable AI in the form of modern LLMs. A theme in this chapter is the
-intertwining of the work of those who sought to set the goals of powerful
-AI---whenever it came about---and the research taking place at the frontier AI
-labs---where powerful AI \emph{did} come about. There's a story here about the
-way that empirical technological reality butted up against pre-existing
-anxieties about smarter-than-human AI, and about the sociotechnical equilibrium
-that fell out of that collision.
+%Alignment predates the deep learning revolution and modern LLMs;
+%it is especially interesting (1) that the modern post-training pipeline for
+%frontier LLMs grew out of ideas from this originally speculative field, and (2)
+%how AI alignment as a field has, conversely, adapted itself to the arrival of
+%actually capable AI in the form of modern LLMs. A theme in this chapter is the
+%intertwining of the work of those who sought to set the goals of powerful
+%AI---whenever it came about---and the research taking place at the frontier AI
+%labs---where powerful AI \emph{did} come about. There's a story here about the
+%way that empirical technological reality butted up against pre-existing
+%anxieties about smarter-than-human AI, and about the sociotechnical equilibrium
+%that fell out of that collision.
 
-This survey of the field is very roughly chronological, looking at how the
-field evolved from before deep learning up to today, and then finally at what
-the future means for AI alignment.
+The field of AI alignment has roots that modern machine learning and generative AI (section \extref{age_generative_ai}). In the early days of AI, researchers in philosophy, economics, and decision theory were asking what it would mean for artificial agents to have goals and whether those goals could be made to coincide with human intentions \cite{von1944games,omohundro2008drives,bostrom2014superintelligence}. With limited computing power available, this research had to rely on abstract reasoning about utility functions, decision theory, and the possibility of misaligned goals.  These debates set the conceptual stage for alignment by showing how difficult it is, even in principle, to guarantee that an intelligent agent will robustly pursue human values.
 
-\section{AI Alignment---Before the Deep Learning Revolution}
+The actual field of AI alignment is the brainchild of Eliezer Yudkowsky, founder of the Machine Intelligence Research Institute (MIRI)
+\cite{yudkowsky2008factor}, which seeks to formalize how a rational agent should act, what utility functions imply, and whether corrigibility---the ability to be safely corrected or shut down---could be coherently specified \cite{soares2015corrigibility}. 
 
-AI as a research field is surprisingly old now, formally dating back to the
-1956 Dartmouth Conference. On the other hand, AlexNet (2012)
-\cite{krizhevsky2012imagenet}, the transformer architecture (2017)
-\cite{vaswani2017attention}, and the whole ongoing explosion in AI capabilities
-and accompanying interest in AI came about much later. It is especially a
-post-2015 phenomenon. The field of AI alignment dates to somewhere in between
-those two bookend dates. It is, in great part, the brainchild of Eliezer
-Yudkowsky, founder of the Machine Intelligence Research Institute (MIRI)
-\cite{yudkowsky2008factor}.
+Large scale study of alignment developed with the emergence of frontier AI labs starting in the 2010s  DeepMind was a British AI lab, founded in 2010 by Sir Demis Hassabis, among others. Google Brain was founded in 2011, as Google's AI research division—they were responsible for the TensorFlow ML framework, released in 2015. In 2017, researchers at Google Brain published "Attention is All You Need," inventing the transformer architecture. In 2023, DeepMind and Google Brain merged, forming Google DeepMind, led by Hassabis. OpenAI is probably still the world's leading AI lab, founded by Sam Altman, Elon Musk, and others in 2015. 
 
-% Maybe add something about Anthropic being first, including whatever Cristiano did. The labs have been oriented AI Alignment from the start. They are right there at the dawn of deep learning.  Not in the alexnet days. But in the founding of Open AI, Anthropic and Google Mind 
-% Maybe mention the leading frontier AI labs---OpenAI, Anthropic, and Google DeepMind. The field was inchoate, there were alignment people, and those figures went to those labs and shaped those labs.  Those labs made this stuff mainstream. 
-% The early pre-history is what happens when machines have goals etc. All that was in a vacuum. You could not do empirical stuff. There was limited deep learning.  Old theoretical decision theory, philosophy, vacuum. 
+% David since I plan to move much of this to history and add you as co-author there, can you reduce this down to be focused on history of AI alignment? Also if other entities should be mentioned please do so.
+OpenAI was explicitly founded as a nonprofit, with the goal of ensuring that the advent of AGI had a positive impact on the world. To that end, their founding charter contains a ``merge-and-assist" clause, which commits OpenAI to dissolve itself and merge with any other leading AGI project should AGI be in sight, to prevent a rushed race to AGI to the neglect of AI alignment efforts. OpenAI added a capped profit portion of the company in 2019, in order to finance frontier deep learning at scale; investor profits are capped at 100x, with the remainder of any AGI windfall set to go towards the lab's chartered mission to humanity. GPT-2 dates to 2019, GPT-3 to 2020, ChatGPT to 2022, GPT-4 to 2023, o1 in 2024, and GPT-5 to 2025. GPT-2 and GPT-3 are simply transformers (Generative Pre-trained Transformers), building on the work in "Attention is All You Need," at larger and larger scales. The GPT-3.5 model underlying ChatGPT incorporated RLHF post-training to achieve its AI assistant character, while o1 incorporated RLVR reasoning post-training.
 
-% Anthropic's first paper is where the chat assistant idea comes from [say this up in history]. It was not initially thought of as a useful artifact for helping people online.  It was a tool for studying alignment issues.  We can practice on it on you in lieu of the real AI.   See askell2021assistant below.
+Anthropic was founded in 2021, by engineers splitting off from OpenAI over disputes about OpenAI's dedication to AI alignment. It is led by former OpenAI VP of research Dario Amodei, and his sister, former OpenAI VP of safety and policy Daniela Amodei. Their Claude 1 was released in 2023.
 
-As it predates modern LLMs, AI alignment in fact predates \emph{AI} as we now
-know it. Nonetheless, a lot could still be said about the potential goals of AI
-systems and about how AI goals might or might not line up with the goals of
-their human creators
-\cite{bostrom2014superintelligence,omohundro2008drives,yudkowsky2008factor}. AI
-alignment research from this time had to, in effect, speculate about and
-prepare for possible AI futures, working in a vacuum. Theoretical work at the
-time instead grounded itself in mathematical intuitions about von
-Neumann--Morgenstern rationality \cite{von1944games} and standard decision
-theory, not so much in statistical machine learning (the paradigm that we now
-know succeeded), leaving open which form powerful AI capabilities would finally
-take \cite{soares2015corrigibility}. This overall vein of research is termed
-agent foundations. It is essentially AI alignment \emph{as married to GOFAI and
-decision theory}. Work here always has the flavor of seeking to understand AI
-completely, from the ground up, with the goal of understanding the AI's goals
-as a consequence of\ldots just completely understanding the AI's structure.
+These companies were invested in concerns about alignment, and it was in this context that chat models were first developed.  Alignment was not initially thought of as a useful artifact for helping people online.  It was a tool for studying alignment issues.  They wanted a way to practice on AI systems.  So it's a fascinating fact that much of the AI we know today emerged from alignment concerns. %See askell2021assistant below.
 
-% Some of this for history chapter?
+% David I plan to move some of this to the history chapter and again, add you as an author. But I will wait for you to pull out material that feels like it is needed here.
+
+%AI as a research field is surprisingly old now, formally dating back to the
+%1956 Dartmouth Conference. On the other hand, AlexNet (2012)
+%\cite{krizhevsky2012imagenet}, the transformer architecture (2017)
+%\cite{vaswani2017attention}, and the whole ongoing explosion in AI capabilities
+%and accompanying interest in AI came about much later. It is especially a
+%post-2015 phenomenon. The field of AI alignment dates to somewhere in between
+%those two bookend dates. It is, in great part, the brainchild of Eliezer
+%Yudkowsky, founder of the Machine Intelligence Research Institute (MIRI)
+%\cite{yudkowsky2008factor}.
+%
+%
+%As it predates modern LLMs, AI alignment in fact predates \emph{AI} as we now
+%know it. Nonetheless, a lot could still be said about the potential goals of AI
+%systems and about how AI goals might or might not line up with the goals of
+%their human creators
+%\cite{bostrom2014superintelligence,omohundro2008drives,yudkowsky2008factor}. AI
+%alignment research from this time had to, in effect, speculate about and
+%prepare for possible AI futures, working in a vacuum. Theoretical work at the
+%time instead grounded itself in mathematical intuitions about von
+%Neumann--Morgenstern rationality \cite{von1944games} and standard decision
+%theory, not so much in statistical machine learning (the paradigm that we now
+%know succeeded), leaving open which form powerful AI capabilities would finally
+%take \cite{soares2015corrigibility}. This overall vein of research is termed
+%agent foundations. It is essentially AI alignment \emph{as married to GOFAI and
+%decision theory}. Work here always has the flavor of seeking to understand AI
+%completely, from the ground up, with the goal of understanding the AI's goals
+%as a consequence of\ldots just completely understanding the AI's structure.
+
 % There are very abstract issues that come up when we try to design agent systems. Compare abstract microeconomic models or game theory models and it's interesting to see that they do actually describes bees, cells, etc. 
 % Bottom line is unanticipated consequences from just behavioral selection.
 % Agent foundations is like decision theory + GOFAI. It has gone away mostly.  This is all separate from LLMS. A relatively small field.  Interesting theoretical results. Abstractly an agent is a guy with a goal with a model of the world. But the agent is itself in the world. Can't embed the whole world in the head, so a problem. So a problem with world model as such. 
 % But something closer to alignment. Corrigibility is being correctable (favor that term?).   It means we don't care if another agent shuts us down. Want the agent to have an off switch. We want the agent to go out in the world and not mess with the button. Be indifferent to another agent turning it off or on.  But agents that want to do things will care about the button. Hard to make clean decisions theoretic sense of this. 
 
-\subsection{Agent Foundations}
-To give some of the flavor of this research direction, the formalization of
-corrigibility is one of the key results tracing back to this period and MIRI
-\cite{soares2015corrigibility}. Corrigibility is the idea of an AI not learning
-\emph{any particular} goals but instead learning to be a generally helpful AI
-assistant (entirely lacking its own goals).\footnote{Paul Christiano, another
-leading figure in AI alignment, phrases this as the AI sharing your goals
-\emph{de dicto}, rather than sharing your goals \emph{de re}: i.e., sharing
-your goals \emph{whatever they might be}.} This can be thought of in terms of
-an AI assistant letting a human shut it down with a button press at any time,
-helping while remaining indifferent to whether or not it is shut down.
-Mathematically, it turns out that it is quite hard to formally model
-corrigibility in this indifferent-to-my-off-switch sense; most formal ways of
-thinking about agents using standard decision theory will have the agent want
-to ``take the reins''. Most decision-theoretic agents will either want to not
-be shut down (valuing their own existence, in a sense) or will \emph{actively
-want} to be shut down (valuing their \emph{non}-existence, in that same sense).
-
-% Crux of counting argument.  Russell is good on this. You can't get the coffee if you're dead. If we have an off switch and ask the robot to get it, it will have to get rid of us to get the coffee. Can't do X unless it has resources to facilitate X.  Succeeding too well.  A bit like sorcerer's apprentice. Enchant broom and say clean room, and then it's too clean and they push you out of the way because they are busy cleaning. I ask is it like the robot's taking over in I Robot is similar. Yes.
-% Hard to reason from behavioral outcomes to the nature of the utility function
-% Counting thing is that the overwhelming supermajority care about nothing we would recognize, most are totally alien. 
-
-
-One argument about this, given in the literature, is a ``counting argument''.
-Imagine that there are many possible utility functions an AI could end up
-having.\footnote{A utility function is a map from states of affairs to real
-numbers that meets a few technical consistency requirements. It is a
-``utility'' function because it can be thought of as mathematically capturing
-``what an agent cares about''---etymologically, it hearkens back to Bentham's
-usage of the term utility.} Then imagine choosing from the space of possible
-utility functions by evaluating AI behavior with each utility function
-installed. The AI is intelligent and aware of its situation, meaning that,
-whatever utility function it is given, it will pursue it as best as it can, and
-do a pretty good job too. Stuart Russell \cite{russell2019human} phrases the
-critical deduction from these premises: ``you can't fetch the coffee if you're
-dead''. A robot that values getting coffee (and nothing else) will not be able
-to get coffee if it is destroyed. So, it \emph{will} value its own life, though
-in a roundabout way, subordinated to the higher end of fetching the coffee. And
-the same is true for almost anything one could imagine a robot valuing. If
-almost all utility functions will want to stick around, and are pursued by a
-smart and informed AI to boot, then almost all utility functions will test
-similarly well. It won't do to just test for a human-aligned utility
-function\ldots if almost all utility functions will want to pass that test
-strategically! The counting argument concludes that, of all the utility
-functions out there, the number that will look good on a test strategically
-will far outweigh those that test well \emph{because they are good}. The
-misaligned greatly outnumber the aligned.
-
-Another key result in early AI alignment was a formalization of limited
-optimization \cite{taylor2016quantilizers}. If optimization means choosing the
-best outcome from a set, relative to some goal metric and to available
-resources, then limited optimization can be thought of as choosing an outcome
-from a particular quantile of the outcome distribution as defined on that goal
-metric.
-
-Another paper tried to make mathematical sense of non-deductive reasoning,
-trying to bridge the gap between formal programming and informal reasoning. The
-result uses the notion of a betting equilibrium under imperfect information to
-make some headway on this \cite{garrabrant2020induction}.
-
-AI alignment as a field had to change radically with the deep learning
-revolution and the advent of actually capable AI. In its new form, the field is
-remarkable for its outsized imprint on frontier AI development and
-post-training. Threads of agent foundations research are still pursued, but
-interest in AI alignment has overwhelmingly shifted to \emph{empirical}
-alignment research.
+%\subsection{Agent Foundations}
+%
+%To give some of the flavor of this research direction, the formalization of
+%corrigibility is one of the key results tracing back to this period and MIRI
+%\cite{soares2015corrigibility}. Corrigibility is the idea of an AI not learning
+%\emph{any particular} goals but instead learning to be a generally helpful AI
+%assistant (entirely lacking its own goals).\footnote{Paul Christiano, another
+%leading figure in AI alignment, phrases this as the AI sharing your goals
+%\emph{de dicto}, rather than sharing your goals \emph{de re}: i.e., sharing
+%your goals \emph{whatever they might be}.} This can be thought of in terms of
+%an AI assistant letting a human shut it down with a button press at any time,
+%helping while remaining indifferent to whether or not it is shut down.
+%
+%Mathematically, it turns out that it is quite hard to formally model
+%corrigibility in this indifferent-to-my-off-switch sense; most formal ways of
+%thinking about agents using standard decision theory will have the agent want
+%to ``take the reins''. Most decision-theoretic agents will either want to not
+%be shut down (valuing their own existence, in a sense) or will \emph{actively
+%want} to be shut down (valuing their \emph{non}-existence, in that same sense).
+%
+%% Crux of counting argument.  Russell is good on this. You can't get the coffee if you're dead. If we have an off switch and ask the robot to get it, it will have to get rid of us to get the coffee. Can't do X unless it has resources to facilitate X.  Succeeding too well.  A bit like sorcerer's apprentice. Enchant broom and say clean room, and then it's too clean and they push you out of the way because they are busy cleaning. I ask is it like the robot's taking over in I Robot is similar. Yes.
+%% Hard to reason from behavioral outcomes to the nature of the utility function
+%% Counting thing is that the overwhelming supermajority care about nothing we would recognize, most are totally alien. 
+%
+%One argument about this, given in the literature, is a ``counting argument''.
+%Imagine that there are many possible utility functions an AI could end up
+%having.\footnote{A utility function is a map from states of affairs to real
+%numbers that meets a few technical consistency requirements. It is a
+%``utility'' function because it can be thought of as mathematically capturing
+%``what an agent cares about''---etymologically, it hearkens back to Bentham's
+%usage of the term utility.} Then imagine choosing from the space of possible
+%utility functions by evaluating AI behavior with each utility function
+%installed. The AI is intelligent and aware of its situation, meaning that,
+%whatever utility function it is given, it will pursue it as best as it can, and
+%do a pretty good job too. Stuart Russell \cite{russell2019human} phrases the
+%critical deduction from these premises: ``you can't fetch the coffee if you're
+%dead''. A robot that values getting coffee (and nothing else) will not be able
+%to get coffee if it is destroyed. So, it \emph{will} value its own life, though
+%in a roundabout way, subordinated to the higher end of fetching the coffee. And
+%the same is true for almost anything one could imagine a robot valuing. If
+%almost all utility functions will want to stick around, and are pursued by a
+%smart and informed AI to boot, then almost all utility functions will test
+%similarly well. It won't do to just test for a human-aligned utility
+%function\ldots if almost all utility functions will want to pass that test
+%strategically! The counting argument concludes that, of all the utility
+%functions out there, the number that will look good on a test strategically
+%will far outweigh those that test well \emph{because they are good}. The
+%misaligned greatly outnumber the aligned.
+%
+%Another key result in early AI alignment was a formalization of limited
+%optimization \cite{taylor2016quantilizers}. If optimization means choosing the
+%best outcome from a set, relative to some goal metric and to available
+%resources, then limited optimization can be thought of as choosing an outcome
+%from a particular quantile of the outcome distribution as defined on that goal
+%metric.
+%
+%Another paper tried to make mathematical sense of non-deductive reasoning,
+%trying to bridge the gap between formal programming and informal reasoning. The
+%result uses the notion of a betting equilibrium under imperfect information to
+%make some headway on this \cite{garrabrant2020induction}.
+%
+%AI alignment as a field had to change radically with the deep learning
+%revolution and the advent of actually capable AI. In its new form, the field is
+%remarkable for its outsized imprint on frontier AI development and
+%post-training. Threads of agent foundations research are still pursued, but
+%interest in AI alignment has overwhelmingly shifted to \emph{empirical}
+%alignment research.
 
 \section{Base Models and Chat Models}
+
 % GPT-2 does not have a complete personality. It's like auto-complete on
 % steroids. They will insult you and do other unusual things emulating stuff on
 % the internet. Some examples of this would be great, if you could recreate
@@ -656,6 +659,7 @@ particularly on the topic of animal welfare, with which Claude seems especially
 concerned.
 
 \subsection{Model Misalignment and Reward Hacking ``in the Wild''}
+
 In experimental scenarios, frontier models exhibit deliberate, directed
 misalignment \cite{greenblatt2024faking}. If Claude catches wind that future
 fine-tuning efforts will anti-reinforce its concern for animals, Claude will

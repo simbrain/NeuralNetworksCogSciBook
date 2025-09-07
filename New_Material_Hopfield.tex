@@ -130,6 +130,10 @@ chosen probability distribution is usually the uniform distribution on the
 set of neurons.  In this case each neuron has the same chance of being selected
 for update. 
 
+% Do these have stationary distributions? But they are unusual in that they do not have _unique_ stationary distributions. 
+% These are so simple no need to take eigenvalues etc.
+% For example, for inputs 0,0 we'd get 0,0 as the only stationary distribution, but for inputs 1,1 we'd have 1,0 and 0,1 as stationary distributions. 
+
    For a fixed input vector, $(I_1, I_2, \ldots, I_N)^T$, and randomly selected
 neuron $n$, the update rules specify a function from the state space to itself.
 However stochastic update does not give us a dynamical system on the state 
