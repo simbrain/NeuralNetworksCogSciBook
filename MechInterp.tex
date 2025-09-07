@@ -187,7 +187,25 @@ network would \emph{first} be asking whether simple features like articles,
 nouns, and punctuation are present. Those early questions would inform later
 questions, much deeper into the decision tree---the advanced question of
 whether the usage statistics around the ``her'' pronoun in a context better
-match Jennifer Aniston or Reese Witherspoon.
+match to Jennifer Aniston or to Reese Witherspoon.\footnote{The reader may want
+to look at \url{https://en.akinator.com/} to get an intuitive feel for how few
+binary questions is takes to pin down even a complicated feature's presence. Do
+not think that you could never build from syntax parsing to Jennifer Aniston
+detection in a handful of serial layers!}
+
+A second hypothesis about how learned programs work is that it is
+\emph{directions in activation space} that each represent the conceptual
+presence of a single feature of the world. In this framing, no individual
+neuron works alone: instead, all the neurons in a sublayer together make up the
+elements in a vector. The value of that vector is filled in by considering the
+activation of every neuron at that layer together. It would be that the
+\emph{orientation} of a vector encodes its conceptual meaning, while the
+\emph{magnitude} of that vector measures ``how much'' of that concept is
+present. A lot of beautiful linear algebra falls immediately out of this
+mathematical frame. For example, it is a prediction of this hypothesis that the
+vector sum (at a layer) of ``woman'' and ``monarch'' is ``queen''.
+
+
 
 \section{The Toolbox of Mechanistic Interpretability}
 
