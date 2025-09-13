@@ -603,9 +603,9 @@ $[-1,1]$.
     Geometrically, the centered data $\widetilde{\mathbf{x}}$ and 
 $\widetilde{\mathbf{y}}$, are the orthogonal projections of the raw data 
 $\mathbf{x}$ and $\mathbf{y}$ to the subspace orthogonal to the vector 
-$(1, \dots, 1)$.  This subsapce has dimension $n - 1$.  This projection 
+$(1, \dots, 1)$.  This subspace has dimension $n - 1$.  This projection 
 never increases the angle between $\mathbf{x}$ and $\mathbf{y}$ but it can 
-descrease angle between them.  In a sense, there are fewer ways they can point 
+decrease angle between them.  In a sense, there are fewer ways they can point 
 away from each other when we reduce the number of dimensions by $1$. 
 
 %   The vectors $\mathbf{x}$ and $\mathbf{y}$ can represent different physical 
@@ -627,7 +627,7 @@ scalars.  They can be distinguished by whether they center the vectors (by
 subtracting the mean) and /or scale them (by dividing by the 
 ``spread'' of the data) before comparison.  The dot product operates on the raw
 data directly, while the other three measure transform the raw data in 
-different ways to faciltate comparisons between data with different means or 
+different ways to facilitate comparisons between data with different means or 
 overall scales.
 
 \begin{itemize}
@@ -708,7 +708,7 @@ exist in vector spaces called ``matrix spaces''). However, it will be easier for
 \raisebox{-0.5\height}{\includegraphics[scale=.45]{./images/ff_labelled.png}}
 \hspace*{.7in}
 \raisebox{-0.5\height}{\includegraphics[scale=.2]{./images/recurrent_labelled.png}}
-\caption[Simbrain screenshots modified by Jeff Yoshimi.]{Feedforward and recurrent networks with nodes labelled, and weight strengths shown. Each weight layer of the feedforward network and the weights of the recurrent network can be associated with weight matrices. }
+\caption[Simbrain screenshots modified by Jeff Yoshimi.]{Feedforward and recurrent networks with nodes labeled, and weight strengths shown. Each weight layer of the feedforward network and the weights of the recurrent network can be associated with weight matrices. }
 \label{labelledNets}
 \end{figure}
 
@@ -839,7 +839,7 @@ In the special case where most of the entries in a weight matrix are $0$, the ma
 Before defining the matrix product, we need a graphical way to think about it. We need to bridge between the ball-and-stick models we have been using (where it is very easy to imagine activations flowing from node to node) to representations of weight matrices and activation vectors.  The matrix product, or matrix multiplication (and its generalization, the tensor product) is at the heart of a great deal of the mathematics of neural networks. However, it is not an easy operation to master, because various entries of a pair of matrices must be held in memory, multiplied and added, and then ``written out'' in a specific way. It's quite easy to lose track.  Moreover, we'd like to stay within the visual framework of Simbrain and find ways to quickly and intuitively understand what is going on. 
 
 % We also call this a  $\textbf{W}_{i, j}$ rep vs a  $\textbf{W}_{j,i}$.
-In the discussion of matrices (section \ref{weightMatrices}) we noted that there are multiple ways to represent a weight matrix. For most of the book, we default to a ``source-target'' representation, but a target-source representation is also possible, and in many contexts is more common. In a ``source-target'' representation, a weight $w_{i, j}$ is a weight from source neuron $i$ to target neuron $j$. In the corresponding matrix, rows are associated with source neurons and columns are associated with target neurons. This kind of indexing is easy and natural to think about. By contrast, a ``target-source'' format is one where we swap indices so that weight $w_{j, i}$ is the weight to the target neuron $j$ from the source neuron $i$.  In the corresponding matrix, rows are associated with target neurons and columns are associated with source neurons. This seems backwards, but for certain matrix operations is more natural and more compact to write, and so it is commonly used.\footnote{There is some disciplinary variance on which representation to use. According to wikipedia, ``The [source-target] definition is commonly used in graph theory and social network analysis (e.g., sociology, political science, economics, psychology). The [target-vector representation] is more common in other applied sciences (e.g., dynamical systems, physics, network science) where A is sometimes used to describe linear dynamics on graphs'' \url{https://en.wikipedia.org/wiki/Adjacency_matrix\#Directed_graphs}.}
+In the discussion of matrices (section \ref{weightMatrices}) we noted that there are multiple ways to represent a weight matrix. For most of the book, we default to a ``source-target'' representation, but a target-source representation is also possible, and in many contexts is more common. In a ``source-target'' representation, a weight $w_{i, j}$ is a weight from source neuron $i$ to target neuron $j$. In the corresponding matrix, rows are associated with source neurons and columns are associated with target neurons. This kind of indexing is easy and natural to think about. By contrast, a ``target-source'' format is one where we swap indices so that weight $w_{j, i}$ is the weight to the target neuron $j$ from the source neuron $i$.  In the corresponding matrix, rows are associated with target neurons and columns are associated with source neurons. This seems backwards, but for certain matrix operations is more natural and more compact to write, and so it is commonly used.\footnote{There is some disciplinary variance on which representation to use. According to Wikipedia, ``The [source-target] definition is commonly used in graph theory and social network analysis (e.g., sociology, political science, economics, psychology). The [target-vector representation] is more common in other applied sciences (e.g., dynamical systems, physics, network science) where A is sometimes used to describe linear dynamics on graphs'' \url{https://en.wikipedia.org/wiki/Adjacency_matrix\#Directed_graphs}.}
 % Yet another option is (from, to) vs (to, from). 
 
 In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention.  A particular set of flow lines is shown, which corresponds to a forward pass through a layer, where inputs are transformed into outputs. This in turn corresponds to one kind of matrix multiplication, depending on the case. In section \ref{matrixProduct1}, we distinguish right and left multiplication. A forward pass through a source-target representation is a right multiplication (the matrix is on the right), while a forward pass through a target-source representation is a left multiplication (the matrix is on the left).  But in each case information can also flow \emph{backwards}, which is what happens in backprop (chapter \extref{ch_lms_backprop}; think of errors flowing in the direction opposite to the flowlines), using the other other kind of multiplication.\footnote{A backwards pass through a source-target representation is a left multiplication (the matrix is on the left), while a forward pass through a target-source representation is a right multiplication (the matrix is on the right).}
@@ -1099,7 +1099,7 @@ We can also take a column perspective on generic matrix multiplications, treatin
 
 \section{Flow Diagrams}\label{flowDiagrams}
 
-We saw in the last section that a matrix multiplication where we think of the left matrix as a stack of rows can be thought of as transforming each row by the matrix on the right.  The output matrix has the same number of rows as the input matrix, and the input matrix on the right is like a processor which transforms each row of the input matrix on the left (again, we can also do this from a column perspective, but rows are more common in the relevant contexts and so we focus on them). 
+   We saw in the last section that a matrix multiplication where we think of the left matrix as a stack of rows can be thought of as transforming each row by the matrix on the right.  The output matrix has the same number of rows as the input matrix, and the input matrix on the right is like a processor which transforms each row of the input matrix on the left (again, we can also do this from a column perspective, but rows are more common in the relevant contexts and so we focus on them). 
 
 This sets up a kind of diagram that we will sometimes use in later chapters, one where we only show the ``processing'' matrices and other transformations, and assume that stacks of rows (or other more complicated structures, like tensors, discussed next) are being processed by those weight matrices and other other mathematical operations. What we have called ``node layers'' are not shown.  One might call these flow diagrams, tensor flow diagrams, or activation processing diagrams. There is no settled terminology to our knowledge, but this way of viewing things has become standard in the literature.
 
@@ -1127,7 +1127,7 @@ A \glossary{tensor} is a generalization of the concept of a vector that encompas
 % TODO: Glossary items for textbfs
 % Array vs. set.  Array implies ordering. Comp sci version of tuple.
 % Tensor is more math language. Ndarray is more from languages like numpy and torch
-The \textbf{rank} of a  tensor is the number of indices required to specify an entry in it.These are also sometimes called ``n-dimensional arrays'' or ``n-d arrays'' (1d array, 2d array, etc.).\footnote{Note that the dimensionalty of an array is the literal dimension of the object, like a vector is 1d and a matrix is 2d. This is not the same as the dimensionality of the space these objects live in. For example, $(1,2,1,0)$ is a point in a 4d space, but it is a 1d tensor or 1d array of numbers.} The \textbf{shape} of a tensor is the number of components it has along each of the array's dimensions. We have seen this with matrices, where the shape is stated in terms of rows and columns, e.g. a $5 \times 2$ matrix. For more complex tensors the shape is specified by a number of components for each dimension of the array, like a $4 \times 2 \times 5$ volume. Here are the main types of tensor:
+The \textbf{rank} of a  tensor is the number of indices required to specify an entry in it.These are also sometimes called ``n-dimensional arrays'' or ``n-d arrays'' (1d array, 2d array, etc.).\footnote{Note that the dimensionality of an array is the literal dimension of the object, like a vector is 1d and a matrix is 2d. This is not the same as the dimensionality of the space these objects live in. For example, $(1,2,1,0)$ is a point in a 4d space, but it is a 1d tensor or 1d array of numbers.} The \textbf{shape} of a tensor is the number of components it has along each of the array's dimensions. We have seen this with matrices, where the shape is stated in terms of rows and columns, e.g. a $5 \times 2$ matrix. For more complex tensors the shape is specified by a number of components for each dimension of the array, like a $4 \times 2 \times 5$ volume. Here are the main types of tensor:
 
 \begin{itemize}
 \item A \textbf{scalar} is a rank 0 tensor or 0d array because it requires no indices. The number 42 is a rank 0 tensor, a 0d array, but nobody talks about it that way. 
@@ -1164,13 +1164,36 @@ We can refer to the different indices for a tensor using standardized names in a
 % Organize into subsections?
 % Add matrix operations? Like adding and subtracting same-sized matrices
 
-Vectors are not just lists of numbers. They are members of \emph{vector spaces}, which are abstract mathematical spaces that have an addition operation and a scalar multiplication operation, and other operations that can be defined on the basis of these. In this appendix we introduce these two basic operations and several others. We also develop the formal definition of a vector space.
+   Vectors are not just lists of numbers.  They are members of \emph{vector 
+spaces}, which are abstract mathematical spaces that have an addition operation 
+and a scalar multiplication operation, as well as other operations that can be 
+defined in terms of these two operations.  In this appendix we introduce these 
+two basic operations and several others.  We also define subspaces of a vector
+space.
    
-   The addition of two vectors with $n$ components, or \glossary{vector addition}, is simply the component-wise addition of the two vectors. This is easiest to see by example. Here is an example of adding two vectors with 3 components:
-\begin{equation*}
-      (\; 0,\; -1,\; 9) + (\; 1,\; 2,\; 4) 
-  = (\; 0+1,\; -1+2,\; 9+4) = (1, 1, 13)
-\end{equation*}
+   The addition of two vectors with $n$ components, or \glossary{vector 
+addition}, is simply the component-wise addition of the two vectors.  This is 
+easiest to see by example.  Here are two examples of adding vectors with three 
+components, as row vectors and as column vectors:
+\begin{eqnarray*}
+ (\; 0,\; -1,\; 9) + (\; 1,\; 2,\; 4) = (\; 0+1,\; -1+2,\; 9+4) = (1, 1, 13) \\
+\begin{pmatrix}
+~~0 \\ -1 \\ ~~9
+\end{pmatrix}
++
+\begin{pmatrix}
+1 \\ 2   \\ 4
+\end{pmatrix}
+=
+\begin{pmatrix}
+~~0+1 \\ -1+2 \\ ~~9 +4
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 \\ 1 \\ 13
+\end{pmatrix} \qquad  \qquad  \qquad 
+\end{eqnarray*}
+
 Here are a few more examples:
 \begin{eqnarray*}
 (1,1) + (2,3) &=& (3,4)  \\
@@ -1178,8 +1201,61 @@ Here are a few more examples:
 (2,3,5,8,13,21) + (3,5,8,13,21,34) &=& (5,8,13,21,34,55) \\
 (-1,.5,\sqrt{7}) + (-1,-2,.8) &=& (-2,-1.5,\sqrt{7}+.8)
 \end{eqnarray*}
+If all of the components of a vector are $0$ we call it the \glossary{zero 
+vector}.  Adding the zero vector to any vector leaves it unchanged.
 
-In a similar way, \emph{vector subtraction} is the component-wise subtraction of the corresponding components of two vectors.\footnote{Vector subtraction can be defined in terms of vector addition and scalar multiplication. Thus vector subtraction is not fundamental to the definition of a vector space. It is nonetheless presented here because it is used in several other places in this book.}  Here are some examples:
+   A geometric/physical way to think about vector addition is shown in the left 
+panel of figure \ref{vectorMath}.  The vectors $\mathbf{v}_1$ and 
+$\mathbf{v}_2$ are shown in the usual way with their tails positioned at the 
+origin of the vector space.  A copy of $\mathbf{v}_1$, with the same length as 
+$\mathbf{v}_1$ and which points in the same direction as $\mathbf{v}_1$, is 
+positioned with its tail at the head of $\mathbf{v}_2$.  And a copy of 
+$\mathbf{v}_2$, with the same length as $\mathbf{v}_2$ and which points in the 
+same direction as $\mathbf{v}_2$, is positioned with its tail at the head of 
+$\mathbf{v}_1$.  The vector $\mathbf{v}_1 + \mathbf{v}_2$ is shown with its 
+tail positioned at the origin.  The head of $\mathbf{v}_1 + \mathbf{v}_2$ is 
+located where the heads of the copies of $\mathbf{v}_1$ and $\mathbf{v}_2$ 
+meet.  
+
+   This method is often called the ``parallelogram rule''.   The vector 
+$\mathbf{v}_1$ and its copy form one pair of parallel edges of the 
+parallelogram while the vector $\mathbf{v}_2$ and its copy form the other pair 
+of parallel edges of the parallelogram.  The vector with its tail at the origin 
+and its head at the opposite vertex of the parallelogram is the vector 
+$\mathbf{v}_1 + \mathbf{v}_2$.  It is located along a diagonal of the 
+parallelogram.  
+
+% More needed
+% Vector addition, subtraction, and scalar multiplication can be visualized, as shown in figure \ref{vectorMath}.
+
+\begin{figure}[h]
+\centering
+% \includegraphics[scale=0.3]{./images/vectorMath.png}
+\includegraphics[scale=1.2]{./images/VectorOps.pdf}
+%\includegraphics[scale=1.2]{./images/VectorAdd.pdf}
+%\includegraphics[scale=1.2]{./images/Vectortmp.pdf}
+%\includegraphics[scale=1.2]{./images/VectorDiff.pdf}
+\caption[Scott Hotton]{{\bf Vector addition} (left). The vectors $\mathbf{v}_1$ 
+and $\mathbf{v}_2$ form adjacent edges of a parallelogram with a vertex at the
+origin.  The vertex in the parallelogram opposite from the origin is the 
+vector $\mathbf{v}_1 + \mathbf{v}_2$.  {\bf Vector subtraction} (middle).  The 
+vectors $\mathbf{v}_1 - \mathbf{v}_2$ and $\mathbf{v}_2$ form adjacent edges of
+a parallelogram with a vertex at the origin.  The vertex of the parallelogram 
+opposite from the origin is the vector $\mathbf{v}_1$.  {\bf Scalar 
+multiplication} (right).  The vector $(3/2)\mathbf{v}_1$ points in the same
+direction as $\mathbf{v}_1$ but is $3/2$ times as long.  The vector 
+$-\mathbf{v}_2$ points in the opposite direction from $\mathbf{v}_2$ but
+it has the same length.  The vector $\mathbf{v}_1 - \mathbf{v}_2$ is the
+same as $\mathbf{v}_1 + (-\mathbf{v}_2)$ as shown in the middle panel.}
+\label{vectorMath}
+\end{figure}
+
+   In a similar way, \emph{vector subtraction} is the component-wise 
+subtraction of the corresponding components of two vectors.\footnote{Vector 
+subtraction can be defined in terms of vector addition and scalar 
+multiplication.  Thus vector subtraction is not fundamental to the definition 
+of a vector space.  It is nonetheless presented here because it is used in 
+several other places in this book.}  Here are some examples:
 \begin{eqnarray*}
 (1,1,1) - (0,1,0) = (1-0,1-1,1-0) &=& (1,0,1) \\
 (10,5) - (5,10) = (10-5,5-10) &=& (5,-5) \\
@@ -1187,25 +1263,38 @@ In a similar way, \emph{vector subtraction} is the component-wise subtraction of
 (2,6,1) - (.5,20,-100) &=& (1.5,-14,101)
 \end{eqnarray*}
 
-If all of the components of a vector are $0$ we call it the \glossary{zero 
-vector}. Adding the zero vector to any vector leaves it unchanged.
+   A geometric/physical way to think about vector subtraction is shown in the 
+middle panel of figure \ref{vectorMath}.  When the vector $\mathbf{v}_1 - 
+\mathbf{v}_2$ is added to the vector $\mathbf{v}_2$ we get the vector 
+$\mathbf{v}_1$.  So the vectors $\mathbf{v}_1 - \mathbf{v}_2$ and 
+$\mathbf{v}_2$ form the adjacent edges of a parallelogram and the vertex opposite
+to the origin is the vector $\mathbf{v}_1$.  A copy of $\mathbf{v}_1 - 
+\mathbf{v}_2$ with its tail at the head of $\mathbf{v}_2$ is also shown.  Its
+head meets the head of $\mathbf{v}_1$.
 
-  Another operation that can be performed with vectors is ``scalar 
+   Another operation that can be performed with vectors is ``scalar 
 multiplication''. A \glossary{scalar} is a generic term for the type of
-numbers we choose to work with. These numbers are called scalars because we 
-can ``rescale'' vectors using scalar multiplication. Usually we work with real 
-numbers in which case we say our scalars are real numbers. Sometimes people 
-use complex numbers or something even more exotic for their scalars. 
+numbers we choose to work with.  These numbers are called scalars because we 
+can ``rescale'' vectors using scalar multiplication.  Usually we work with real 
+numbers in which case we say our scalars are real numbers.  Sometimes people 
+use complex numbers or something even more exotic for their scalars.  
 
-  The \glossary{scalar multiplication} of a scalar and a vector is obtained by 
+   The \glossary{scalar multiplication} of a scalar and a vector is obtained by
 multiplying each of the vectors component's by the scalar. Scalar 
-multiplication is indicated by placing the scalar and vector next to each other 
-without any intervening symbols. For example scalar multiplication of the 
-scalar $3$ with the vector $( 1, 2, 4)$ can be written as
+multiplication is usually indicated by placing the scalar followed by the 
+vector right next to it without any intervening symbols (although sometimes a 
+small dot, $\, \cdot\, $, is written between them).  For example scalar 
+multiplication of the scalar $3$ with the vector $( 1, 2, 4)$ can be written as
 \begin{equation*}
 3(\; 1, \; 2, \; 4) = (\; 3 \cdot 1, \; 3 \cdot 2, \; 3 \cdot 4) 
 = (\; 3,\; 6, \; 12)
 \end{equation*}
+
+   If the scalar is positive then the scalar multiple of a vector points in the 
+same direction.  If the scalar is negative then the scalar multiple of a vector 
+points in the opposite direction.  If the scalar is zero then the scalar 
+multiple of a vector is the zero vector.  This is shown in the right panel of 
+figure \ref{vectorMath}.  
 
    The operations of vector addition and scalar multiplication can be combined.
 The result is called a \glossary{linear combination} of vectors. For example
@@ -1217,42 +1306,36 @@ is a linear combination of the vectors $(0,0)$, $(0,1)$, $(1,0)$, and $(1,1)$.
    Scalar multiplication of any vector with the number $0$ is the zero vector.
 The scalar multiple of a vector with the scalar $-1$ gives us the negative
 of the vector. We define \glossary{vector subtraction} of one vector from 
-another as the addition of the vector's negative. Subtracting a vector from 
-itself is the zero vector.
+another as the addition of the vector's negative.  This is shown in the 
+middle panel of figure \ref{vectorMath}.  Subtracting a vector from itself is 
+the zero vector.
 \begin{eqnarray*}
   (\; 1, \; 2, \; 4) - (\; 1, \; 2, \; 4) = 
   (\; 1, \; 2, \; 4) + (\; -1, \; -2, \; -4) = (0,0,0)
 \end{eqnarray*}
 
-% More needed
-Vector addition, subtraction, and scalar multiplication can be visualized, as shown in figure \ref{vectorMath}.
-
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.3]{./images/vectorMath.png}
-\caption[Jeff Yoshimi.]{Vector addition (left).  Vector subtraction (middle).  Scalar multiplication (right).}
-\label{vectorMath}
-\end{figure}
-
- Now we can more formally define a vector space. A set of vectors that satisfies two conditions
+   A subset of a vector space that satisfies two conditions:
 \begin{quote}
-(1) The sum of any two vectors in the set is also in the set.\\
-(2) Every scalar multiple of a vector in the set is also in the set. 
+(1) The sum of any two vectors in the subset is also in the subset.       \\
+(2) Every scalar multiple of a vector in the set is also in the subset. 
 \end{quote}
-is called a \glossary{vector space}. We will apply vector spaces to neural 
-networks in chapter \extref{ch_dst}. If a subset of a vector space satisfies these 
-conditions, we say it is a \glossary{subspace} of the vector space. These 
-definitions allow a vector space to be a subspace of itself. 
+is called a \glossary{subspace} of the vector space.  This definition allows a 
+vector space to be a subspace of itself.  The subset that consists of just the
+zero vector is a subspace.  We will apply the concept of subspaces to the 
+neural networks in chapter \extref{ch_dst}.  
 
 % Scott would like to make some revisions around here
    The set of all linear combinations of a set of vectors is called the 
-\glossary{span} of the vectors. The span of a set of vectors forms a 
-subspace. If the span of a set of vectors is the whole vector space and any
+\glossary{span} of the set of vectors.  The span of a set of vectors forms a 
+subspace.   If the span of a set of vectors is the whole vector space and any
 proper subset of that set of vectors does not span the whole vector space, then 
-that set of vectors is a \glossary{basis} of the vector space. There are
-many different bases\footnote{``Bases'' is plural for ``basis''.} for a vector space but 
-all of them have the same number of members. This number is the dimension of 
-the vector space. 
+that set of vectors is a \glossary{basis} of the vector space.  There are
+many different bases\footnote{``Bases'' is plural for ``basis''.} for a vector 
+space (except when the vector space only contains the zero vector).  Any
+two distinct bases for a vector space must have the same number of members.  
+This number is called the \glossary{dimension} of the vector space.  By
+convention, when the vector space only contains the zero vector its dimension 
+is $0$.
 
    For example
 \begin{eqnarray*}
@@ -1266,7 +1349,7 @@ can be written as
 so $\{ (1,0), (0,1) \}$ spans the plane. But every vector in the span of
 $(1,0)$ has $0$ for it second component and every vector in the span of $(0,1)$
 has $0$ for its first component, so we cannot write every vector in the plane 
-without using both $(1,0)$ and $(0,1)$. The set $\{ (1,0), (0,1) \}$ is a basis for the plane. It is called the \underline{standard basis}. 
+without using both $(1,0)$ and $(0,1)$. The set $\{ (1,0), (0,1) \}$ is a basis for the plane. It is called the {\bf standard basis}. 
 
    Every vector $(x,y)$ can also be written as
 \begin{eqnarray*}
@@ -1297,7 +1380,7 @@ A^T = \begin{pmatrix}
 \end{pmatrix}
 \]
 
-   Its useful to comapre the source-target and target-source conventions for 
+   Its useful to compare the source-target and target-source conventions for 
 matrices using the transpose operation.  If the product of two matrices $A$ and 
 $B$ is defined then the transpose of their product is the reverse product of 
 their transposes:
@@ -1306,8 +1389,8 @@ their transposes:
 \end{equation*}
 Note that transpose flips row vectors to make them column vectors and flips
 column vectors to make them row vectors.  So if $A$ is an $m \times n$ matrix 
-and $\mathbf{v}$ is a $n \times 1$ column vector then $\mathbf{v}^T$ is a $1 
-\times n$ row vector and
+and $\mathbf{v}$ is a $n \times 1$ column vector then $A^T$ is an $n \times m$
+matrix, $\mathbf{v}^T$ is a $1 \times n$ row vector, and
 \begin{equation*}
        \left(A \mathbf{v} \right)^T =  \mathbf{v}^T A^T                 
 \end{equation*}
@@ -1408,7 +1491,7 @@ This is a ``block matrix'' containing two blocks of non-zero values (correspondi
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.45]{./images/3NodeNet.png}
-\caption[Jeff Yoshimi.]{A recurrent network with three nodes labelled $1,2,3$ and weights $w_{1,2} = -1, w_{2,3}=0.5, w_{3,1}=2$.}
+\caption[Jeff Yoshimi.]{A recurrent network with three nodes labeled $1,2,3$ and weights $w_{1,2} = -1, w_{2,3}=0.5, w_{3,1}=2$.}
 \label{sampleNetRecurrent}
 \end{figure}
 
