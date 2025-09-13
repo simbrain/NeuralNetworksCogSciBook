@@ -53,10 +53,11 @@ interpretability relies on the intuitive idea that the steps that occur in a
 neural network are potentially understandable. Formalized notions of these
 concepts are then proposed as parts of research projects in the field; these
 precisified notions often center on the contextual representations of tokens as
-they are processed along a residual stream (on the concept of a residual stream see section \extref{transformerBlocks}).\footnote{The use of
-these terms raise deep issues in philosophy of cognitive science that are
-discussed at the end of chapter \extref{ch_transformers}.  We are agnostic
-about the exact interpretation here.}
+they are processed along a residual stream (on the concept of a residual stream
+see section \extref{transformerBlocks}).\footnote{The use of these terms raise
+deep issues in philosophy of cognitive science that are discussed at the end of
+chapter \extref{ch_transformers}.  We are agnostic about the exact
+interpretation here.}
 
 It is a remarkable property of many neural network architectures, showcased
 especially in contemporary LLMs, that we are able to train these networks up
@@ -157,6 +158,87 @@ goals like value alignment, the \emph{results} of this field are separately of
 immense value to cognitive science. These results are providing a whole new set
 of conceptual tools for thinking about how information is processed in the
 natural neural networks of the brain.
+
+\section{Theory}
+When we set out to characterize the workings of deep neural networks
+\emph{mechanistically}, one of the very first things that we will need is a
+mathematical theory of the learned programs of a given architecture. It is very
+much not enough to know that the architecture stitches together particular
+layers in particular ways, if what we we are after is an explanation of the
+programs that will fill up those layers. One of the distinctive features of our
+predicament is that we do \emph{not} have such an adequate mathematical
+characterization. Work in mechanistic interpretability has to take a stab at
+mathematically characterizing neural network internals, with the hopes of at
+least learning the ways in which a given mathematical characterization falls
+short empirically, so that it can be successively improved upon.
+
+One very natural thing to think is that there is something special about the
+neuron basis. These are called \emph{neural} networks, after all, and the
+``neuron count'' figure is one of the principled hyperparameters characterizing
+a neural network. So you might think, as a working hypothesis, that each
+individual neuron trades in one particular interpretable concept, capturing the
+presence or absense of that one feature of the world in any context. In
+neuroscience, this hypothesis goes by the name of the ``grandmother neuron'' or
+``Jennifer Aniston neuron'' hypothesis, the latter gently highlighting the huge
+profusion of unitary concepts that would each have to be represented with a
+dedicated neuron. Framed this way, a trained neural network is as a massive
+if-then decision tree. In effect, the network would \emph{first} be asking
+whether simple features like articles, nouns, and punctuation are present.
+Those early questions would inform later questions, deeper into the decision
+tree, including the advanced question of whether the usage statistics around
+the ``her'' pronoun in a context better match Jennifer Aniston or Reese
+Witherspoon.\footnote{The reader may want to play around with
+\url{https://en.akinator.com/} to get an intuitive feel for how few binary
+questions is takes to pin down even a complicated feature. Do not think that
+you could never build up from syntax parsing to Jennifer Aniston detection in a
+handful of serial layers!}
+
+A second hypothesis about how learned programs work is that it is
+\emph{directions in activation space} that each represent the conceptual
+presence of a single feature of the world. In this framing, no individual
+neuron works alone: instead, all the neurons in a sublayer together make up the
+elements in a layer vector. The value of that vector is filled in by the
+activations of every neuron at that layer together. It would be the
+\emph{orientation} of a vector, then, that encodes its conceptual meaning,
+while the \emph{magnitude} of that vector captures ``how much'' of that feature
+is present. A lot of beautiful linear algebra falls immediately out of this
+mathematical frame. For example, it is a prediction of this hypothesis that the
+vector sum (at a layer) of ``woman'' and ``monarch'' is ``queen''.
+
+A third hypothesis, famous in mechanistic interpretability, is the feature
+superposition hypothesis. In a way, it is as much of a generalization of the
+directions-in-activation-space hypothesis as that is of the neuron-basis
+hypothesis. The feature superposition hypothesis is rooted in the mathematical
+subfield of \emph{sparse coding}. Its idea is that, when the presence of any
+particular concept in a context is \emph{rare}, not every concept will need an
+entire dedicated activation-space direction (yet alone a dedicated neuron).
+When features are rare, several features can profitably be assigned to the same
+direction in activation space, and that direction can then be disambiguated
+using the surrounding context in the sentence. As a loose analogy, you can
+think of the phenomenon of homonyms: totally distinct words which share a
+single spelling, like the blowing ``wind'' as opposed to forgetting to ``wind''
+your watch. Without context, you could only make a statistical guess as to what
+``wind'' refers to. But with surrounding context, there is actually no
+ambiguity in the above phrases. Similarly, neural networks may be
+overloading their activation-space directions, and implementing logic to
+contextually disambiguate those directions after-the-fact. The feature
+superposition hypothesis implies that every fully trained neural network is
+noisily equivelant to a much larger, much sparser neural network
+\cite{elhage2022superposition}.
+
+Still others think that the forward pass of a trained neural network is the
+wrong setting entirely for our theories; instead, they hypothesize that it is
+the parameter space of a neural network in training on a loss function that is
+most amenable to clean, principled mathematical characterization. From this
+perspective, it might be that we cannot easily make precise sense of the
+activation spaces of fully trained neural networks---instead, those activation
+spaces will only make sense in the context of the entire training history of
+that network, looking at how it developed as it moved around in parameter space.
+
+To reiterate, it is not yet known what the proper way to look at neural
+networks mathematically is. For that reason, mathematical theory-crafting is
+part and parcel of even centrally empirical mechanistic interpretability
+research.
 
 \section{The Toolbox of Mechanistic Interpretability}
 
@@ -337,10 +419,46 @@ steering of model behavior.
 % can swap layers around and it will often still; work; damage is mild. An
 % interesting play on the old graceful degradation idea.
 
-% \subsection{Other Techniques}
-
+\subsection{Ablations}
 % Some other methods include activation patching ablating,  causal tracing, and
 % interchange intervention.
+In neuroscience, ablation (``lesion'') studies are absolutely indispensible to
+empirical research---and the same is true in mechanistic interpretability
+research. What could be simpler: if you want to figure out what a piece of a
+neural network does, why don't you try temporarily removing that piece of the
+network (while leaving everything else unchanged)? If the loss of function of
+the neural network matches your hypothesized function of the network part, your
+hypothesis is strongly validated.
+
+Ablations are in fact a slightly subtle topic. The reason is that phrase:
+``while leaving everything else unchanged''. When you totally silence a part of
+a neural network in a forward pass, you're doing something that the neural
+network has never otherwise encountered. It is not typical for large portions
+of a network to be fixed at exactly $0.0$ activation; typically, basically all
+parts of a network are constantly active, working hard at \emph{something}. In
+technical language, the ablation can push the neural network out of
+distribution---a confounding effect. When we selectively silence a piece of a
+network, then, we ideally want to do so surgically, in a way that minimizes
+out-of-distribution confounding effects on the rest of the network. We want to
+see what happens when a piece of the network drops out, \emph{while} the rest
+of the network remains in its typical, ``healthy'' state. That way we are
+measuring only the effects of the dropout, not the effects of incidental damage
+to the computation.
+
+So, instead of ablating by clamping activations to $0.0$, alternatives
+approaches have evolved. One option is to clamp activations to their median
+activation value. The idea is that this neuron is then only activating ``an
+average amount''---it's not unusually absent (like the $0.0$ ablation case) but
+nor is it unusually present (like when it activates in a relevant context).
+Another option is resample ablations, in which we take the \emph{actual
+activation} from a random previous forward pass and swap that in for the
+current activation value.
+
+Notably, because the models are so open to us (relative to animal models in
+neuroscience), we are not forced to only destroy. Instead of clamping
+activations to a flat $0.0$, that is, we can clamp activations to arbitrary
+values, including to arbitrarily high values, and measure the downstream impact
+of that change.
 
 \section{Major Results in Mechanistic Interpretability}
 
@@ -406,11 +524,13 @@ MLPs (\cite{nanda2023progress} , section 4.1).
 
 An early success in mechanistic interpretability was the identification of
 attention head activation patterns as semantically meaningful. Helpfully, the
-attention mechanism in transformer blocks (whose activations can be read as ``scores''; see section \extref{transformerBlocks}) lends itself to interpretation
-without having to graf on of any additional structure--just as the output
-probabilities of a model can be naturally interpreted as a model's confidence
-about its answer, the attention scores of an attention head can naturally be
-interpreted as ``which tokens that head is attending to, to what degree''.
+attention mechanism in transformer blocks (whose activations can be read as
+``scores''; see section \extref{transformerBlocks}) lends itself to
+interpretation without having to graf on of any additional structure--just as
+the output probabilities of a model can be naturally interpreted as a model's
+confidence about its answer, the attention scores of an attention head can
+naturally be interpreted as ``which tokens that head is attending to, to what
+degree''.
 
 Several interpretable roles played by attention heads in transformers have been
 catalogued. ``Bigram heads'' are attention heads that solely identify
