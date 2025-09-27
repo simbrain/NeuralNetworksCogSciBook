@@ -511,7 +511,7 @@ to the network as input. With training, these blocks learn to find long-range
 dependencies between different parts of a context. Recall that the context
 includes an original prompt, its own response to that prompt, etc.; it includes
 the \emph{entire exchange} you've had up to the current point, so long
-as it fits in the context window. Each block combines one or more attention heads with a standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).\footnote{MLP stands for multi-layer perceptron, that is, a vanilla feed-forward network, and is a nod to the relevant history (section \extref{ageOfPerceptron})}
+as it fits in the context window. Each block combines one or more \glossary{attention head}s with a standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).\footnote{MLP stands for multi-layer perceptron, that is, a vanilla feed-forward network, and is a nod to the relevant history (section \extref{ageOfPerceptron})}
 Again, we maintain the ``row processing'' perspective of section
 \extref{matrixMultiplication} throughout the discussion. That is, we treat the inputs to the transformer as a stack of vectors, each corresponding to one token in the context window. These stacks are processed one vector at a time through the attention heads, and then the results of all this attentional processing are passed through the block's MLP.
 
@@ -530,7 +530,7 @@ the block is processed by three matrices: $\textbf{K}$, $\textbf{Q}$, and
 $\textbf{V}$.  $\textbf{K}$ and $\textbf{Q}$ are used to generate a
 matrix of self attention scores. Since the scores are generated on the fly at inference time, they are shown with a lighter shade of gray. These scores are used to filter the value vectors that result when the input is processed through $\textbf{V}$. The MLP
 typically involves a hidden node layer with non-linear activation functions, that is larger than the input (hence the up
-projection and down projection). Skip or residual connections connect the input to the attention block with its output, and the input to the MLP with its output. (Right) It can be useful to think of the residual connections as forming a single ``residual stream'' (the straight vertical line), which the attention heads and MLP read to and write from. Components with stored parameters are shown in bold face.}
+projection and down projection). A residual connection (or \glossary{skip connection}) connects the input to the attention block with its output, and another one connects the input to the MLP with its output. (Right) It can be useful to think of the residual connections as forming a single ``residual stream'' (the straight vertical line), which the attention heads and MLP read to and write from. Components with stored parameters are shown in bold face.}
 \label{transformerBlockSimple}
 \end{figure}
 
@@ -1146,9 +1146,8 @@ areas where activity is most strongly predicted by LLMs.
 \centering
 \includegraphics[scale=.9]{./images/brainPredictionsLLM.png}
 \caption[From \cite{schrimpf2021neural}.]{Highlighted regions correspond to
-areas whose brain activity (voxel activity in fMRI) that are best predicted by
-the internal activation patterns of an LLM.
-}
+areas where brain activity (voxel activity in fMRI) is best predicted by
+the internal activation patterns of an LLM.}
 \label{brainPredictionLLM}
 \end{figure}
 

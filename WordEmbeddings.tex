@@ -110,7 +110,7 @@ Distributional semantics (DS) provides theoretical support for this approach. Ac
 
 The high level idea with co-occurrence based embeddings is that two tokens will be close to each other in a vector space if they tend to appear near the same other words in the training corpus. Words like ``nurse'' and ``doctor'' will be near each other because they both tend to occur near words like ``hospital'', ``patient'', or ``disease''.\footnote{Thanks to Eric Schwitzgebel for this example.} In other words, because the usage of these words overlap, their meaning should be similar or related to a certain extent. 
 
-Here is an example that illustrates the idea that words with similar meanings should be near each other in the vectors space they are embedded in (that is, they should have similar vector representations):
+Here is an example that illustrates the idea that words with similar meanings should be near each other in the vector space they are embedded in (that is, they should have similar vector representations):
 \begin{table}[h]
     \centering
     \begin{tabular}{|l|c|c|c|c|c|c|}
@@ -134,7 +134,7 @@ Here is an example that illustrates the idea that words with similar meanings sh
     \label{exampleEmbeddings}
 \end{table}
 
-Note that the columns themselves (the dimensions of the vector space) don't have any clear interpretable meaning\footnote{See the linear algebra chapter. These columns are sometimes called feature but feature implies something that can be easily interpreted.}. Generally speaking, word embeddings are trained on a large text corpus (the details of how this is done using co-occurrences are given below). The resulting embeddings are often quite large, so dimensionality reduction can be used to create lower-dimensional embeddings. After dimensionality reduction, columns can no longer be interpreted as co-occurrence with specific terms in the corpus. Rather, it is the pattern across them that matters, as the relative semantic relationships between tokens are encoded in this semantic space. 
+Note that the columns themselves (the dimensions of the vector space) don't have any clear interpretable meaning.\footnote{See the linear algebra chapter. These columns are sometimes called feature but feature implies something that can be easily interpreted.} Generally speaking, word embeddings are trained on a large text corpus (the details of how this is done using co-occurrences are given below). The resulting embeddings are often quite large, so dimensionality reduction can be used to create lower-dimensional embeddings. After dimensionality reduction, columns can no longer be interpreted as co-occurrence with specific terms in the corpus. Rather, it is the pattern across them that matters, as the relative semantic relationships between tokens are encoded in this semantic space. 
 
 The nice thing, again, is that we can actually picture these by projecting from the high dimensional embedding space to two dimensions and then literally see the distance relationships between tokens, as in figure \ref{f:writerPainterExample}. The generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually.
 
@@ -160,7 +160,7 @@ Another approach (usually applied in addition to removing stopwords) is to norma
 
 \subsection{Neural Network Based Embeddings}
 
-Another approach to creating word embeddings is to use neural networks. A well-known example is Word2Vec \cite{mikolov2013distributed}, which trains a three node-layer feed-forward neural network to predict the context for a word.\footnote{A code-based walk through of the algorithm is here: \url{https://www.tensorflow.org/tutorials/word2vec}. Predicting the surrounding context for a word (``skip-gram'') is just one flavor of word2vec. Some versions also predict words from context (``continuous bag of words''). } The input and output node layers of this network have one node for each word in a vocabulary. The hidden layer has far fewer dimensions, and corresponds to the embedding dimension.\footnote{The embedding dimensions are typically around 300D, but newer models might exceed 700D.} Training examples will be associations between a word and other words that tend to occur around it. For example, if we were drawing data from a book that said ``Students like going to UC Merced, it's a nice university'', we might have training examples like: 
+Another approach to creating word embeddings is to use neural networks. A well-known example is Word2Vec \cite{mikolov2013distributed}, which trains a three node-layer feed-forward neural network to predict the context for a word.\footnote{A code-based walk through of the algorithm is here: \url{https://www.tensorflow.org/tutorials/word2vec}. Predicting the surrounding context for a word (``skip-gram'') is just one flavor of word2vec. Some versions also predict words from context (``continuous bag of words''). } The input and output node layers of this network have one node for each word in a vocabulary. The hidden layer has far fewer dimensions, and corresponds to the embedding dimension.\footnote{The embedding dimensions are typically around 300D, but newer models might exceed 700D.} Training examples are associations between words and other words that tend to occur around them. For example, if we were drawing data from a book that said ``Students like going to UC Merced, it's a nice university'', we might have training examples like: 
 \begin{itemize}
 \item ``Merced'' $\longrightarrow$ ``UC''
 \item ``Merced'' $\longrightarrow$ ``it's''
@@ -170,6 +170,7 @@ This trains a network to produce associations between a one-hot representation o
 
 Other variants of this approach include FastText \cite{bojanowski2016enriching}, which utilizes sub-tokens (character n-grams that make up a word, such as `ca' and `at' for `cat') in its representations to handle words that it might not have encountered during training (out-of-vocabulary terms), and Glove \cite{pennington2014glove}, which predict \textit{ratios} of co-occurrence probabilities from global statistical information, instead of directly predicting co-occurrence probabilities from local context as in Word2Vec. 
 
+% Need some better transition within this paragraph
 Starting around 2018 embeddings became more common in the context of transformer models such as BERT and ELMO  (on transformers, see chapter \extref{ch_transformers}). These models were often trained to find a masked word in a context (``masked language modeling''), though later models, including familiar ones such as ChatGPT, are trained to predict next words from prior context. As with word2vec, by training these models on this task, the network develops useful embeddings.  In those earlier models the whole point was to produce the embedding. But in modern transformers the embedding is just part of what gets trained overall as part of one big model, but it's there to enable complex functionality like chat. The value of this kind of custom trained embedding is that the embedding ends up being well-suited to whatever task (for example next word prediction) the network is trained on.
 % They used to _start_ with word2vec and glove, but training everything end to end ends up being better.  People were surprised by that in beginning. This is what is used and has become standard to train end to end.  \footnote{While it may be tempting to initialize an embedding with word2vec or Glove and then train it, there is a concern that doing so might push the embedding into some region of solution space that is less optimal.}
 
@@ -184,6 +185,7 @@ One striking feature of word or token embeddings is that we can perform mathemat
 \label{geometryWordEmbedding}
 \end{figure}
 
+% Work on this
 In more detail, the vector difference between word embeddings that are related in similar ways are often vectors that point in the same direction (see table 1 of \cite{mikolov2013linguistic} for more examples):
 
 \begin{itemize}
@@ -210,12 +212,15 @@ As a reminder, these are directions in a high-dimensional space, in these models
 
 How do we know that a given word embedding accurately captures the meaning of a set of tokens? How can word embeddings be evaluated? Previous research on word similarity and relatedness has shown that directly asking for relatedness judgments can accurately capture word relations \cite{finkelstein2001placing}. Therefore, one general method of evaluation is by collecting a set of human judgements and using them to evaluate a given embedding relative (though some have questioned this approach, e.g. \cite{richie2022inter}). These can be thought of as placing a ceiling on the performance of an embedding. Several ``gold standard'' usage databases exist, such as WordSim-353 \cite{finkelstein2001placing, agirre2009study}. 
 
-However, recent models (pre-LLM) had already reached or surpassed human performance on tasks such as similarity evaluation. Since the models have reached or surpassed theoretical performance ceilings based on human judgments, how can future improvements be evaluated? In response to this situation, Felix Hill and colleagues \cite{hill2015simlex} set out to create a standard that separates similarity from association (previous standards had ignored the distinction). Association refers to relatedness between two concepts, whereas similarity refers (almost) to synonymy. For example, ``car'' and ``tire'' would be considered associated but not similar, while ``glasses'' and ``spectacles'' are similar. While these issues are less prominent with LLMs, research remains active creating new and better benchmarks for model evaluation \cite{bugliarello2023measuring}.
+% Work a bit on this
+However, recent models (pre-LLM) have reached or surpassed human performance on tasks such as similarity evaluation. In response to this situation, Felix Hill and colleagues \cite{hill2015simlex} set out to create a standard that separates similarity from association (previous standards had ignored the distinction). Association refers to relatedness between two concepts, whereas similarity refers (almost) to synonymy. For example, ``car'' and ``tire'' would be considered associated but not similar, while ``glasses'' and ``spectacles'' are similar. While these issues are less prominent with LLMs, research remains active creating new and better benchmarks for model evaluation \cite{bugliarello2023measuring}.
 
 Corpus quality also has an impact on model performance. Larger training corpora generally improve the quality of the derived embeddings, since the increased amount of data ideally adds more context to be processed. GloVe embeddings are trained on various training corpora, varying from 1 billion tokens to 42 billion tokens \cite{pennington2014glove}.
 
 Besides the amount or size of the training corpora, the type of documents is also important; training solely on works of fiction would lead to different embeddings than a model trained on non-fiction, and so on.
 % It is important to consider the meaning you are trying to capture (generalized or specific to a field, such as medical documents).
+
+% If we start in-lining appendices, this can be an appendix
 
 \section{Workflow: Creating Word Embeddings}\label{createWordEmbeddings}
 

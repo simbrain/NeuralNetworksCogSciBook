@@ -231,6 +231,7 @@ As the slope parameter is varied, the shape of the sigmoid function changes. Whe
 large or ``steep'', the sigmoid will begin to look like the threshold function. When the slope is near $0$, it will begin to look more like a linear function.\footnote{When training neural networks, the slope parameter is not generally modified. However, changes to the weights attaching to a sigmoid are trained, and these are effectively equivalent to the slope parameter. Thus, with training, a sigmoid neuron can come to behave more or less like a threshold or linear function.}
 
 \section{Non-local activation functions}\label{wta_softmax_section}
+% Ditch the non-local concept and remove refs to neurongroups? Not that important here
 
 The activation functions we have discussed thus far are local in the sense of being computable based on information available at the neuron, by way of its connections to other neurons. However, in some cases a neuron's activation can only be computed based on the state of other neurons in a group.\footnote{This is not biologically realistic, since a real neuron can only do things based on information available to it locally, but these functions often have useful formal and mathematical properties, and can in some cases be justified as valid simplifications or approximations of network activity.} These are often called ``layers'', as in a type of node layer. In Simbrain this is represented by drawing a border around the neurons (these structures are called neuron groups in Simbrain), as in figure \ref{wta_softmax}.
 
@@ -255,6 +256,7 @@ This obviously requires considering every neuron in the group, even if they are 
 
 % Refs
 Another well-known example of a non-local activation function is the \glossary{softmax} activation function, which is often used for classification tasks. It converts the weighted inputs to a group of nodes into a probability distribution over those nodes--that is, a set of values all of which are between 0 and 1 which sum to 1.   These activations are often interpreted as probabilities associated with a group of class labels. For example if a softmax layer of a network trained to recognize visual inputs has nodes for cat, dog, and raccoon, then the softmax activations might be .05, .9, and .05, indicating a 5\% probability that the input pattern represents a cat, a 90\% probability that it represents a dog, and a 5\% that it represents a raccoon.
+% Try this to get a feel for the exponential: https://www.wolframalpha.com/input?i=exp%28x%29%2C+exp%28x%2F2%29+and+exp%28x%2F.2%29+for+-2+to+2
 
 The formula for softmax is this:
 \begin{equation*}
@@ -269,7 +271,7 @@ The exponentiation step increases the influence of larger input values, producin
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.5]{./images/exponentialFunction.png}
-\caption[Jeff Yoshimi using Wolfram Alpha.]{The exponential function from -5 to 5. As can be seen, negative and smaller values are more or less flattened to being near 0, but positive values grow rapidly and are in a sense accentuated.}
+\caption[Jeff Yoshimi using Wolfram Alpha.]{The exponential function from -5 to 5. As can be seen, negative values and small positive values are close to 0, but positive values grow rapidly.}
 \label{exponentiation}
 \end{figure}
 

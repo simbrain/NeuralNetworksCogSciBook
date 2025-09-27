@@ -1,6 +1,8 @@
 \chapter{Convolutional Neural Networks}\label{ch_cnn}
 \chapterauthor{Jeff Yoshimi, Pierre Beckmann}{.7,.3}
 
+% Need glossary entry for volume
+
 % Discuss resnet and the importance of skip connections and the residual stream idea of ch_transformers, and the linear algebra flow diagram section.  It originates in resnet and the idea was that layers don't have to entirely rewrite the representation of the input at each layer — it can refine it, add small changes, correct errors, or compute "residuals."  Also point forward to this in intro chapter.  Without residuals: each layer must produce an entirely new, fully transformed representation of the data. With residuals each layer "starts from" the previous representation and just computes a delta.This  "residual connection" idea entered deep learning through the famous ResNet paper by He et al. (2015/2016), Deep Residual Learning for Image Recognition (CVPR 2016).  Also this is a  way to address vanishing gradient problems.   REFS: intro (skip connections), recurrent supervised (vanishing gradient), linear algebra (residual stream) and transformers
 
 % LeNet as the first major historical example of a CNN. Also introduced pooling. But check this, and coordinate with history chapter.

@@ -19,11 +19,8 @@ Linear algebra also facilitates a powerful geometric framework for \emph{visuali
 mathematical systems that turn out to be extremely useful for describing the 
 structure and dynamics of neural networks. A \glossary{vector space} is a 
 collection of objects called \glossary{vectors} along with mathematical 
-operations that we can perform with the vectors.\footnote{You may have heard 
-that vectors are geometric objects that have a magnitude and a direction. You 
-may have seen them represented by an arrow or directed line segment. These 
-different points of view on vectors supplement rather than contradict each 
-other.}  For instance, we can add two vectors together to get another vector. There is also a type of 
+operations that we can perform with the vectors.\footnote{Vectors can be treated as geometric objects that have a magnitude and a direction, which can be represented by an arrow or directed line segment from a head to a tail.  On this conception, the origin of a space is usually the head and the point associated with a vector is its tail.  These different points of view on vectors supplement rather than contradict each 
+other. }\label{headTail}  For instance, we can add two vectors together to get another vector. There is also a type of 
 multiplication that can be performed between a vector and a \glossary{scalar}. The term ``scalar'' is used for those numbers that are allowed to be 
 multiplied with a vector. We will focus on the case where scalars are real numbers, like $2$, $-1.2$, or $5.9$. If the scalars are the set of real numbers, then the 
 vector space is called a {\em real vector space}. We will only work with real
@@ -47,8 +44,8 @@ For example, here are four vectors:
    We sometimes adopt the convention of writing vectors using bold-faced 
 lower-case letters, for example $\mathbf{a}_i$ for a  vector of input values, 
 $\mathbf{t}$ for a vector of target values, or $\mathbf{a}_4$ for the 
-activation vector in the fourth node-layer of a feed-forward network.  By 
-contrast non bold-faced, italic lower-case letters are usually reserved for 
+activation vector in the fourth node-layer of a feed-forward network. By 
+contrast, non bold-faced, italic lower-case letters are usually reserved for 
 components of vectors, and the subscript indicates which component. For 
 example, $a_2$ could designate the second component of an activation vector 
 $\mathbf{a}$.
@@ -308,15 +305,18 @@ There are many different methods for projecting data from high dimensional space
 
 \section{The Dot Product}\label{dotProduct}
 
+% See https://www.geogebra.org/m/Yu6869By
+% dot product of a and b is norm or length of a times length of projection or shadow of on b
+% cosine similarity is the exact same but we've normalize both vectors
 Various operations can be performed with vectors and matrices. Some of the more basic operations like addition, subtraction, and several types of multiplication (and ways of visualizing these operations) are described in the appendices. In this section and the next few we describe operations that can be used to compare vectors.
 
    The \glossary{dot product} is a simple but important function defined for 
 pairs of vectors in a vector space.\footnote{The dot product is a member 
-of a more general class of functions known as ``inner products''.  They are 
+of a more general class of functions known as ``inner products''. They are 
 used to specify geometric relationships between vectors.}  The dot product is a function of two 
 vectors that have the same 
 number of components. The dot product gets its name from the fact it is represented by 
-a large dot: $\bullet$.  It is also common to say that we are ``dotting'' one 
+a large dot: $\bullet$. It is also common to say that we are ``dotting'' one 
 vector with another.\footnote{A useful interactive visualization of the dot 
 product is available at \url{http://www.falstad.com/dotproduct/}.}
 \begin{figure}[h]
@@ -328,7 +328,7 @@ The dot product can be used to compute the weighted inputs to node 4.}
 \end{figure}
 
    The dot product is computed by multiplying each of the corresponding 
-components of a pair of vectors, and summing the resulting products.  For 
+components of a pair of vectors, and summing the resulting products. For 
 example
 \begin{eqnarray*}
 &(1,2,3)  \bullet  (4,5,6)& = \quad 1 \cdot 4 \,+\, 2 \cdot 5 \,+\, 3 \cdot 6 
@@ -342,10 +342,10 @@ example
 \end{eqnarray*}
 
    Clearly the product of any vector with the zero vector (the vector whose
-components are all $0$) is $0$.  However, the dot product of two non-zero 
-vectors can also be $0$.  When the dot product of two non-zero vectors is $0$ 
+components are all $0$) is $0$. However, the dot product of two non-zero 
+vectors can also be $0$. When the dot product of two non-zero vectors is $0$ 
 then we say the vectors are \glossary{orthogonal} (perpendicular) to each 
-other.  It might be hard to tell right away that the vectors $(2,-1,1,-3,1,1)$,
+other. It might be hard to tell right away that the vectors $(2,-1,1,-3,1,1)$,
 and $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation 
 shows us that it is true:
 \begin{eqnarray*}
@@ -355,10 +355,10 @@ shows us that it is true:
 % high dimensional spaces.
 
    Notice that we can concisely represent the weighted input (see chapter 
-\extref{ch_act_functions}) to a node using the dot product.  The weighted input 
+\extref{ch_act_functions}) to a node using the dot product. The weighted input 
 is just the dot product of the activation vector with the fan-in weight vector 
-of the output node, plus a bias term.  An example is shown in figure 
-\ref{F:simplelabelled}.  The activation vector for nodes $1$, $2$, and $3$ is 
+of the output node, plus a bias term. An example is shown in figure 
+\ref{F:simplelabelled}. The activation vector for nodes $1$, $2$, and $3$ is 
 $(\; -1,\; -4,\; 5)$ and the weight vector for node $4$ is $(-1,-1,1)$ so the 
 net-input to node $4$ is:
 \begin{equation*}
@@ -370,17 +370,17 @@ n_4 = (\; -1,\; -4,\; 5) \bullet (-1,-1,1) + 0  = 1 + 4 + 5 + 0 = 10
    A vector space can have a metric, which is a function that returns the 
 distance between any two points in the vector space. The usual metric for a 
 real vector space is the Euclidean metric, which can be expressed in terms of 
-the dot product.  The Euclidean metric for a vector space relies on the concept of a \glossary{norm}, so we begin by defining it.
+the dot product. The Euclidean metric for a vector space relies on the concept of a \glossary{norm}, so we begin by defining it.
 
 The vector norm is denoted by double bars $|| \cdot ||$, which measures the ``length'' or 
-``magnitude'' of a vector.  Specifically, the norm of a vector $\mathbf{x}$ is 
+``magnitude'' of a vector. Specifically, the norm of a vector $\mathbf{x}$ is 
 the square root of the dot product of the vector with itself: $||\mathbf{x}|| = 
 \sqrt{\mathbf{x} \bullet \mathbf{x}}$. For example, the norm of $(-3,4)$ is $\sqrt{(-3,4) \bullet (-3,4)}  = \sqrt{(-3)^2+4^2} = 5$ and the norm 
-of $(2,5)$ is $ \sqrt{(2,5) \bullet (2,5)} = \sqrt{2^2+5^2} =  \sqrt{29} \approx 5.385$.  These vectors are 
-shown in the left panel of Fig. \ref{metricfig}.   
+of $(2,5)$ is $ \sqrt{(2,5) \bullet (2,5)} = \sqrt{2^2+5^2} =  \sqrt{29} \approx 5.385$. These vectors are 
+shown in the left panel of Fig. \ref{metricfig}. 
 
 % TODO: Pictures? 
-The process of normalizing a vector (see chapter \extref{ch_data_science}) involves rescaling it so that its norm is 1.  When all the vectors in a set of a vectors are normalized, they all lie on a hypersphere, and the main information they carry is the direction they point in.
+The process of normalizing a vector (see chapter \extref{ch_data_science}) involves rescaling it so that its norm is 1. When all the vectors in a set of a vectors are normalized, they all lie on a hypersphere, and the main information they carry is the direction they point in.
 
 % We are doing the same thing, taking the norm, but this time for the difference vector. See appendix
 Using the norm we can define the distance between any pair of vectors  as the Euclidean distance is the norm of the difference between them (vector subtraction is defined in the appendix, but basically just involves subtracting corresponding components. 
@@ -401,7 +401,7 @@ most commonly used metric is the Euclidean metric.
 
 For example, to compute the distance between $(-3,4)$ and $(2,5)$ we first compute the difference between them, 
 $(-3 -2,  4- 5) = (-5,-1)$ which is shown in the right 
-panel of Fig. \ref{metricfig}.  We then take the norm of this difference, which is $ \sqrt{ (-5,-1) \bullet  (-5,-1)}  = \sqrt{(-5)^2+(-1)^2} 
+panel of Fig. \ref{metricfig}. We then take the norm of this difference, which is $ \sqrt{ (-5,-1) \bullet  (-5,-1)}  = \sqrt{(-5)^2+(-1)^2} 
 = \sqrt{26} \approx 5.099$.
 
 \begin{figure}[h]
@@ -410,8 +410,8 @@ panel of Fig. \ref{metricfig}.  We then take the norm of this difference, which 
 \qquad
 \includegraphics[scale=1.55]{./images/dist.pdf}
 \caption{(left) The norm of $(-3,4)$ is $5$ and the norm of $(2,5)$ is 
-$\sqrt{29} \approx 5.385$.  (right) The vector $(-5,-1)$ is shown with its tail at the head 
-of $(2,5)$ and its head at the head of $(-3,4)$.  The norm of $(-5,-1)$ is 
+$\sqrt{29} \approx 5.385$. (right) The vector $(-5,-1)$ is shown with its tail at the head 
+of $(2,5)$ and its head at the head of $(-3,4)$. The norm of $(-5,-1)$ is 
 $\sqrt{26}$.}
 \label{metricfig}
 \end{figure}
@@ -419,21 +419,21 @@ $\sqrt{26}$.}
    The upshot of this is that we can interpret the vector spaces associated 
 with neural networks--activation spaces, input spaces, weight spaces, etc.--as 
 giving us a sense of how far apart relevant vectors are, and thus how similar 
-the states the vectors represent are to each other.  Points nearby one another 
+the states the vectors represent are to each other. Points nearby one another 
 in an input space correspond to similar inputs: similar smells, similar visual 
 inputs, similar words relative to a word embedding (chapter 
-\extref{ch_word_embeddings}), etc. (see Fig. \ref{nearfar}).  Points nearby one 
-another in a weight space are similar configurations of weights.  These 
+\extref{ch_word_embeddings}), etc. (see Fig. \ref{nearfar}). Points nearby one 
+another in a weight space are similar configurations of weights. These 
 interpretations are often emphasized in analyses of neural networks (for 
 example, see chapter \extref{ch_representations}), and in fact the spaces 
-associated with neural networks are sometimes called ``similarity spaces''.  An 
+associated with neural networks are sometimes called ``similarity spaces''. An 
 example which illustrates the importance of this way of thinking is figure 
 \extref{competitiveInputSpace}.
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=1.55]{./images/Nearfar.pdf}
-\caption{Two sets of four points in $\real^2$ are enclosed by a dotted curve.  
+\caption{Two sets of four points in $\real^2$ are enclosed by a dotted curve. 
 The Euclidean distances between the points within each group are small in 
 comparison to the Euclidean distance between the two sets of points.}
 \label{nearfar}
@@ -447,12 +447,12 @@ When considering normalized vectors (that lie on a unit hypersphere) the dot pro
 
 The dot product and Euclidean distance can be used to give us a sense of
 how close or far apart two vectors (such as input vectors, activation vectors, 
-\emph{etc}.) are to each other.  There are other ways to compare vectors, including cosine similarity,
+\emph{etc}.) are to each other. There are other ways to compare vectors, including cosine similarity,
 correlation and covariance, which we discuss in this section.
 
    One way to compare vectors is to begin by normalizing the two vectors (that is, we divide each
-of the vectors by their Euclidean norm to get two vectors with unit norm; see 
-section \ref{metricSpace}).  We then dot the normalized vectors with each 
+of the vectors by their norm to get two vectors with unit norm; see 
+section \ref{metricSpace}). We then dot the normalized vectors with each 
 other.
 \begin{equation}\label{E:cossim}
 \cos(\theta) = 
@@ -461,19 +461,19 @@ other.
 \frac{\mathbf{u} \bullet \mathbf{v}}{|| \mathbf{u}||  \cdot 
 ||\mathbf{v}||}
 \end{equation}
-This normalized dot product is known as \glossary{cosine similarity}.  It is a 
+This normalized dot product is known as \glossary{cosine similarity}. It is a 
 commonly used measure of similarity that is independent of the vector's 
-magnitude.  The number $\theta$ is the angle between $\mathbf{u}$ and 
-$\mathbf{v}$.  The cosine of the angle between the vectors tells us the extent 
-to which the vectors point in the same direction.  The cosine similarity of two 
-vectors can be any number in the interval $[-1, 1]$.  If the vectors point in 
+magnitude. The number $\theta$ is the angle between $\mathbf{u}$ and 
+$\mathbf{v}$. The cosine of the angle between the vectors tells us the extent 
+to which the vectors point in the same direction. The cosine similarity of two 
+vectors can be any number in the interval $[-1, 1]$. If the vectors point in 
 exactly the same direction then the angle between them is $0$ and their cosine 
-similarity $1$.  If the vectors are orthogonal to each other then the angle 
-between them is $90^o$ and their cosine similarity is $0$.  If the vectors 
+similarity $1$. If the vectors are orthogonal to each other then the angle 
+between them is $90^o$ and their cosine similarity is $0$. If the vectors 
 point in directly opposite directions then the angle between them is $180^o$ 
 and their cosine similarity is $-1$.\footnote{In some implementations the
-quantity is bounded between $[0,1]$.  Occasionally, cosine distance is used, 
-which is $1 - \cos(\theta)$.  In this case nearly proportional vectors 
+quantity is bounded between $[0,1]$. Occasionally, cosine distance is used, 
+which is $1 - \cos(\theta)$. In this case nearly proportional vectors 
 will have a cosine distance of nearly 0, while very dissimilar vectors will 
 have a cosine distance of about 1.}
 
@@ -487,13 +487,13 @@ using the right side of equation \eqref{E:cossim}.
 processing, especially in applications such as document similarity and 
 information retrieval (see chapter \extref{ch_word_embeddings}). This is 
 because it can compare the direction of two high-dimensional vectors independently
-of their magnitude.  
+of their magnitude. 
 % In a sense it captures similarity in content rather than  length or scale.
 % Last point should be front-loaded a bit?
 
-   Two other measures that can be used to compare vectors are \textbf{covariance} and \textbf{correlation}. While dot product and cosine similarity are often used to compare activation vectors and input vectors in neural networks, covariance and correlation are more often used to compare sequences of values for two variables, for example, values in two columns of a table of input data.  Recall from chapter \extref{ch_data_science} that tables 
+   Two other measures that can be used to compare vectors are \textbf{covariance} and \textbf{correlation}. While dot product and cosine similarity are often used to compare activation vectors and input vectors in neural networks, covariance and correlation are more often used to compare sequences of values for two variables, for example, values in two columns of a table of input data. Recall from chapter \extref{ch_data_science} that tables 
 are commonly used in neural networks and the columns often describe some
-features of interest.  Any table can be associated with a set of points in two ways, either by focusing on the rows, or on the columns. The practical point being made here is that our first two vector comparison methods are more row-based, and the second two are more column based. Consider this table of data.
+features of interest. Any table can be associated with a set of points in two ways, either by focusing on the rows, or on the columns. The practical point being made here is that our first two vector comparison methods are more row-based, and the second two are more column based. Consider this table of data.
 \begin{center}
 \begin{tabular}{ccc}
 \textbf{Individual} & \textbf{Height (ft)} & \textbf{Weight (lb)} \\
@@ -506,12 +506,12 @@ features of interest.  Any table can be associated with a set of points in two w
 \end{tabular}
 \end{center}
 From the more row-oriented perspective, the five rows of  the table are coordinates of five points in $\real^2$. (From a column-oriented perspective the two columns of the table are coordinates of two  points in $\real^5$, though things are rarely presented that way) In neural network contexts, we frequently focus on the rows, for example considering pairs of input vectors or 
-activation vectors to assess their similarity.  Often the dot product or cosine 
+activation vectors to assess their similarity. Often the dot product or cosine 
 similarity are used to see if they point in the same direction in an input 
-space or activation space.  Often we have many rows and thus many points to 
-think about, a cloud points in an abstract space.  By contrast, when computing 
-covariance or correlation, we typically work with the \emph{columns} comparing features like weight and height using correlation or covariation.  Or, if we have many columns with many features, we might compute 
-multiple correlations or covariances.  So in a sense dot product and cosine 
+space or activation space. Often we have many rows and thus many points to 
+think about, a cloud points in an abstract space. By contrast, when computing 
+covariance or correlation, we typically work with the \emph{columns} comparing features like weight and height using correlation or covariation. Or, if we have many columns with many features, we might compute 
+multiple correlations or covariances. So in a sense dot product and cosine 
 similarity are more row oriented, and correlation and covariance are more 
 column oriented.
 
@@ -519,24 +519,24 @@ column oriented.
 % Integrate this: There are two main ways to think geometrically about the numbers in this table. One way is to let the ordered pairs of heights and weight in the five rows of  the table be the coordinates of five points in $\real^2$. 
    
 Covariance and correlation measure how 
-closely the values for two variables vary together about each of their respective means.  
+closely the values for two variables vary together about each of their respective means. 
 If, at each moment in time, the variables are usually either both above or both 
 below their mean values then we say the variables are \emph{positively correlated}
-with each other.  When the variables are positively correlated and we see that
+with each other. When the variables are positively correlated and we see that
 the value for one of them is above average then the value for the other 
-variable is probably also above average.  On the other hand if both variables 
+variable is probably also above average. On the other hand if both variables 
 are usually on opposite sides of their mean values then we say the variables 
-are \emph{negatively correlated} with each other.  When the variables are negatively 
+are \emph{negatively correlated} with each other. When the variables are negatively 
 correlated and we see that the value for one of them is above average then the 
-value for the other variable is probably below average.  If the variables are
+value for the other variable is probably below average. If the variables are
 neither positively or negatively correlated then we say they are \emph{uncorrelated}.
 
-   Covariance and correlation have exact mathematical expressions.  Let $x$ and 
-$y$ stand for the two variables.  A value for each of the variables can be 
+   Covariance and correlation have exact mathematical expressions. Let $x$ and 
+$y$ stand for the two variables. A value for each of the variables can be 
 obtained at each moment in time by making a measurement or by sampling from a 
-large population.  However we obtain values for $x$ and $y$, we get two 
+large population. However we obtain values for $x$ and $y$, we get two 
 sequences of values for these two variables. This is called the 
-\emph{raw data} for the variables.  The two sequences of values for the 
+\emph{raw data} for the variables. The two sequences of values for the 
 variables can be expressed as vectors:
 
 \begin{equation}
@@ -544,8 +544,8 @@ variables can be expressed as vectors:
 \mathbf{y} = (y_1, \dots, y_n)
 \end{equation}
 To compute the covariance of $\mathbf{x}$ and $\mathbf{y}$ we first subtract 
-the mean value of each vector from its components.  We let $\mu_x$ be the 
-mean of $\mathbf{x}$ and $\mu_y$ be the mean of $\mathbf{y}$.  This gives 
+the mean value of each vector from its components. We let $\mu_x$ be the 
+mean of $\mathbf{x}$ and $\mu_y$ be the mean of $\mathbf{y}$. This gives 
 us two vectors whose components are called the \emph{centered data} for the 
 variables.
 \begin{eqnarray}
@@ -561,9 +561,9 @@ by $n$.\footnote{Sometimes $n-1$ is used instead of $n$.}
 \end{equation}
 
    The Pearson correlation coefficient is obtained from the covariance using
-the standard deviations of the variables.  The standard deviation, like the 
-mean, is a statistic intended to describe the raw data.  It describes how 
-spread out the raw data is.  The standard deviation for $x$ and $y$ are defined
+the standard deviations of the variables. The standard deviation, like the 
+mean, is a statistic intended to describe the raw data. It describes how 
+spread out the raw data is. The standard deviation for $x$ and $y$ are defined
 as:
 \begin{equation}
     \sigma_x = \sqrt{ \frac{1}{n} \sum_{j=1}^n (x_j - \mu_x)^2} = \sqrt{ \frac{\widetilde{\mathbf{x}} \bullet \widetilde{\mathbf{x}}}{n}}
@@ -597,35 +597,35 @@ into the right had side of equation \eqref{E:corrdef}.
        {||\widetilde{\mathbf{x}}|| \cdot ||\widetilde{\mathbf{y}}||} 
 \end{equation}
 So we can see that the Pearson correlation coefficient of the raw data is the
-same as the cosine similarity of the centered data.  It is a number in 
-$[-1,1]$.  
+same as the cosine similarity of the centered data. It is a number in 
+$[-1,1]$. 
 
     Geometrically, the centered data $\widetilde{\mathbf{x}}$ and 
 $\widetilde{\mathbf{y}}$, are the orthogonal projections of the raw data 
 $\mathbf{x}$ and $\mathbf{y}$ to the subspace orthogonal to the vector 
-$(1, \dots, 1)$.  This subspace has dimension $n - 1$.  This projection 
+$(1, \dots, 1)$. This subspace has dimension $n - 1$. This projection 
 never increases the angle between $\mathbf{x}$ and $\mathbf{y}$ but it can 
-decrease angle between them.  In a sense, there are fewer ways they can point 
+decrease angle between them. In a sense, there are fewer ways they can point 
 away from each other when we reduce the number of dimensions by $1$. 
 
 %   The vectors $\mathbf{x}$ and $\mathbf{y}$ can represent different physical 
 %quantities whose numerical value depends on the choice of units of measure.
 %By centering the data before computing the cosine similarity we avoid spurious 
-%differences introduced by the units of measure.  For example, suppose we are 
-%measuring the germination time of seeds as a function of temperature.  If we 
+%differences introduced by the units of measure. For example, suppose we are 
+%measuring the germination time of seeds as a function of temperature. If we 
 %measure temperature in Celsius and time in seconds, we will obtain a different 
 %numerical value for the cosine similarity of the raw data than if we measure 
-%time in hours.  The value of the Pearson correlation coefficient 
+%time in hours. The value of the Pearson correlation coefficient 
 %remains the same regardless of such changes in the unit of measure (as does the cosine similarity), whereas the
 %value for the dot product and covariance can change when the units of measure are changed.
 % Dimensionless. 
 % Pearson is a measure of colinearity, cosine similarity is more same direction
 
    These four measures—dot product, cosine similarity, covariance, and 
-correlation—are closely related.  They all associate pairs of vectors with 
-scalars.  They can be distinguished by whether they center the vectors (by 
+correlation—are closely related. They all associate pairs of vectors with 
+scalars. They can be distinguished by whether they center the vectors (by 
 subtracting the mean) and /or scale them (by dividing by the 
-``spread'' of the data) before comparison.  The dot product operates on the raw
+``spread'' of the data) before comparison. The dot product operates on the raw
 data directly, while the other three measure transform the raw data in 
 different ways to facilitate comparisons between data with different means or 
 overall scales.
@@ -697,7 +697,7 @@ values. Here is an example of a matrix:
 \]
 It is conventional to describe matrices by stating the number of rows and 
 columns they have, in that order. The example above is a $4 \times 3$ 
-matrix because it has 4 rows and 3 columns.\footnote{The notation for vectors typically includes a comma-separated list of the vector's components. The notation for matrices typically does contain not commas. A  matrix's components are only aligned into rows and columns without any extra characters to separate them. Otherwise we think of vectors as special cases of matrices. A vector with $n$ components can be represented as either a $1 \times n$ matrix or as an $n \times 1$ matrix. So far we have been representing vectors as $1 \times n$ matrices.} This is also called the \glossary{shape} of a matrix.  Each row of a matrix is called a \glossary{row vector} and each column is called a \glossary{column vector}. The matrix above has four row vectors and 
+matrix because it has 4 rows and 3 columns.\footnote{The notation for vectors typically includes a comma-separated list of the vector's components. The notation for matrices typically does contain not commas. A  matrix's components are only aligned into rows and columns without any extra characters to separate them. Otherwise we think of vectors as special cases of matrices. A vector with $n$ components can be represented as either a $1 \times n$ matrix or as an $n \times 1$ matrix. So far we have been representing vectors as $1 \times n$ matrices.} This is also called the \glossary{shape} of a matrix (a more formal definition of shape is given in the discussion of tensors below). Each row of a matrix is called a \glossary{row vector} and each column is called a \glossary{column vector}. The matrix above has four row vectors and 
 three column vectors.\footnote{Note that vectors  are matrices and matrices are vectors!  As already noted, vectors are a special kind of a matrix, 
 a matrix with one row or one column. Conversely, matrices are technically a 
 kind of vector, since they satisfy the formal definition of a vector (they 
@@ -716,7 +716,7 @@ We adopt the convention of writing matrices using bold-faced upper-case letters,
 
 % Put a bit of emphasis on how they are the processing elements, more so than the activations being processed 
 
-Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix.  This ``source-target'' representation is one of several ways to represent weights with matrices (the other ``target-source' way is discussed in the next section).
+Matrices are often used to represent the weights of a network. This facilitates a compact way of describing many of the computations involved in updating a neural network. The weights of a neural network can be represented by a matrix by labeling the rows and columns of a neural network with indices $1,\dots,n$ for rows, and $1,\dots,m$ for columns. Then we can represent the strength of a weight from node $j$ to node $k$ as the value in the $j^{th}$ row and $k^{th}$ column of a weight matrix. This ``source-target'' representation is one of several ways to represent weights with matrices (the other ``target-source' way is discussed in the next section).
 
 We first consider weight layers in feedforward networks. Each weight layer of a feedforward network can be represented by its own weight matrix $\textbf{W}_{i,j}$ where $i$ is the source node layer and $j$ is the target layer. For example, $\textbf{W}_{1,2}$ or $\textbf{W}_{input,hidden}$ is the matrix connecting the input node layer to the hidden node layer on the left of figure \ref{labelledNets}. That weight matrix is also shown in the table below (left), where the column and row headings are shown in bold text and match the node labels in \ref{labelledNets}. Notice that there are as many rows as input neurons and as many columns as hidden layer neurons, consistently with the source-target format (in fact you can think of the inputs as entering the table on the left and existing on the top; see figure \ref{sourceTargetConvention}). For example, the weight $w_{2,4}$ from node 2 in the input layer to node 4 in the weight layer is in the row labeled 2 and the column labeled 4: -1. On the right is a more standard matrix representation of $\textbf{W}_{1,2}$.
 
@@ -749,7 +749,7 @@ We first consider weight layers in feedforward networks. Each weight layer of a 
 
 As an exercise, see if you can produce the weight matrix representation for $\textbf{W}_{2,3}$ or $\textbf{W}_{hidden,output}$. Hint: it has 3 rows and 2 columns. 
 
-We will see below that an activation vector can be multiplied (in a sense to be defined) by a weight matrix to produce a new activation vector. That is our primary mental model for weight matrices: they transform activations. Sometimes the weight matrix transforms a vector from a lower-dimensional space to a higher-dimensional space. This is sometimes called an \glossary{upward projection} or ``up projection''.  In our example above, $\textbf{W}_{input, hidden}$ is an upward projection: it takes a vector in a 2-dimensional input space and produces another vector in a 3-dimensional hidden unit space. Sometimes a weight matrix  transforms a vector from a higher-dimensional space to a lower-dimensional space. This is sometimes called an \glossary{downward projection} or ``down projection''.\footnote{Or discussion of dimensionality reduction in section \ref{S:dimred} dealt with downward projections which maintain mathematical structure, and in fact neural networks with their downward-projecting weight matrices are one way to implement dimensionality reduction techniques.} $\textbf{W}_{hidden, input}$ is an example of an downward-projecting weight matrix: it takes a vector in a 3-dimensional hidden-unit space and produces another vector in a 2-dimensional output space.  Both cases involve non-square matrices.  A square matrix, such as $2 \times 2$ matrix, takes a vector and produces another vector in the same vector space. This is a very useful case, because we can think of the weight matrices as transforming vectors within the same space. It is what happens with recurrent networks, discussed next, but can also happen with feed-forward networks. For example, if we consider the network as a whole that combines  $\textbf{W}_{input, hidden}$ and  $\textbf{W}_{hidden, output}$, it transforms vectors in the same space. This is roughly what happens in the residual stream of a transformer (see the discussion of ``flow diagrams'' in section \ref{flowDiagrams}). 
+We will see below that an activation vector can be multiplied (in a sense to be defined) by a weight matrix to produce a new activation vector. That is our primary mental model for weight matrices: they transform activations. Sometimes the weight matrix transforms a vector from a lower-dimensional space to a higher-dimensional space. This is sometimes called an \glossary{upward projection} or ``up projection''. In our example above, $\textbf{W}_{input, hidden}$ is an upward projection: it takes a vector in a 2-dimensional input space and produces another vector in a 3-dimensional hidden unit space. Sometimes a weight matrix  transforms a vector from a higher-dimensional space to a lower-dimensional space. This is sometimes called an \glossary{downward projection} or ``down projection''.\footnote{Or discussion of dimensionality reduction in section \ref{S:dimred} dealt with downward projections which maintain mathematical structure, and in fact neural networks with their downward-projecting weight matrices are one way to implement dimensionality reduction techniques.} $\textbf{W}_{hidden, input}$ is an example of an downward-projecting weight matrix: it takes a vector in a 3-dimensional hidden-unit space and produces another vector in a 2-dimensional output space. Both cases involve non-square matrices. A square matrix, such as $2 \times 2$ matrix, takes a vector and produces another vector in the same vector space. This is a very useful case, because we can think of the weight matrices as transforming vectors within the same space. It is what happens with recurrent networks, discussed next, but can also happen with feed-forward networks. For example, if we consider the network as a whole that combines  $\textbf{W}_{input, hidden}$ and  $\textbf{W}_{hidden, output}$, it transforms vectors in the same space. This is roughly what happens in the residual stream of a transformer (see the discussion of ``flow diagrams'' in section \ref{flowDiagrams}). 
 
 We now consider the recurrent case, starting with the recurrent network shown in figure \ref{labelledNets}. Here the source and target neurons are the same and so the weight matrix, which we can call $\textbf{W}_{recurrent}$, is square: it has as many rows as columns. To fill it out we follow the same procedure, going from source label to target label and finding the corresponding entry. For example, $w_{1,2}$ is the weight from node 1 to 2, and is thus in the first row, second column of the matrix. Confirm the values match up:
 
@@ -824,7 +824,7 @@ Figure \ref{sparseRecurrent} shows another example, that shows what we do when s
 \noindent Now let's check your understanding: there are 4 nodes and thus the matrix is 4-by-4. There are two positive weights and two negative weights, and there are two positive entries and two negative entries in the table. Node 4 is self-connected and the fourth diagonal entry is non-zero. Nodes 1 and 4 have two weights in their fan-in and those two columns have two entries.
 
 % Change refs below to refs to the table
-In the special case where most of the entries in a weight matrix are $0$, the matrix is called a \glossary{sparse matrix}. The matrix representing the weights in figure \ref{sparseRecurrent} is sparse. A sparse matrix is contrasted with dense matrix, where most of the entries are non-zero. Really these are two ends of a continuum described by a number called \glossary{sparsity}, which ranges from $0$ to $1$, and where higher values are more sparse. The sparsity of a matrix is obtained by counting how many zero entries the matrix has and dividing by the total number of entries. If all of the matrix entries are $0$ then the sparsity of the matrix is $1$. If half of the entries are $0$ then the sparsity is $.5$.  If none of the matrix entries are $0$ then the sparsity of the matrix is $0$. The matrix in the table above has $16$ entries, $12$ of which are $0$, so its sparsity is $12/16 = 3/4 = .75$. Sparse weight matrices represent sparsely connected networks, where only a few of the possible connections between relevant nodes exist (recall that a matrix representation of a network uses $0$ to represent the absence of a connection).  Dense matrices are used to represent densely connected networks. The word ``dense connection'' or ``dense weight layer'' in this context often implies a sparsity of $0$, that is, an ``all-to-all'' or ``fully connected'' set of weights between relevant nodes.
+In the special case where most of the entries in a weight matrix are $0$, the matrix is called a \glossary{sparse matrix}. The matrix representing the weights in figure \ref{sparseRecurrent} is sparse. A sparse matrix is contrasted with dense matrix, where most of the entries are non-zero. Really these are two ends of a continuum described by a number called \glossary{sparsity}, which ranges from $0$ to $1$, and where higher values are more sparse. The sparsity of a matrix is obtained by counting how many zero entries the matrix has and dividing by the total number of entries. If all of the matrix entries are $0$ then the sparsity of the matrix is $1$. If half of the entries are $0$ then the sparsity is $.5$. If none of the matrix entries are $0$ then the sparsity of the matrix is $0$. The matrix in the table above has $16$ entries, $12$ of which are $0$, so its sparsity is $12/16 = 3/4 = .75$. Sparse weight matrices represent sparsely connected networks, where only a few of the possible connections between relevant nodes exist (recall that a matrix representation of a network uses $0$ to represent the absence of a connection). Dense matrices are used to represent densely connected networks. The word ``dense connection'' or ``dense weight layer'' in this context often implies a sparsity of $0$, that is, an ``all-to-all'' or ``fully connected'' set of weights between relevant nodes.
 % Think about whether some clarification about feed-forward and recurrent weight layers is needed
 
 \section{Graphical Conventions}\label{sourceTarget} 
@@ -836,36 +836,38 @@ In the special case where most of the entries in a weight matrix are $0$, the ma
 % To get to the next belt level, you have to deal with this kind of thing, and so train your brain to deal with it.
 % Note there are other reps too, like the points in a space rep.
 
-Before defining the matrix product, we need a graphical way to think about it. We need to bridge between the ball-and-stick models we have been using (where it is very easy to imagine activations flowing from node to node) to representations of weight matrices and activation vectors.  The matrix product, or matrix multiplication (and its generalization, the tensor product) is at the heart of a great deal of the mathematics of neural networks. However, it is not an easy operation to master, because various entries of a pair of matrices must be held in memory, multiplied and added, and then ``written out'' in a specific way. It's quite easy to lose track.  Moreover, we'd like to stay within the visual framework of Simbrain and find ways to quickly and intuitively understand what is going on. 
+Before defining the matrix product, we need a graphical way to think about it. We need to bridge between the ball-and-stick models we have been using (where it is very easy to imagine activations flowing from node to node) to representations of weight matrices and activation vectors. The matrix product, or matrix multiplication (and its generalization, the tensor product) is at the heart of a great deal of the mathematics of neural networks. However, it is not an easy operation to master, because various entries of a pair of matrices must be held in memory, multiplied and added, and then ``written out'' in a specific way. It's quite easy to lose track. Moreover, we'd like to stay within the visual framework of Simbrain and find ways to quickly and intuitively understand what is going on. 
 
 % We also call this a  $\textbf{W}_{i, j}$ rep vs a  $\textbf{W}_{j,i}$.
-In the discussion of matrices (section \ref{weightMatrices}) we noted that there are multiple ways to represent a weight matrix. For most of the book, we default to a ``source-target'' representation, but a target-source representation is also possible, and in many contexts is more common. In a ``source-target'' representation, a weight $w_{i, j}$ is a weight from source neuron $i$ to target neuron $j$. In the corresponding matrix, rows are associated with source neurons and columns are associated with target neurons. This kind of indexing is easy and natural to think about. By contrast, a ``target-source'' format is one where we swap indices so that weight $w_{j, i}$ is the weight to the target neuron $j$ from the source neuron $i$.  In the corresponding matrix, rows are associated with target neurons and columns are associated with source neurons. This seems backwards, but for certain matrix operations is more natural and more compact to write, and so it is commonly used.\footnote{There is some disciplinary variance on which representation to use. According to Wikipedia, ``The [source-target] definition is commonly used in graph theory and social network analysis (e.g., sociology, political science, economics, psychology). The [target-vector representation] is more common in other applied sciences (e.g., dynamical systems, physics, network science) where A is sometimes used to describe linear dynamics on graphs'' \url{https://en.wikipedia.org/wiki/Adjacency_matrix\#Directed_graphs}.}
+In the discussion of matrices (section \ref{weightMatrices}) we noted that there are multiple ways to represent a weight matrix. For most of the book, we default to a ``source-target'' representation, but a target-source representation is also possible, and in many contexts is more common. In a ``source-target'' representation, a weight $w_{i, j}$ is a weight from source neuron $i$ to target neuron $j$. In the corresponding matrix, rows are associated with source neurons and columns are associated with target neurons. This kind of indexing is easy and natural to think about. By contrast, a ``target-source'' format is one where we swap indices so that weight $w_{j, i}$ is the weight to the target neuron $j$ from the source neuron $i$. In the corresponding matrix, rows are associated with target neurons and columns are associated with source neurons. This seems backwards, but for certain matrix operations is more natural and more compact to write, and so it is commonly used.\footnote{There is some disciplinary variance on which representation to use. According to Wikipedia, ``The [source-target] definition is commonly used in graph theory and social network analysis (e.g., sociology, political science, economics, psychology). The [target-vector representation] is more common in other applied sciences (e.g., dynamical systems, physics, network science) where A is sometimes used to describe linear dynamics on graphs'' \url{https://en.wikipedia.org/wiki/Adjacency_matrix\#Directed_graphs}.}
 % Yet another option is (from, to) vs (to, from). 
 
-In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention.  A particular set of flow lines is shown, which corresponds to a forward pass through a layer, where inputs are transformed into outputs. This in turn corresponds to one kind of matrix multiplication, depending on the case. In section \ref{matrixProduct1}, we distinguish right and left multiplication. A forward pass through a source-target representation is a right multiplication (the matrix is on the right), while a forward pass through a target-source representation is a left multiplication (the matrix is on the left).  But in each case information can also flow \emph{backwards}, which is what happens in backprop (chapter \extref{ch_lms_backprop}; think of errors flowing in the direction opposite to the flowlines), using the other other kind of multiplication.\footnote{A backwards pass through a source-target representation is a left multiplication (the matrix is on the left), while a forward pass through a target-source representation is a right multiplication (the matrix is on the right).}
+In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention. A particular set of flow lines is shown, which corresponds to a forward pass through a layer, where inputs are transformed into outputs. This in turn corresponds to one kind of matrix multiplication, depending on the case. In section \ref{matrixProduct1}, we distinguish right and left multiplication. A forward pass through a source-target representation is a right multiplication (the matrix is on the right), while a forward pass through a target-source representation is a left multiplication (the matrix is on the left). But in each case information can also flow \emph{backwards}, which is what happens in backprop (chapter \extref{ch_lms_backprop}; think of errors flowing in the direction opposite to the flowlines), using the other other kind of multiplication.\footnote{A backwards pass through a source-target representation is a left multiplication (the matrix is on the left), while a forward pass through a target-source representation is a right multiplication (the matrix is on the right).}
 
 \subsection{Source-target graphical conventions}
 
    Figure \ref{sourceTargetConvention} shows how to think of a matrix in 
-source-target format as channeling information.  A standard neural network representation is shown in
-the left panel.  The number of rows of the matrix, $m$, corresponds to the 
+source-target format as channeling information. A standard neural network representation is shown in
+the left panel. The number of rows of the matrix, $m$, corresponds to the 
 number of inputs, and the number of columns, $n$, corresponds to the number of 
-outputs.  In this example, there are 2 inputs and 3 outputs, $m=2$ and $n=3$, 
-so we get a $2 \times 3$ matrix.  In the middle panel of figure 
+outputs. In this example, there are 2 inputs and 3 outputs, $m=2$ and $n=3$, 
+so we get a $2 \times 3$ matrix. In the middle panel of figure 
 \ref{sourceTargetConvention} a schematic of the matrix is shown with gray nodes 
 for matrix entries equal to $0$ and red nodes for matrix entries equal to $1$.
-The flow goes from the input on the left to the nodes on the right.  This is 
+The flow goes from the input on the left to the nodes on the right. This is 
 naturally represented by multiplying a row vector times a matrix on its right,
-as shown in the right panel of figure \ref{sourceTargetConvention}.  
+as shown in the right panel of figure \ref{sourceTargetConvention}. 
+
+% In either representation it is useful to focus on the fan-in weight vectors, which are what get dotted with input activations to produce outputs.  In a source-target representation, then fan-in weight vectors are the columns of the weight matrix. These get successively dotted with input vectors to produce the output vector.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.75\textwidth]{images/sourceTarget.png}
-\caption[Jeff Yoshimi.]{Graphical model for thinking about a matrix multiplication using a source-target representation. We think of the vectors as entering the matrix on the left, being multiplied and added, and exiting up top. (Left) a standard neural network representation.  (Right) The actual matrix multiplication this process corresponds to.  (Center) How to conceptualize activation flowing through the matrix in this case. }
+\caption[Jeff Yoshimi.]{Graphical model for thinking about a matrix multiplication using a source-target representation. Fan-in weight vectors at the output layer correspond to columns of the weight matrix (fan-in weight vectors at the output layer correspond to columns of the weight matrix). We think of the vectors as entering the matrix on the left, being multiplied and added, and exiting up top. (Left) a standard neural network representation. (Right) The actual matrix multiplication this process corresponds to. (Center) How to conceptualize activation flowing through the matrix in this case. }
 \label{sourceTargetConvention}
 \end{figure}
 
-Figure \ref{sourceTargetSimbrain} shows how this looks in Simbrain. You are encouraged to imagine  the input activations being rotated and ``entering'' on the left (in Simbrain, you can also rotate the presentation of the input vector), and then ``exiting'' above.  Depending on how you set things up in Simbrain you will have to imagine the input and output rotating and moving in various ways (in this example, the input must rotate and the output must move over to the right), but in general just mentally think of activations entering on the left and exiting above.
+Figure \ref{sourceTargetSimbrain} shows how this looks in Simbrain. You are encouraged to imagine  the input activations being rotated and ``entering'' on the left (in Simbrain, you can also rotate the presentation of the input vector), and then ``exiting'' above. Depending on how you set things up in Simbrain you will have to imagine the input and output rotating and moving in various ways (in this example, the input must rotate and the output must move over to the right), but in general just mentally think of activations entering on the left and exiting above.
 
 \begin{figure}[h]
 \centering
@@ -876,12 +878,15 @@ Figure \ref{sourceTargetSimbrain} shows how this looks in Simbrain. You are enco
 
 \subsection{Target-source graphical conventions}
 
-Figure \ref{targetSourceConvention} shows how to think of a matrix in target-source format as channeling information.  We can think of the number of rows $m$ as corresponding to the number of outputs, and the number of columns $n$ as corresponding to the number of inputs. This is the exact same situation as above, but the different order of the indices creates a different shape for the matrix, and so we  think about things in this alternative way.  
+Figure \ref{targetSourceConvention} shows how to think of a matrix in target-source format as channeling information. We can think of the number of rows $m$ as corresponding to the number of outputs, and the number of columns $n$ as corresponding to the number of inputs. This is the exact same situation as above, but the different order of the indices creates a different shape for the matrix, and so we  think about things in this alternative way. 
+
+% In a target-source representation, the fan-in weight vectors are the rows of the weight matrix. These get successively dotted with input vectors to produce the output vector.
+
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.75\textwidth]{images/targetSource.png}
-\caption[Jeff Yoshimi.]{Graphical model for thinking about a weight matrix using a target-source representation. We think of the vectors as entering the matrix from below, being multiplied and added, and exiting to the right.  (Left) a standard neural network representation.  (Right) The actual matrix multiplication this process corresponds to.  (Center) How to conceptualize activation flowing through the matrix in this case. }
+\caption[Jeff Yoshimi.]{Graphical model for thinking about a weight matrix using a target-source representation.  Fan-in weight vectors at the output layer correspond to rows of the weight matrix (fan-out weight vectors at the input layer correspond to columns of the weight matrix). We think of the vectors as entering the matrix from below, being multiplied and added, and exiting to the right. (Left) a standard neural network representation. (Right) The actual matrix multiplication this process corresponds to. (Center) How to conceptualize activation flowing through the matrix in this case. }
 \label{targetSourceConvention}
 \end{figure}
 
@@ -893,18 +898,20 @@ Figure \ref{targetSourceSimbrain} shows how this configuration looks in Simbrain
 \caption[Jeff Yoshimi.]{Using a target-source representation in Simbrain. We think of the vectors as entering the matrix from below and exiting to the right.}
 \label{targetSourceSimbrain}
 \end{figure}
+% Move some of that to main text? And what really is best? We can think of it as literally rising up, which is how the bridge representation works.
+% One graphical issue here is that the default representation of node layers in Simbrain is using what look like row vectors. They are column vectors in the code, and there is a context menu command that can be used to make these column vectors graphically as well. However, it is useful to be able to interpret this kind of display as it is shown here.
 
 \section{Matrix Multiplication (Part 1)}\label{matrixProduct1}
 
 In this section we begin a discussion of matrix multiplication, where two matrices are multiplied by one another. There is nothing fundamentally difficult about this operation: it is just a combination of multiplying and adding entries, but the details can be tricky. There are established conventions for which things to multiply and add together, and they can be hard to remember. However, being able to do these computations is a crucial skill in neural networks, given how pervasive they are. 
 
-We start with the case where one of the matrices is a vector (recall that vectors are a kind of matrix, where there is either a single row or a single column).  This case is, luckily, can be used to understand all the more complicated cases. Later, when we consider matrices or tensors being transformed, we can think of collections of vectors being processed one at a time.
+We start with the case where one of the matrices is a vector (recall that vectors are a kind of matrix, where there is either a single row or a single column). This case is, luckily, can be used to understand all the more complicated cases. Later, when we consider matrices or tensors being transformed, we can think of collections of vectors being processed one at a time.
 
-When a matrix is multiplied by a column vector it is called left multiplication by the matrix (because the matrix is on the left). When a row vector is multiplied by a matrix it is called right multiplication by the matrix (because the matrix is on the right). In the first case of $\mathbf{A}v$ we go from matrix and column vector to a new column vector. In the second case of $v\mathbf{A}$ we go from a row vector and a matrix to a new row vector.  The first case ``processes'' an input column into a transformed output column. The second case processes an input row vector into a transformed column row (this concept of ``processing'' will be important below). These cases are good to start with because they show the basic mechanics of the operations, which is to take a vector, and ``scan'' it over the matrix in a certain way, taking dot products as you do, which are then ``written out'' to an output vector.  
+When a matrix is multiplied by a column vector it is called left multiplication by the matrix (because the matrix is on the left). When a row vector is multiplied by a matrix it is called right multiplication by the matrix (because the matrix is on the right). In the first case of $\mathbf{A}v$ we go from matrix and column vector to a new column vector. In the second case of $v\mathbf{A}$ we go from a row vector and a matrix to a new row vector. The first case ``processes'' an input column into a transformed output column. The second case processes an input row vector into a transformed column row (this concept of ``processing'' will be important below). These cases are good to start with because they show the basic mechanics of the operations, which is to take a vector, and ``scan'' it over the matrix in a certain way, taking dot products as you do, which are then ``written out'' to an output vector. 
 
-Even though left multiplication by a matrix is a bit more common in math, we start with right multiplication because it is a more natural starting place with the source-target graphical structure we've been emphasizing.  With a source-target scheme a  ``forward pass'' in a feed-forward network corresponds to an activation vector being right-multiplied by a weight matrix, and a backward pass (as in backprop) corresponds to an error vector being left-multiplied by the same weight matrix. (In a target-source scheme this is reversed. A forward pass correspond to left multiplication and a backward pass corresponds to right multiplication).
+Even though left multiplication by a matrix is a bit more common in math, we start with right multiplication because it is a more natural starting place with the source-target graphical structure we've been emphasizing. With a source-target scheme a  ``forward pass'' in a feed-forward network corresponds to an activation vector being right-multiplied by a weight matrix, and a backward pass (as in backprop) corresponds to an error vector being left-multiplied by the same weight matrix. (In a target-source scheme this is reversed. A forward pass correspond to left multiplication and a backward pass corresponds to right multiplication).
 
-With right multiplication we start with a row vector and multiply it by a matrix on the right. We take the dot product of the row vector and the first column vector in the matrix (see figure \ref{vectorMatrixProduct}). The resulting number is the first component of a row vector. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix.  In a sense we have transformed one row vector into another. The matrix represents the transformation, the row vector on the left is the input, and the row vector on the right is the output.\footnote{The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.}
+With right multiplication we start with a row vector and multiply it by a matrix on the right. We take the dot product of the row vector and the first column vector in the matrix (see figure \ref{vectorMatrixProduct}). The resulting number is the first component of a row vector. Then do this for each of the remaining columns of the matrix, adding these dot products to the row vector as you go. The resulting row vector is the matrix product of a row vector and a matrix. Intuitively, it is like you are writing out the matrix product, one number at a time, by dotting the vector on the right with each of the columns of the weight matrix. In a sense we have transformed one row vector into another. The matrix represents the transformation, the row vector on the left is the input, and the row vector on the right is the output.\footnote{The idea that a matrix represents a way of transforming vectors is common in mathematics. In fact, matrices are often used to represent linear transformations, where one vector is converted in to another using a linear function. Think of a set of points in the plane (vectors in a 2 dimensional space) getting moved in some specific way. The way these points move can be represented, in some cases, by multiplying each point by a matrix. For example, when you use a drawing program to modify a simple line graphic (a bunch of points in a plane) the transformation of the selected set of points is implemented using matrix multiplication. Rotations about the origin, reflections about a line through the origin, and dilations and contractions about the origin are linear transformations.}
 % Move this up
 
 \begin{figure}[h]
@@ -927,7 +934,7 @@ Here's the example from figure \ref{vectorMatrixProduct} worked out:
 
 So in this case row vectors are transformed into row vectors. This approach is less common in math, perhaps because it takes more space to write out. However, we will see a variant on this approach is quite common when we deal with larger matrix products.
 
-The same example can also be represented by a right multiplication, where we transpose the matrix (see appendix for a definition of transpose). With left multiplication  a matrix on the left is multiplied by a column vector to produce a new column vector. We can think of the matrix as ``operating'' on the vector. Figure \ref{matrixVectorProduct} shows how to perform the operation. Take the column vector and dot it with the first row to produce a the first entry in the output column vector. Then scan down the rows the write out the result.  In a sense we have transformed the vector. The matrix represents the transformation, the vector on the right of the matrix is the input, and the vector after the equals sign is the output (the analogy to neural networks should be clear).
+The same example can also be represented by a right multiplication, where we transpose the matrix (see appendix for a definition of transpose). With left multiplication  a matrix on the left is multiplied by a column vector to produce a new column vector. We can think of the matrix as ``operating'' on the vector. Figure \ref{matrixVectorProduct} shows how to perform the operation. Take the column vector and dot it with the first row to produce a the first entry in the output column vector. Then scan down the rows the write out the result. In a sense we have transformed the vector. The matrix represents the transformation, the vector on the right of the matrix is the input, and the vector after the equals sign is the output (the analogy to neural networks should be clear).
 
 \begin{figure}[h]
 \centering
@@ -968,7 +975,7 @@ So we have seen that the very same operation can be represented in two equivalen
 
 % We will introduce some graphical conventions here. There will be variants on them throughout the book.
 
-In this section we apply the ideas above, focus on the case of a row vector times a matrix.\footnote{This matches the source-target format for representing fan-in weight vectors (see section \ref{sourceTarget}) which we have chosen for convenience in much of this book.} In this way we produce a new output vector. Each of these dot products is a weighted input (see chapter \extref{ch_act_functions}). Assuming a default unbounded linear activation function, this can be used to represent weight propagation. We consider the feed-forward case first, then the recurrent case.
+In this section we apply the ideas above, focus on the case of a row vector times a matrix.\footnote{This matches the source-target format for representing fan-in weight vectors (see section \ref{sourceTarget}) which we have chosen for convenience in much of this book.} In this way we produce a new output vector. Each of these dot products is a weighted input (see chapter \extref{ch_act_functions}). Assuming a default unbounded linear activation function, this can be used to represent propagation of activation through weights. We consider the feed-forward case first, then the recurrent case.
 
 Consider the feed-forward network in figure \ref{labelledNets}, which uses linear activation functions without bias (we are also ignoring clipping) so that node activations just are weighted inputs. That is, we multiply the input vector by the intervening weight matrix to obtain the hidden unit vector:  $\textbf{a}_{hidden} = \textbf{a}_{input} \textbf{W}_{input,hidden}$. We can then multiply the hidden unit vector by the hidden-to-output layer weight matrix to get the output vector. We can continue to do this for all the layers of a feed-forward network. So, for linear networks, pretty much all we do when updating the network is use matrix products (and even for non-linear networks, we use the matrix product to compute vectors of weighted inputs, which are then transformed by, for example, sigmoid functions).
 
@@ -1016,7 +1023,7 @@ You can easily set this up in Simbrain and confirm this is what happens. We will
 
 % This is awesome but fork it and do it my way: http://matrixmultiplication.xyz/
 
-We now consider arbitrary matrix multiplications, rather than cases where one of the matrices is a vector. That is, we consider how to multiply one matrix by another matrix.  However, we make use of mental models we developed in the matrix/vector case.
+We now consider arbitrary matrix multiplications, rather than cases where one of the matrices is a vector. That is, we consider how to multiply one matrix by another matrix. However, we make use of mental models we developed in the matrix/vector case.
 
 Consider a matrix multiplication 
 \begin{align*}
@@ -1045,7 +1052,7 @@ new columns and that right multiplication by a matrix transforms rows to new
 rows. In the more general case, it turns out the row to row perspective is 
 helpful and perhaps more common in some discussions. 
 
-We will start with the ``row processing'' respective. Here we view $\mathbf{A}$ in  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as a stack of row vectors which we peel off one by one and right multiply by $\mathbf{B}$ to build up $\mathbf{C}$.\footnote{Alternatively, we can think of this as taking linear combinations of the rows of $\mathbf{B}$, which is another useful perspective.} This idea of taking a stack of rows and pushing them through a matrix to get another stack of rows is common with batch processing and in understanding how representations ``move'' through a transformer.\footnote{See \url{ https://e2eml.school/transformers.html}.} Figure \ref{rowPerspective} shows the idea abstractly. We peel off the rows of $\mathbf{A}$ and right multiply them by the matrix $\mathbf{B}$ as described in section \ref{matrixProduct1}. Notice that the result is another collection of rows in $\mathbf{C}$, with as many rows as were in $\mathbf{A}$, where we think of each row as being the matrix transformation of that row by $\mathbf{B}$.  We basically repeat multiple row-vector-times-matrix multiplications to build up the output, and think of each row of $\mathbf{A}$ as being processed by $\mathbf{B}$:
+We will start with the ``row processing'' respective. Here we view $\mathbf{A}$ in  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as a stack of row vectors which we peel off one by one and right multiply by $\mathbf{B}$ to build up $\mathbf{C}$.\footnote{Alternatively, we can think of this as taking linear combinations of the rows of $\mathbf{B}$, which is another useful perspective.} This idea of taking a stack of rows and pushing them through a matrix to get another stack of rows is common with batch processing and in understanding how representations ``move'' through a transformer.\footnote{See \url{ https://e2eml.school/transformers.html}.} Figure \ref{rowPerspective} shows the idea abstractly. We peel off the rows of $\mathbf{A}$ and right multiply them by the matrix $\mathbf{B}$ as described in section \ref{matrixProduct1}. Notice that the result is another collection of rows in $\mathbf{C}$, with as many rows as were in $\mathbf{A}$, where we think of each row as being the matrix transformation of that row by $\mathbf{B}$. We basically repeat multiple row-vector-times-matrix multiplications to build up the output, and think of each row of $\mathbf{A}$ as being processed by $\mathbf{B}$:
 % This will be crucial in the discussions of transformers in chapter \extref{ch_transformers}. 
 
 \begin{align*}
@@ -1069,7 +1076,7 @@ We will start with the ``row processing'' respective. Here we view $\mathbf{A}$ 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5\textwidth]{images/rowPerspective.png}
-\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``row processing''.  The rows of the left matrix $\mathbf{A}$ are taken one by one, and multiplied by matrix $\mathbf{B}$  on the right, using the methods of the section above on right multiplication.  This is done for each row (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a stack of rows, each of which has been processed by $\mathbf{B}$.}
+\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``row processing''. The rows of the left matrix $\mathbf{A}$ are taken one by one, and multiplied by matrix $\mathbf{B}$  on the right, using the methods of the section above on right multiplication. This is done for each row (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a stack of rows, each of which has been processed by $\mathbf{B}$.}
 \label{rowPerspective}
 \end{figure} 
 
@@ -1093,28 +1100,30 @@ We can also take a column perspective on generic matrix multiplications, treatin
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.6\textwidth]{images/columnPerspective.png}
-\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``column processing''.  The columns of the right matrix $\mathbf{B}$ are taken one by one, and multiplied by matrix $\mathbf{A}$  on the left, using the methods of the section above on left multiplication.  This is done for each column (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a file of columns, each of which has been processed by $\mathbf{A}$.}
+\caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``column processing''. The columns of the right matrix $\mathbf{B}$ are taken one by one, and multiplied by matrix $\mathbf{A}$  on the left, using the methods of the section above on left multiplication. This is done for each column (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a file of columns, each of which has been processed by $\mathbf{A}$.}
 \label{columnPerspective}
 \end{figure} 
 
-\section{Flow Diagrams}\label{flowDiagrams}
+\section{Flow Diagrams }\label{flowDiagrams}
 
-   We saw in the last section that a matrix multiplication where we think of the left matrix as a stack of rows can be thought of as transforming each row by the matrix on the right.  The output matrix has the same number of rows as the input matrix, and the input matrix on the right is like a processor which transforms each row of the input matrix on the left (again, we can also do this from a column perspective, but rows are more common in the relevant contexts and so we focus on them). 
+ We saw in the last section that a matrix multiplication where we think of the left matrix as a stack of rows can be thought of as transforming each row by the matrix on the right. The output matrix has the same number of rows as the input matrix, and the input matrix on the right is like a processor which transforms each row of the input matrix on the left (again, we can also do this from a column perspective, but rows are more common in the relevant contexts and so we focus on them). 
 
-This sets up a kind of diagram that we will sometimes use in later chapters, one where we only show the ``processing'' matrices and other transformations, and assume that stacks of rows (or other more complicated structures, like tensors, discussed next) are being processed by those weight matrices and other other mathematical operations. What we have called ``node layers'' are not shown.  One might call these flow diagrams, tensor flow diagrams, or activation processing diagrams. There is no settled terminology to our knowledge, but this way of viewing things has become standard in the literature.
+This sets up a kind of diagram that we will sometimes use in later chapters, one where we only show the ``processing'' matrices and other transformations, and assume that stacks of rows (or other more complicated structures, like tensors, discussed next) are being processed by those weight matrices and other other mathematical operations. What we have called ``node layers'' are not shown. One might call these flow diagrams, tensor flow diagrams, or activation processing diagrams. There is no settled terminology to our knowledge, but this way of viewing things has become standard in the literature.
 
-Figure \ref{flowPerspective} shows the idea. In the left panel, a matrix is shown as a stack of rows being processed by two weight matrices $\mathbf{M1}$ and $\mathbf{M2}$. This could represent a two-weight-layer feed-forward network. Notice that it's the same kind of network we talk about elsewhere in the book, but conceptualized as processing stacks of activation vectors, rather than individual activation vectors. Also note the shape of the stacks of vectors changes between the two matrices ($\mathbf{M1}$ is a downward projection; $\mathbf{M2}$ is an upward projection), but that the number of rows stays the same. Also notice that the bottom two rows remain zeros throughout, because when they are multiplied by the matrices they stay zero. 
+Figure \ref{flowPerspective} shows the idea. In the left panel, a matrix is shown as a stack of rows being processed by two weight matrices $\mathbf{UP}$ and $\mathbf{DOWN}$. This represents a standard two-weight-layer feed-forward network; a multi-layer perceptron or \glossary{MLP}. Notice that it's the same kind of network we talk about elsewhere in the book, but with some differences.  
 
-Also shown is an arrow from the input to the output, representing a skip connection or residual connection. This implies that the input matrix is added to the output matrix. Addition of matrices (and other tensors, as discussed below) is defined when their shape stays the same. 
+First, we are not showing node layers at all, but are showing stacks of activation vectors.  Notice that the shape of the stacks of vectors changes between the two matrices ($\mathbf{UP}$ is an upward projection; $\mathbf{DOWN}$ is an downward projection), but that the number of rows stays the same. The bottom two rows remain zeros throughout, because when they are multiplied by the matrices they stay zero. 
+
+Second, note the arrow straight from the input to the output, representing a  \glossary{skip connection} or residual connection. This means that the input matrix is added to the output matrix during update. Addition of matrices (and other tensors, as discussed below) is defined when their shape stays the same. Notice that rather than showing the a straight vertical stack of weights and activations as we usually do with a feed-forward network, and showing the skip connection off to the side (which makes the idea of ``skipping'' a layer intuitive), we move the hidden layer activations off to the side. This allows us to focus on the skip connection as the main processing stream of the network--what is often called the \glossary{residual stream}--and to conceptualize the MLP as something that reads from and writes back to that stream.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.3\textwidth]{images/flowPerspective.png}
-\caption[Jeff Yoshimi.]{(Left panel) Two matrices are used to process a matrix input conceptualized as a stack of rows. Even though it is a standard network, it can process matrices because of the features of matrix multiplication discussed above. In this example there is also a skip or residual connection from the input to the output, which assumes that the input and output matrices have the same shape, even if the hidden layer activations have a different shape. (Right panel) The entire diagram can be reduced to a simpler diagram in which only the flow of activations is shown. Here the combined result of the two matrices is being reduced to a single box labeled  $\mathbf{T}$. }
+\includegraphics[width=0.35\textwidth]{images/flowPerspective.png}
+\caption[Jeff Yoshimi.]{(Left panel) Two matrices are used to process a matrix input conceptualized as a stack of rows. Even though it is a standard network, it can process matrices because of the features of matrix multiplication discussed above. In this example there is also a skip or residual connection from the input to the output, which assumes that the input and output matrices have the same shape, even if the hidden layer activations have a different shape. (Right panel) The entire diagram can be reduced to a simpler diagram in which only the flow of activations is shown. Here the combined result of the two matrices is being reduced to a single box labeled  $\mathbf{MLP}$. }
 \label{flowPerspective}
 \end{figure} 
 
-Overall we think of the matrices shown in bold ($\mathbf{M1}$ and $\mathbf{M2}$) as doing the processing (mainly weight matrices and related structures in this book), and of the other matrices as being processed (mainly representing stacks of activation vectors in this book).  This facilitates another kind of diagram, where we don't show the stacks of activation vectors, but only the processing elements, sometimes collapsing several processing layers into one box.  This is shown in the right panel of figure \ref{flowPerspective}. In this diagram the skip connection is shown as a straight line up--what is sometimes called a ``residual stream'', with the detour into a few layers of feed-forward processing shown by a box labeled $\mathbf{T}$. It's as if the matrices ``read'' from the main line of activations then ``writes'' back to it. In this way we can have many different operations of reading to and writing from a residual stream. This will be important in the discussion of transformers and their mechanistic interpretation.
+Overall we think of the matrices shown in bold ($\mathbf{UP}$ and $\mathbf{DOWN}$) as doing the processing, and of the other matrices or ``stacks of vectors'' as what is being being processed. This facilitates the diagram in the right panel of figure  \ref{flowPerspective}, where we don't show the stacks of activation vectors, but only the processing elements. It's as if the MLP ``reads'' from the main line of activations then ``writes'' back to it. In this way we can have many different operations of reading to and writing from a residual stream. This will be important in the discussion of transformers and their mechanistic interpretation.
 % Citations
 % All components of a transformer (the token embedding, attention heads, MLP layers, and unembedding) communicate with each other by reading and writing to different subspaces of the residual stream. Rather than analyze the residual stream vectors, it can be helpful to decompose the residual stream into all these different communication channels, corresponding to paths through the model. > \cite{elhage2021mathematical}
 
@@ -1122,19 +1131,19 @@ Overall we think of the matrices shown in bold ($\mathbf{M1}$ and $\mathbf{M2}$)
 
 % https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks
 
-A \glossary{tensor} is a generalization of the concept of a vector that encompasses numbers, arrays of numbers, matrices (2d arrays of numbers), arrays of matrices, arrays of these arrays, etc. These more complex structures are increasingly common since the time of the deep learning revolution (section \extref{deep_revolution}). The basic idea is not just to work with vectors and matrices, but also sets of matrices and even sets of sets of matrices. These have special nomenclature like ``volume''. In this section we cover the basics.
+A \glossary{tensor} is a generalization of the concept of a vector that encompasses numbers, arrays of numbers, matrices (2d arrays of numbers), arrays of matrices, arrays of these arrays, etc. These more complex structures are increasingly common since the time of the deep learning revolution (section \extref{deep_revolution}). The basic idea is not just to work with vectors and matrices, but also arrays of matrices and even arrays of arrays of matrices. These have special nomenclature like ``volume''. In this section we cover the basics.
 
 % TODO: Glossary items for textbfs
-% Array vs. set.  Array implies ordering. Comp sci version of tuple.
+% Array vs. set. Array implies ordering. Comp sci version of tuple.
 % Tensor is more math language. Ndarray is more from languages like numpy and torch
-The \textbf{rank} of a  tensor is the number of indices required to specify an entry in it.These are also sometimes called ``n-dimensional arrays'' or ``n-d arrays'' (1d array, 2d array, etc.).\footnote{Note that the dimensionality of an array is the literal dimension of the object, like a vector is 1d and a matrix is 2d. This is not the same as the dimensionality of the space these objects live in. For example, $(1,2,1,0)$ is a point in a 4d space, but it is a 1d tensor or 1d array of numbers.} The \textbf{shape} of a tensor is the number of components it has along each of the array's dimensions. We have seen this with matrices, where the shape is stated in terms of rows and columns, e.g. a $5 \times 2$ matrix. For more complex tensors the shape is specified by a number of components for each dimension of the array, like a $4 \times 2 \times 5$ volume. Here are the main types of tensor:
+The \textbf{rank} of a  tensor is the number of indices required to specify an entry in it.These are also sometimes called ``n-dimensional arrays'' or ``n-d arrays'' (1d array, 2d array, etc.).\footnote{Note that the dimensionality of an array is the literal dimension of the object, like a vector is 1d and a matrix is 2d. This is not the same as the dimensionality of the space these objects live in. For example, $(1,2,1,0)$ is a point in a 4d space, but it is a 1d tensor or 1d array of numbers.}  Another way to describe the rank of a  tensor is in terms of the the number of indices required to specify an entry.  Here are some of the main types of tensor used with neural networks:
 
 \begin{itemize}
 \item A \textbf{scalar} is a rank 0 tensor or 0d array because it requires no indices. The number 42 is a rank 0 tensor, a 0d array, but nobody talks about it that way. 
 \item A \textbf{vector} is a rank 1 tensor or 1d array because it takes one index to specify an entry in a vector, and the result is spread out in one dimension. The vector $(0,1,0)$ is a rank 1 tensor, because it takes one index to specify entries, but people usually just call it a vector. Vectors were discussed in much of this chapter, starting in section \ref{sect_vector}.
 \item A \textbf{matrix} is a rank 2 tensor or 2d array, because it takes two numbers to specify an entry (a row and column index), and the result is spread out in two dimensions. We've seen lots of examples of matrices in this chapter, and they were discussed in section \ref{sect_matrices}.
-\item A \textbf{volume} is an array of matrices. It is a rank 3 tensor or 3d array, because it takes 3 indices to specify an entry, and the result is spread out in three dimensions. The term ``volume'' is common but not completely standard, but is intuitive so we adopt it here. It can be visualized as a stack of matrices, or as a solid, something like a Rubik's cube or 3d chess board (see figure \ref{tensorVisualStyles}). A common use of volumes is to represent images, which requires several channels of 2d information, several ``copies'' of a pixel array. For example, an RGB color image that is 28 rows (height) by 28 columns (width) is represented by three matrices (red, green, and blue) of shape $28 \times 28$. Thus the whole image is represented by a tensor with shape $3 \times 28 \times 28$.  These indices are referred to as depth or channel, width, and height. 
-\item A \textbf{batch of volumes} is an array of volumes. It is a rank 4 tensor or 4d array because it takes 4 indices to specify an entry. It is spread out in four dimensions, but since we can't visualize that we can instead visualize a set of volumes, as in the right panel of figure \ref{tensorTypes}. The word ``batch'' is used here because we are often dealing with sets or batches of inputs in a training dataset (see chapter \extref{ch_data_science}), in this case batches of RGB images, each of which is a volume with 3 channels. For example, if the images are $3 \times 28 \times 28$, then the batch of 100 images has shape $100 \times 3 \times 28 \times 28$. 
+\item A \textbf{volume} is an array of matrices. It is a rank 3 tensor or 3d array, because it takes 3 indices to specify an entry, and the result is spread out in three dimensions. The term ``volume'' is common but not completely standard, but is intuitive so we adopt it here. It can be visualized as a stack of matrices, or as a solid, something like a Rubik's cube or 3d chess board (see figure \ref{tensorVisualStyles}). A common use of volumes is to represent images, which requires several channels of 2d information, several ``copies'' of a pixel array. For example, an RGB color image that is 28 rows (height) by 28 columns (width) is represented by three matrices (red, green, and blue) of shape $28 \times 28$. Thus the whole image is represented by a tensor with shape $3 \times 28 \times 28$. These indices are referred to as depth or channel, width, and height. 
+\item A \textbf{batch of volumes} is an array of volumes. It is a rank 4 tensor or 4d array because it takes 4 indices to specify an entry. A set of RGB images is an example. We can visualize a 4d array as a set of volumes, as in the right panel of figure \ref{tensorTypes}. The word ``batch'' is used here because we are often dealing with sets or batches of inputs in a training dataset (see chapter \extref{ch_data_science}), in this case batches of RGB images, each of which is a volume with 3 channels. For example, if the images are $3 \times 28 \times 28$, then the batch of 100 images has shape $100 \times 3 \times 28 \times 28$. 
 \end{itemize}
 
  % Rank 5 tensor examples: batch size x time steps x height x width x channels. Brain scan. Each brain scan is 3d and it's color so there are channels. So a batch of those.
@@ -1144,7 +1153,7 @@ Examples of each of these types of tensor are shown in figure \ref{tensorTypes}.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.6]{./images/tensorTypes.png}
-\caption[Soraya Boza.]{Schematic of different types of tensor. From left to right: a scalar, a vector, a matrix, a volume, and a batch of volumes. It can be seen that they are 0d, 1d, 2d, 3d and 4d arrays.  Numbers are not drawn in; only the abstract shape of the tensors are shown.} 
+\caption[Soraya Boza.]{Schematic of different types of tensor. From left to right: a scalar, a vector, a matrix, a volume, and a batch of volumes. It can be seen that they are 0d, 1d, 2d, 3d and 4d arrays, or rank 0, 1, 2, 3, and 4 tensors. Numbers are not drawn in; only the abstract shape of the tensors are shown.} 
 \label{tensorTypes}
 \end{figure}
 
@@ -1155,7 +1164,8 @@ Examples of each of these types of tensor are shown in figure \ref{tensorTypes}.
 \label{tensorVisualStyles}
 \end{figure}
 
-We can refer to the different indices for a tensor using standardized names in a standard order: batch size, depth (number of channels), height, and width.\footnote{This is sometimes called NCHW format (number of samples, channels, height, width). However, usage varies. Some put height and width first in indexing; some put them last in indexing. Number of channels is also ``depth'' and number of samples is also ``batch size''. Even though the rank of a tensor is the number of indices \emph{required} to specify an entry, sometimes additional entries are included (e.g. specifying a vector as a column vector assumes it is being placed in a 2d space). Thus the presentation of the ``shape'' of a tensor can vary.  In figure \ref{tensorTypes} the shapes might be given as $1 \times 1$, $6 \times 1$, $6 \times 6$, $3 \times 6 \times 6$, and $3 \times 3 \times 6 \times 6$.}
+We can refer to the different indices for a tensor using standardized names in a standard order: batch size, depth (number of channels), height, and width.\footnote{This is sometimes called NCHW format (number of samples, channels, height, width). However, usage varies. Some put height and width first in indexing; some put them last in indexing. Number of channels is also ``depth'' and number of samples is also ``batch size''. Even though the rank of a tensor is the number of indices \emph{required} to specify an entry, sometimes additional entries are included (e.g. specifying a vector as a column vector assumes it is being placed in a 2d space). Thus the presentation of the ``shape'' of a tensor can vary. In figure \ref{tensorTypes} the shapes might be given as $1 \times 1$, $6 \times 1$, $6 \times 6$, $3 \times 6 \times 6$, and $3 \times 3 \times 6 \times 6$.} The \textbf{shape} of a tensor is an ordered list giving the size along each of the array's dimensions. For example, the shape of a single RGB image that is 25 by 25 pixels is $(3, 25, 25)$: 3 channels (red, green, blue), each with 25 rows and 25 columns. A batch of 100 such images has shape $(100, 3, 25, 25)$. A grayscale image that is 28 by 28 pixels has shape $(1, 28, 28)$, since there is only one channel. A batch of 60,000 grayscale images, like the MNIST dataset of handwritten digits, has shape $(60000, 1, 28, 28)$. A short video clip with 10 frames could be stored as a rank 4 tensor with shape $(10, 3, 64, 64)$. If we had a batch of 20 such clips, we'd have a rank 5 tensor whose shape would be $(20, 10, 3, 64, 64)$.
+
 % Can use all numbers in a shape or not, depending on the context (e.g a library might require a 4 tuple to specify a tensor even if it is a vector, like 1x1x6x5).
 % Much of the work in dealing with neural networks and neural net libraries is taking subsets of these tensors, slicing and indexing them, filtering them, and passing the right shaped thing from one place to another
 
@@ -1164,16 +1174,16 @@ We can refer to the different indices for a tensor using standardized names in a
 % Organize into subsections?
 % Add matrix operations? Like adding and subtracting same-sized matrices
 
-   Vectors are not just lists of numbers.  They are members of \emph{vector 
+   Vectors are not just lists of numbers. They are members of \emph{vector 
 spaces}, which are abstract mathematical spaces that have an addition operation 
 and a scalar multiplication operation, as well as other operations that can be 
-defined in terms of these two operations.  In this appendix we introduce these 
-two basic operations and several others.  We also define subspaces of a vector
+defined in terms of these two operations. In this appendix we introduce these 
+two basic operations and several others. We also define subspaces of a vector
 space.
    
    The addition of two vectors with $n$ components, or \glossary{vector 
-addition}, is simply the component-wise addition of the two vectors.  This is 
-easiest to see by example.  Here are two examples of adding vectors with three 
+addition}, is simply the component-wise addition of the two vectors. This is 
+easiest to see by example. Here are two examples of adding vectors with three 
 components, as row vectors and as column vectors:
 \begin{eqnarray*}
  (\; 0,\; -1,\; 9) + (\; 1,\; 2,\; 4) = (\; 0+1,\; -1+2,\; 9+4) = (1, 1, 13) \\
@@ -1202,28 +1212,28 @@ Here are a few more examples:
 (-1,.5,\sqrt{7}) + (-1,-2,.8) &=& (-2,-1.5,\sqrt{7}+.8)
 \end{eqnarray*}
 If all of the components of a vector are $0$ we call it the \glossary{zero 
-vector}.  Adding the zero vector to any vector leaves it unchanged.
+vector}. Adding the zero vector to any vector leaves it unchanged.
 
    A geometric/physical way to think about vector addition is shown in the left 
-panel of figure \ref{vectorMath}.  The vectors $\mathbf{v}_1$ and 
+panel of figure \ref{vectorMath} (see note \ref{headTail} for more on this way of representing vectors). The vectors $\mathbf{v}_1$ and 
 $\mathbf{v}_2$ are shown in the usual way with their tails positioned at the 
-origin of the vector space.  A copy of $\mathbf{v}_1$, with the same length as 
+origin of the vector space. A copy of $\mathbf{v}_1$, with the same length as 
 $\mathbf{v}_1$ and which points in the same direction as $\mathbf{v}_1$, is 
-positioned with its tail at the head of $\mathbf{v}_2$.  And a copy of 
+positioned with its tail at the head of $\mathbf{v}_2$. And a copy of 
 $\mathbf{v}_2$, with the same length as $\mathbf{v}_2$ and which points in the 
 same direction as $\mathbf{v}_2$, is positioned with its tail at the head of 
-$\mathbf{v}_1$.  The vector $\mathbf{v}_1 + \mathbf{v}_2$ is shown with its 
-tail positioned at the origin.  The head of $\mathbf{v}_1 + \mathbf{v}_2$ is 
+$\mathbf{v}_1$. The vector $\mathbf{v}_1 + \mathbf{v}_2$ is shown with its 
+tail positioned at the origin. The head of $\mathbf{v}_1 + \mathbf{v}_2$ is 
 located where the heads of the copies of $\mathbf{v}_1$ and $\mathbf{v}_2$ 
-meet.  
+meet. 
 
-   This method is often called the ``parallelogram rule''.   The vector 
+   This method is often called the ``parallelogram rule''. The vector 
 $\mathbf{v}_1$ and its copy form one pair of parallel edges of the 
 parallelogram while the vector $\mathbf{v}_2$ and its copy form the other pair 
-of parallel edges of the parallelogram.  The vector with its tail at the origin 
+of parallel edges of the parallelogram. The vector with its tail at the origin 
 and its head at the opposite vertex of the parallelogram is the vector 
-$\mathbf{v}_1 + \mathbf{v}_2$.  It is located along a diagonal of the 
-parallelogram.  
+$\mathbf{v}_1 + \mathbf{v}_2$. It is located along a diagonal of the 
+parallelogram. 
 
 % More needed
 % Vector addition, subtraction, and scalar multiplication can be visualized, as shown in figure \ref{vectorMath}.
@@ -1237,15 +1247,15 @@ parallelogram.
 %\includegraphics[scale=1.2]{./images/VectorDiff.pdf}
 \caption[Scott Hotton]{{\bf Vector addition} (left). The vectors $\mathbf{v}_1$ 
 and $\mathbf{v}_2$ form adjacent edges of a parallelogram with a vertex at the
-origin.  The vertex in the parallelogram opposite from the origin is the 
-vector $\mathbf{v}_1 + \mathbf{v}_2$.  {\bf Vector subtraction} (middle).  The 
+origin. The vertex in the parallelogram opposite from the origin is the 
+vector $\mathbf{v}_1 + \mathbf{v}_2$. {\bf Vector subtraction} (middle). The 
 vectors $\mathbf{v}_1 - \mathbf{v}_2$ and $\mathbf{v}_2$ form adjacent edges of
-a parallelogram with a vertex at the origin.  The vertex of the parallelogram 
-opposite from the origin is the vector $\mathbf{v}_1$.  {\bf Scalar 
-multiplication} (right).  The vector $(3/2)\mathbf{v}_1$ points in the same
-direction as $\mathbf{v}_1$ but is $3/2$ times as long.  The vector 
+a parallelogram with a vertex at the origin. The vertex of the parallelogram 
+opposite from the origin is the vector $\mathbf{v}_1$. {\bf Scalar 
+multiplication} (right). The vector $(3/2)\mathbf{v}_1$ points in the same
+direction as $\mathbf{v}_1$ but is $3/2$ times as long. The vector 
 $-\mathbf{v}_2$ points in the opposite direction from $\mathbf{v}_2$ but
-it has the same length.  The vector $\mathbf{v}_1 - \mathbf{v}_2$ is the
+it has the same length. The vector $\mathbf{v}_1 - \mathbf{v}_2$ is the
 same as $\mathbf{v}_1 + (-\mathbf{v}_2)$ as shown in the middle panel.}
 \label{vectorMath}
 \end{figure}
@@ -1253,8 +1263,8 @@ same as $\mathbf{v}_1 + (-\mathbf{v}_2)$ as shown in the middle panel.}
    In a similar way, \emph{vector subtraction} is the component-wise 
 subtraction of the corresponding components of two vectors.\footnote{Vector 
 subtraction can be defined in terms of vector addition and scalar 
-multiplication.  Thus vector subtraction is not fundamental to the definition 
-of a vector space.  It is nonetheless presented here because it is used in 
+multiplication. Thus vector subtraction is not fundamental to the definition 
+of a vector space. It is nonetheless presented here because it is used in 
 several other places in this book.}  Here are some examples:
 \begin{eqnarray*}
 (1,1,1) - (0,1,0) = (1-0,1-1,1-0) &=& (1,0,1) \\
@@ -1264,26 +1274,26 @@ several other places in this book.}  Here are some examples:
 \end{eqnarray*}
 
    A geometric/physical way to think about vector subtraction is shown in the 
-middle panel of figure \ref{vectorMath}.  When the vector $\mathbf{v}_1 - 
+middle panel of figure \ref{vectorMath}. When the vector $\mathbf{v}_1 - 
 \mathbf{v}_2$ is added to the vector $\mathbf{v}_2$ we get the vector 
-$\mathbf{v}_1$.  So the vectors $\mathbf{v}_1 - \mathbf{v}_2$ and 
+$\mathbf{v}_1$. So the vectors $\mathbf{v}_1 - \mathbf{v}_2$ and 
 $\mathbf{v}_2$ form the adjacent edges of a parallelogram and the vertex opposite
-to the origin is the vector $\mathbf{v}_1$.  A copy of $\mathbf{v}_1 - 
-\mathbf{v}_2$ with its tail at the head of $\mathbf{v}_2$ is also shown.  Its
+to the origin is the vector $\mathbf{v}_1$. A copy of $\mathbf{v}_1 - 
+\mathbf{v}_2$ with its tail at the head of $\mathbf{v}_2$ is also shown. Its
 head meets the head of $\mathbf{v}_1$.
 
    Another operation that can be performed with vectors is ``scalar 
 multiplication''. A \glossary{scalar} is a generic term for the type of
-numbers we choose to work with.  These numbers are called scalars because we 
-can ``rescale'' vectors using scalar multiplication.  Usually we work with real 
-numbers in which case we say our scalars are real numbers.  Sometimes people 
-use complex numbers or something even more exotic for their scalars.  
+numbers we choose to work with. These numbers are called scalars because we 
+can ``rescale'' vectors using scalar multiplication. Usually we work with real 
+numbers in which case we say our scalars are real numbers. Sometimes people 
+use complex numbers or something even more exotic for their scalars. 
 
    The \glossary{scalar multiplication} of a scalar and a vector is obtained by
 multiplying each of the vectors component's by the scalar. Scalar 
 multiplication is usually indicated by placing the scalar followed by the 
 vector right next to it without any intervening symbols (although sometimes a 
-small dot, $\, \cdot\, $, is written between them).  For example scalar 
+small dot, $\, \cdot\, $, is written between them). For example scalar 
 multiplication of the scalar $3$ with the vector $( 1, 2, 4)$ can be written as
 \begin{equation*}
 3(\; 1, \; 2, \; 4) = (\; 3 \cdot 1, \; 3 \cdot 2, \; 3 \cdot 4) 
@@ -1291,10 +1301,10 @@ multiplication of the scalar $3$ with the vector $( 1, 2, 4)$ can be written as
 \end{equation*}
 
    If the scalar is positive then the scalar multiple of a vector points in the 
-same direction.  If the scalar is negative then the scalar multiple of a vector 
-points in the opposite direction.  If the scalar is zero then the scalar 
-multiple of a vector is the zero vector.  This is shown in the right panel of 
-figure \ref{vectorMath}.  
+same direction. If the scalar is negative then the scalar multiple of a vector 
+points in the opposite direction. If the scalar is zero then the scalar 
+multiple of a vector is the zero vector. This is shown in the right panel of 
+figure \ref{vectorMath}. 
 
    The operations of vector addition and scalar multiplication can be combined.
 The result is called a \glossary{linear combination} of vectors. For example
@@ -1306,8 +1316,8 @@ is a linear combination of the vectors $(0,0)$, $(0,1)$, $(1,0)$, and $(1,1)$.
    Scalar multiplication of any vector with the number $0$ is the zero vector.
 The scalar multiple of a vector with the scalar $-1$ gives us the negative
 of the vector. We define \glossary{vector subtraction} of one vector from 
-another as the addition of the vector's negative.  This is shown in the 
-middle panel of figure \ref{vectorMath}.  Subtracting a vector from itself is 
+another as the addition of the vector's negative. This is shown in the 
+middle panel of figure \ref{vectorMath}. Subtracting a vector from itself is 
 the zero vector.
 \begin{eqnarray*}
   (\; 1, \; 2, \; 4) - (\; 1, \; 2, \; 4) = 
@@ -1316,24 +1326,24 @@ the zero vector.
 
    A subset of a vector space that satisfies two conditions:
 \begin{quote}
-(1) The sum of any two vectors in the subset is also in the subset.       \\
+(1) The sum of any two vectors in the subset is also in the subset.   \\
 (2) Every scalar multiple of a vector in the set is also in the subset. 
 \end{quote}
-is called a \glossary{subspace} of the vector space.  This definition allows a 
-vector space to be a subspace of itself.  The subset that consists of just the
-zero vector is a subspace.  We will apply the concept of subspaces to the 
-neural networks in chapter \extref{ch_dst}.  
+is called a \glossary{subspace} of the vector space. This definition allows a 
+vector space to be a subspace of itself. The subset that consists of just the
+zero vector is a subspace. We will apply the concept of subspaces to the 
+neural networks in chapter \extref{ch_dst}. 
 
 % Scott would like to make some revisions around here
    The set of all linear combinations of a set of vectors is called the 
-\glossary{span} of the set of vectors.  The span of a set of vectors forms a 
-subspace.   If the span of a set of vectors is the whole vector space and any
+\glossary{span} of the set of vectors. The span of a set of vectors forms a 
+subspace. If the span of a set of vectors is the whole vector space and any
 proper subset of that set of vectors does not span the whole vector space, then 
-that set of vectors is a \glossary{basis} of the vector space.  There are
+that set of vectors is a \glossary{basis} of the vector space. There are
 many different bases\footnote{``Bases'' is plural for ``basis''.} for a vector 
-space (except when the vector space only contains the zero vector).  Any
-two distinct bases for a vector space must have the same number of members.  
-This number is called the \glossary{dimension} of the vector space.  By
+space (except when the vector space only contains the zero vector). Any
+two distinct bases for a vector space must have the same number of members. 
+This number is called the \glossary{dimension} of the vector space. By
 convention, when the vector space only contains the zero vector its dimension 
 is $0$.
 
@@ -1355,9 +1365,9 @@ without using both $(1,0)$ and $(0,1)$. The set $\{ (1,0), (0,1) \}$ is a basis 
 \begin{eqnarray*}
  (x,y) =(y-x)(1,2) +(2x-y)(1,1)
 \end{eqnarray*}  
-so the set $\{ (1,2), (1,1) \}$ spans the plane.  The second component of every
+so the set $\{ (1,2), (1,1) \}$ spans the plane. The second component of every
 vector in the span of $(1,2)$ is twice the first and the components of every 
-vector in the span of $(1,1)$ are equal to each other.  So we can not write a
+vector in the span of $(1,1)$ are equal to each other. So we can not write a
 vector such as $(2,1) = -(1,2)+3 (1,1)$ without using both $(1,2)$ and $(1,1)$.
 Thus, $\{ (1,2), (1,1) \}$ is also a basis for the plane. 
 
@@ -1381,14 +1391,14 @@ A^T = \begin{pmatrix}
 \]
 
    Its useful to compare the source-target and target-source conventions for 
-matrices using the transpose operation.  If the product of two matrices $A$ and 
+matrices using the transpose operation. If the product of two matrices $A$ and 
 $B$ is defined then the transpose of their product is the reverse product of 
 their transposes:
 \begin{equation*}
        \left(AB\right)^T = B^T A^T                 
 \end{equation*}
 Note that transpose flips row vectors to make them column vectors and flips
-column vectors to make them row vectors.  So if $A$ is an $m \times n$ matrix 
+column vectors to make them row vectors. So if $A$ is an $m \times n$ matrix 
 and $\mathbf{v}$ is a $n \times 1$ column vector then $A^T$ is an $n \times m$
 matrix, $\mathbf{v}^T$ is a $1 \times n$ row vector, and
 \begin{equation*}
