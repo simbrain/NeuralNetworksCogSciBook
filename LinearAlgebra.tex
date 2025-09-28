@@ -8,19 +8,18 @@
 In this chapter, we review some basic concepts of linear algebra with an 
 emphasis on how they can be applied to the study of neural networks. This can be viewed as a transition from the formal structure of single nodes and weights, to the formal structure of \emph{lists} and \emph{tables} of nodes and weights (and something even more general called a ``tensor''). In particular, we consider vectors, matrices, and tensors, which allow us to describe the behavior of groups of nodes and weights in a compact way.
 
-Linear algebra also facilitates a powerful geometric framework for \emph{visualizing} the structure and dynamics of a neural network. The properties of a set of inputs and whether they can be properly classified is an example of something that is more intuitively understandable when the input vectors are visualized as points in a space. The framework of linear algebra makes it possible to visualize the changing activations of a set of nodes, or the changing strengths of a set of weights, as a moving point in a space. This approach to thinking about neural networks uses \emph{dynamical systems theory}, discussed in chapter \extref{ch_dst}, and can be used to conceptualize many features of neural network models in an intuitive way.\footnote{For a quick demonstration of this way of visualizing network dynamics, try running the simulation \emph{highDimensionalProjection.bsh}. The dynamics of the network is visible in the projection component.}  
+Linear algebra also facilitates a powerful geometric framework for \emph{visualizing} the structure and dynamics of a neural network. The properties of a set of inputs and whether they can be properly classified is an example of something that is more intuitively understandable when the input vectors are visualized as points in a space. The framework of linear algebra makes it possible to visualize the changing activations of a set of nodes, or the changing strengths of a set of weights, as a moving point in a space. This approach to thinking about neural networks uses \emph{dynamical systems theory}, discussed in chapter \extref{ch_dst}, and can be used to conceptualize many features of neural network models in an intuitive way.\footnote{For a quick demonstration of this way of visualizing network dynamics, try running the simulation \emph{highDimensionalProjection.bsh} (in Simbrain 3) or one of the recurrent nework simulations in Simbrain 4. The dynamics of the network is visible in the projection component.}  
 
 % A lot of work goes into matrix product, a lot of setup, just setting up graphical conventions. This is consistent with the book and the simbrain approach. Extra work into how to be able to visualize activation flow.
 
 \section{Vectors and Vector Spaces}\label{sect_vector}
 
-% This needs to be done in an intuitive way first, then formalized
+% It might be worth expanding the tail/head conception of a vector at some point
     Linear algebra is the study of vector spaces. Vector spaces are abstract
 mathematical systems that turn out to be extremely useful for describing the 
 structure and dynamics of neural networks. A \glossary{vector space} is a 
 collection of objects called \glossary{vectors} along with mathematical 
-operations that we can perform with the vectors.\footnote{Vectors can be treated as geometric objects that have a magnitude and a direction, which can be represented by an arrow or directed line segment from a head to a tail.  On this conception, the origin of a space is usually the head and the point associated with a vector is its tail.  These different points of view on vectors supplement rather than contradict each 
-other. }\label{headTail}  For instance, we can add two vectors together to get another vector. There is also a type of 
+operations that we can perform with the vectors.\footnote{A vector can also be treated as a geometric object that has a magnitude and a direction, which can be represented by an arrow or directed line segment from a tail to a head. Intuitively, we draw an arrow from the origin of a vector space (the tail) to the ordered list of scalars (the head) to get this arrow representation (though we can also shift these arrows around when performing operations like vector subtraction). The ordered list and arrow perspectives are complimentary, but it takes some work to develop the ``arrow'' perspective rigorously.}\label{headTail}  For instance, we can add two vectors together to get another vector. There is also a type of 
 multiplication that can be performed between a vector and a \glossary{scalar}. The term ``scalar'' is used for those numbers that are allowed to be 
 multiplied with a vector. We will focus on the case where scalars are real numbers, like $2$, $-1.2$, or $5.9$. If the scalars are the set of real numbers, then the 
 vector space is called a {\em real vector space}. We will only work with real
@@ -85,7 +84,7 @@ The number of components in a vector can be any positive integer. If there is
 only one component, then the vector is essentially just a scalar.
 
    For any positive integer $n$, the set of all $n$-tuples forms a vector space.
-The integer $n$ is called the \glossary{dimension of a vector space}. For 
+The integer $n$ is called the \glossary{dimension}. For 
 example, the set of all of ordered pairs of real numbers is a 2 dimensional 
 real vector space $\real^2$. The set of all ordered triples is a 3 dimensional real 
 vector space $\real^3$. The set of all possible activations for a network with 172 nodes is a subset of  $\real^{172}$.
@@ -305,9 +304,6 @@ There are many different methods for projecting data from high dimensional space
 
 \section{The Dot Product}\label{dotProduct}
 
-% See https://www.geogebra.org/m/Yu6869By
-% dot product of a and b is norm or length of a times length of projection or shadow of on b
-% cosine similarity is the exact same but we've normalize both vectors
 Various operations can be performed with vectors and matrices. Some of the more basic operations like addition, subtraction, and several types of multiplication (and ways of visualizing these operations) are described in the appendices. In this section and the next few we describe operations that can be used to compare vectors.
 
    The \glossary{dot product} is a simple but important function defined for 
@@ -317,8 +313,7 @@ used to specify geometric relationships between vectors.}  The dot product is a 
 vectors that have the same 
 number of components. The dot product gets its name from the fact it is represented by 
 a large dot: $\bullet$. It is also common to say that we are ``dotting'' one 
-vector with another.\footnote{A useful interactive visualization of the dot 
-product is available at \url{http://www.falstad.com/dotproduct/}.}
+vector with another.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.7]{./images/Simple3Labelled.png}
@@ -341,18 +336,17 @@ example
  1 \cdot 1 \,+\, 1 \cdot 1 \,+\,  1 \cdot 1 \,+\, 1 \cdot 1 \,+\, 1 \cdot 1 = 5
 \end{eqnarray*}
 
-   Clearly the product of any vector with the zero vector (the vector whose
-components are all $0$) is $0$. However, the dot product of two non-zero 
-vectors can also be $0$. When the dot product of two non-zero vectors is $0$ 
-then we say the vectors are \glossary{orthogonal} (perpendicular) to each 
-other. It might be hard to tell right away that the vectors $(2,-1,1,-3,1,1)$,
-and $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation 
+% dot product of a and b is norm or length of a times length of projection or shadow of on b
+% cosine similarity is the exact same but we've normalize both vectors
+
+% TODO Pictures
+The sign of the dot product tells us whether two vectors are pointing in the same direction, opposite directions, or are at right angles to or \glossary{orthogonal} to one another.\footnote{A useful interactive visualization of the dot product that can be used to confirm these ideas is available at \url{http://www.falstad.com/dotproduct/}.} If the dot product of $\textbf{u}$ and $\textbf{v}$ is greater than 0, then $\textbf{u}$ and $\textbf{v}$ are pointing ``in the same general direction'' in the sense the angle between them is less than 90 degrees.  If the dot product of $\textbf{u}$ and $\textbf{v}$ is less than 0, then $\textbf{u}$ and $\textbf{v}$ are pointing ``in the opposite general direction'' in the sense the angle between them is more than 90 degrees. When the dot product of two non-zero vectors $\textbf{u}$ and $\textbf{v}$ they are orthogonal (perpendicular) to each other: the angle between them is exactly 90 degrees.\footnote{They must be non-zero because if the product of any vector with the zero vector (the vector whose components are all $0$) is $0$. Moreover, if at least one of them is the zero-vector, there is no meaning to the idea that there is an angle between them.} It might be hard to tell right away that the vectors $(2,-1,1,-3,1,1)$, and $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation 
 shows us that it is true:
 \begin{eqnarray*}
            (2,-1,1,-3,1,1) \bullet (1,2,3,1,1,-1) = 0
 \end{eqnarray*}
-% The dot product can also be used to uncover other geometric properties in 
-% high dimensional spaces.
+
+The dot product is sensitive to length of vectors (their norm, discussed below). For two vectors pointing in the same general direction, if you increase the length of either vector, their dot product will increase.\footnote{More specifically, the dot product of $\textbf{u}$ and $\textbf{v}$ is the product of the length of $\textbf{u}$ and the projected ``shadow'' of $\textbf{u}$ to $\textbf{v}$. Here again \url{http://www.falstad.com/dotproduct/} is useful.} Sometimes it is useful to have a measure that is not sensitive to the length of vectors, but only the angle between them. Cosine similarity, discussed below, is one such measure.
 
    Notice that we can concisely represent the weighted input (see chapter 
 \extref{ch_act_functions}) to a node using the dot product. The weighted input 
@@ -380,10 +374,18 @@ of $(2,5)$ is $ \sqrt{(2,5) \bullet (2,5)} = \sqrt{2^2+5^2} =  \sqrt{29} \approx
 shown in the left panel of Fig. \ref{metricfig}. 
 
 % TODO: Pictures? 
-The process of normalizing a vector (see chapter \extref{ch_data_science}) involves rescaling it so that its norm is 1. When all the vectors in a set of a vectors are normalized, they all lie on a hypersphere, and the main information they carry is the direction they point in.
+The process of normalizing a vector involves rescaling it so that its norm is 1.\footnote{Other types of rescaling are discussed in chapter \extref{ch_data_science}.} When all the vectors in a set of a vectors are normalized, they all lie on a hypersphere, and the main information they carry is the direction they point in. Here are some examples:
+\begin{description}
+\item $$\textbf{u} = (2,0), \;\; \|\textbf{u}\| = 2, \;\; 
+\frac{\textbf{u}}{\|\textbf{u}\|} = (1,0)$$
+\item $$\textbf{v} = (3,4), \;\; \|\textbf{v}\| = 5, \;\; 
+\frac{\textbf{v}}{\|\textbf{v}\|} = \left(\tfrac{3}{5}, \tfrac{4}{5}\right)$$
+\item $$\textbf{w} = (1,1,1), \;\; \|\textbf{w}\| = \sqrt{3}, \;\; 
+\frac{\textbf{w}}{\|\textbf{w}\|} = \left(\tfrac{1}{\sqrt{3}}, \tfrac{1}{\sqrt{3}}, \tfrac{1}{\sqrt{3}}\right)$$
+\end{description}
 
 % We are doing the same thing, taking the norm, but this time for the difference vector. See appendix
-Using the norm we can define the distance between any pair of vectors  as the Euclidean distance is the norm of the difference between them (vector subtraction is defined in the appendix, but basically just involves subtracting corresponding components. 
+Using the norm we can define the distance between any pair of vectors as the Euclidean distance is the norm of the difference between them (vector subtraction is defined in the appendix, but basically just involves subtracting corresponding components. 
  a pair of vectors). That is, the distance between a pair of vectors
 \begin{equation*}
 \mathbf{x} = (x_1, x_2, \ldots, x_n), \qquad
@@ -1133,10 +1135,8 @@ Overall we think of the matrices shown in bold ($\mathbf{UP}$ and $\mathbf{DOWN}
 
 A \glossary{tensor} is a generalization of the concept of a vector that encompasses numbers, arrays of numbers, matrices (2d arrays of numbers), arrays of matrices, arrays of these arrays, etc. These more complex structures are increasingly common since the time of the deep learning revolution (section \extref{deep_revolution}). The basic idea is not just to work with vectors and matrices, but also arrays of matrices and even arrays of arrays of matrices. These have special nomenclature like ``volume''. In this section we cover the basics.
 
-% TODO: Glossary items for textbfs
 % Array vs. set. Array implies ordering. Comp sci version of tuple.
-% Tensor is more math language. Ndarray is more from languages like numpy and torch
-The \textbf{rank} of a  tensor is the number of indices required to specify an entry in it.These are also sometimes called ``n-dimensional arrays'' or ``n-d arrays'' (1d array, 2d array, etc.).\footnote{Note that the dimensionality of an array is the literal dimension of the object, like a vector is 1d and a matrix is 2d. This is not the same as the dimensionality of the space these objects live in. For example, $(1,2,1,0)$ is a point in a 4d space, but it is a 1d tensor or 1d array of numbers.}  Another way to describe the rank of a  tensor is in terms of the the number of indices required to specify an entry.  Here are some of the main types of tensor used with neural networks:
+The \emph{rank} of a  tensor is the number of indices required to specify an entry in it.\footnote{This use of ``rank'' is common in neural network contexts and in libraries such as numpy as pytorch. In linear algebra the ``rank''  of a linear transformation is the dimension of its image.} These are also sometimes called ``n-dimensional arrays'' or ``n-d arrays'' (1d array, 2d array, etc.).\footnote{Note that the dimensionality of an array is the literal dimension of the object, like a vector is 1d and a matrix is 2d. This is not the same as the dimensionality of the space these objects live in. For example, $(1,2,1,0)$ is a point in a 4d space, but it is a 1d tensor or 1d array of numbers.} Here are some of the main types of tensor used with neural networks:
 
 \begin{itemize}
 \item A \textbf{scalar} is a rank 0 tensor or 0d array because it requires no indices. The number 42 is a rank 0 tensor, a 0d array, but nobody talks about it that way. 
