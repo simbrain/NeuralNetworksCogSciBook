@@ -19,13 +19,14 @@ abbreviated as ``mechinterp''), a field of study within machine learning that
 attempts to explain how trained artificial neural networks work. Its aim ``is
 to discover simple algorithmic patterns, motifs, or frameworks that can
 subsequently be applied to larger and more complex models... by conceptualizing
-the operation of transformers in a new but mathematically equivalent way,
-[the field is] able to make sense of these small models and
-gain significant understanding of how they operate
+the operation of transformers in a new but mathematically equivalent way, [the
+field is] able to make sense of these small models and gain significant
+understanding of how they operate
 internally.''\cite{elhage2021mathematical}.\footnote{This has already become
-something of a classic text in mechanistic interpretability. We encourage the reader to have a
-look at the opening pages. The paper builds on an earlier thread at
-\url{disitll.pub}, \url{https://transformer-circuits.pub/2021/framework/index.html}.} 
+something of a classic text in mechanistic interpretability. We encourage the
+reader to have a look at the opening pages. The paper builds on an earlier
+thread at \url{disitll.pub},
+\url{https://transformer-circuits.pub/2021/framework/index.html}.} 
 
 Note that this goes well beyond earlier work simply looking at regions of an
 activation space or finding what feature a hidden layer is responding to (we
@@ -40,33 +41,34 @@ models learn human comprehensible algorithms. They contain structure that makes
 sense and can be understood. But they have no incentive to make this legible to
 us. They learn this structure because it is useful for getting loss on
 predicting the next token, and it is our job to learn how to reverse engineer
-it and how to make it
-legible.\footnote{From \url{https://youtu.be/veT2VI4vHyU}.}
+it and how to make it legible.\footnote{From
+\url{https://youtu.be/veT2VI4vHyU}.}
 \end{quote}
 
 Research in mechanistic interpretability thus makes incessant use of this
 family of terms---it hunts after ``programs'', ``algorithms'', or ``circuits''
 that are taken to be what is learned by a model. These are terms not formally
-defined in the field. Rather, as mentioned above, mechanistic
-interpretability relies on the intuitive idea that the steps that occur in a
-neural network are potentially understandable. Formalized notions of these
-concepts are then proposed as parts of research projects in the field; these
-precisified notions often center on the contextual representations of tokens as
-they are processed along a residual stream (on the concept of a residual stream
-see section \extref{transformerBlocks}).\footnote{The use of these terms raises
-deep issues in philosophy of cognitive science that are discussed at the end of
-chapter \extref{ch_transformers}.  We are agnostic about the exact
-interpretation here.}
+defined in the field. Rather, as mentioned above, mechanistic interpretability
+relies on the intuitive idea that the steps that occur in a neural network are
+potentially understandable. Formalized notions of these concepts are then
+proposed as parts of research projects in the field; these precisified notions
+often center on the contextual representations of tokens as they are processed
+along a residual stream (on the concept of a residual stream see section
+\extref{transformerBlocks}).\footnote{The use of these terms raises deep issues
+in philosophy of cognitive science that are discussed at the end of chapter
+\extref{ch_transformers}.  We are agnostic about the exact interpretation
+here.}
 
 It is a remarkable property of many neural network architectures, showcased
 especially in contemporary LLMs, that we are able to train these networks up
 into capable systems without fully understanding them. Without first fully
-understanding English semantics, we nonetheless have successfully created neural
-networks that speak English! (Compare the discussion of neural network analysis
-in chapter \extref{ch_applications} and of analysis of transformers in section
-\extref{llm_cogsci}). Mechanistic interpretation is thus sometimes described as
-a form of reverse engineering, responding to this un-understood accomplishment.
-An influential paper on the topic describes mechanistic interpretability as
+understanding English semantics, we nonetheless have successfully created
+neural networks that speak English! (Compare the discussion of neural network
+analysis in chapter \extref{ch_applications} and of analysis of transformers in
+section \extref{llm_cogsci}). Mechanistic interpretation is thus sometimes
+described as a form of reverse engineering, responding to this un-understood
+accomplishment. An influential paper on the topic describes mechanistic
+interpretability as
 
 \begin{quote}
 attempting to reverse engineer the detailed computations performed by
@@ -94,20 +96,21 @@ intensive interest in LLMs in cognitive science; see section
 % Also earlier work on ablations. neuralDamageNetworks.png
 In prior chapters we have seen that the analysis of activation spaces of neural
 networks has been key to their interpretation as cognitive models, a history
-which extends back to the PDP revolution of the 1980s and 1990s (see chapter \extref{ch_history}). The common
-theme in this literature is that even if neural networks are in many ways
-biologically unrealistic (for example, the brain does not seem to use
-backprop), they can still be used to identify processing ideas and motifs that
-are demonstrably similar to those found in human brains
-\cite{zipser1992identification}. In chapter \extref{ch_representations} in
-particular, we saw how a range of network-internal representations could be
-meaningfully interpreted. In SRNs, vowels and consonants correspond to regions
-of the hidden unit spaces of a network trained to predict the next phonemes;
-grammatical and semantic categories correspond to regions of hidden unit space
-when the SRN is trained to predict the next word in a sequence. We also saw in
-multiple chapters that hidden unit activations of trained neural networks often
-provide a strong match to neural activations in the brain, often better than
-the best prior models (see section \extref{deepVisionNets}).
+which extends back to the PDP revolution of the 1980s and 1990s (see chapter
+\extref{ch_history}). The common theme in this literature is that even if
+neural networks are in many ways biologically unrealistic (for example, the
+brain does not seem to use backprop), they can still be used to identify
+processing ideas and motifs that are demonstrably similar to those found in
+human brains \cite{zipser1992identification}. In chapter
+\extref{ch_representations} in particular, we saw how a range of
+network-internal representations could be meaningfully interpreted. In SRNs,
+vowels and consonants correspond to regions of the hidden unit spaces of a
+network trained to predict the next phonemes; grammatical and semantic
+categories correspond to regions of hidden unit space when the SRN is trained
+to predict the next word in a sequence. We also saw in multiple chapters that
+hidden unit activations of trained neural networks often provide a strong match
+to neural activations in the brain, often better than the best prior models
+(see section \extref{deepVisionNets}).
 
 In the word embedding chapter (section \extref{geometryWordEmbeddings}) we saw
 that it is common to represent tokens by vectors, where the geometric
@@ -158,47 +161,89 @@ natural neural networks of the brain.
 
 \section{Working Hypotheses of Mechanistic Interpretability}
 
-To study the inner workings and algorithms of deep neural networks mechanistically, researchers rely on a few guiding mathematical principles. Two working hypotheses have emerged as central to the field, though the situation is by no means settled.
+To study the inner workings and algorithms of deep neural networks
+mechanistically, researchers rely on a few guiding mathematical principles. Two
+working hypotheses have emerged as central to the field, though the situation
+is by no means settled.
 
-% David let me know if these edits were problematic
-%It is
-%not enough to know that the architecture stitches together particular
+% It is not enough to know that the architecture stitches together particular
 %layers in particular ways, if what we we are after is an explanation of the
-%programs that will fill up those layers. One of the distinctive features of our
-%predicament is that we do \emph{not} have such an adequate mathematical
+%programs that will fill up those layers. One of the distinctive features of
+%our predicament is that we do \emph{not} have such an adequate mathematical
 %characterization. Work in mechanistic interpretability has to take a stab at
 %mathematically characterizing neural network internals, with the hopes of at
 %least learning the ways in which a given mathematical characterization falls
 %short empirically, so that it can be successively improved upon.
 
-As we saw in section \extref{classicalAIComparison} neural networks tend to favor distributed rather than localist representations. In a distributed representation many nodes are active at the same time. These types of representation are harder to understand or deal with than localist representations such as ``grandmother'' cells, where each node can be directly interpreted. But distributed  representations have desirable properties. They support graceful degradation, and have a much higher memory capacity than is possible when every concept is associated with a dedicated neuron.  Distributed representations can be studied using the tools of linear algebra, in particular the notions of direction and magnitude of an activation vector (chapter \extref{ch_linear_algebra}).\footnote{Localist computations in a neural network can process information in useful ways. A many-layered network of localist representations can be thought of as like a decision tree, with nodes at each layer representing concepts . A network might first ask whether simple features like articles, nouns, and punctuation are present in an input.
-Those early questions would inform later questions, deeper into the decision
-tree, ultimately answering queries in an effective way. Think of a game of 20 questions or animal/mineral/vegetable. The reader may want to play around with
+As we saw in section \extref{classicalAIComparison} neural networks tend to
+favor distributed rather than localist representations. In a distributed
+representation many nodes are active at the same time. These types of
+representation are harder to understand or deal with than localist
+representations such as ``grandmother'' cells, where each node can be directly
+interpreted. But distributed  representations have desirable properties. They
+support graceful degradation, and have a much higher memory capacity than is
+possible when every concept is associated with a dedicated neuron.  Distributed
+representations can be studied using the tools of linear algebra, in particular
+the notions of direction and magnitude of an activation vector (chapter
+\extref{ch_linear_algebra}).\footnote{Localist computations in a neural network
+can process information in useful ways. A many-layered network of localist
+representations can be thought of as like a decision tree, with nodes at each
+layer representing concepts . A network might first ask whether simple features
+like articles, nouns, and punctuation are present in an input. Those early
+questions would inform later questions, deeper into the decision tree,
+ultimately answering queries in an effective way. Think of a game of 20
+questions or animal/mineral/vegetable. The reader may want to play around with
 \url{https://en.akinator.com/} to get an intuitive feel for how few binary
-questions is takes to pin down even a complicated feature. But such approaches do not ultimately work well in natural language processing tasks.} 
+questions is takes to pin down even a complicated feature. But such approaches
+do not ultimately work well in natural language processing tasks.} 
 
-The need to interpret distributed representations motivates the first working hypothesis of mechanistic interpretation: the \glossary{linear representation hypothesis}, according to which the internal representations or features developed in a neural network are best thought of as directions in an activation space, often the latent space corresponding to the residual stream in a transformer (chapter \extref{ch_transformers}). That is, directions in activation space represent the conceptual  presence of a single feature of the world. In particular, the  \emph{orientation} of a vector (its direction in an activation space) encodes its conceptual meaning, while its \emph{magnitude}  captures ``how much'' of that feature is present. Vector operations then become meaningful in these internal activation spaces (again see section \extref{geometryWordEmbeddings})  For example, it is a prediction of this hypothesis that the vector sum (at a layer) of ``woman'' and ``monarch'' is ``queen''.
+The need to interpret distributed representations motivates the first working
+hypothesis of mechanistic interpretation: the \glossary{linear representation
+hypothesis}, according to which the internal representations or features
+developed in a neural network are best thought of as directions in an
+activation space, often the latent space corresponding to the residual stream
+in a transformer (chapter \extref{ch_transformers}). That is, directions in
+activation space represent the conceptual  presence of a single feature of the
+world. In particular, the  \emph{orientation} of a vector (its direction in an
+activation space) encodes its conceptual meaning, while its \emph{magnitude}
+captures ``how much'' of that feature is present. Vector operations then become
+meaningful in these internal activation spaces (again see section
+\extref{geometryWordEmbeddings})  For example, it is a prediction of this
+hypothesis that the vector sum (at a layer) of ``woman'' and ``monarch'' is
+``queen''.
 
-Note that while neural networks often use distributed representations, they can also make use of localist representations (e.g. one-hot encodings), which are quite easy to interpret. Sparse encodings where only a few nodes are active are an intermediate case, and are also easy to interpret. We will see that probes can be built using such localist or sparse representations to help decode the  distributed activation patterns of a complicated network.
+Note that while neural networks often use distributed representations, they can
+also make use of localist representations (e.g. one-hot encodings), which are
+quite easy to interpret. Sparse encodings where only a few nodes are active are
+an intermediate case, and are also easy to interpret. We will see that probes
+can be built using such localist or sparse representations to help decode the
+distributed activation patterns of a complicated network.
 
-% David, I removed the discussion of "neuron basis". Let me know if that is a problem
-A second working hypothesis of mechanistic interpretation, which is closely related to the first, is the \glossary{feature superposition hypothesis}. This is the idea that many features can be encoded in the same node layer using distributed representations. It is rooted in the mathematical subfield of \emph{sparse coding}. The basic idea is that, when the presence of any
-particular concept in a context is rare, not every concept will need a dedicated activation-space direction (let alone a dedicated neuron). Think about the highly contextual representations that develop in the deepest layers of a transformer. To take an example from chapter \extref{ch_transformers}, we might have a feature for ``Golden gate bridge in the context of a discussion of its history, in a conversation that is regarding it as beautiful, in the last position of a noun phrase that would normally be followed by a verb.''
-When features are rare, multiple features can profitably be assigned to the same
+A second working hypothesis of mechanistic interpretation, which is closely
+related to the first, is the \glossary{feature superposition hypothesis}. This
+is the idea that many features can be encoded in the same node layer using
+distributed representations. It is rooted in the mathematical subfield of
+\emph{sparse coding}. The basic idea is that, when the presence of any
+particular concept in a context is rare, not every concept will need a
+dedicated activation-space direction (let alone a dedicated neuron). Think
+about the highly contextual representations that develop in the deepest layers
+of a transformer. To take an example from chapter \extref{ch_transformers}, we
+might have a feature for ``Golden gate bridge in the context of a discussion of
+its history, in a conversation that is regarding it as beautiful, in the last
+position of a noun phrase that would normally be followed by a verb.'' When
+features are rare, multiple features can profitably be assigned to the same
 direction in activation space, and that direction can then be disambiguated
 using the surrounding context in the sentence. As a loose analogy, you can
 think of the phenomenon of homonyms: totally distinct words which share a
-single spelling, such as the ``wind'' in the air, as opposed to forgetting to ``wind''
-your watch. Without context, you could only make a statistical guess as to what
-``wind'' refers to. But with surrounding context, there is no
-ambiguity in the above phrases. Similarly, neural networks may be
-overloading their activation-space directions, and implementing logic to
-contextually disambiguate those directions after-the-fact. The feature
-superposition hypothesis implies that every fully trained neural network is
-noisily equivalent to a larger, sparser neural network
-\cite{elhage2022superposition}.
+single spelling, such as the ``wind'' in the air, as opposed to forgetting to
+``wind'' your watch. Without context, you could only make a statistical guess
+as to what ``wind'' refers to. But with surrounding context, there is no
+ambiguity in the above phrases. Similarly, neural networks may be overloading
+their activation-space directions, and implementing logic to contextually
+disambiguate those directions after-the-fact. The feature superposition
+hypothesis implies that every fully trained neural network is noisily
+equivalent to a larger, sparser neural network \cite{elhage2022superposition}.
 
-% David: a citation would be good here
 Still others think that the forward pass of a trained neural network is the
 wrong setting entirely for our theories; instead, they hypothesize that it is
 the parameter space of a neural network in training on a loss function that is
@@ -206,7 +251,8 @@ most amenable to clean, principled mathematical characterization. From this
 perspective, it might be that we cannot easily make precise sense of the
 activation spaces of fully trained neural networks---instead, those activation
 spaces will only make sense in the context of the entire training history of
-that network, looking at how it developed as it moved around in parameter space.
+that network, looking at how it developed as it moved around in parameter
+space \cite{hoogland2025lossland, bushnaq2024degeneracy}.
 
 To reiterate, it is not yet known what the proper way to look at neural
 networks mathematically is. For that reason, mathematical theory-crafting is
@@ -222,9 +268,9 @@ In animal brains, electrode probes are used to ``eavesdrop'' on neuronal
 electrical activity. The analogous data collection task for a trained
 transformer is far easier. In the transformer context, a probe is a trained
 auxiliary model that tries to determine whether a given concept is encoded at a
-particular sublayer or activation space of a neural
-network \cite{alain2018intermediate, belinkov2021classifiers}. Figure
-\ref{linearProbe} illustrates.
+particular sublayer or activation space of a neural network
+\cite{alain2018intermediate, belinkov2021classifiers}. Figure \ref{linearProbe}
+illustrates.
 
 \begin{figure}[ht]
 \centering
@@ -241,21 +287,28 @@ activations to determine feature presence or absence. For the training set of
 activations we had collected, we knew whether the feature was present or
 absent, and use that knowledge to fix our training labels.
 
- It is now hoped that this ``probe'' model will successfully generalize its classifications to any
-future model activations.  Probes in a transformer are trained
-using supervised learning (chapter \extref{ch_supervised}). Probes can be used
-when we know in advance what feature we are looking for inside a model and already
-know how to operationalize that feature's presence using training labels. Probes can be trained using any classifier architecture, but if a probe is specifically a ``linear'' probe, its classification is a linear function of the activations: it is a simple network with linear nodes and a single layer of weights. When a linear probe is successful, it picks out a direction in the latent activation space. Because a linear probe recovers a single direction that predicts a feature, successful linear probes empirically support the linear representation hypothesis.
-% David: check above
+It is now hoped that this ``probe'' model will successfully generalize its
+classifications to any future model activations.  Probes in a transformer are
+trained using supervised learning (chapter \extref{ch_supervised}). Probes can
+be used when we know in advance what feature we are looking for inside a model
+and already know how to operationalize that feature's presence using training
+labels. Probes can be trained using any classifier architecture, but if a probe
+is specifically a ``linear'' probe, its classification is a linear function of
+the activations: it is a simple network with linear nodes and a single layer of
+weights. When a linear probe is successful, it picks out a direction in the
+latent activation space. Because a linear probe recovers a single direction
+that predicts a feature, successful linear probes empirically support the
+linear representation hypothesis.
 
-This extra work of training a probe is necessary because the transformer itself was not
-trained to make its internal machinery self-explanatory. In a similar way, human brain activations did not evolve under any selective pressure to make sense, and so we also need probes and theory to
-understand how we work! Thus, in LLMs as in human brains, an external process
-must be grafted on to the system to make sense of what is going on inside. As
-Elhage et al. note, ``when there are many equivalent ways to represent the same
-computation, it is likely that the most human-interpretable representation and
-the most computationally efficient representation will be different''
-\cite{elhage2021mathematical}.
+This extra work of training a probe is necessary because the transformer itself
+was not trained to make its internal machinery self-explanatory. In a similar
+way, human brain activations did not evolve under any selective pressure to
+make sense, and so we also need probes and theory to understand how we work!
+Thus, in LLMs as in human brains, an external process must be grafted on to the
+system to make sense of what is going on inside. As Elhage et al. note, ``when
+there are many equivalent ways to represent the same computation, it is likely
+that the most human-interpretable representation and the most computationally
+efficient representation will be different'' \cite{elhage2021mathematical}.
 
 Probes can be trained to determine what a model thinks about: for example, how
 emotionally charged a discussion is as we move from token to token, what
@@ -304,9 +357,9 @@ interpretations on.
 \includegraphics[scale=.5]{./images/saeSimbrain.png}
 \caption[Simbrain screenshot from Jeff Yoshimi.]{ A sparse auto-encoder takes
       some input activations and maps it back to itself (notice that the
-      autoencoder is successfully reconstructing its input activations)
-      through a hidden layer which gradient descent has tried to make
-      as sparsely activating as possible, producing a kind of localistic representation of
+      autoencoder is successfully reconstructing its input activations) through
+      a hidden layer which gradient descent has tried to make as sparsely
+      activating as possible, producing a kind of localistic representation of
       the input activations. }
 \label{saeSimbrain}
 \end{figure}
@@ -314,17 +367,19 @@ interpretations on.
 The activated neurons in a sparse autoencoder seem to each represent a single,
 human-interpretable concept \cite{cunningham2023sparse,
 bricken2023monosemanticity}. The theory behind this is that, while there is no
-particular reason for a model neuron to correspond to a single human concept,
-a trained SAE learns which pieces of activation distributed over which neurons all share an
-underlying concept. If this mapping can be found, then the SAE can use a single
-unit of its own to represent a large number of scattered activations.
+particular reason for a model neuron to correspond to a single human concept, a
+trained SAE learns which pieces of activation distributed over which neurons
+all share an underlying concept. If this mapping can be found, then the SAE can
+use a single unit of its own to represent a large number of scattered
+activations.
 
-Empirically, SAE features tend to reflect ``high-level'' concepts when the
-SAE is narrower (has fewer hidden units) and reflect ``low-level'' concepts
-when it is wider (has more hidden units). This makes sense: the number of
-features that a trained SAE can assign to a single unit depends on the number of units it has available. If fewer units are
-available, the SAE's training will prioritize capturing the ``most active'' concepts, ignoring niche concepts that come up only
-rarely.
+Empirically, SAE features tend to reflect ``high-level'' concepts when the SAE
+is narrower (has fewer hidden units) and reflect ``low-level'' concepts when it
+is wider (has more hidden units). This makes sense: the number of features that
+a trained SAE can assign to a single unit depends on the number of units it has
+available. If fewer units are available, the SAE's training will prioritize
+capturing the ``most active'' concepts, ignoring niche concepts that come up
+only rarely.
 
 \subsection{Activation Addition}
 
@@ -334,8 +389,7 @@ basis are generally not interpretable, they admit certain kinds of
 (semantically meaningful) manipulations. You can record a model's own hidden
 activations during a forward pass dealing with a concept, and then re-inject
 that activation to blend that concept in to behavior in new contexts
-\cite{turner2024activation,zou2025representation}. In more
-detail
+\cite{turner2024activation,zou2025representation}. In more detail
 
 \begin{enumerate}
       \item Run the model on some input that elicits the feature you care about
@@ -343,32 +397,34 @@ detail
       \item Record an activation vector at the chosen sublayer.
       \item Scale this vector using scalar multiplication (chapter
       \extref{ch_linear_algebra}).
-      \item At another forward pass, add the activation back in at its sublayer.
+      \item At another forward pass, add the activation back in at its
+      sublayer.
  \end{enumerate}
  
  This method lets us bias or “drug” the model toward a concept without
- retraining (this is also called ``steering''). With a large enough scaling factor, the model often fixates; a
- ``Golden Gate Bridge'' feature turns Claude into a Golden-Gate-Bridge
- obsessive, e.g. (see figure \ref{goldenGate}). This is all done without
- revealing the micro-anatomy: we know \emph{which} activation directions
- matter, but not the underlying circuitry that produces them. As an analogy,
- this is more akin to model psychiatry (temporarily steering model behavior
- without training) than to model neurosurgery (mapping out synaptic function).
+ retraining (this is also called ``steering''). With a large enough scaling
+ factor, the model often fixates; a ``Golden Gate Bridge'' feature turns Claude
+ into a Golden-Gate-Bridge obsessive, e.g. (see figure \ref{goldenGate}). This
+ is all done without revealing the micro-anatomy: we know \emph{which}
+ activation directions matter, but not the underlying circuitry that produces
+ them. As an analogy, this is more akin to model psychiatry (temporarily
+ steering model behavior without training) than to model neurosurgery (mapping
+ out synaptic function).
  
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=.5]{./images/goldenGate.png}
-\caption[Figure from \cite{templeton2024scaling}]{ Claude's responses to a question
-before (left panel) and after (right panel) a Golden Gate Bridge feature has
-been clamped to a high value \cite{templeton2024scaling}. }
+\caption[Figure from \cite{templeton2024scaling}]{ Claude's responses to a
+question before (left panel) and after (right panel) a Golden Gate Bridge
+feature has been clamped to a high value \cite{templeton2024scaling}. }
 \label{goldenGate}
 \end{figure}
 
 The overall suggestion of this line of mechanistic interpretability research is
 that model activation spaces seem to be, in terms of semantics, well-behaved
 vector spaces. While we don't quite know how to a priori associate a meaning to
-an activation vector, once we \emph{do} have an interpretable activation on hand,
-we can manipulate it in familiar algebraic ways to get expected results.
+an activation vector, once we \emph{do} have an interpretable activation on
+hand, we can manipulate it in familiar algebraic ways to get expected results.
 Activations that are sourced from supervised and unsupervised methods similarly
 admit of these algebraic manipulations, for the purposes of validation and
 steering of model behavior.
@@ -389,33 +445,42 @@ steering of model behavior.
 \subsection{Ablations}
 % Some other methods include activation patching ablating,  causal tracing, and
 % interchange intervention.
-In neuroscience, ablation (``lesion'') studies are an important tool for  research---and the same is true in mechanistic interpretability. The idea is simple: if you want to figure out what a piece of a
-neural network does, try temporarily removing that piece of the
-network (while leaving everything else unchanged). If the loss of function of
-the neural network matches your hypothesized function of the network part, your
-hypothesis is strongly validated.
+In neuroscience, ablation (``lesion'') studies are an important tool for
+research---and the same is true in mechanistic interpretability. The idea is
+simple: if you want to figure out what a piece of a neural network does, try
+temporarily removing that piece of the network (while leaving everything else
+unchanged). If the loss of function of the neural network matches your
+hypothesized function of the network part, your hypothesis is strongly
+validated.
 
-Ablations are a subtle topic, because it's not easy to ``leave everything else unchanged''. When you totally silence a part of
-a neural network in a forward pass, you're doing something that the neural
-network has never otherwise encountered. It is not typical for large portions
-of a network to be fixed at exactly $0.0$ activation; typically, basically all
-parts of a network are constantly active, working hard at \emph{something}. The ablation can push the neural network to do things it would not normally do; it pushes the network ``out of distribution''---a confounding effect. When we selectively silence a piece of a
-network, then, we ideally want to do so surgically, in a way that minimizes
-these out-of-distribution confounding effects on the rest of the network. We want to
-see what happens when a piece of the network drops out, while keeping the rest
-of the network remains in its typical, ``healthy'' state. That way we are
-measuring only the effects of the dropout, not the effects of incidental damage
-to the computation.
+Ablations are a subtle topic, because it's not easy to ``leave everything else
+unchanged''. When you totally silence a part of a neural network in a forward
+pass, you're doing something that the neural network has never otherwise
+encountered. It is not typical for large portions of a network to be fixed at
+exactly $0.0$ activation; typically, basically all parts of a network are
+constantly active, working hard at \emph{something}. The ablation can push the
+neural network to do things it would not normally do; it pushes the network
+``out of distribution''---a confounding effect. When we selectively silence a
+piece of a network, then, we ideally want to do so surgically, in a way that
+minimizes these out-of-distribution confounding effects on the rest of the
+network. We want to see what happens when a piece of the network drops out,
+while keeping the rest of the network remains in its typical, ``healthy''
+state. That way we are measuring only the effects of the dropout, not the
+effects of incidental damage to the computation.
 
 So, instead of ablating by clamping activations to $0.0$, alternative
-approaches have evolved. One option is to clamp activations to their mean or median
-activation value. The idea is that this neuron is then activation an average amount rather than being fully ablated, which would be unusual. Another option is resample ablations, in which case we take the \emph{actual activation} from a random previous forward pass and swap that in for the current activation value.
+approaches have evolved. One option is to clamp activations to their mean or
+median activation value. The idea is that this neuron is then activation an
+average amount rather than being fully ablated, which would be unusual. Another
+option is resample ablations, in which case we take the \emph{actual
+activation} from a random previous forward pass and swap that in for the
+current activation value.
 
 Notably, because the models are so open to us (relative to animal models in
-neuroscience), we have other options available than simply ``destroying'' a  neuron by  clamping
-its activations to  $0.0$. We can also clamp activations to arbitrary
-values, including to arbitrarily high values, and measure the downstream impact
-of that change.
+neuroscience), we have other options available than simply ``destroying'' a
+neuron by  clamping its activations to  $0.0$. We can also clamp activations to
+arbitrary values, including to arbitrarily high values, and measure the
+downstream impact of that change.
 
 \section{Major Results in Mechanistic Interpretability}
 
@@ -437,8 +502,8 @@ For example, a toy model trained only to perform modular addition converges to
 an interpretable algorithm \cite{nanda2023progress}.The model is fairly
 complicated, but the high-level idea is that arithmetical operations can be
 represented by activations that are processed through the residual stream. For
-example, in computing $a + b$, each number is represented as a rotation, and the
-sum of their angles is computed as composition of two rotations (see figure
+example, in computing $a + b$, each number is represented as a rotation, and
+the sum of their angles is computed as composition of two rotations (see figure
 \ref{toyModelAddition}).\footnote{The details are more complicated. It is
 addition mod $P$, and uses ``discrete Fourier transforms and trigonometric
 identities'' \cite{nanda2023progress} to support the conversion.} Before the
@@ -449,10 +514,8 @@ MLPs (\cite{nanda2023progress} , section 4.1).
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=.4]{./images/toyModelAddition.png}
-\caption[From \cite{nanda2023progress} .]{
-      Addition in a trained neural network is represented by combining
-      rotations together.
-}
+\caption[From \cite{nanda2023progress} .]{ Addition in a trained neural network
+      is represented by combining rotations together. }
 \label{toyModelAddition}
 \end{figure}
 
@@ -499,9 +562,9 @@ token ``contains'' to follow along with that earlier copied token
 \cite{elhage2021mathematical}. Heads can be found ``attending to delimiter
 tokens, specific positional offsets, or broadly attending over the whole
 sentence... the direct objects of verbs, determiners of nouns, objects of
-prepositions, and coreferent mentions''---a wide range of syntactic and semantic
-roles \cite{clark2019does, voita-etal-2019-analyzing}. Other heads specialize
-in preventing a model from over-repeating a particular token
+prepositions, and coreferent mentions''---a wide range of syntactic and
+semantic roles \cite{clark2019does, voita-etal-2019-analyzing}. Other heads
+specialize in preventing a model from over-repeating a particular token
 \cite{mcdougall2023copy}.
 
 Even more flexible are \glossary{induction heads}, which perform sophisticated
@@ -512,7 +575,8 @@ Induction heads search over the context for previous examples of the present
 token. If they don't find it, they attend to the first token (in our case, a
 special token placed at the start), and do nothing. But if they do find it,
 they then look at the next token and copy it. This allows them to repeat
-previous sequences of tokens, both exactly and approximately \cite{elhage2021mathematical}.
+previous sequences of tokens, both exactly and approximately
+\cite{elhage2021mathematical}.
 \end{quote}
 
 Induction heads are exciting as they were one of the first windows into how
