@@ -14,21 +14,18 @@ Linear algebra also facilitates a powerful geometric framework for \emph{visuali
 
 \section{Vectors and Vector Spaces}\label{sect_vector}
 
-% It might be worth expanding the tail/head conception of a vector at some point
-% Since the arrow conception occurs in the main text, it should be referenced in main text
     Linear algebra is the study of vector spaces. Vector spaces are abstract
 mathematical systems that turn out to be extremely useful for describing the 
 structure and dynamics of neural networks. A \glossary{vector space} is a 
 collection of objects called \glossary{vectors} along with mathematical 
-operations that we can perform with the vectors.\footnote{A vector can also be treated as a geometric object that has a magnitude and a direction, which can be represented by an arrow or directed line segment from a tail to a head. Intuitively, we draw an arrow from the origin of a vector space (the tail) to the ordered list of scalars (the head) to get this arrow representation (though we can also shift these arrows around when performing operations like vector subtraction). The ordered list and arrow perspectives are complimentary, but it takes some work to develop the ``arrow'' perspective rigorously.}\label{headTail}  For instance, we can add two vectors together to get another vector. There is also a type of 
+operations that we can perform with the vectors. For instance, we can add two vectors together to get another vector. There is also a type of 
 multiplication that can be performed between a vector and a \glossary{scalar}. The term ``scalar'' is used for those numbers that are allowed to be 
 multiplied with a vector. We will focus on the case where scalars are real numbers, like $2$, $-1.2$, or $5.9$. If the scalars are the set of real numbers, then the 
 vector space is called a {\em real vector space}. We will only work with real
 vector spaces. A more formal definition for a vector space is discussed in 
 Sect. \ref{S:LinearAlgebraAppendix}. 
 
-We will represent vectors as ordered lists of scalars.\footnote{ Many classes of mathematical objects satisfy the formal definition
-of a vector space, and thus many objects can be vectors. The ordered lists we consider here are an especially convenient type of vector.} Each of the scalars in the list is called a \glossary{component} 
+We will represent vectors as ordered lists of scalars.\footnote{ Many classes of mathematical objects satisfy the formal definition of a vector space, and thus many objects can be vectors. The ordered lists we consider here are an especially convenient type of vector.} Each of the scalars in the list is called a \glossary{component} 
 of the vector. A list with 2 components is called an {\em ordered pair}. A 
 list with 3 components is called an {\em ordered triple}. More generally, a
 list with $n$ components is called an {\em $n$-tuple}. We can refer to the
@@ -39,6 +36,8 @@ For example, here are four vectors:
 \begin{equation*}
     (0,0) \quad (0,1) \quad (1,0) \quad (1,1) 
 \end{equation*}
+
+Vectors can also be represented geometrically. One way of representing vectors geometrically, which is especially popular in physics, is by using arrows. We draw these arrows from a ``tail'' to a ``head.''  The arrows have a magnitude and direction (the magnitude is captured by a norm, discussed below). In this chapter, we usually draw the arrow from the origin of a vector space (the tail) to the ordered list of scalars (the head).\footnote{We can also shift these arrows around when performing operations like vector subtraction. The ordered list and arrow perspectives on vectors are complimentary, but it takes some work to develop the ``arrow'' perspective rigorously.}\label{headTail}
 
 % TODO: Expand this as we use this more and decide if any convention regarding indices should be given now.
    We sometimes adopt the convention of writing vectors using bold-faced 
