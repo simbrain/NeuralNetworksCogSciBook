@@ -4,35 +4,33 @@
 % Activation Engineering and Representation Engineering  are useful terms, but
 % not where sure to put them.
 
-The modern transformer architecture (chapter \extref{ch_transformers}), trained
-at sufficient scale, can learn to speak English (as well as every other natural
-language, assuming sufficient training data). In this way, LLMs outperform
-almost the entire animal kingdom. Only humans and LLMs speak English, as
-opposed to just learning some noun associations (though the topic is hotly
-contested; see the discussion in section \extref{stochasticParrot}). This
+% Whales may have some language
+The modern transformer architecture (chapter \extref{ch_transformers}) can learn to speak any natural
+language. In this way, LLMs outperform
+almost the entire animal kingdom. Some animals communicate in limited ways, but only humans and LLMs speak natural languages like English.\footnote{Though the topic is hotly
+contested; see the discussion in section \extref{stochasticParrot}} This
 naturally raises the question: how do the LLMs do it? What is special about
-these systems, that differentiates them from all prior programs and all
+these systems, that differentiates them from all prior AI systems and all
 non-human animals, and groups them together with us humans?
 
 In this chapter we discuss \glossary{mechanistic interpretability} (sometimes
-abbreviated as ``mechinterp''), a field of study within machine learning that
-attempts to explain how trained artificial neural networks work. Its aim ``is
+abbreviated as ``mechinterp''), a field of study that
+attempts to explain the internal operation of complex artificial neural networks like LLMs. Its aim ``is
 to discover simple algorithmic patterns, motifs, or frameworks that can
-subsequently be applied to larger and more complex models... by conceptualizing
+subsequently be applied to larger and more complex models... [B]y conceptualizing
 the operation of transformers in a new but mathematically equivalent way, [the
 field is] able to make sense of these small models and gain significant
 understanding of how they operate
-internally.''\cite{elhage2021mathematical}.\footnote{This has already become
+internally''\cite{elhage2021mathematical}.\footnote{This has already become
 something of a classic text in mechanistic interpretability. We encourage the
 reader to have a look at the opening pages. The paper builds on an earlier
-thread at \url{disitll.pub},
+thread at \url{distill.pub},
 \url{https://transformer-circuits.pub/2021/framework/index.html}.} 
 
-Note that this goes well beyond earlier work simply looking at regions of an
-activation space or finding what feature a hidden layer is responding to (we
-discuss this distinction further in section \ref{mechInterpHist}). The goal
-here is to fully understand the \emph{algorithms}, the entire processes or
-stepwise procedures, that are unfolding inside a model when the model produces
+Earlier work on understanding the internal structure of neural networks simply looked at regions of an
+activation space to (for example) try to find what feature a hidden layer responds to (chapter \extref{ch_representations}). The goal
+here is to understand the \emph{algorithms}, the entire processes or
+stepwise procedures, that are unfolding inside a network when it produces
 meaningful responses. A prominent practitioner in the field puts it as follows:
 
 \begin{quote}
@@ -44,20 +42,12 @@ predicting the next token, and it is our job to learn how to reverse engineer
 it and how to make it legible.\footnote{From
 \url{https://youtu.be/veT2VI4vHyU}.}
 \end{quote}
-
-Research in mechanistic interpretability thus makes incessant use of this
-family of terms---it hunts after ``programs'', ``algorithms'', or ``circuits''
-that are taken to be what is learned by a model. These are terms not formally
-defined in the field. Rather, as mentioned above, mechanistic interpretability
-relies on the intuitive idea that the steps that occur in a neural network are
-potentially understandable. Formalized notions of these concepts are then
-proposed as parts of research projects in the field; these precisified notions
-often center on the contextual representations of tokens as they are processed
+Mechanistic interpretability hunts after the ``programs'', ``algorithms'', or ``circuits''
+that are taken to be what is learned by a model. Not that these terms are not yet formally
+defined in the field. But formalized notions of these concepts are being
+developed, often with a focus on the contextual representations of tokens as they are processed
 along a residual stream (on the concept of a residual stream see section
-\extref{transformerBlocks}).\footnote{The use of these terms raises deep issues
-in philosophy of cognitive science that are discussed at the end of chapter
-\extref{ch_transformers}.  We are agnostic about the exact interpretation
-here.}
+\extref{transformerBlocks}).
 
 It is a remarkable property of many neural network architectures, showcased
 especially in contemporary LLMs, that we are able to train these networks up
@@ -82,7 +72,7 @@ built.\cite{elhage2021mathematical}
 
 From the standpoint of cognitive science and neuroscience, it is like we have a
 brain that we have complete, transparent access to. One might think of
-mechanistic interpretability as ``speedrunning'' neuroscience. Despite their
+mechinterp as ``speedrunning'' neuroscience. Despite their
 inscrutability, the ``programs'' executed by a transformer are far easier to
 scientifically investigate than animal models or human brains are. (Hence the
 intensive interest in LLMs in cognitive science; see section
@@ -153,8 +143,9 @@ pumped into it to make the model friendlier. Or, alternatively, the ability to
 fully examine an LLMs world model and make sure there is nothing nefarious in
 it would also secure guarantees about model behavior.
 
-Echoing another theme of this book, even if the field is focused on engineering
-goals like value alignment, the \emph{results} of this field are separately of
+Echoing another theme of this book, even if mechanistic
+interpretability is focused on engineering
+goals like value alignment, the \emph{results} of the field are separately of
 immense value to cognitive science. These results are providing a whole new set
 of conceptual tools for thinking about how information is processed in the
 natural neural networks of the brain.
@@ -188,13 +179,13 @@ the notions of direction and magnitude of an activation vector (chapter
 \extref{ch_linear_algebra}).\footnote{Localist computations in a neural network
 can process information in useful ways. A many-layered network of localist
 representations can be thought of as like a decision tree, with nodes at each
-layer representing concepts . A network might first ask whether simple features
+layer representing concepts. A network might first ask whether simple features
 like articles, nouns, and punctuation are present in an input. Those early
 questions would inform later questions, deeper into the decision tree,
 ultimately answering queries in an effective way. Think of a game of 20
 questions or animal/mineral/vegetable. The reader may want to play around with
 \url{https://en.akinator.com/} to get an intuitive feel for how few binary
-questions is takes to pin down even a complicated feature. But such approaches
+questions it takes to pin down even a complicated feature. But such approaches
 do not ultimately work well in natural language processing tasks.} 
 
 The need to interpret distributed representations motivates the first working
@@ -202,22 +193,22 @@ hypothesis of mechanistic interpretation: the \glossary{linear representation
 hypothesis}, according to which the internal representations or features
 developed in a neural network are best thought of as directions in an
 activation space, often the latent space corresponding to the residual stream
-in a transformer (chapter \extref{ch_transformers}). That is, directions in
+in a transformer (chapter \extref{ch_transformers}).\footnote{While the linear representation hypothesis is typically framed in terms of directions (a feature corresponds to a vector axis, and semantic change is represented by translation along that axis), one could also imagine features being encoded by angles. In such a view, a feature corresponds to an orientation, and semantic change is represented by rotation rather than translation.} That is, directions in
 activation space represent the conceptual  presence of a single feature of the
 world. In particular, the  \emph{orientation} of a vector (its direction in an
 activation space) encodes its conceptual meaning, while its \emph{magnitude}
 captures ``how much'' of that feature is present. Vector operations then become
 meaningful in these internal activation spaces (again see section
-\extref{geometryWordEmbeddings})  For example, it is a prediction of this
+\extref{geometryWordEmbeddings})  For example, it is consistent with this
 hypothesis that the vector sum (at a layer) of ``woman'' and ``monarch'' is
 ``queen''.
 
 Note that while neural networks often use distributed representations, they can
 also make use of localist representations (e.g. one-hot encodings), which are
-quite easy to interpret. Sparse encodings where only a few nodes are active are
+relatively easy to interpret. Sparse encodings where only a few nodes are active are
 an intermediate case, and are also easy to interpret. We will see that probes
-can be built using such localist or sparse representations to help decode the
-distributed activation patterns of a complicated network.
+can be trained to use such localist or sparse representations to help decode the
+distributed activation patterns of a complicated network. But keep in mind that probes are deliberately trained to produce these sparse or local representations. These are \emph{not} natural activation patterns of most standard neural networks.\footnote{However, in biological neural networks they do occur, especially in light of inhibitory circuits and winner-take-all networks. Sparse coding is especially prominent in hippocampus. See chapter \extref{ch_neuro}.}
 
 A second working hypothesis of mechanistic interpretation, which is closely
 related to the first, is the \glossary{feature superposition hypothesis}. This
@@ -253,11 +244,6 @@ activation spaces of fully trained neural networks---instead, those activation
 spaces will only make sense in the context of the entire training history of
 that network, looking at how it developed as it moved around in parameter
 space \cite{hoogland2025lossland, bushnaq2024degeneracy}.
-
-To reiterate, it is not yet known what the proper way to look at neural
-networks mathematically is. For that reason, mathematical theory-crafting is
-part and parcel of even centrally empirical mechanistic interpretability
-research.
 
 \section{The Toolbox of Mechanistic Interpretability}
 
@@ -296,9 +282,7 @@ labels. Probes can be trained using any classifier architecture, but if a probe
 is specifically a ``linear'' probe, its classification is a linear function of
 the activations: it is a simple network with linear nodes and a single layer of
 weights. When a linear probe is successful, it picks out a direction in the
-latent activation space. Because a linear probe recovers a single direction
-that predicts a feature, successful linear probes empirically support the
-linear representation hypothesis.
+latent activation space. This provides some support for the linear representation hypothesis.\footnote{However, it is not decisive support for the hypothesis, especially a strong form that claims that features are \emph{entirely} captured by linear representations. Compare a linear approximation of a curve. The line might capture much of what the curve is doing, but not everything. In fact, linear probes are usually thought of as just being approximations of a given behavior of a model.}
 
 This extra work of training a probe is necessary because the transformer itself
 was not trained to make its internal machinery self-explanatory. In a similar
@@ -383,7 +367,7 @@ only rarely.
 
 \subsection{Activation Addition}
 
-A third tool in the toolbox of mechanistic interpretability is
+A third tool in the mechanistic interpretability toolbox is
 \glossary{activation addition}. While activations vectors in a model's neuron
 basis are generally not interpretable, they admit certain kinds of
 (semantically meaningful) manipulations. You can record a model's own hidden
@@ -420,7 +404,7 @@ feature has been clamped to a high value \cite{templeton2024scaling}. }
 \label{goldenGate}
 \end{figure}
 
-The overall suggestion of this line of mechanistic interpretability research is
+The overall suggestion of this research is
 that model activation spaces seem to be, in terms of semantics, well-behaved
 vector spaces. While we don't quite know how to a priori associate a meaning to
 an activation vector, once we \emph{do} have an interpretable activation on
@@ -470,7 +454,7 @@ effects of incidental damage to the computation.
 
 So, instead of ablating by clamping activations to $0.0$, alternative
 approaches have evolved. One option is to clamp activations to their mean or
-median activation value. The idea is that this neuron is then activation an
+median activation value. The idea is that this neuron is then activating an
 average amount rather than being fully ablated, which would be unusual. Another
 option is resample ablations, in which case we take the \emph{actual
 activation} from a random previous forward pass and swap that in for the
@@ -484,7 +468,7 @@ downstream impact of that change.
 
 \section{Major Results in Mechanistic Interpretability}
 
-Research in mechanistic interpretability has yielded a number of key results in
+This research has yielded a number of key results in
 its domain that are of special interest to cognitive science.
 
 \subsection{Toy Models}
@@ -499,7 +483,7 @@ models. In these cases we have more-or-less fully worked-out circuits
 explaining model behavior.
 
 For example, a toy model trained only to perform modular addition converges to
-an interpretable algorithm \cite{nanda2023progress}.The model is fairly
+an interpretable algorithm \cite{nanda2023progress}. The model is fairly
 complicated, but the high-level idea is that arithmetical operations can be
 represented by activations that are processed through the residual stream. For
 example, in computing $a + b$, each number is represented as a rotation, and
@@ -509,12 +493,12 @@ addition mod $P$, and uses ``discrete Fourier transforms and trigonometric
 identities'' \cite{nanda2023progress} to support the conversion.} Before the
 circuit was worked out a clue to its function was the presence of circular
 structures in the activation space when measured at the attention heads and
-MLPs (\cite{nanda2023progress} , section 4.1).
+MLPs (\cite{nanda2023progress}, section 4.1).
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=.4]{./images/toyModelAddition.png}
-\caption[From \cite{nanda2023progress} .]{ Addition in a trained neural network
+\caption[From \cite{nanda2023progress}.]{ Addition in a trained neural network
       is represented by combining rotations together. }
 \label{toyModelAddition}
 \end{figure}
@@ -542,11 +526,11 @@ MLPs (\cite{nanda2023progress} , section 4.1).
 
 \subsection{Induction Heads}
 
-An early success in mechanistic interpretability was the identification of
+An early success was the identification of
 attention head activation patterns as semantically meaningful. Helpfully, the
 attention mechanism in transformer blocks (whose activations can be read as
 ``scores''; see section \extref{transformerBlocks}) lends itself to
-interpretation without having to graft on of any additional structure--just as
+interpretation without having to graft on any additional structure--just as
 the output probabilities of a model can be naturally interpreted as a model's
 confidence about its answer, the attention scores of an attention head can
 naturally be interpreted as ``which tokens that head is attending to, to what
