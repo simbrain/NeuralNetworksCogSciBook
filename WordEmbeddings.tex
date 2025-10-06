@@ -130,28 +130,43 @@ Here is an example that illustrates the idea that words with similar meanings sh
     Composer& -0.2 & -0.3 & 0.8 & 0.4 & ... & 0.6 \\
     \hline
     \end{tabular}
-    \caption{Example of a vector space embedding in an $n$-dimensional space. The top 2, middle 2, and bottom 2 rows correspond to words that are similar and thus vectors that are near each other.}
+    \caption{Example of a vector space embedding in an $n$-dimensional space. The top 2, middle 2, and bottom 2 rows correspond to words that are similar and thus vectors that are near each other.  Figure \ref{f:writerPainterExample} illustrates the idea.}
     \label{exampleEmbeddings}
 \end{table}
 
-Note that the columns themselves (the dimensions of the vector space) don't have any clear interpretable meaning.\footnote{See the linear algebra chapter. These columns are sometimes called feature but feature implies something that can be easily interpreted.} Generally speaking, word embeddings are trained on a large text corpus (the details of how this is done using co-occurrences are given below). The resulting embeddings are often quite large, so dimensionality reduction can be used to create lower-dimensional embeddings. After dimensionality reduction, columns can no longer be interpreted as co-occurrences with specific terms in the corpus. Rather, it is the pattern across them that matters, as the relative semantic relationships between tokens are encoded in this semantic space. 
+Several ways of producing a co-occurrence based word embeddings are discussed in the following sections. Generally speaking, word embeddings are trained on a large text corpus. The resulting embeddings are often quite large, so dimensionality reduction can be used to create lower-dimensional embeddings. 
+
+Note that in most co-occurrence-based word embeddings that the columns themselves (the dimensions of the vector space) don't have any clear interpretable meaning. In some methods the vectors associated with words initially correspond to word-word co-occurrences, but after transformations and dimensionality reduction they lose interpretability. What matters is the pattern across the rows of the matrix, because the relative semantic relationships between tokens are encoded in this semantic space. 
 
 The nice thing, again, is that we can actually picture these by projecting from the high dimensional embedding space to two dimensions and then literally see the distance relationships between tokens, as in figure \ref{f:writerPainterExample}. The generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually.
 
-% Moved from above, since it did not fit with the context:
-% Word embeddings are very important in neural networks and machine learning. 
-% A widely-used word embedding is GloVe (Global Vectors for Word Representation, \cite{pennington2014glove}), which tracks the linguistic context and word co-occurrences to ``embed'' words into a semantic space. 
 
 \subsection{Co-occurrence Matrices}
 
-% Consider moving to end given the emphasis on practical matters.
-
-%As we saw in the above section, instead of analyzing large corpora by hand, computational algorithms can be used to generate these numeric representations called word embeddings. 
-%Here we give a high level discussion of co-occurrence based word embeddings; an actual example is worked out in section \ref{createWordEmbeddings}. Again, given that the usage of a word captures its meaning, we can track the patterns of how words occur together (i.e., co-occur), which this data is then used as the basis for word embeddings.
-
 Based on the distributional theory mentioned above, we can track co-occurrences and usage patterns to capture the meaning of a set of words. These usages patterns are represented by a co-occurrence matrix. To construct a co-occurrence matrix, we iterate across every word in a document or training corpus and count its co-occurrences within a specified context of surrounding words. Each word is treated as a `label' or `target', while the surrounding words serve as their `context'. A window size is defined, which designates how many of the surrounding words to include in this `context'. The context can be either unidirectional, using  preceding text, or bidirectional, using surrounding context in both directions. Once the whole training corpus has been processed, the result is a co-occurrence matrix where each cell represents the raw co-occurrence counts for a given label-context pair. 
 
-% Also good but needs to be broken out a bit more into parts and definitions.  In particular for PPMI
+An example is shown in figure \ref{simpleCoocmatrix}, based on the text ``cats chase mice quickly''.  The context window has a size of 1 and is bi-directional. Each pair of words that appear next to each other increases their co-occurrence count by one.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+     & cats & chase & mice & quickly \\
+    \hline
+    cats & 0 & 1 & 0 & 0 \\
+    \hline
+    chase & 1 & 0 & 1 & 0 \\
+    \hline
+    mice & 0 & 1 & 0 & 1 \\
+    \hline
+    quickly & 0 & 0 & 1 & 0 \\
+    \hline
+    \end{tabular}
+    \caption{Simple co-occurrence matrix for the sentence ``cats chase mice quickly'' using a window size of 1. Each word vector corresponds to one row.}
+    \label{simpleCoocmatrix}
+\end{table}
+
+
 If, at this point, we compare across the rows of related tokens, their co-occurrences should generally be similar. Still, not every word is used with the same frequency and this may negatively impact the quality of our word embeddings. Similar to our document embeddings, some words like determiners (`the', `a') may be over-represented and skew the co-occurrence matrix. 
 
 Generally, there are two approaches: filtering and normalization. The simplest fix is to simply filter out these high-frequency, low-impact words. These words are called \emph{stopwords}, and various NLP packages will have stopword lists for various languages.
@@ -160,8 +175,17 @@ Another approach (usually applied in addition to removing stopwords) is to norma
 
 \subsection{Neural Network Based Embeddings}
 
-Another approach to creating word embeddings is to use neural networks. A well-known example is Word2Vec \cite{mikolov2013distributed}, which trains a three-layer feed-forward neural network to predict the context for a word.\footnote{A code-based walk through of the algorithm is here: \url{https://www.tensorflow.org/tutorials/word2vec}. Predicting the surrounding context for a word (``skip-gram'') is just one flavor of word2vec. Some versions also predict words from context (``continuous bag of words''). } The input and output layers of this network have one node for each word in a vocabulary. The idea is to train a network to associate words with \emph{sets} of words that tend to occur around them. For example, if we were drawing data from a book that said ``Students like going to UC Merced, it's a nice university'', we might have a training example where ``Merced'' is associated with its context words ``UC'', ``university'', and ``nice''. 
-This trains a network to produce associations between a one-hot representation of a word and a probability distribution over context words (a softmax activation function is used on the output to obtain probabilities).  The hidden layer has far fewer dimensions, so that we get a kind of compressed representation of the task of associating words with their context. The number of nodes in the hidden layer corresponds to the embedding dimension of the embedding Word2Vec produces.\footnote{The embedding dimensions are typically around 300D, but newer models might exceed 700D.}  After the network is trained on this task, activations in the hidden layer can be used as word embeddings. So the network is trained to predict context, but in the process of doing so it develops a useful word embedding. 
+
+% A gram is a sequence of words (as in n-gram). A “skip-gram” allows you to skip over intermediate words so you can pair a target word with other words that are nearby in the sentence, not just immediately adjacent.
+
+Another approach to creating word embeddings is to use neural networks. A well-known example is Word2Vec \cite{mikolov2013distributed}, which trains a three-layer feed-forward neural network to predict the context for a word.\footnote{A code-based walk through of the algorithm is here: \url{https://www.tensorflow.org/tutorials/word2vec}. Predicting the surrounding context for a word (``skip-gram'') is just one flavor of word2vec. Some versions also predict words from context (``continuous bag of words''). } The input and output layers of this network have one node for each word in a vocabulary. The idea is to train a network to associate words with sets of words that tend to occur around them. For example, if we were drawing data from a book that said ``Students like going to UC Merced, it's a nice university'', we might train the network to associate ``Merced'' with its context words ``UC'', ``university'', and ``nice''.  In the actual training process, each of these associations is trained separately:
+\begin{itemize}
+\item ``Merced'' $\longrightarrow$ ``UC''
+\item ``Merced'' $\longrightarrow$ ``it's''
+\item ``Merced'' $\longrightarrow$ ``to''
+\end{itemize}
+
+This trains a network to produce associations between a one-hot representation of a word and a probability distribution over context words (a softmax activation function is used on the output to obtain probabilities). The hidden layer has far fewer dimensions than the input and output layers, so that we get a kind of compressed representation of the task of associating words with their context. The number of nodes in the hidden layer corresponds to the embedding dimension of the embedding Word2Vec produces.\footnote{The embedding dimensions are typically around 300D, but newer models might exceed 700D.}  After the network is trained on this task, activations in the hidden layer can be used as word embeddings. So the network is trained to predict context, but in the process of doing so it develops a useful word embedding. 
 
 Other variants of this approach include FastText \cite{bojanowski2016enriching}, which utilizes sub-tokens (character n-grams that make up a word, such as `ca' and `at' for `cat') in its representations to handle words that it might not have encountered during training (out-of-vocabulary terms), and GloVe \cite{pennington2014glove}, which predicts \textit{ratios} of co-occurrence probabilities from global statistical information, instead of directly predicting co-occurrence probabilities from local context as in Word2Vec. Unlike Word2Vec's local context approach, GloVe uses global co-occurrence statistics across the entire corpus to learn embeddings. 
 
