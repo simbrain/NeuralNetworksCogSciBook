@@ -339,12 +339,18 @@ example
 % dot product of a and b is norm or length of a times length of projection or shadow of on b
 % cosine similarity is the exact same but we've normalize both vectors
 
-% TODO Pictures
-The sign of the dot product tells us whether two vectors are pointing in the same direction, opposite directions, or are at right angles to or \glossary{orthogonal} to one another.\footnote{A useful interactive visualization of the dot product that can be used to confirm these ideas is available at \url{http://www.falstad.com/dotproduct/}.} If the dot product of $\textbf{u}$ and $\textbf{v}$ is greater than 0, then $\textbf{u}$ and $\textbf{v}$ are pointing ``in the same general direction'' in the sense the angle between them is less than 90 degrees.  If the dot product of $\textbf{u}$ and $\textbf{v}$ is less than 0, then $\textbf{u}$ and $\textbf{v}$ are pointing ``in the opposite general direction'' in the sense the angle between them is more than 90 degrees. When the dot product of two non-zero vectors $\textbf{u}$ and $\textbf{v}$ they are orthogonal (perpendicular) to each other: the angle between them is exactly 90 degrees.\footnote{They must be non-zero because if the product of any vector with the zero vector (the vector whose components are all $0$) is $0$. Moreover, if at least one of them is the zero-vector, there is no meaning to the idea that there is an angle between them.} It might be hard to tell right away that the vectors $(2,-1,1,-3,1,1)$, and $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation 
+The sign of the dot product tells us whether two vectors are pointing in the same direction, opposite directions, or are at right angles to or \glossary{orthogonal} to one another (see figure \ref{dotProductDirections}).\footnote{A useful interactive visualization of the dot product that can be used to confirm these ideas is available at \url{http://www.falstad.com/dotproduct/}.} If the dot product of $\textbf{u}$ and $\textbf{v}$ is greater than 0, then $\textbf{u}$ and $\textbf{v}$ are pointing ``in the same general direction'' in the sense the angle between them is less than 90 degrees.  If the dot product of $\textbf{u}$ and $\textbf{v}$ is less than 0, then $\textbf{u}$ and $\textbf{v}$ are pointing ``in the opposite general direction'' in the sense the angle between them is more than 90 degrees. When the dot product of two non-zero vectors $\textbf{u}$ and $\textbf{v}$ they are orthogonal (perpendicular) to each other: the angle between them is exactly 90 degrees.\footnote{They must be non-zero because if the product of any vector with the zero vector (the vector whose components are all $0$) is $0$. Moreover, if at least one of them is the zero-vector, there is no meaning to the idea that there is an angle between them.} It might be hard to tell right away that the vectors $(2,-1,1,-3,1,1)$, and $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation 
 shows us that it is true:
 \begin{eqnarray*}
            (2,-1,1,-3,1,1) \bullet (1,2,3,1,1,-1) = 0
 \end{eqnarray*}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.2]{./images/dotProductDirections.pdf}
+\caption[Scott Hotton.]{How to interpret the dot product geometrically. Vectors pointing in roughly the same direction have a positive dot product; vectors that are orthogonal have a dot product of 0;  vectors pointing in roughly opposite directions have a negative dot product.}
+\label{dotProductDirections}
+\end{figure}
 
 The dot product is sensitive to length of vectors (their norm, discussed below). For two vectors pointing in the same general direction, if you increase the length of either vector, their dot product will increase.\footnote{More specifically, the dot product of $\textbf{u}$ and $\textbf{v}$ is the product of the length of $\textbf{u}$ and the projected ``shadow'' of $\textbf{u}$ to $\textbf{v}$. Here again \url{http://www.falstad.com/dotproduct/} is useful.} Sometimes it is useful to have a measure that is not sensitive to the length of vectors, but only the angle between them. Cosine similarity, discussed below, is one such measure.
 
@@ -373,8 +379,7 @@ the square root of the dot product of the vector with itself: $||\mathbf{x}|| =
 of $(2,5)$ is $ \sqrt{(2,5) \bullet (2,5)} = \sqrt{2^2+5^2} =  \sqrt{29} \approx 5.385$. These vectors are 
 shown in the left panel of Fig. \ref{metricfig}. 
 
-% TODO: Pictures? 
-The process of normalizing a vector involves rescaling it so that its norm is 1.\footnote{Other types of rescaling are discussed in chapter \extref{ch_data_science}.} When all the vectors in a set of a vectors are normalized, they all lie on a hypersphere, and the main information they carry is the direction they point in. Here are some examples:
+The process of normalizing a vector involves rescaling it so that its norm is 1 (see figure \ref{normalizeVectors}).\footnote{Other types of rescaling are discussed in chapter \extref{ch_data_science}.} When all the vectors in a set of a vectors are normalized, they all lie on a hypersphere, and the main information they carry is the direction they point in. Here are some examples:
 \begin{description}
 \item $$\textbf{u} = (2,0), \;\; \|\textbf{u}\| = 2, \;\; 
 \frac{\textbf{u}}{\|\textbf{u}\|} = (1,0)$$
@@ -383,6 +388,13 @@ The process of normalizing a vector involves rescaling it so that its norm is 1.
 \item $$\textbf{w} = (1,1,1), \;\; \|\textbf{w}\| = \sqrt{3}, \;\; 
 \frac{\textbf{w}}{\|\textbf{w}\|} = \left(\tfrac{1}{\sqrt{3}}, \tfrac{1}{\sqrt{3}}, \tfrac{1}{\sqrt{3}}\right)$$
 \end{description}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.5]{./images/normalizingVectors.pdf}
+\caption[Scott Hotton.]{Normalizing vectors leaves their direction unchanged but scales their length to 1.}
+\label{normalizeVectors}
+\end{figure}
 
 % We are doing the same thing, taking the norm, but this time for the difference vector. See appendix
 Using the norm we can define the distance between any pair of vectors as the Euclidean distance is the norm of the difference between them (vector subtraction is defined in the appendix, but basically just involves subtracting corresponding components. 
