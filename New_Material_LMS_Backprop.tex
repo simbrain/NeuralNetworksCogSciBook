@@ -3,17 +3,16 @@
 
 \subsection{Derivation of the LMS rule}
 
-% Add this material and notes from lecture
 The nice thing about LMS is we can directly interpret it in terms of Goldilocks.
 
-All this can be shown using calculus. It's kind of amazing to turn the crank on the calculus, and see how it all works out giving us the rule above, with all the intuitive meaning. Run through the calculus, and we get our rule, which we saw above makes sense!
+All this can be shown using calculus. It's kind of amazing to turn the crank on the calculus, and see how it all works out giving us the rule above, with all the intuitive meaning. Run through the calculus, and we get our rule. 
 
-Conceptually, we are using the derivative of the error space. Since it's multi-dimensional, we call the derivative a gradient in this case. The gradient is a vector that points in the direction of change. This formulation is given at the end of the section. We want to change the weight so that error is reduced. Let's leave the bias out for now. Then we are taking the  derivative of this error function:
+Conceptually, we are computing the derivative of the error (let us suppose we are taking the sum of squared errors or SSE; that is $E = SSE$) with respect to the parameters. Assuming a training set specifying input and targets is given. Our error E is then a scalar value that varies with the parameters, the weights and biases. Since we have many parameters, the derivative of E with respect to all of them is a \emph{gradient} vector, an ordered list of partial derivatives of E with respect to each of $p_1,\dots, p_n$.  This is a vector that points in a direction tangent to the error surface, in a direction where changing the parameters has the biggest impact on the rate of change of error.  However, here we will assume the bias is fixed and only consider a single weight from an input to an output, to make things easier, and a training set with just one input-output pair.  In this case, error is just the squared difference between the target value and the output value relative to the input:
 
 \begin{eqnarray*}
 E = (t - a_2)^2  =  (t - ( a_1 w_{1,2} + b_2))^2  =  (t -  a_1 w_{1,2} -  b_2)^2 
 \end{eqnarray*}
-with respect to a weight $w_{1,2}$.  Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), and substituting, we get
+In this case the gradient reduces to a simple derivative of $E$ with respect to a weight $w_{1,2}$.  Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), and substituting, we get
 
 \begin{eqnarray*}
 \frac{dE}{dw_{1,2}} = 2 (t - a_1 w_{1,2} - b_2) (-a_1) =  -2 a_1 (t - a_1 w_{1,2} - b_2) =  -2 a_1 (t - a_2)
@@ -25,7 +24,7 @@ And since $t -  a_2$ is error $e_2$ we get
 \frac{dE}{dw_{1,2}} = -2 e_2 a_1
 \end{eqnarray*}
 
-This says that the change in error with respect to the weight is given by error times source activation times a constant. The 2 can be ignored, since we can think of it as being absorbed into the learning rate. Also, this gradient points in the direction of error increasing. But we want to go in the opposite direction, so that error is reduced (this is gradient descent, not gradient ascent). So we multiply the gradient by $-1$, changing its sign. And so our learning rule is 
+This says that the change in error with respect to the weight is proportional to the product of the error and the source activation. This motivates a rule where we adjust the weight proportionally to this derivative, using a learning rate. The 2 can be ignored, since we can think of it as being absorbed into the learning rate. Also, this gradient points in the direction of error increasing. But we want to go in the opposite direction, so that error is reduced (this is gradient descent, not gradient ascent). So we multiply the gradient by $-1$, changing its sign. And so our learning rule is 
 
 \begin{eqnarray*}
 \Delta w_{1,2}  =  \epsilon a_1 e_2  = \epsilon a_1 (t - a_2)
@@ -41,7 +40,7 @@ As an exercise, try deriving the rule for bias. Again the error function is
 \begin{eqnarray*}
 E =  (t - ( a_1 w_{1,2} + b_2))^2 
 \end{eqnarray*}
-but in this case we want to find $\frac{dE}{db_{2}}$.
+but in this case we want to find $\frac{dE}{db_{2}}$.\footnote{Answer: $\Delta b_j =  \epsilon (t - a_2)$.}
 
 Now let's add in the activation function $f$ and derive the weight-update rule. Now the error function is:
 
@@ -55,7 +54,7 @@ and so
 \frac{dE}{dw_{1,2}} = 2 (t - f(a_1w_{1,2} + b_2)) f'(a_1w_{1,2} + b_2) a_1 
 \end{eqnarray*}
 
-Subbing in $a_2 = f(a_1w_{1,2} + b_2))$, and recalling $n_2 = w_{1,2} + b_2$  and $t - a_2 = e_2$ 
+Substituting in $a_2 = f(a_1w_{1,2} + b_2))$, and recalling $n_2 = a_1w_{1,2} + b_2$  and $t - a_2 = e_2$ 
 
 \begin{eqnarray*}
 \frac{dE}{dw_{1,2}}  = 2 e_2 f'(n_2) a_1 
@@ -66,7 +65,7 @@ So the learning rule for weights is:
 \Delta w_{i,j}  =  \epsilon a_i e_j f'(n_j)
 \end{eqnarray*} 
 
-This is the same as before, but multiplied by the derivative of the activation function applied to to the net input (the weighted input to the node). We discuss this more below. 
+This is the same as before, but multiplied by the derivative of the activation function applied to the net input (the weighted input to the node). We discuss this more below. 
 
 Note that the derivative of the activation function $f'$ is like a free parameter in this formula. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. Situations like this allow backprop to be automated in a sense. But note that some derivatives have problems, like being undefined or 0, which effectively turns off update.
 
@@ -119,7 +118,7 @@ Our values are
 \begin{equation*}
 \epsilon = 1 \; \; \\
 \mathbf{a}_{\text{in}} = \begin{bmatrix} 0 \\ 1 \end{bmatrix} \\
-\mathbf{t} = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}
+\mathbf{t} = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} \\
 \mathbf{a}_{\text{out}} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}
 \end{equation*}
 
@@ -198,7 +197,7 @@ So the full rule for weights is
 And the full rule for biases is 
 
 \begin{eqnarray*}
-\Delta b_{j}  =  \epsilon b_j (t_j - a_j) f' (n_j)
+\Delta b_{j}  =  \epsilon (t_j - a_j) f' (n_j)
 \end{eqnarray*}
 
 Do both of these at each time step to update the network.
@@ -237,9 +236,9 @@ For a network with two node layers and one weight layer $\mathbf{W}$ with no act
 \end{eqnarray}
 $\mathbf{X}$ is a  $B \times n_{in}$ batch of inputs, where $B$ is the batch size and $n_{in}$ is the number of nodes in the input layer. Again, it's a kind of input table. $\mathbf{W}$ is transposed so that we get a shape of $n_{in} \times n_{out}$. This is the source-target representation we emphasized in the discussion of linear algebra (see section \extref{sourceTarget}), where columns correspond to fan-in weight vectors. This allows us to think of the product as a bunch of vector-matrix multiplications (or ``right multiplications'' since the matrix is on the right), where we peel off the rows of the input table $\mathbf{X}$ one at a time, multiply them by the weight matrix (dotting the rows with each column of $\mathbf{W}^T$), in each case producing an output row vector in $\mathbf{Y}$. As we move down the rows of the input table we stack up rows of the output table or output batch $\mathbf{Y}$, which has a shape of $B \times n_{out}$.
 
-To calculate error, we compare the output $\mathbf{Y}$ with a ``target table" (a batch of target values) $\mathbf{T}$. Subtracting the target values from the output activations gives us an error matrix:
+To calculate error, we compare the output $\mathbf{Y}$ with a ``target table" (a batch of target values) $\mathbf{T}$. Subtracting the output activations from the target values  gives us an error matrix:
 \begin{eqnarray}
-\mathbf{E} = \mathbf{Y} - \mathbf{T}
+\mathbf{E} = \mathbf{T} - \mathbf{Y}
 \end{eqnarray}
 where $\mathbf{E}$ also has a shape of $B \times n_{out}$.
 
