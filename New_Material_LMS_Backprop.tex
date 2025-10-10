@@ -7,18 +7,19 @@ The nice thing about LMS is we can directly interpret it in terms of Goldilocks.
 
 All this can be shown using calculus. It's kind of amazing to turn the crank on the calculus, and see how it all works out giving us the rule above, with all the intuitive meaning. Run through the calculus, and we get our rule. 
 
+% Possibly just drop most of the i,j subscripts in this section since it's clearly a 2 node network. 
 Conceptually, we are computing the derivative of the error (let us suppose we are taking the sum of squared errors or SSE; that is $E = SSE$) with respect to the parameters. Assuming a training set specifying input and targets is given. Our error E is then a scalar value that varies with the parameters, the weights and biases. Since we have many parameters, the derivative of E with respect to all of them is a \emph{gradient} vector, an ordered list of partial derivatives of E with respect to each of $p_1,\dots, p_n$.  This is a vector that points in a direction tangent to the error surface, in a direction where changing the parameters has the biggest impact on the rate of change of error.  However, here we will assume the bias is fixed and only consider a single weight from an input to an output, to make things easier, and a training set with just one input-output pair.  In this case, error is just the squared difference between the target value and the output value relative to the input:
 
 \begin{eqnarray*}
-E = (t - a_2)^2  =  (t - ( a_1 w_{1,2} + b_2))^2  =  (t -  a_1 w_{1,2} -  b_2)^2 
+E = (t_2 - a_2)^2  =  (t_2 - ( a_1 w_{1,2} + b_2))^2  =  (t_2 -  a_1 w_{1,2} -  b_2)^2 
 \end{eqnarray*}
 In this case the gradient reduces to a simple derivative of $E$ with respect to a weight $w_{1,2}$.  Using the chain rule (derivative of the outside part applied to the inside part, times the derivative of the inside part), and substituting, we get
 
 \begin{eqnarray*}
-\frac{dE}{dw_{1,2}} = 2 (t - a_1 w_{1,2} - b_2) (-a_1) =  -2 a_1 (t - a_1 w_{1,2} - b_2) =  -2 a_1 (t - a_2)
+\frac{dE}{dw_{1,2}} = 2 (t_2 - a_1 w_{1,2} - b_2) (-a_1) =  -2 a_1 (t_2 - a_1 w_{1,2} - b_2) =  -2 a_1 (t_2 - a_2)
 \end{eqnarray*}
 
-And since $t -  a_2$ is error $e_2$ we get
+And since $t_2 -  a_2$ is error $e_2$ we get
 
 \begin{eqnarray*}
 \frac{dE}{dw_{1,2}} = -2 e_2 a_1
@@ -27,7 +28,7 @@ And since $t -  a_2$ is error $e_2$ we get
 This says that the change in error with respect to the weight is proportional to the product of the error and the source activation. This motivates a rule where we adjust the weight proportionally to this derivative, using a learning rate. The 2 can be ignored, since we can think of it as being absorbed into the learning rate. Also, this gradient points in the direction of error increasing. But we want to go in the opposite direction, so that error is reduced (this is gradient descent, not gradient ascent). So we multiply the gradient by $-1$, changing its sign. And so our learning rule is 
 
 \begin{eqnarray*}
-\Delta w_{1,2}  =  \epsilon a_1 e_2  = \epsilon a_1 (t - a_2)
+\Delta w_{1,2}  =  \epsilon a_1 e_2  = \epsilon a_1 (t_2 - a_2)
 \end{eqnarray*} 
 
 Of course this generalizes, and so our general learning rule for weights is:
@@ -35,26 +36,26 @@ Of course this generalizes, and so our general learning rule for weights is:
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
 \end{eqnarray*} 
 
-As an exercise, try deriving the rule for bias. Again the error function is
+The rule for bias can be derived in a similar way. Again the error function is
 
 \begin{eqnarray*}
-E =  (t - ( a_1 w_{1,2} + b_2))^2 
+E =  (t_2 - ( a_1 w_{1,2} + b_2))^2 
 \end{eqnarray*}
-but in this case we want to find $\frac{dE}{db_{2}}$.\footnote{Answer: $\Delta b_j =  \epsilon (t - a_2)$.}
+but in this case we want to find $\frac{dE}{db_{2}}$. It is easy to check that the derivative is $-2(t_2 - a_2)$. As before, the negative sign means we go in the opposite direction for gradient descent, so after flipping the sign and absorbing the 2 into the learning rat, the bias update rule can be expressed $\Delta b_j = \epsilon (t_j - a_j)$. This follows the same Goldilocks principle as the weight rule: if the output is too low (target > actual), the bias increases; if the output is too high, the bias decreases.
 
 Now let's add in the activation function $f$ and derive the weight-update rule. Now the error function is:
 
 \begin{eqnarray*}
-E =  (t - f(a_1w_{1,2} + b_2))^2   
+E =  (t_2 - f(a_1w_{1,2} + b_2))^2   
 \end{eqnarray*}
 
 and so
 
 \begin{eqnarray*}
-\frac{dE}{dw_{1,2}} = 2 (t - f(a_1w_{1,2} + b_2)) f'(a_1w_{1,2} + b_2) a_1 
+\frac{dE}{dw_{1,2}} = 2 (t_2 - f(a_1w_{1,2} + b_2)) f'(a_1w_{1,2} + b_2) a_1 
 \end{eqnarray*}
 
-Substituting in $a_2 = f(a_1w_{1,2} + b_2))$, and recalling $n_2 = a_1w_{1,2} + b_2$  and $t - a_2 = e_2$ 
+Substituting in $a_2 = f(a_1w_{1,2} + b_2)$, and recalling $n_2 = a_1w_{1,2} + b_2$  and $t_2 - a_2 = e_2$ 
 
 \begin{eqnarray*}
 \frac{dE}{dw_{1,2}}  = 2 e_2 f'(n_2) a_1 
@@ -63,6 +64,11 @@ Substituting in $a_2 = f(a_1w_{1,2} + b_2))$, and recalling $n_2 = a_1w_{1,2} + 
 So the learning rule for weights is:
 \begin{eqnarray*}
 \Delta w_{i,j}  =  \epsilon a_i e_j f'(n_j)
+\end{eqnarray*}
+
+And similarly, the learning rule for biases is:
+\begin{eqnarray*}
+\Delta b_{j}  =  \epsilon e_j f'(n_j)
 \end{eqnarray*} 
 
 This is the same as before, but multiplied by the derivative of the activation function applied to the net input (the weighted input to the node). We discuss this more below. 
@@ -71,7 +77,7 @@ Note that the derivative of the activation function $f'$ is like a free paramete
 
 Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less. It doesn't matter as much. Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all. Again see below.
 
-We can end by expressing this rule in terms of movement in parameter space in a direction away from the direction of steepest ascent.  This is a concise way to express what gradient descent is using notation from vector calculus. But it need not be intimidating, it's just a way to arrange the symbols. A gradient vector is  a vector of partial derivatives with respect to some variable, here error.  The gradient $\nabla L$ of the loss or error function is a multi-dimensional derivative of the error with respect to a vector containing all the weights and biases. It points in the direction in the parameter space where changes will make error go up the most.  So gradient descent basically moves that vector in the opposite direction by an amount given by the learning rate $\epsilon$,  $-\;\epsilon\,\nabla L$. That is, start with a vector (potentially a massive one, in a modern neural network) of parameters:
+As a transition to the next section, we can express this rule in terms of movement in parameter space in a direction away from the direction of steepest ascent.  This is a concise way to express what gradient descent is using notation from vector calculus. But it need not be intimidating, it's just a way to arrange the symbols. The gradient vector is a vector of partial derivatives of the error (or loss) with respect to the parameters. The gradient $\nabla L$ of the loss or error function is a multi-dimensional derivative of the error with respect to a vector containing all the weights and biases. It points in the direction in the parameter space where changes will make error go up the most.  So gradient descent basically moves that vector in the opposite direction by an amount given by the learning rate $\epsilon$,  $-\;\epsilon\,\nabla L$. That is, start with a vector (potentially a massive one, in a modern neural network) of parameters:
 \begin{eqnarray*}
   \mathbf{w} = \bigl(w_1, w_2, \dots, w_n\bigr).
 \end{eqnarray*}
@@ -158,68 +164,18 @@ We can now check that it works. Remember, think of the column vector on the righ
 = \begin{bmatrix} 1 \\ 0 \\ 1  \end{bmatrix}
 \end{align*}
 
-% Add exercizes here, use Mak and David examples.
 So now I suggest you try some examples of your own. Come up with your own training set, apply the rule and see if you can run this a few times. 
 
-\subsection{Bias}
+\subsection{Vectorized LMS with Bias and Activation Functions}
 
-To add bias updates in, we just vectorize the bias update rule, which has the same form as the scalar rule, since it's just elementwise.
-
-\begin{eqnarray*}
-\Delta \mathbf{b}  =  \epsilon (\mathbf{t} - \mathbf{a}_{out})
-\end{eqnarray*}
-
-So at each iteration, we change the bias vector just in the direction of the error vector. Remember goldilocks. When things are too hot, cool them down. Etc.
-
-\subsection{Activation functions}
-
-The full LMS rule also involves a derivative on the activation function. These derivatives can be understood pretty intuitively if we look at those again. See figure \ref{derivativesActFunctions}. The derivative for the threshold function is 0 everywhere except at the threshold where it is undefined (this was a problem for Rosenblatt). The derivative for the piecewise linear is 0 above and below the upper and lower bounds and the slope (usually 1) of the function in between those bounds. For the sigmoid it's close to what it is for piecewise linear, approaching 1 as net input is large or small and the slope at the inflection point in the middle, but we do need a formula for it.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.75\textwidth]{images/graph_binary.pdf}
-\caption[Jeff Yoshimi.]{The activation functions. The derivative is either 0 or the slope or close to the slope in most cases. }
-\label{derivativesActFunctions}
-\end{figure}
-
-So how to work this into the LMS error update?
-
-First, recall from chapter \extref{ch_act_functions} that the weighted input to a node $j$ is denoted $n_j$. This is the same as the activation of a linear unit. Its weights times input activations plus a bias. An activation function $f$ then transformed this weighted inputs, so that $a_j = f(n_j)$. When we incorporate activation functions we have to keep $a_j$ and $n_j$ separate so just get that clear before moving on.
-
-Ok, and recall from the derivation that error update with an activation function involves the same as before multiplied by with the derivative of the activation function applied to the net input. Intuitively it's like we scale the error that we use to scale the weights and biases with a factor corresponding to how much the activation function changes things.\footnote{This is a problem with RELU, known as the ``dying Relu" problem.}  It's also why Rosenbatt's perception was limited; binary are 0 derivative everywhere so their weights never change using this rule, and so he had to come up with a kind of ad hoc solution.
-
-So the full rule for weights is
+To incorporate bias updates and activation functions in the vectorized case, we use the Hadamard product ($\odot$) for elementwise multiplication:
 
 \begin{eqnarray*}
-\Delta w_{i,j}  =  \epsilon a_i (t_j - a_j) f' (n_j)
-\end{eqnarray*}
-
-And the full rule for biases is 
-
-\begin{eqnarray*}
-\Delta b_{j}  =  \epsilon (t_j - a_j) f' (n_j)
-\end{eqnarray*}
-
-Do both of these at each time step to update the network.
-
-\subsection{The Vectorized LMS rule with Activation Functions}
-
-% TODO: This is now a bit redundant with the material above
-To express this all in vectorized form we have to take the individual entries and see what happens when we express the ideas using vectors.  Again it's a kind of bookkeeping exercise. Here is what we get:
-
-\begin{eqnarray*}
-\Delta \mathbf{W}  =  \epsilon ((\mathbf{t} - \mathbf{a}_{\text{out}}) \odot f'( \mathbf{n}_{\text{out}})) \mathbf{a}_{\text{in}}^T
-\end{eqnarray*}
-Where $\odot$ is component-wise or Hadamard product (see section \extref{hadamard}). That is, we take a column vector of errors $\mathbf{t} - \mathbf{a}_{\text{out}}$, and multiply elementwise by a same-shaped column vector of derivatives applied to weighted inputs $f'( \mathbf{n}_{\text{out}})$, effectively scaling each component of the error by the corresponding derivative. 
-
-We then matrix multiply the resulting column vector of scaled errors by a row vector of source activations $ \mathbf{a}_{\text{in}}^T$, and the result is a matrix of weight deltas with the right shape. This is sometimes called an ``outer product'', where a $n_{out} \times 1$ scaled error vector is multiplied by a  $1 \times n_{in}$ vector if input activations, producing an $n_{out} \times n_{in}$ matrix of weight deltas. The whole thing is then scaled by the learning rate $\epsilon$.
-
-For the vector of biases we have:
-
-\begin{eqnarray*}
+\Delta \mathbf{W}  =  \epsilon ((\mathbf{t} - \mathbf{a}_{\text{out}}) \odot f'( \mathbf{n}_{\text{out}})) \mathbf{a}_{\text{in}}^T \\
 \Delta \mathbf{b}  =  \epsilon (\mathbf{t} - \mathbf{a}_{\text{out}}) \odot f'( \mathbf{n}_{\text{out}})
 \end{eqnarray*}
-We're basically just changing the vector of biases by the error vector scaled by the derivatives, and leaving out the step where we consider input activations.
+
+Where $\mathbf{n}_{\text{out}}$ is the vector of weighted inputs to the output layer, and $f'$ is applied elementwise. The intuition is the same as before: we scale our error corrections by how much the activation function is changing things. When the activation function is steep (large derivative), we make bigger weight changes. When it's flat (small derivative), we make smaller changes. For weights, we scale the error vector by the activation function derivatives, then take the outer product with input activations to get our weight update matrix. For biases, we simply scale the error vector by the derivatives—no need to consider input activations since biases don't depend on them.
 
 \subsection{Batch version of the rule}
 
