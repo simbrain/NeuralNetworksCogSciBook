@@ -346,9 +346,9 @@ network, ultimately becoming next-token predictions. Thus the repeated ``you''
 will change its representation as it is processed. This may seem confusing at
 first; don't the numbers get all jumbled up when we matrix multiply? But recall
 the discussion of matrix multiplication and the ``row processing'' perspective
-(section \extref{matrixMultiplication}), where we can view think of a matrix
+(section \extref{matrixMultiplication}), where we can view a matrix
 multiplication as taking a stack of $N$ row vectors on the left, multiplying
-them by a matrix produces on the right, to produce another stack of $N$ row
+them by a matrix on the right, to produce another stack of $N$ row
 vectors, each of which has been \emph{separately processed} by the matrix on
 the right. As a result, we can separately track the transformations a token's
 vector representation goes through as it makes its way through a network.  We
@@ -537,7 +537,7 @@ projection and down projection). A residual connection (or \glossary{skip connec
 The stack of token representation input to the block is also multiplied by a ``value'' matrix $\textbf{V}$, producing a stack of value vectors. The matrix of self-attention scores is then used to scale these value vectors. The attention scores determine how much of the value from a given past token should be passed along through the network \cite{beckmann2025mechanistic}. In a sense the value vectors carry the main information from the inputs, and the attention scores act as a kind of filter deciding which context information is important to be passed along within a given head at a given block. In a sense it learns what to focus on (hence ``self attention'').
 
 Once processed through the attention mechanism, activations from all the heads are combined and processed by a
-feed-forward network, an MLP, whose hidden layers is typically higher
+feed-forward network, an MLP, whose hidden layer is typically higher
 dimensional than the input. The MLP plays an important role. It contains more
 weights than the rest of the block. It can be helpful to see the transformer
 block as basically made up of these two functional pieces, together: the
