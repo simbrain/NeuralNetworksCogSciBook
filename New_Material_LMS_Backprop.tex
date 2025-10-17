@@ -179,13 +179,13 @@ Where $\mathbf{n}_{\text{out}}$ is the vector of weighted inputs to the output l
 
 \subsection{Batch version of the rule}
 
-In many neural network implementations, computations are applied to batches of data. In this setup, inputs are not passed through a network as single column vectors, but whole batches are (see section X). This is much more computationally efficient and leverages the power of modern hardware like GPUs which are optimized for matrix computations.  It thus helps to be able to think in terms of batches being processed.
+In many neural network implementations, computations are applied to batches of data. In this setup, inputs are not passed through a network as single column vectors, but whole batches are. This is more computationally efficient and leverages hardware optimization for matrix computations.  It thus helps to be able to think in terms of batches being processed.
 
 By convention, batches are matrices where the rows are input vectors (or target vectors, output vectors, etc.), and so they have shape $B \times n$, where $B$ is the batch size and $n$ is the size of the input vectors. This is nice and easy to think about; basically the batches are little input tables (or output tables, etc; see section \extref{datasets}).
 
 % Refer back to the AB = C discussion in linear algebra
 
-For a network with two node layers and one weight layer $\mathbf{W}$ with no activation function (that is, unbounded linear nodes), the forward pass is computed like this:
+For a network with two node layers and one weight layer $\mathbf{W}$, and with unbounded linear nodes, the forward pass is computed like this:
 
 \begin{eqnarray}
 \mathbf{Y} = \mathbf{X} \mathbf{W}^T
@@ -196,7 +196,7 @@ To calculate error, we compare the output $\mathbf{Y}$ with a ``target table" (a
 \begin{eqnarray}
 \mathbf{E} = \mathbf{T} - \mathbf{Y}
 \end{eqnarray}
-where $\mathbf{E}$ also has a shape of $B \times n_{out}$.
+where $\mathbf{E}$ also has the shape $B \times n_{out}$.
 
 Now for backprop. The gradient of the loss with respect to the output activations in $\mathbf{Y}$ is proportional to the error matrix $\mathbf{E}$. If we are averaging the loss over the batch, this outer gradient becomes:
 
@@ -221,7 +221,7 @@ Here, $\mathbf{E}^T$ has a shape of $n_{out} \times B$, and $\mathbf{X}$ has a s
 
 % Make this a separate section on decomposing this kind of product into a sum of outer products?
 % This packs what we get in SGD into matrix math.  We are just adding the weight deltas together.  That is apparent in the summation below. So in a sense there is no dependency between rows. That is surprising when you just see this mass of numbers interacting.  And some of that carries over to transformers where the stacks of vectors maintain their identities through all the processors. See the matrix product discussion in linear algebra.
-A brief interlude: this can be a bit confusing but one helpful way to think of it is as a sum of outer products of the kind we saw in the vectorized hebb rule and the vectorized (but not batched) LMS rule. The matrix product $\mathbf{E}^T \mathbf{X}$ can be expanded as a sum of outer products of each error vector $\mathbf{e}_i$ (rows of $\mathbf{E}$) and input vectors $\mathbf{x}_i$ (rows of $\mathbf{X}$). When we index like that, this identity holds:
+One helpful way to think of this formula is as a sum of outer products of the kind we saw in the vectorized hebb rule and the vectorized (but not batched) LMS rule. The matrix product $\mathbf{E}^T \mathbf{X}$ can be expanded as a sum of outer products of error vectors $\mathbf{e}_i$ (rows of $\mathbf{E}$) and input vectors $\mathbf{x}_i$ (rows of $\mathbf{X}$). When we index like that, this identity holds:
 \begin{eqnarray}
 \mathbf{E}^T \mathbf{X} = \sum_{i=1}^{B} \mathbf{e}_i^T \mathbf{x}_i
 \end{eqnarray}
