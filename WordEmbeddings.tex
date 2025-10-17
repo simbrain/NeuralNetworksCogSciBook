@@ -21,8 +21,8 @@ Linguistics is the study of language, which can be organized in terms of scale, 
 \item Phonetics and phonology: the study of speech sounds.
 \item Morphology: the study of words and word forms.
 \item Syntax: the study of the structure or grammar, usually at the sentence level.
-\item Semantics as the study of meaning, which can be at a variety of levels (words, phrases, sentences).
-\item Pragmatics as the study of intentional meaning or implied meaning, such as implicit maxims and rules of conversations. 
+\item Semantics: the study of meaning, which can be at a variety of levels (words, phrases, sentences).
+\item Pragmatics: the study of intentional meaning or implied meaning, such as implicit maxims and rules of conversations. 
 \end{enumerate}
 
 All of these levels have been studied using computational linguistics, and most of them have been studied in relation to neural networks. In some cases, features at these levels are used to generate vector representations of linguistic data (for example, word embeddings, the focus of this chapter). In other cases, neural networks have been used to analyze structures at these levels. Here is some more information on each level and their relevance to neural networks.
@@ -136,7 +136,7 @@ Here is an example that illustrates the idea that words with similar meanings sh
 
 Several ways of producing a co-occurrence based word embeddings are discussed in the following sections. Generally speaking, word embeddings are trained on a large text corpus. The resulting embeddings are often quite large, so dimensionality reduction can be used to create lower-dimensional embeddings. 
 
-Note that in most co-occurrence-based word embeddings that the columns themselves (the dimensions of the vector space) don't have any clear interpretable meaning. In some methods the vectors associated with words initially correspond to word-word co-occurrences, but after transformations and dimensionality reduction they lose interpretability. What matters is the pattern across the rows of the matrix, because the relative semantic relationships between tokens are encoded in this semantic space. 
+Note that in most co-occurrence-based word embeddings that the columns themselves (the dimensions of the vector space) don't have any clear interpretable meaning. In some methods the vectors associated with words initially correspond to word-word co-occurrences, but after transformations and dimensionality reduction they lose interpretability. What matters is the pattern across the rows of the matrix, because the relative semantic relationships between tokens are encoded by relative `distances' in this semantic space. 
 
 The nice thing, again, is that we can actually picture these by projecting from the high dimensional embedding space to two dimensions and then literally see the distance relationships between tokens, as in figure \ref{f:writerPainterExample}. The generated embedding space is much like our own semantic space \cite{lewis2019distributional}, with the advantage that we can track and compare word meanings mathematically and visually.
 
@@ -236,9 +236,7 @@ How do we know that a given word embedding accurately captures the meaning of a 
 % Work a bit on this
 However, recent models (pre-LLM) have reached or surpassed human performance on tasks such as similarity evaluation. In response to this situation, Felix Hill and colleagues \cite{hill2015simlex} set out to create a standard that separates similarity from association (previous standards had ignored the distinction). Association refers to relatedness between two concepts, whereas similarity refers (almost) to synonymy. For example, ``car'' and ``tire'' would be considered associated but not similar, while ``glasses'' and ``spectacles'' are similar. While these issues are less prominent with LLMs, research remains active creating new and better benchmarks for model evaluation \cite{bugliarello2023measuring}.
 
-Corpus quality also has an impact on model performance. Larger training corpora generally improve the quality of the derived embeddings, since the increased amount of data ideally adds more context to be processed. GloVe embeddings are trained on various training corpora, varying from 1 billion tokens to 42 billion tokens \cite{pennington2014glove}.
-
-Besides the amount or size of the training corpora, the type of documents is also important; training solely on works of fiction would lead to different embeddings than a model trained on non-fiction, and so on.
+Corpus quality also has an impact on model performance. Larger training corpora generally improve the quality of the derived embeddings, since the increased amount of data ideally adds more context to be processed. GloVe embeddings are trained on various training corpora, varying from 1 billion tokens to 42 billion tokens \cite{pennington2014glove}. Besides the amount or size of the training corpora, the type of documents is also important; training solely on works of fiction would lead to different embeddings than a model trained on non-fiction, and so on.
 % It is important to consider the meaning you are trying to capture (generalized or specific to a field, such as medical documents).
 
 % If we start in-lining appendices, this can be an appendix
