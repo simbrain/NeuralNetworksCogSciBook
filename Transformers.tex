@@ -140,20 +140,17 @@ science is only now being studied, so updates to this chapter are expected.
 
 \section{In-Context Processing}\label{inContext}
 
-Thus far in the book we have focused entirely on learning via updates to weight
+Thus far in the book we have focused on learning via updates to weight
 and biases, that is, learning via incremental updates to the parameters of a neural
-network. Indeed, the distinction between performance and learning was made
-central to the entire book in the introduction (section
+network. The distinction between performance and learning was made
+central in the introduction (section
 \extref{performanceLearning}). LLMs are no exception; they learn via updates to their billions or trillions of
-parameters, as we are about to see.
-
-However, LLMs have a remarkable feature that sets them apart from other neural
+parameters. However, LLMs have a remarkable feature that sets them apart from other neural
 network models: an ability to process a great deal of information ``live'', in
 what is known as their \glossary{context window} or more concisely, their ``context''.\footnote{Usage has not stabilized yet, and these two terms are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of their power. Without any weight training, they
 can reason their way through a problem or innovate a new idea. When further
-extended with the ability to do things like search the internet (see ``agentic
-systems'' in section \ref{transformersInPractice}) or prompted to take down
-notes to itself (see ``prompt engineering'' in section
+extended with the ability to do things like search the internet or prompted to take notes (see ``agentic
+systems'' and ``prompt engineering'' in section
 \ref{transformersInPractice}), LLMs can be quite powerful.
 % Reasoning is now discussed in the ai alignment
 
@@ -303,10 +300,8 @@ would normally be broken up into multiple tokens: \texttt{un} and
 complication here to keep things simple. More on tokenization in chapter
 \extref{ch_word_embeddings}.} This table is a matrix where each row corresponds
 to the token embedding for one token; it has the shape (sequence size,
-embedding dimension) and it is the actual input to the neural network. So
-unlike earlier, simpler neural networks, which transformed vectors to vectors
-via weight matrices, here we are transforming \emph{stacks} of vectors by
-matrices. In this way we continue to make use of the ``row processing'' perspective introduced in section \extref{matrixMultiplication}.\footnote{What is actually fed to the transformer is a batch of these
+embedding dimension) and it is the actual input to the neural network. The network transforms \emph{stacks} of vectors by
+weight matrices. In this way we continue to make use of the ``row processing'' perspective introduced in section \extref{matrixMultiplication}.\footnote{What is actually fed to the transformer is a batch of these
 token embedding matrixes, that is a rank-3 tensor with shape (batch size,
 sequence size, embedding dimension); see section \extref{sect_tensors}).}
 
@@ -529,8 +524,8 @@ block, with a single attention head. The matrix (or tensor) of activations input
 the block is processed by three matrices: $\textbf{K}$, $\textbf{Q}$, and
 $\textbf{V}$.  $\textbf{K}$ and $\textbf{Q}$ are used to generate a
 matrix of self attention scores. Since the scores are generated on the fly at inference time, they are shown with a lighter shade of gray. These scores are used to filter the value vectors that result when the input is processed through $\textbf{V}$. The MLP
-typically involves a hidden node layer with non-linear activation functions, that is larger than the input (hence the up
-projection and down projection). A residual connection (or \glossary{skip connection}) connects the input to the attention block with its output, and another one connects the input to the MLP with its output. (Right) It can be useful to think of the residual connections as forming a single ``residual stream'' (the straight vertical line), which the attention heads and MLP read to and write from. Components with stored parameters are shown in bold face.}
+typically involves a hidden node layer with a non-linear activation function, that is larger than the input (hence the up
+projection and down projection). A residual connection (or skip connection) connects the input to the attention block with its output, and another one connects the input to the MLP with its output. (Right) It can be useful to think of the residual connections as forming a single residual stream (the straight vertical line), which the attention heads and MLP read to and write from.}
 \label{transformerBlockSimple}
 \end{figure}
 
@@ -549,7 +544,7 @@ perform arbitrary operations on that curated information.
 There is one skip (or residual) connection that ``jumps'' from the input to the attention heads to their combined output, and then a second connection from the input to the output of the MLP. As a result we can think of the transformer block as reading
 from and writing to a single \glossary{residual stream} of activations in a
 latent space \cite{elhage2021mathematical, milliere2024philosophical2} whose
-dimension is the embedding dimension (recall the discussion in section
+dimension is the embedding dimension (these ideas are developed in detail in section
 \extref{flowDiagrams}).\footnote{The concept of a residual comes from statistics, where it describes how far data lies from a model, for example a regression line. The idea
 here is that rather than transforming information completely from one layer to
 the next,  the layers just produce ``deltas'' on a single stream of
@@ -955,25 +950,29 @@ for two words:
 
 \begin{center}
 \begin{minipage}{0.45\linewidth}
-\begin{tabbing}
-``affair'' \\
-\hspace{1em}Human:\quad \= 2.438 \\
-\hspace{1em}GPT-3.5:\> 3.98 \\
-\hspace{1em}GPT-4:\> 4.05 \\
-\hspace{1em}GPT-4o:\> 3.1 \\
-\hspace{1em}Gemini1.5:\> 3.8
-\end{tabbing}
+\centering
+``affair''\\[6pt]
+\begin{tabular}{@{}lr@{}}
+\textbf{Model} & \textbf{Score}\\\hline
+Human & 2.438\\
+GPT-3.5 & 3.98\\
+GPT-4 & 4.05\\
+GPT-4o & 3.10\\
+Gemini 1.5 & 3.80\\
+\end{tabular}
 \end{minipage}
 \hspace{0.05\linewidth}
 \begin{minipage}{0.45\linewidth}
-\begin{tabbing}
-``bead'' \\
-\hspace{1em}Human:\quad \= 5.394 \\
-\hspace{1em}GPT-3.5:\> 5.35 \\
-\hspace{1em}GPT-4:\> 5.3 \\
-\hspace{1em}GPT-4o:\> 5.38 \\
-\hspace{1em}Gemini 1.5:\> 5.4
-\end{tabbing}
+\centering
+``bead''\\[6pt] 
+\begin{tabular}{@{}lr@{}}
+\textbf{Model} & \textbf{Score}\\\hline
+Human & 5.394\\
+GPT-3.5 & 5.35\\
+GPT-4 & 5.30\\
+GPT-4o & 5.38\\
+Gemini 1.5 & 5.40\\
+\end{tabular}
 \end{minipage}
 \end{center}
 
@@ -1005,8 +1004,8 @@ sentences containing incongruous words when those words are semantically close
 to congruous words), amongst others.
 
 Some differences also emerge in this type of study.  For example, LLMs don't
-seem to exhibit a preference for efficient language use, such as selecting the
-shorter of two synonymous words (e.g., ``math'' versus ``mathematics'').
+always seem to exhibit a preference for efficient language use, such as selecting the
+shorter of two synonymous words, e.g.,  ``math'' versus ``mathematics''  \cite{cai2023do} (in contrast,  \cite{RyskinEtAl2025EfficientAudienceDesign} found evidence for efficient language use in LLMs on an audience design task).
 Similarly,  LLMs did not appear to resolve syntactic ambiguity in accordance
 with efficient signal use, seen in humans. For example, humans have a tendency
 to interpret ambiguous modifying expressions such as ``with the leash'' in
@@ -1029,7 +1028,7 @@ finding mirrors behavioral evidence that semantic judgments about color terms
 are highly similar between congenitally blind and sighted individuals
 \cite{marmor1978age, saysani2018colour}. Indeed, blind individuals have been
 shown to possess rich visual knowledge, indicating that some aspects of
-'embodied' experiences are available in the structure and use of language
+``embodied'' experiences are available in the structure and use of language
 \cite{kim2019knowledge, liu2025learning}. Liétard et al. find that LLMs can
 predict relative geographic distances between cities \cite{lietard2021do}.
 Christiansen et al. report that LLMs organize concepts in ways that correlate
