@@ -29,11 +29,10 @@ non-word entities) and ``word'', which is more intuitive.} They are trained on
 large datasets of everyday text, like text from the internet, which is easily
 available. As noted in section \extref{age_generative_ai}, it is common to
 equate ``transformer'' with ``LLM'', but the two concepts are distinct. The
-transformer is the neural network architecture, while an LLM is just any model
-of language generation that is based on a large dataset. An LLM can be built
-out of something besides a transformer, and transformers can be used on things
-besides language. For example, some state-of-the-art image classification
-models are now transformer-based, and OpenAI has released an impressive video
+transformer is a neural network architecture, while an LLM is any model
+of language generation trained on a large dataset. An LLM can be built
+out of something besides transformers, and transformers can be generate non-linguistic data. For example, some state-of-the-art image classification
+models are now transformer based, and OpenAI has released an impressive video
 generation model---Sora, which also runs on a transformer architecture.
 However, in this chapter we focus on transformer-based models of text
 generation like GPT.\footnote{There are many other models in this class. As of
@@ -181,7 +180,7 @@ reasonably sized context.}
 % apparatus can impact your behaviors.
 
 % Maybe promote the email below or use it in the cog-sci section of the chapter
-In-context learning is new capability of neural networks that has only just begun to
+In-context learning is a new capability of neural networks that has only just begun to
 be explored, especially as it relates to cognitive science.\footnote{An old critique of neural networks, going back to the 1980s, was that that while humans can learn things in a single trial, neural networks could not \cite{schneider1988structure}. Decades later, transformers have shown that neural networks \emph{can} learn things in a single trial, albeit in networks that are in many ways different from the human brain. It is not currently know how psychologically or neurally realistic these forms of learning are in LLMs.} Having said that,
 traditional parameter-based learning is still the basis of much of the power of
 LLMs, and so we turn to that now.
@@ -1174,7 +1173,7 @@ pass the Turing Test.\footnote{An extensive and helpful review of philosophical
 issues through 2024 is \cite{milliere2024philosophical1,
 milliere2024philosophical2}. Multiple new papers on topics relating to AI
 appear each week at \url{philPapers.org} so the areas is quite active.} That
-this was done by a neural networks has been seen by many as a decisive win for
+this was done by a neural network has been seen by many as a decisive win for
 connectionism relative to the old debate about whether neural networks or
 symbolic architectures are best-suited to modeling cognition (see section
 \extref{cog_rev}), but that has not settled the issue. We here review  a
