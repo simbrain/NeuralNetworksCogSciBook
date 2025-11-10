@@ -44,18 +44,18 @@ The key idea with a deep network is to use a special type of weight layer called
 \end{figure}
 
 % Expand on weight sharing and add glossary item. Discuss the fact that this is not neurally realistic and ways to understand that.
-The set of weights in a convolutional layer are called a \glossary{filter} or \textbf{kernel}. The weights in a filter are scanned over the source layer to produce outputs. This is a new idea. Rather than a fixed set of weights in a fully-connected weight layer, we have a small set of weights that are reused or shared during the scanning operation (this is also known as ``weight sharing'').
+The set of weights in a convolutional layer is called a \glossary{filter} or \textbf{kernel}. The weights in a filter are scanned over the source layer to produce outputs. This is a new idea. Rather than a fixed set of weights in a fully-connected weight layer, we have a small set of weights that are reused or shared during the scanning operation (this is also known as ``weight sharing'').
 
  The source layer of a convolutional layer is often a 2d array, prototypically an input image, and so we can think of source layer activations as pixels and the source layer as a pixel array or input volume (even when the input is not an image, this language is useful). Filters are like small pixel patterns that we slide across the whole pixel array, which ``light up'' most when they are on top of a similar pixel pattern. The filter can be thought of as if it were moved from left to right and top to bottom of the pixel array. At each stage of the scanning process, it is multiplied by the patch or ``receptive field''  of the pixel array it is on top of.\footnote{To get a better feel for how this works videos are helpful. A good place  to start is with the first animated gif here: \url{https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks}. This video is also great: \url{https://youtu.be/KuXjwB4LzSA}. Also note that in practice this operation is done in parallel: separate processors handle each multiplication.} The multiplication is a dot product (see chapter \extref{ch_linear_algebra}), where each weight in the filter is multiplied by the corresponding activation of the pixel array, and the results are added together. Recall that the dot product computes something like a similarity score: the more the filter and the pixels match, the greater the dot product will be. Each dot product is used to populate one activation in the target layer. Thus, the convolutional layer computes a kind of \emph{sliding dot product} with the source activations, which highlights where the filter matches the pixel array.
  
  The number of pixels the filter moves at each step is called the \glossary{stride}. Strides can be different in different directions, but we will assume they are the same in all directions. One issue that comes up is the edges, which the filter can't be passed over. To handle this, \glossary{padding} can be added to the input volume, in the form of extra zeros around the edges of the input pixel array. This can be done in such a way that the output volume ends up having the same shape as the input volume (more on this below).\footnote{This page contains an interactive tool that can be used to understand these concepts: \url{https://distill.pub/2019/computing-receptive-fields/}.}
 
 % Reference
-In practice, convolutional layers operate on a set of matrices  (an input ``volume'') or a batch of these volumes (a 3d or 4d array; a rank 3 or 4 tensor; see section \extref{sect_tensors}). The output is often also a volume or batch of volumes. How filters work on volumes is discussed below; we start with the simple case where the input and output of the convolutional layer are matrices, which, again, we refer to as a pixel array and feature map.
+In practice, convolutional layers operate on a \emph{set} of matrices  (an input ``volume'') or a batch of these volumes (a 3d or 4d array; a rank 3 or 4 tensor; see section \extref{sect_tensors}). The output is often also a volume or batch of volumes. How filters work on volumes is discussed below; we start with the simple case where the input and output of the convolutional layer are matrices.
 
-The idea is illustrated in figures \ref{cnn_filter} and \ref{cnn_workedExample}. In this example, all the numbers are included so you can easily check how the computations are done. A $3 \times 3$ filter is passed over a pixel array, from left to right and top to bottom. At each moment during this scanning process, the dot product is computed between the filter and its receptive field in the source matrix (the part of the image the filter is on top of). Since the input image and the filter are both binary, the dot product simply counts how many places the filter overlaps its receptive field as it is scanned over the image. In the example shown, it overlaps in one place, in the bottom right of the filter. So that entry in the target layer is populated with a $1$. Notice that this filter produces the highest value of $3$ only when it is directly on top of the line in the source layer. Try to understand how all the target layer activations are computed. You can also try to work out what would happen if the filter were changed, or if the image were changed.
+The idea is illustrated in figures \ref{cnn_filter} and \ref{cnn_workedExample}.\footnote{The code used to generate figure \ref{cnn_workedExample} is available online, and can be used to edit a small filter and kernel to get a feel for how they produce a feature map. See: \url{https://colab.research.google.com/drive/1ywr3z8HRXYNPK-vd34kAATUPVWwwFqQE?usp=sharing}.} In this example, all the numbers are included, so you can easily check how the computations are done. A $3 \times 3$ filter is passed over a pixel array, from left to right and top to bottom. At each moment during this scanning process, the dot product is computed between the filter and its receptive field in the source matrix (the part of the image the filter is on top of). Since the input image and the filter are both binary, the dot product simply counts how many places the filter overlaps its receptive field as it is scanned over the image. In the example shown, it overlaps in one place, in the bottom right of the filter. So that entry in the target layer is populated with a $1$. Notice that this filter produces the highest value of $3$ only when it is directly on top of the line in the source layer. Try to understand how all the target layer activations are computed. You can also try to work out what would happen if the filter were changed, or if the image were changed.
 
-The output of a convolutional layer is called a \glossary{feature map}. In these examples, the filter is an edge detector, which detects edges at a $-45^\circ$ angle, that is, edges shaped like a backslash `\textbackslash'. In the resulting feature map, notice that the activation is highest when the filter is directly on top of the backslash shape in the happy face, but also produces some activation wherever it is on top of any kind of active pixel. Thus, the feature map gives a sense of where this kind of edge occurs in the input image.\footnote{The code used to generate figure \ref{cnn_workedExample} is available online, and can be used to edit a small filter and kernel to get a feel for how they produce a feature map. See: \url{https://colab.research.google.com/drive/1ywr3z8HRXYNPK-vd34kAATUPVWwwFqQE?usp=sharing}.}
+The output of a convolutional layer is called a \glossary{feature map}. In these examples, the filter is an edge detector, which detects edges at a $-45^\circ$ angle, that is, edges shaped like a backslash `\textbackslash'. In the resulting feature map, notice that the activation is highest when the filter is directly on top of the backslash shape in the happy face, but also produces some activation wherever it is on top of any kind of active pixel. Thus, the feature map gives a sense of where this kind of edge occurs in the input image.
 
 Again, this is totally different from the weight layers we have been studying throughout the book: there are no fixed connections at all. Instead it is like there is a little floating scanner (the filter or kernel) that gets passed over source layer activations to produce output activations. 
 
@@ -65,35 +65,37 @@ Filters like this edge detector are not programmed. This is a neural network aft
 
 \section{Applying a Filter to a Volume}
 
-So far we have considered an artificial example where the input, filter, and feature map were matrices. However, the power of CNNs is that they can deal well with more complex tensors. In the context of image processing (and in most applications of convolutional networks), the input is a volume, a set of multiple stacked matrices or channels, a rank 3 tensor or 3d array. 
+So far we have considered an artificial example where the input, filter, and feature map are matrices. However, the power of CNNs is that they can deal well with more complex tensors. In the context of image processing (and in most applications of convolutional networks), the input is a volume, a stack of matrices, a rank-3 tensor or 3d array. 
 
-To get an initial feel for this situation, think of the filter as a set of filters, one ``sub-filter'' (our term) for each input channel. This set of filters is ``combed'' across the input volume, in the sense that each sub-filter is convolved with a corresponding input channel, and the results are then added together and used to populate one entry in the output matrix. Figure \ref{filterComb} gives a sense of how it works. Convince yourself that the shapes make sense.
-
-\begin{figure}
-\centering
-\includegraphics[width=0.5\textwidth]{images/filterComb.png}
-\caption[Soraya Boza.]{Applying a filter to an input volume. On the left is an input volume, in the middle is a filter (which includes three sub-filters). On the right is the output volume that results from convolving or ``combing'' the filter over the input. Each sub-filter is convolved with each input channel, and the results are added together at each stage of the convolution.}
-\label{filterComb}
-\end{figure}
+%To get an initial feel for this situation, think of the filter as a set of filters, one ``sub-filter'' (our term) for each input channel. This set of filters is ``combed'' across the input volume, in the sense that each sub-filter is convolved with a corresponding input channel, and the results are then added together and used to populate one entry in the output matrix. Figure \ref{filterComb} gives a sense of how it works. Convince yourself that the shapes make sense.
+%
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.5\textwidth]{images/filterComb.png}
+%\caption[Soraya Boza.]{Applying a filter to an input volume. On the left is an input volume, in the middle is a filter (which includes three sub-filters). On the right is the output volume that results from convolving or ``combing'' the filter over the input. Each sub-filter is convolved with each input channel, and the results are added together at each stage of the convolution.}
+%\label{filterComb}
+%\end{figure}
 
 % Not sure I like this anymore: In a sense this is like a many-to-one connection in a regular neural network. Many nodes connect to one node via a set of weights. Each weight is multiplied by a different input activation and the results are added up to produce a net input. Here instead we have a set of sub-filters, each of which is convolved with one channel in an input volume, and the results are added together.: Reference to net input. If used, could show an actual parallel picture of a 3-1 simbrain net. However the analogy breaks down in the many-to-many case.
 
-But the ``combing'' idea in figure \ref{filterComb} is just a way to ease you into thinking about how convolutions work in practice. Instead of thinking about sets of filters, we can think about filters as volumes that act on other volumes, as in figure \ref{filterToVolume}. That is, we can collapse the ``sub-filters'' of a filter into a single volume, a little Rubik's cube type of object, that is convolved with the input as follows. We imagine moving the filter ``through'' the input volume, top-to-bottom and left-to-right, and at each stage of this operation we dot the filter with the underlying receptive field. At each stage of this operation, the 27 cuboids in the Rubik's-cube-like filter are dotted with 27 components of the input volume, and all 27 products are added together. That gives us one entry in the output, which in this simple example is a matrix.
+%But the ``combing'' idea in figure \ref{filterComb} is just a way to ease you into thinking about how convolutions work in practice. Instead of thinking about sets of filters, 
+
+We can now think about filters as volumes that act on other volumes, as in figure \ref{filterToVolume}. We imagine moving the filter ``through'' the input volume, top-to-bottom and left-to-right, and at each stage of this operation we dot the filter with the underlying receptive field. At each stage of this operation, the 27 cuboids in the Rubik's-cube-like filter are dotted with 27 components of the input volume, and all 27 products are added together. That gives us one entry in the output, which in this simple example is a matrix.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{images/filterToVolume.png}
-\caption[Soraya Boza and Jeff Yoshimi.]{The same situation as in figure \ref{filterComb} but represented using volumes. This is a better way to think about convolutional layers, because it generalizes to the more complex situations discussed below. Try to image the filter being passed ``through'' the input volume, and being dotted with its receptive field at each stage of the operation, producing one number in the output.}
+\caption[Soraya Boza and Jeff Yoshimi.]{imagine the filter being passed ``through'' the input volume, and being dotted with its receptive field at each stage of the operation, producing one number in the output.}
 \label{filterToVolume}
 \end{figure}
 
-In general, the depth of a filter (more specifically, the number of channels in a rank 3 filter: see section \extref{sect_tensors}) matches the depth of the input volume. That way the filter can capture information from across all the channels. (This is not always shown in figures and can be quite confusing).  In this example, both the filter and the input volume are of depth 3.\footnote{This is not a necessary feature (filters with fewer channels than the input are possible and sometimes even useful), but it is pretty standard.} Figure \ref{filterDepth} makes the point with a variety of tensors. In each case, the receptive field of a filter at one stage of a convolution is shown ``inside'' the input volume, and as can be seen in each case, it spans the whole depth of the input. 
+In general, the depth of a filter (more specifically, the number of channels in a rank-3 filter: see section \extref{sect_tensors}) matches the depth of the input volume. That way the filter can capture information from across all the channels. (This is not always shown in figures and can be quite confusing).  In this example, both the filter and the input volume are of depth 3.\footnote{This is not a necessary feature (filters with fewer channels than the input are possible and sometimes even useful), but it is pretty standard.} Figure \ref{filterDepth} makes the point with a variety of tensors. In each case, the receptive field of a filter at one stage of a convolution is shown ``inside'' the input volume, and as can be seen in each case, it spans the whole depth of the input. 
 % Pierre you mentioned applications with "sculptures" here
 
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{images/filterDepth}
-\caption[Soraya Boza.]{Illustration of how filters usually have a depth that matches the input volume they are passed over. Shown are the receptive fields of four filters, each of which is shown at one stage of a convolutional pass. Alternatively, think of these panels as showing filters placed ``inside'' their corresponding input volumes and moved through them.}
+\caption[Soraya Boza.]{Illustration of how filters usually have a depth that matches the input volume they are passed over. Shown are sample receptive fields for four filters, each of which is shown at one stage of a convolutional pass. Alternatively, think of these panels as showing filters placed ``inside'' their corresponding input volumes and moved through them.}
 \label{filterDepth}
 \end{figure}
 
@@ -103,11 +105,7 @@ Ignoring padding, the formula for width and height of the output tensor relative
 \text{Output Height} &= \left(  \frac{\text{Input Height} - \text{Filter Height}}{\text{Stride}} \right) + 1
 \end{align*}
 
-In the example shown in figures \ref{filterComb} and \ref{filterToVolume} the input width is $6$, the filter width is $3$, and the stride (the amount it is moved for each step of a convolution) is $1$ so the output width is $((6-3)/1 + 1) = 4$. Same for the height. 
-
-The depth of the output shape corresponds to the number of filters we have (more on this soon), and so far we have just considered a single filter, a single ``Rubik's cube''. So the output shape so far in our example is 1. 
-
-So the overall shape of the output is $4 \times 4$, a four-by-four matrix.
+In the example shown in figure \ref{filterToVolume} the input width is $6$, the filter width is $3$, and the stride (the amount it is moved for each step of a convolution) is $1$ so the output width is $((6-3)/1 + 1) = 4$. Same for the height.  The depth of the output  corresponds to the number of filters we have (more on this soon), and so far we have just considered a single filter, a single ``Rubik's cube''. Wwe have one filter, so the output depth is one. So the output is $1 \times 4 \times 4$, a four-by-four matrix.
 
 \section{Filter Banks (Representational Width)}
 
@@ -148,7 +146,7 @@ There are several kinds of volume-to-volume layer in a convolutional network. On
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.3]{./images/maxPooling.png}
-\caption[Jeff Yoshimi ]{Max pooling operation being applied to a matrix input, producing a smaller output that retains the same core information. In this example the stride is 2, so it is scanned across the input in increments of 2. The maximum value in the pool is used to populate the output as the window is scanned across. Note that there is no depth here. Pooling operations are generally applied to 2d arrays.}
+\caption[Jeff Yoshimi ]{The max pooling operation applied to a matrix input, producing a smaller output that retains the same core information. In this example the stride is 2, so the pooling operation is scanned across the input in increments of 2. The maximum value in the pool is used to populate the output as the window is scanned across. Note that there is no depth here. Pooling operations are generally applied to 2d arrays.}
 \label{maxPooling}
 \end{figure}
 
