@@ -3,6 +3,8 @@
 
 % Need glossary entry for volume
 
+% Need an example that is non-square to practice computations further
+
 % Discuss resnet and the importance of skip connections and the residual stream idea of ch_transformers, and the linear algebra flow diagram section.  It originates in resnet and the idea was that layers don't have to entirely rewrite the representation of the input at each layer — it can refine it, add small changes, correct errors, or compute "residuals."  Also point forward to this in intro chapter.  Without residuals: each layer must produce an entirely new, fully transformed representation of the data. With residuals each layer "starts from" the previous representation and just computes a delta.This  "residual connection" idea entered deep learning through the famous ResNet paper by He et al. (2015/2016), Deep Residual Learning for Image Recognition (CVPR 2016).  Also this is a  way to address vanishing gradient problems.   REFS: intro (skip connections), recurrent supervised (vanishing gradient), linear algebra (residual stream) and transformers
 
 % LeNet as the first major historical example of a CNN. Also introduced pooling. But check this, and coordinate with history chapter.
@@ -89,7 +91,7 @@ We can now think about filters as volumes that act on other volumes, as in figur
 \label{filterToVolume}
 \end{figure}
 
-In general, the depth of a filter (more specifically, the number of channels in a rank-3 filter: see section \extref{sect_tensors}) matches the depth of the input volume. That way the filter can capture information from across all the channels. (This is not always shown in figures and can be quite confusing).  In this example, both the filter and the input volume are of depth 3.\footnote{This is not a necessary feature (filters with fewer channels than the input are possible and sometimes even useful), but it is pretty standard.} Figure \ref{filterDepth} makes the point with a variety of tensors. In each case, the receptive field of a filter at one stage of a convolution is shown ``inside'' the input volume, and as can be seen in each case, it spans the whole depth of the input. 
+In general, the depth of a filter (more specifically, the number of channels in a rank-3 filter: see section \extref{sect_tensors}) matches the depth of the input volume. That way the filter can capture information from across all the channels. (This is not always shown in figures and can be quite confusing). Thus they only ``stride'' or move along the height and width dimension.\footnote{This is not a necessary feature (filters with fewer channels than the input are possible and sometimes even useful), but it is pretty standard.} Figure \ref{filterDepth} makes the point with a variety of tensors. In each case, the receptive field of a filter at one stage of a convolution is shown ``inside'' the input volume, and as can be seen in each case, it spans the whole depth of the input. 
 % Pierre you mentioned applications with "sculptures" here
 
 \begin{figure}
@@ -99,7 +101,7 @@ In general, the depth of a filter (more specifically, the number of channels in 
 \label{filterDepth}
 \end{figure}
 
-Ignoring padding, the formula for width and height of the output tensor relative to input tensor and filter is:
+Following the convention from chapter \extref{ch_linear_algebra}, tensor shapes are given in the order (channels, height, width). Recall that for matrices, height corresponds to the number of rows and width to the number of columns. Ignoring padding, the formula for width and height of the output tensor relative to input tensor and filter is:
 \begin{align*}
 \text{Output Width} &= \left( \frac{\text{Input Width} - \text{Filter Width}}{\text{Stride}} \right) + 1 \\
 \text{Output Height} &= \left(  \frac{\text{Input Height} - \text{Filter Height}}{\text{Stride}} \right) + 1
@@ -144,7 +146,7 @@ There are several kinds of volume-to-volume layer in a convolutional network. On
 \begin{figure}[h]
 \centering
 \includegraphics[scale=.3]{./images/maxPooling.png}
-\caption[Jeff Yoshimi ]{The max pooling operation applied to a matrix input, producing a smaller output that retains the same core information. In this example the stride is 2, so the pooling operation is scanned across the input in increments of 2. The maximum value in the pool is used to populate the output as the window is scanned across. Note that there is no depth here. Pooling operations are generally applied to 2d arrays.}
+\caption[Jeff Yoshimi ]{The max pooling operation applied to a matrix input, producing a smaller output that retains the same core information. In this example the pool shape is $2 \times 2$ and the stride is 2, so the pooling window is scanned across the input in increments of 2. The maximum value in each pooling window is used to populate the output. Pooling operates only on the spatial dimensions (height and width), with no depth dimension.}
 \label{maxPooling}
 \end{figure}
 
@@ -156,14 +158,14 @@ A \glossary{pooling layer} is useful when tensors start getting too big. The ide
 \end{description}
 The result of this operation is an output that is smaller than the input. These are sometimes called subsampling or downsampling methods. They are valuable in that they reduce the overall size of the network while preserving important structures.
 
-% Explain why no depth. We don't want to combine feature maps, or slices of a single feature map.  There is an issue that "feature map" is overloaded both for 3d volumes and for slices of 3d volumes
-The window passed over the input volume has a pool size, a width and height. It does not usually have depth. We pass the pooling operation over every feature map separately. The idea comes from the last section, where we saw that each filter learns to represent the inputs in a new way. When we downsample, we don't want to lose those differences. However, a new convolutional layer can learn to combine information.
+% There is an issue that "feature map" is overloaded both for 3d volumes and for slices of 3d volumes
+The pooling window has a \glossary{pool shape} consisting of height and width (e.g., $2 \times 2$ or $3 \times 3$), but no depth. We pass the pooling window over every feature map (every channel) separately. Thus pooling operations only slide in the spatial dimensions (height and width), not in the channel dimension. This preserves the distinct representations learned by each filter in the previous layer. Each channel represents a different learned feature, and we want to downsample each feature map independently rather than combining information across channels. (A subsequent convolutional layer can learn to combine information across channels.)
 
-However we can use a stride when we downsample. So the formula is the same as above when computing output shape from input shape.
+As with convolutional layers, we can specify a stride for pooling operations. The formula for computing output shape from input shape is analogous to the convolutional case.
 
-An example is shown in figure \ref{maxPooling}. The pool is $2 x 2$ and the stride is $2$, so the window is passed over the input 2 at a time (notice that the right-most column gets left out in this case; a stride of 1 would fix that, or some padding). 
+An example is shown in figure \ref{maxPooling}. The pool shape is $2 \times 2$ and the stride is $2$, so the window is passed over the input 2 at a time (notice that the right-most column gets left out in this case; a stride of 1 would fix that, or some padding).
 
-For these operations we use the same equations as above, but with pool width and height. There is no depth because pooling does not pool across channels.
+For these operations we use the same equations as above, but with pool width and height. As with convolutional layers, there is no depth parameter in these formulas because pooling operates only on the spatial dimensions.
 
 \begin{align*}
 \text{Output Width} &= \left( \frac{\text{Input Width} - \text{Pool Window Width}}{\text{Pool Stride}} \right) + 1 \\
