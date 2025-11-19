@@ -101,11 +101,15 @@ In general, the depth of a filter (more specifically, the number of channels in 
 \label{filterDepth}
 \end{figure}
 
-Following the convention from chapter \extref{ch_linear_algebra}, tensor shapes are given in the order (channels, height, width). Recall that for matrices, height corresponds to the number of rows and width to the number of columns. Ignoring padding, the formula for width and height of the output tensor relative to input tensor and filter is:
-\begin{align*}
-\text{Output Width} &= \left( \frac{\text{Input Width} - \text{Filter Width}}{\text{Stride}} \right) + 1 \\
-\text{Output Height} &= \left(  \frac{\text{Input Height} - \text{Filter Height}}{\text{Stride}} \right) + 1
-\end{align*}
+Following the convention from chapter \extref{ch_linear_algebra}, tensor shapes are given in the order (channels, height, width). Recall that for matrices, height corresponds to the number of rows and width to the number of columns.
+
+Both convolutional and pooling layers use a sliding window operation. For any such operation, the output dimension along a spatial axis (height or width) is determined by a general formula:
+
+\begin{equation}\label{eq:sliding_window}
+\text{Output Dimension} = \left( \frac{\text{Input Dimension} - \text{Window Dimension}}{\text{Stride}} \right) + 1
+\end{equation}
+
+The division here is integer division (rounding down), since the window can only fit an integer number of positions.\footnote{If the window doesn't divide evenly into the input, the remaining pixels at the edges are not included in the output (unless padding is added). With explicit rounding, the expression is $\text{Output Dimension} = \left\lfloor \frac{\text{Input Dimension} - \text{Window Dimension}}{\text{Stride}} \right\rfloor + 1$, where $\lfloor x \rfloor$ denotes the floor function, which rounds $x$ down to the nearest integer. For example, $\lfloor 29.5 \rfloor = 29$.} For a convolutional layer, the window is the filter. For a pooling layer, the window is the pooling window.
 
 In the example shown in figure \ref{filterToVolume} the input width is $6$, the filter width is $3$, and the stride (the amount it is moved for each step of a convolution) is $1$ so the output width is $((6-3)/1 + 1) = 4$. Same for the height.  The depth of the output  corresponds to the number of filters we have (more on this soon), and so far we have just considered a single filter, a single ``Rubik's cube''. We have one filter, so the output depth is one. So the output is $1 \times 4 \times 4$, a four-by-four matrix.
 
@@ -121,6 +125,36 @@ In general, a convolutional layer will involve multiple filters, a \glossary{fil
 \caption[Soraya Boza and Jeff Yoshimi.]{Result of applying a filter bank of 5 $3 \times 3 \times 3$ filters to a $6 \times 6 \times 3$ input volume with a stride of 1 to produce an output volume that is $5 \times 4 \times 4$. The output depth of $5$ comes from the number of filters in the bank; the output height and width come from the formula in the main text.}
 \label{filterBank}
 \end{figure}
+
+To summarize, the complete output shape for a convolutional layer is computed as follows:
+
+\medskip
+\begin{center}
+\fbox{\begin{minipage}{0.75\textwidth}
+Rule for convolutional layer output shape
+
+\rule{\linewidth}{0.4pt}
+
+\smallskip
+Channels: Number of filters in the filter bank
+
+\medskip
+
+Height: $\left( \frac{\text{Input Height} - \text{Filter Height}}{\text{Stride}} \right) + 1$
+
+Width: $\left( \frac{\text{Input Width} - \text{Filter Width}}{\text{Stride}} \right) + 1$
+\end{minipage}}
+\end{center}
+\medskip
+
+\noindent
+Suppose an input volume has shape $3 \times 64 \times 64$. We apply a filter bank with 32 filters, each of shape $3 \times 5 \times 5$, using stride 2. The output shape is:
+\begin{itemize}
+\item Channels: 32
+\item Height: $(64 - 5) / 2 + 1 = 59 / 2 + 1 = 29 + 1 = 30$
+\item Width: $(64 - 5) / 2 + 1 = 30$
+\end{itemize}
+So the output shape is $32 \times 30 \times 30$.
 
 Each feature map in a filter bank learns differently via gradient descent to represent the input. Thus we get different ways of representing the input. This generalizes the concept of the \glossary{representational width} of a layer (section \extref{structureNets}) to CNNs. Just as more nodes makes a regular node layer of a feed-forward network more powerful, so too do more filters make a convolutional layer more powerful. Rather than learning just one way to represent inputs, a bank of filters can learn multiple complementary ways to represent inputs.
 
@@ -161,16 +195,35 @@ The result of this operation is an output that is smaller than the input. These 
 % There is an issue that "feature map" is overloaded both for 3d volumes and for slices of 3d volumes
 The pooling window has a \glossary{pool shape} consisting of height and width (e.g., $2 \times 2$ or $3 \times 3$), but no depth. We pass the pooling window over every feature map (every channel) separately. Thus pooling operations only slide in the spatial dimensions (height and width), not in the channel dimension. This preserves the distinct representations learned by each filter in the previous layer. Each channel represents a different learned feature, and we want to downsample each feature map independently rather than combining information across channels. (A subsequent convolutional layer can learn to combine information across channels.)
 
-As with convolutional layers, we can specify a stride for pooling operations. The formula for computing output shape from input shape is analogous to the convolutional case.
+As with convolutional layers, we can specify a stride for pooling operations. The general sliding window formula applies here as well, with the pooling window playing the role of the filter. The complete rule is in the box below.
 
-An example is shown in figure \ref{maxPooling}. The pool shape is $2 \times 2$ and the stride is $2$, so the window is passed over the input 2 at a time (notice that the right-most column gets left out in this case; a stride of 1 would fix that, or some padding).
+\medskip
+\begin{center}
+\fbox{\begin{minipage}{0.75\textwidth}
+Rule for pooling layer output shape
 
-For these operations we use the same equations as above, but with pool width and height. As with convolutional layers, there is no depth parameter in these formulas because pooling operates only on the spatial dimensions.
+\rule{\linewidth}{0.4pt}
 
-\begin{align*}
-\text{Output Width} &= \left( \frac{\text{Input Width} - \text{Pool Window Width}}{\text{Pool Stride}} \right) + 1 \\
-\text{Output Height} &= \left( \frac{\text{Input Height} - \text{Pool Window Height}}{\text{Pool Stride}} \right) + 1
-\end{align*} 
+\smallskip
+Channels: Same as input channels (pooling preserves depth)
+\medskip
+
+Height: $\left( \frac{\text{Input Height} - \text{Pool Window Height}}{\text{Pool Stride}} \right) + 1$
+
+Width: $\left( \frac{\text{Input Width} - \text{Pool Window Width}}{\text{Pool Stride}} \right) + 1$
+\end{minipage}}
+\end{center}
+\medskip
+
+\noindent
+Suppose an input volume has shape $16 \times 60 \times 60$. We apply max pooling with pool shape $2 \times 2$ and stride 2. The output shape is:
+\begin{itemize}
+\item Channels: 16
+\item Height: $(60 - 2) / 2 + 1 = 58 / 2 + 1 = 29 + 1 = 30$
+\item Width: $(60 - 2) / 2 + 1 = 30$
+\end{itemize}
+So the output shape is $16 \times 30 \times 30$. An example of the max pooling operation itself is shown in figure \ref{maxPooling}.
+
 
 \subsection{Flattening and Dense Layers}
 
@@ -201,3 +254,75 @@ A particularly significant application of CNNs in cognitive science is illustrat
 
 These connections between CNNs and the visual system demonstrate that neural networks trained by gradient descent can develop representations similar to those in the brain, even when the training algorithm itself may not be neurally realistic. The significance of these networks for psychology and neuroscience continues to grow, with promising early results \cite{zorzi2013modeling, ritter2017cognitive}.
 % Work more on interpreting what is happening in that distll article, and add some material here, including pictures of the weird features. Then add some colab demos to the course.
+
+\section{Exercises}
+
+These exercises will help you practice computing output shapes and values for convolutional and pooling layers. Recall that for shapes we use the convention (channels, height, width).
+
+\bigskip
+
+\newcounter{CNNCounter}
+
+\refstepcounter{CNNCounter}\label{cnnEx1}
+\noindent
+{\bf \theCNNCounter}. Apply the filter $\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$ to the input matrix $\begin{pmatrix} 2 & 3 & 1 \\ 4 & 5 & 2 \\ 1 & 0 & 3 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 7 & 5 \\ 4 & 8 \end{pmatrix}$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. An input with shape $3 \times 200 \times 200$ is processed by a convolutional layer with a single filter of shape $3 \times 20 \times 20$ and stride 2. What is the output shape? {\bf Answer:} $1 \times 91 \times 91$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. Apply max pooling with pool shape $2 \times 2$ and stride 2 to the input matrix $\begin{pmatrix} 3 & 8 & 1 & 5 \\ 2 & 9 & 4 & 7 \\ 6 & 1 & 2 & 3 \\ 4 & 5 & 8 & 1 \end{pmatrix}$. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 9 & 7 \\ 6 & 8 \end{pmatrix}$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. An input with shape $3 \times 200 \times 200$ is processed by a filter bank of 30 filters, each with shape $3 \times 22 \times 22$ and stride 1. What is the output shape? {\bf Answer:} $30 \times 179 \times 179$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. Apply average pooling with pool shape $2 \times 2$ and stride 2 to the input matrix $\begin{pmatrix} 2 & 4 & 6 & 8 \\ 1 & 3 & 5 & 7 \\ 4 & 2 & 8 & 6 \\ 3 & 1 & 7 & 5 \end{pmatrix}$. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 2.5 & 6.5 \\ 2.5 & 6.5 \end{pmatrix}$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. An input with shape $100 \times 50 \times 50$ is processed by a filter bank of 40 filters, each with shape $100 \times 10 \times 10$ and stride 4. What is the output shape? {\bf Answer:} $40 \times 11 \times 11$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. Apply the filter $\begin{pmatrix} 1 & -1 \\ -1 & 1 \end{pmatrix}$ to the input matrix $\begin{pmatrix} 5 & 3 & 2 \\ 4 & 6 & 1 \\ 2 & 4 & 3 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 4 & -4 \\ 0 & 4 \end{pmatrix}$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. An input with shape $3 \times 201 \times 200$ is processed by a pooling layer with pool shape $50 \times 50$ and stride 1. What is the output shape? {\bf Answer:} $3 \times 152 \times 151$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. An input with shape $3 \times 200 \times 200$ is processed by a pooling layer with pool shape $50 \times 50$ and stride 10. What is the output shape? {\bf Answer:} $3 \times 16 \times 16$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. An input with shape $8 \times 32 \times 32$ is processed by a convolutional layer with 16 filters of shape $8 \times 7 \times 7$ and stride 3. What is the output shape? (Note: This requires integer division.) {\bf Answer:} $16 \times 9 \times 9$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. Consider a small CNN with the following layers in sequence: (1) Input $3 \times 64 \times 64$, (2) Convolutional layer with 16 filters of shape $3 \times 5 \times 5$ and stride 1, (3) Pooling layer with pool shape $2 \times 2$ and stride 2, (4) Convolutional layer with 32 filters of shape $16 \times 3 \times 3$ and stride 1, (5) Flatten. What is the output shape after each layer, and how many nodes are in the flattened output? {\bf Answer:} After layer 2: $16 \times 60 \times 60$; after layer 3: $16 \times 30 \times 30$; after layer 4: $32 \times 28 \times 28$; after layer 5 (flattened): $32 \times 28 \times 28 = 25088$ nodes.
