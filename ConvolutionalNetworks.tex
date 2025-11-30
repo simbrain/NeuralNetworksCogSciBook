@@ -15,7 +15,7 @@
 % Think of filter banks and pooling layers as the two main analogues of a weight layer in a standard nn.
 % Relationship to early work by e.g. Jacobs & Kosslyn (1994)
 
-Convolutional neural networks are a prominent type of deep network. They are a kind of many-layered network that is often used for processing visual inputs, like recognizing patterns in images or movies, though they have broader applications. They make use of a special kind of mapping between node layers, a convolutional layer. 
+Convolutional neural networks (or CNNs) are a prominent type of deep neural network. They are a kind of many-layered network that is often used for processing visual inputs, like recognizing patterns in images or movies, though they have broader applications. They make use of a special kind of mapping between node layers, a convolutional layer. 
 
 Convolutional neural networks were the first notable deep networks that got deep learning out of its second ``dark age'', by stacking a large number of hidden layers (following the first resurgence of interest in neural networks in the 1980s and 1990s; chapter \extref{ch_history}).\footnote{The internal representations of these networks--usually 3-node-layer networks trained by backprop--allowed them to solve previously unsolvable problems like XOR (figure \extref{xor_remapping}). These representations were often psychologically realistic (section \extref{ch_representations}).} They were trained using new tricks and techniques, like convolutional layers, graphical processing units for fast parallel computation, and the Relu activation function discussed in chapter \extref{ch_act_functions}. These advances made it possible to use the same types of network discussed in chapter \extref{ch_lms_backprop} on much more difficult problems.\footnote{This history is well told by Kurenkov in section 3 of \url{https://www.skynettoday.com/overviews/neural-net-history}. As he summarizes, ``Deep Learning = Lots of training data + Parallel Computation + Scalable, smart algorithms.''}
 
@@ -266,6 +266,38 @@ These exercises will help you practice computing output shapes and values for co
 \refstepcounter{CNNCounter}\label{cnnEx1}
 \noindent
 {\bf \theCNNCounter}. Apply the filter $\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$ to the input matrix $\begin{pmatrix} 2 & 3 & 1 \\ 4 & 5 & 2 \\ 1 & 0 & 3 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 7 & 5 \\ 4 & 8 \end{pmatrix}$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. Apply the horizontal edge detector filter $\begin{pmatrix} 1 & 1 \\ 0 & 0 \end{pmatrix}$ to the binary input matrix $\begin{pmatrix} 1 & 1 & 1 & 1 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 2 & 2 & 2 \\ 0 & 0 & 0 \end{pmatrix}$. 
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. Apply the vertical edge detector filter $\begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}$ to the binary input matrix $\begin{pmatrix} 1 & 0 & 0 & 0 \\ 1 & 0 & 0 & 0 \\ 1 & 0 & 0 & 0 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 2 & 0 & 0 \\ 2 & 0 & 0 \end{pmatrix}$.
+
+\bigskip
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. Apply the corner/L-shape detector filter $\begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}$ to the binary input matrix $\begin{pmatrix} 1 & 0 & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 3 & 0 \\ 2 & 0 \end{pmatrix}$. 
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. Apply the filter $\begin{pmatrix} 1 & 0 & 1 \\ 0 & 1 & 0 \\ 1 & 0 & 1 \end{pmatrix}$ to the input matrix $\begin{pmatrix} 2 & 1 & 3 & 2 & 1 \\ 1 & 4 & 2 & 3 & 2 \\ 3 & 2 & 5 & 1 & 4 \\ 2 & 3 & 1 & 4 & 2 \\ 1 & 2 & 3 & 2 & 3 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 17 & 8 & 16 \\ 8 & 19 & 8 \\ 15 & 8 & 19 \end{pmatrix}$.
+
+\bigskip
+
+\stepcounter{CNNCounter}
+\noindent
+{\bf \theCNNCounter}. Apply the filter $\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$ to the input matrix $\begin{pmatrix} 1 & 2 & 3 & 4 & 5 \\ 2 & 4 & 1 & 3 & 2 \\ 3 & 1 & 5 & 2 & 4 \\ 4 & 3 & 2 & 6 & 1 \\ 5 & 2 & 4 & 1 & 3 \end{pmatrix}$ with stride 2. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 5 & 6 \\ 6 & 11 \end{pmatrix}$.
 
 \bigskip
 

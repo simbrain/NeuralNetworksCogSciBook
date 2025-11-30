@@ -136,14 +136,12 @@ science is only now being studied, so frequent updates to this chapter are expec
 
 \section{In-Context Processing}\label{inContext}
 
+Recall from the introduction (section \extref{performanceLearning}) that we distinguish between learning (updating parameters during training) and inference or performance (using those parameters to process inputs). In-context processing happens entirely at inference time, without any parameter updates.
+
 Thus far in the book we have focused on learning via updates to weight
 and biases, that is, learning via incremental updates to the parameters of a neural
-network. The distinction between performance and learning was made
-central in the introduction (section \extref{performanceLearning}). LLMs are no exception; they learn via updates to their billions or trillions of
-parameters. However, LLMs have a remarkable feature that sets them apart from other neural
-network models: an ability to process a great deal of information ``live'', in
-what is known as their \glossary{context window} or more concisely, their ``context''.\footnote{Usage has not stabilized yet, and these two terms (``context'' and ``context window'') are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.}  The context is a set of tokens that is fed to the network at any given time. This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of the power of LLMs. Without any weight training, they
-can reason their way through a problem or innovate a new idea. 
+network. LLMs are no exception; they learn via updates to their billions or trillions of
+parameters. However, LLMs have a remarkable feature: an ability to process a great deal of information at inference time, in their \glossary{context window} or more concisely, their ``context''.\footnote{Usage has not stabilized yet, and these two terms (``context'' and ``context window'') are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of the power of LLMs. Without any weight training, they can reason their way through a problem or innovate a new idea.
 
 The point is often made in terms of ``zero-shot'' and ``few-shot''
 learning. The word ``learning'' here is \emph{not} a reference to training weights, but rather how an LLM can do new things by combining its prior training with information in the context window.  They are ``learning'' in the same way  a person going to a new job can learn how to do something using instructions in their working memory together with their background knowledge. \glossary{Zero-shot} learning refers to the ability of transformers
@@ -297,9 +295,9 @@ the question mark).}
 \label{nextWordPrediction}
 \end{figure}
 
-Note that the word embeddings in figure \ref{nextWordPrediction} and figure
+The word embeddings in figure \ref{nextWordPrediction} and figure
 \ref{sequenceDim} are 4-dimensional (each token is associated with an array of
-4 numbers, a vector in a 4d space). In real LLMs, this ``embedding dimension''
+4 numbers, a vector in a 4d space). In practice, this ``embedding dimension''
 is quite a bit larger. For example, the embedding dimension is over 12,000 for GPT-3 (see figure \ref{gptParams}).
 
 \begin{figure}[ht]
@@ -312,21 +310,7 @@ occurs twice and is associated with the same vector.
 \label{sequenceDim}
 \end{figure}
 
-There is a key conceptual takeaway from all of this, central to understanding
-LLMs. We can think about a context as a stack of tokens converted into a stack
-of vectors, where the vectors correspond to embeddings of the tokens in a
-vector space. The context then gets transformed as it travels through the
-network, ultimately becoming next-token predictions. Thus the repeated ``you'' in figure \ref{nextWordPrediction}
-will change its representation as it is processed. This may seem confusing at
-first; don't the numbers get all jumbled up when we matrix multiply? But recall
-the discussion of matrix multiplication and the ``row processing'' perspective
-(section \extref{matrixMultiplication}), where we can view a matrix
-multiplication as taking a stack of $N$ row vectors on the left, multiplying
-them by a matrix on the right, to produce another stack of $N$ row
-vectors, each of which has been \emph{separately processed} by the matrix on
-the right. As a result, we can separately track the transformations a token's
-vector representation goes through as it makes its way through a network.  We
-will return to this idea below when we discuss the ``residual stream''.
+Note that each token in the stack of token embeddings sent to the network is processed separately through its many layers, acquiring different meanings and context as they do.\footnote{Recall the discussion of matrix multiplication and the ``row processing'' perspective (section \extref{matrixMultiplication}), where we can view a matrix multiplication as taking a stack of $N$ row vectors on the left, multiplying them by a matrix on the right, to produce another stack of $N$ row vectors, each of which has been \emph{separately processed} by the matrix on the right.  These ideas apply here.  In fact, with the exception of the self-attention matrix (which considers all the relationships between tokens), all other processing in an LLM operates separately on each token's representation. As a result, we can separately track the transformations a token's vector representation goes through as it makes its way through a network.  We will return to this idea below when we discuss the ``residual stream''.} For example, consider the word ``you'' in figure \ref{nextWordPrediction}. This is the same word repeated twice, so as the input level, it is associated with the same vector embedding, in this case $(1,2,5,6)$.\footnote{This is not quite right, since something called a positional encoding is often added even at the input level. But even when these positional encodings are removed the points made here apply.} But as the two tokens are processed through the network, their representation will change, reflecting their different positions and functions in the sentence. 
 
 % We can picture the residual stream as a big shared whiteboard that every
 % head can read from and write to.
@@ -510,7 +494,7 @@ and 6 weights, or 9 parameters. A standard convolutional neural network might
 have millions of parameters. So this is just massively larger. Not
 surprisingly, these networks have gotten even larger. GPT-4 has about 1.76
 trillion parameters.\footnote{It takes large server banks that consume huge
-amounts of energy to run these models, especially when training them (inference requires far less energy) and so there is a thread of research
+amounts of energy to run these models, especially when training them. There is an active thread of research
 attempting to achieve similar performance with smaller models, some of which
 can be run on a  personal computer. For example, Gemma2B achieves performance
 similar to GPT-3.5 on some benchmarks with only 2 billion parameters. See
@@ -593,7 +577,7 @@ projection and down projection). A residual connection (or skip connection) conn
 \label{transformerBlockSimple}
 \end{figure}
 
-The stack of token representation input to the block is also multiplied by a ``value'' matrix $\textbf{V}$, producing a stack of value vectors. The matrix of self-attention scores is then used to scale these value vectors. The attention scores determine how much of the value from a given past token should be passed along through the network \cite{beckmann2025mechanistic}. The value vectors carry the main information from the inputs, and the attention scores act as a kind of filter deciding which context information is important to be passed along within a given head at a given block. In a sense the filter learns what to focus on (hence ``self attention'').
+The stack of token representations input to the block is also multiplied by a ``value'' matrix $\textbf{V}$, producing a stack of value vectors. The matrix of self-attention scores is then used to scale these value vectors. The attention scores determine how much of the value from a given past token should be passed along through the network \cite{beckmann2025mechanistic}. The value vectors carry the main information from the inputs, and the attention scores act as a kind of filter deciding which context information is important to be passed along within a given head at a given block. In a sense the filter learns what to focus on (hence ``self attention'').
 
 Once processed through the attention mechanism, activations from all the heads are combined and processed by a
 traditional three layer feed-forward network, an MLP, whose hidden layer is typically higher
@@ -901,14 +885,8 @@ dillion2023can}.
 % in the form of published studies.
 
 Much of this work has related LLM behavior to known psycholinguistic effects.
-For example, LLMs appear to reproduce human word-rating benchmarks on variables such
-as  age of acquisition, arousal, concreteness, dominance, familiarity, gender
-association, imageability, and valence \cite{trott2024augment,
-kello2024emergent}. Humans and LLMs rated words across all of these categories in
- remarkably similar ways. Figure \ref{humanVsLLM} shows these
-correlations on a list of 390 words, with some correlations approaching .9,
-which is very strong.  As an example, here is how valence is defined in such an
-experiment:
+For example, LLMs rate words very similarly to how humans rate them, on a wide range of variables including arousal, concreteness, dominance, familiarity, gender association, imageability, and valence \cite{trott2024augment,
+kello2024emergent}. As an example of these variables are queried (both in humans and LLMs), here is how valence is defined:
 \begin{quote}
 a measure of value or worth. A word is NEGATIVE if it represents something
 considered bad, whereas a word is POSITIVE if it represents something
@@ -916,8 +894,9 @@ considered good. Rate the valence of each of the following words on a
 continuous scale from 1.0 (VERY NEGATIVE) to 9.0 (VERY POSITIVE), with the
 midpoint representing NEUTRAL.
 \end{quote}
-Here are some examples of mean ratings on valence by humans and several LLMs,
-for two words:
+Figure \ref{humanVsLLM} shows these
+correlations on a list of 390 words, with some correlations approaching .9,
+which is very strong.  Here are some examples of mean ratings on the variable ``valence'', which shows how close humans and different LLMs are:
 
 \begin{center}
 \begin{minipage}{0.45\linewidth}
