@@ -28,7 +28,7 @@ available. As noted in section \extref{age_generative_ai}, it is common to
 equate ``transformer'' with ``LLM'', but the two concepts are distinct. The
 transformer is a neural network architecture, while an LLM is any model
 of language generation trained on a large dataset. An LLM can be built
-out of something besides transformers, and transformers can be generate non-linguistic data. For example, some state-of-the-art image classification
+out of something besides transformers, and transformers can generate non-linguistic data. For example, some state-of-the-art image classification
 models are now transformer based, and OpenAI has released an impressive video
 generation model (Sora) which runs on a transformer architecture.
 However, in this chapter we focus on transformer-based models of text
@@ -156,7 +156,7 @@ Broadly speaking, this is referred to as \glossary{in-context learning}, though
 perhaps ``in-context processing'' is a better description for it. Even if in AI
 terms this is learning, in another sense it more resembles the human ability to
 process fresh information held in working or short-term memory. The working
-memory capacity of frontier LLMs (the most advanced large-scale models on the market, such as Claude and ChatGPT)  is much larger than that of humans, and they don't seem to be restricted to juggling the classic 5 $\pm$ 2
+memory capacity of frontier LLMs (the most advanced large-scale models on the market, such as Claude and ChatGPT) is much larger than that of humans, and they don't seem to be restricted to juggling the classic 5 $\pm$ 2
 items of human working memory.\footnote{Of note is the discovery that merely giving an LLM a larger
 context window does not automatically give it a correspondingly large working
 memory. Though some frontier models can hold entire books inside their context,
@@ -613,12 +613,12 @@ representational width and representational depth introduced in chapter \extref{
 Representational width here corresponds to the use of a
 ``multi-head'' attention mechanism. This allows the network to pay attention to
 different features of the token representations coming to it through the
-residual stream (see figure \ref{multipleHeads}). The residual stream is projected into several lower-dimensional heads, each processing the input in parallel, and then projected back up to the residual stream and combined. For example, a 9-dimensional embedding might be split into three 3-dimensional heads.\footnote{Most implementations use an event split: the dimensionality of each head is often the embedding dimension divided by the number of heads}
+residual stream (see figure \ref{multipleHeads}). The residual stream is projected into several lower-dimensional heads, each processing the input in parallel, and then projected back up to the residual stream and combined. For example, a 9-dimensional embedding might be split into three 3-dimensional heads.\footnote{Most implementations use an even split: the dimensionality of each head is often the embedding dimension divided by the number of heads}
 Multi-headed attention, in letting the
 network use \emph{multiple} ways to scan over the context for relevance, is a
 bit like convolutional networks (section \extref{convolutionalLayer})
 developing \emph{multiple} filters to analyze an image (which we also described as
-representational width). 
+representational width).
 
 Representational width also applies to the MLPs, which typically involve a projection to a \emph{higher} dimensional hidden-unit space, to allow for more associative information to be encoded.
 
@@ -632,8 +632,8 @@ mechanism, where each head learns to represent inputs to the block in a
 different way, capturing representational width.}
 \label{multipleHeads}
 \end{figure}
- 
-Representational depth is achieved by  stacking many of these
+
+Representational depth is achieved by stacking many of these
 transformer blocks on top of each other ($k$ times in figure
 \ref{multipleHeads}). As token representations move
 through the layers of attention heads and MLPs, they acquire more and more
@@ -641,7 +641,7 @@ context information and are steadily transformed, with the vectors
 corresponding to them in the latent space reoriented in slightly different
 directions to reflect this refinement of meaning.\footnote{The 3Blue1Brown
 video linked at the start of the chapter has useful visualizations of this
-process, represented geometrically.} 
+process, represented geometrically.}
 
 Recall that with deep networks for vision,
 we get features, features of features, features of these features, etc., whose
@@ -658,7 +658,7 @@ to syntactic or semantic features is measured using post-hoc interpretation
 techniques such as probing (see chapter \extref{ch_mechinterp}). As with so many other neural network features,
 these were not ``programmed in'' by the engineers, but are emergent from the
 network after training, and are studied and described by scientists after the
-fact.} However, one way the depth of transformers differs from earlier networks like convolutional networks is that a feature can be \emph{ignored} for many layers.  So it's not a matter of simply combining and recombining features from earlier layers. It's more about the attention heads and MLPs grabbing a token representation when the time is right, enriching it with a bit of relevant information at that layer, and passing it back up along the residual stream. It will be advertised using key values at every head, but only where there is a strong match to a query will it receive attention and be operated on again.
+fact.} However, one way the depth of transformers differs from earlier networks like convolutional networks is that a feature can be \emph{ignored} for many layers. So it's not a matter of simply combining and recombining features from earlier layers. It's more about the attention heads and MLPs grabbing a token representation when the time is right, enriching it with a bit of relevant information at that layer, and passing it back up along the residual stream. It will be advertised using key values at every head, but only where there is a strong match to a query will it receive attention and be operated on again.
 
 % Work with Eric S on integrating this point here. We could say something like,
 % this explains a rather striking feature of LLMs: that you can enter prompts
@@ -1003,7 +1003,7 @@ objects and other living agents, the ability to abstract from particulars to
 general concepts, and to make analogies from prior experience. No one yet knows
 how to capture such knowledge or abilities in machines'' \cite{mitchell2021ai}. 
 
-Subsequently transformer based architectures like GTP-4 performed at high
+Subsequently transformer based architectures like GPT-4 performed at high
 levels in standardized tests like the LSAT, the SAT, and the Bar exam taken by lawyers (though it did not
 do as well as humans in writing tests). See figure \ref{llmStandardExams}. Multiple studies
 also showed that LLMs could perform as well as or better than humans on
@@ -1011,9 +1011,9 @@ analogical problems, including problems developed by Mitchell herself
 \cite{webb2023emergent}.  Mitchell has responded, noting  that transformers
 perform well on simple analogies but that performance declines sharply on  more
 complex analogies \cite{lewis2025evaluating}. The topic remains live as of 2025.
-In June 2025 a group at Apple published a paper whose title begins with``The
+In June 2025 a group at Apple published a paper whose title begins with ``The
 Illusion of Thinking'' \cite{shojaee2025illusion}, which claims that large
-reasoning modelings like LLMs `` face a complete accuracy collapse beyond
+reasoning models like LLMs `` face a complete accuracy collapse beyond
 certain complexities''. The charge was met days later by a post by Anthropic
 called ``The illusion of the illusion of thinking" \cite{opus2025illusion},
 which claimed that the Apple group's work ``primarily reflect experimental
