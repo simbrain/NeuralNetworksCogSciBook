@@ -751,56 +751,38 @@ have to be frequently updated.
 
 At a high-level, the main debate about LLMs is this: are they just
 regurgitating what they were trained on, like a stochastic parrot, or are they
-genuinely intelligent? This is sometimes framed as a distinction between recall
-and generalization. The recall side says these models store and extract the
-data they were trained on. The generalization side says they can go beyond
-that.
+genuinely intelligent?\footnote{There is no agreed-upon definition for “genuine intelligence”, but it is a helpful blanket designation for what many parties to the debate are looking for.} 
 
-% This critiques weak not strong AI. Use glossary items for symbolic AI, etc.
-On the recall side of this debate, some argue that LLMs do little more than
+% Discuss weak vs strong AI
+% Discuss generalization vs Chomskian generativity or something along those lines
+% See the Millier quote in comments below
+
+Some argue that LLMs do little more than
 compress and then recall information contained in their training data
 \cite{bender2021dangers, chiang2023jpeg}. A popular version of this argument
 as applied to LLMs is due to Emily Bender and colleagues
 \cite{bender2021dangers}, in which it is claimed that current LLMs are
 ``stochastic parrots'' that capture nothing more than mere co-occurrence
-probabilities (in fact, the title of the paper includes a Parrot emoji). If
-this is true, then LLMs do not offer a cognitive model of human intelligence,
-but may still be useful as a sort of repository for population-level
-statistical trends in human behavior. As they say ``an LM is a system for
+probabilities (in fact, the title of the paper includes a Parrot emoji). As they say ``an LM is a system for
 haphazardly stitching together sequences of linguistic forms it has observed in
 its vast training data, according to probabilistic information about how they
-combine, but without any reference to meaning: a stochastic parrot'' (p. 617).
+combine, but without any reference to meaning: a stochastic parrot'' (p. 617).  If
+this is true, then LLMs do not offer a cognitive model of human intelligence,
+but may still be useful as a sort of repository for population-level
+statistical trends in human behavior.
 Another metaphor is that of a blurry JPEG of the internet
 \cite{chiang2023jpeg}. Take the whole internet, and compress it in the way a
 JPEG compresses an image. On this conception, LLMs are just giant statistical
-models, that can compress information but that fail to be an interesting model of cognition.
-% mechinterp ref
+models, which can compress information but that fail to be an interesting model of cognition.
 
-% not spitting out training data, but something emergent is coming out. This is
-% the view that these are actual cognitive model. Soft assembly. Does things
-% differently. E.g., https://osf.io/preprints/psyarxiv/gka2j_v1
-% https://arxiv.org/pdf/2504.01990  [massive agentic systems paper]
-On the generalization side of the debate, it is argued that LLMs dynamically
-assemble functions in response to prompts that generalize from patterns in
-their training data \cite{kello2024emergent}, offering a computational model of
-core properties of human cognition. On this view, LLMs are actual cognitive
-models, even if they weren't initially designed to be. They are not just
-regurgitating their training data but are doing the same kind of computations
-humans do: soft-assembling information in response to situations and out of
-their complicated circuitry producing emergent genuine intelligence.
+Others argue that LLMs are doing more than recalling patterns from their training data. For example,  \cite{kello2026contextual}, describe LLMs as using in-context learning (section \ref{inContext) to ``assemble context-dependent functions
+and performances `on the fly' based on generalizations from prior experiences.'' On this view, LLMs are doing the same kind of computations humans do: soft-assembling information in response to situations and producing emergent genuine intelligence in the process. In fact the entire field of mechanistic interpretability (chapter \extref{ch_mechinterp}) is focused on identifying the ``programs'', ``algorithms'', or ``circuits'' encoded in LLMs.\footnote{This is not to say everyone in the field of mechanistic interpretability endorses the ``genuine intelligence'' view; however we suspect many in the area are in fact motivated by the view that LLMs do something more than statistical extrapolation.}
 
 One way to make the debate vivid is via what Bender and colleagues call the
 ``Octopus test'' \cite{bender2020climbing} (see figure \ref{octopusTest}),
 which goes like this: two English-speaking castaways communicate via telegraph
-across islands. A super-intelligent octopus intercepts their messages, learns
-the statistical patterns of the messages going back and forth, and, ``feeling
-lonely'', inserts itself into the conversation. This scenario is used to argue
-that, like the octopus, LLMs may produce seemingly meaningful outputs based
-solely on statistical patterns, without true understanding of language or the
-concepts they appear to discuss. They argue that the imaginary octopus would
-pass the test for simple chatbot-like interactions, but that it would fail in
-responding to strange situations involving words referring to objects the
-octopus has never perceived. 
+across islands. A highly-intelligent octopus intercepts their messages, learns
+their statistical patterns, and, ``feeling lonely'', inserts itself into the conversation.  The imaginary octopus is able to sustain simple chatbot-like interactions, but fails in responding to strange situations involving words referring to objects the octopus has never perceived.  Here is is the test: could an LLM succeed in cases where the octopus fails?  Bender and colleagues argue that LLMs would fail such a test. They produce seemingly-meaningful outputs based solely on statistical patterns, but don't truly understand the language or the concepts they appear to discuss, because they lack any grounding in the world.  Others, on the ``genuine intelligence'' side of the debate, would say that LLMs would pass the test, and could use their emergent abilities to appropriately answer questions that stump the octopus.
 
 \begin{figure}[ht]
 \centering
@@ -814,11 +796,9 @@ has happened (the poor person on the right is just out of luck at this point).
 It has been argued that the octopus would not understand the information it
 passed along, even if it was convincing to the human. Moreover, it has been
 argued that the octopus would fail to produce convincing text in certain novel
-situations.
-}
+situations. The test is then whether an LLM could succeed in such situations.}
 \label{octopusTest}
 \end{figure}
-
 
 \subsection{LLMs and Behavioral Sciences}\label{llmsBehavioral}
 
@@ -863,25 +843,6 @@ We can take the same exact stimuli used for humans and use them for a chatbot.
 In fact, some have argued that LLMs may be used as a substitute for human data
 collection in future psychological research \cite{aher2023using,
 dillion2023can}.
-
-% The generalization (genuine intelligence) vs recall (stochastic parrot) debate
-% discussed above generates testable predictions that are being studied in
-% research labs. Generalization predicts that LLM responses should exhibit
-% context dependence (such as word list composition effects in a
-% psycholinguistic rating task), while recall predicts that LLM responses should
-% not be sensitive to context. The generalization hypothesis makes predictions
-% about what sorts of functions an LLM should be able to assemble, while the
-% recall hypothesis predicts that LLMs should perform approximately equally well
-% on tasks as long as the information is similarly present in its training data.
-% For example, according to the generalization hypothesis, LLMs may be able to
-% assemble functions that resemble human language use at the token level (such
-% as word ratings) but should do poorly at approximating human reaction times in
-% psycholinguistic studies because the dynamics that govern language production
-% and comprehension at this timescale are abstracted over in token-level
-% language data. The recall hypothesis, in contrast, would predict no difference
-% in LLM performance across these two tasks because information about human
-% performance on both of these metrics is equally available in its training data
-% in the form of published studies.
 
 Much of this work has related LLM behavior to known psycholinguistic effects.
 For example, LLMs rate words very similarly to how humans rate them, on a wide range of variables including arousal, concreteness, dominance, familiarity, gender association, imageability, and valence \cite{trott2024augment,
@@ -1104,7 +1065,7 @@ the internal activation patterns of an LLM. Note that the color gradient is only
 Prediction tends to be strongest for activations in the middle layers of LLMs
 \cite{caucheteux2022brains}, but the details remain unclear (see
 \cite{schrimpf2021neural}, figure 2C), and this work will probably be best
-pursued along side work in mechanistic interpretability  (chapter
+pursued along side work in mechanistic interpretability (chapter
 \extref{ch_mechinterp}), where studies suggest that attention heads located
 early in the model's forward pass tend to deal with syntactic features,
 composing these into semantic features in the middle of the forward pass, and
@@ -1160,7 +1121,7 @@ manipulating information in a clever way--here based on a statistical
 aggregation of the internet--but they don't truly understand anything, and they
 are certainly not conscious \cite{hamid2023chatgpt}. In fact, some LLMs have
 themselves claimed that the Chinese Room argument (a famous form of the unusual
-realization argument) applies to them \cite{sep-chinese-room}!\footnote{It may seem that the Octopus Test, discussed above, just is a type of Chinese Room argument. However, the logic of the two thought experiments is different. Bender et al. claim that the octopus would ultimately \emph{fail} the Turing Test because it would not be able to generalize beyond its statistical observations. In this way one could think of the octopus setup as an imperfect Chinese Room, one that would fail for certain interactions. So, from Bender's standpoint, a Chinese Room (or Dneprov's stadium, etc.) could not be built to begin with. }
+realization argument) applies to them \cite{sep-chinese-room}!\footnote{It may seem that the Octopus Test, discussed above, just is a type of Chinese Room argument. However, the logic of the two thought experiments is different. Bender et al. claim that the octopus would ultimately \emph{fail} the Turing Test because it would not be able to extrapolate from its statistical observations. In this way one could think of the octopus setup as an imperfect Chinese Room, one that would fail for certain interactions. So, from Bender's standpoint, a Chinese Room (or Dneprov's stadium, etc.) could not be built to begin with. }
 
 However, others argue that LLMs do understand the meaning of the words they
 produce. Relying on findings presented above, Sogaard
@@ -1266,13 +1227,13 @@ thought experiment in philosophy of cognitive science, the ``blockhead example''
 by consulting such a table would not actually be considered intelligent
 \cite{milliere2024philosophical1}.} So what \emph{is} going inside an LLM? Are
 the symbols grounded? Is there a world model in there? Is a compositional
-symbol system lurking?  We hope we have provided some guidance to thinking
-about what happens in the guts of these machines with all the explanations and
+symbol system lurking? We hope we have provided some guidance to thinking
+about what happens inside of these machines with all of our explanations and
 visualizations (and pointers to other tools and visualizations) in this
 chapter, and we also note that the topic is itself being actively pursued in
 the area of mechanistic interpretability, discussed in chapter
 \extref{ch_mechinterp}. 
-% of course circuits promote generalization, but it feels different Millier,
+
 % part 2:  "The entire phenomenon is thus not a sudden onset of generalization
 % ability, but rather a gradual amplification of structured mechanisms encoded
 % in the weights, followed by pruning of unnecessary components. Importantly,
