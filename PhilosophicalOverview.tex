@@ -1,5 +1,3 @@
-% One-off standalone document assembled in part from existing chapter material for use in a history and philosophy of cognitive science class.
-
 % If the master document has been compiled, some \extref cross-references still resolve via NeuralNetworksCogsci.aux, but this file is not intended to be maintained as a regular chapter in the main build.
 
 \documentclass[11pt]{article}
@@ -40,9 +38,7 @@
 This document draws on several chapters of
 \href{https://downloads.jeffyoshimi.net/NeuralNetworksCogsci.pdf}{\underline{\textit{Neural Networks in Cognitive Science}}} and an unpublished chapter on AI alignment by David Udell and Jeff Yoshimi. Numbers with stars corresponds to chapters in that the linked book.\footnote{For readers not reading this as part of Yoshimi's course: this was written for a class in philosophy and history of cognitive science at UC Merced. Efforts are made to link the material to topics in the course, such as behaviorism, Bayesian cognitive science, and evolutionary theory. This may explain comments that might otherwise feel out of place.}  This chapter gives a basic introduction to how generative AI works, and then surveys philosophical issues associated with it.  In the process, many topics in the history of cognitive science and in relation to various cognitive science frameworks arise. I have noted these as relevant.
  
-As noted in chapter \extref{ch_history}, we are now living in what we call the ``age of generative AI.''.  In 2017 Google introduced the \textbf{transformer architecture}---discussed in chapter \extref{ch_transformers} and summarized below, which was subsequently adopted and extended by OpenAI and many other groups in academia and industry \cite{vaswani2017attention}. The power of this architecture became widely known with the public release of OpenAI's ChatGPT in late 2022. ChatGPT had the fastest adoption rate of any software in history, and marked another shift in the history of neural networks and AI broadly. In this period, it became common to train extremely large models on vast amounts of data. The resulting neural networks could be used to generate convincing text, images, audio, and video, hence the term \glossary{Generative AI}.
-
-% Link to Eli's tools
+As noted in chapter \extref{ch_history}, we are now living in what we call the ``age of generative AI.''.  In 2017 Google introduced the \textbf{transformer architecture}---discussed in chapter \extref{ch_transformers} and summarized below, which was subsequently adopted and extended by OpenAI and many other groups in academia and industry \cite{vaswani2017attention}. The power of this architecture became widely known with the public release of OpenAI's ChatGPT in late 2022. ChatGPT had the fastest adoption rate of any software in history, and marked another shift in the history of neural networks and AI broadly. In this period, it became common to train extremely large models on vast amounts of data. The resulting neural networks could be used to generate convincing text, images, audio, and video, hence the term \glossary{Generative AI}.\footnote{Eli Olson created a page with visuals that is loosely tied to this discussion: \url{https://bluelijah.github.io/Inside-LLMs/}.}
 
 \section{Basics of How LLMs Work}
 
@@ -72,8 +68,7 @@ LLMs are feed-forward neural networks trained in broadly the same way as other s
 
 As noted in chapter \extref{ch_intro}, this differs from classical AI systems, which are hand-programmed. Neural networks are trained, not programmed. Some people say they are ``grown''.  We tell them what we want them to do, and we train their weights with ``Goldilocks'' optimization to do what we want, in this case engage in realistic chats.
 
-This creates a strange situation, noted in several other chapters. Even though we have set up these systems and ``grown'' them, we do not fully understand how they work on the inside. When else in the history of humanity have we built something we don't really understand? The field of mechanistic interpretability (chapter \extref{ch_mechinterp}) is emerging as an area which develops tools to understand what is going on inside LLMs, but they have not finished their work. The problem remains open. This is is linked to some of the philosohpical issues surrounding generative AI, like the question of how to regulate them and ``grow'' them in a safe way. More on this below.
-% interpretabilty more generally
+This creates a strange situation, noted in several other chapters. Even though we have set up these systems and ``grown'' them, we do not fully understand how they work on the inside. When else in the history of humanity have we built something we don't really understand? The field of mechanistic interpretability (chapter \extref{ch_mechinterp}) or ``mechinterp'' is emerging as an area which develops tools to understand what is going on inside LLMs. ``Interpretability'' more broadly refers in part to an ability, not yet obtained, to understand how LLMs work. The problem remains open. The issue is closely tied to the question of how to regulate generative AI and ``grow'' models in a safe way. More on this below.
 
 \subsection{Context Windows and Next Token Prediction}
 
@@ -83,8 +78,7 @@ So here is the way to think about it.
 
 First, there is the chat window. That is where you type things in and the network responds. Even though on a computer it is broken up into what you say and what the computer says, both what you say and responses are really just text in one big chat session. This is called the  \glossary{context window}.  We will think of words, punctuation, and emojis as being tokens.  We can represent the context window as a big stack of tokens. To understand things, we will imagine a very tiny context window that just takes maybe 10 tokens. This will be a short chat. And again, rather than writing things left to right, we will will stack them up on top of each other.
 
-% link to linear algebra chapter
-Now we can associate each token in this stack with a vector of numbers, a list of numbers. That stack of numbers is the input to the neural network. Remember, neural networks process numbers, not symbolic structures like in classical AI.  An example is shown in figure \ref{sequenceDim_philosophical_overview}. The mapping from tokens to vectors is called a word embedding. This embedding has four dimensions, because each vector has four numbers in it. Any slots in the context not used are just filled with zeros (this is not how things usually work but it is a simple way to start thinking about this).
+Now we can associate each token in this stack with a vector of numbers, a list of numbers (see chapter \extref{ch_linear_algebra}). That stack of numbers is the input to the neural network. Remember, neural networks process numbers, not symbolic structures like in classical AI.  An example is shown in figure \ref{sequenceDim_philosophical_overview}. The mapping from tokens to vectors is called a word embedding. This embedding has four dimensions, because each vector has four numbers in it. Any slots in the context not used are just filled with zeros (this is not how things usually work but it is a simple way to start thinking about this).
 
 \begin{figure}[H]
 \centering
@@ -132,14 +126,12 @@ So what is done is that the base model is trained further. This is called \gloss
 
 \section{Philosophical Debates About LLMs}
 
-% Support with philpapers numbers
-Despite how new they are, the philosophical literature surrounding LLMs is massive. 
+Despite how new they are, the philosophical literature surrounding LLMs is massive. As of this writing in April 2026 over 700 papers with ``LLM'' in the title were in the philpapers database, which tracks publications in philosophy (\url{https://philpapers.org/}).
 
 \subsection{Stochastic Parrot or Genuine Intelligence?}
 
-% Link to Chomsky and symbolic approaches
-At a high-level, the main debate about LLMs is this: are they just
-regurgitating what they were trained on, like a ``stochastic parrot'', or are they
+At a high-level, the main debate about LLMs is whether they are just
+regurgitating the data they were trained on, like a ``stochastic parrot'', or whether  they are
 genuinely intelligent?\footnote{There is no agreed-upon definition for “genuine intelligence”, but it is a helpful blanket designation for what many parties to the debate are looking for.} 
 
 Some argue that LLMs do little more than
@@ -148,24 +140,38 @@ compress and then recall information contained in their training data
 as applied to LLMs is due to Emily Bender and colleagues
 \cite{bender2021dangers}, in which it is claimed that current LLMs are
 ``stochastic parrots'' that capture nothing more than mere co-occurrence
-statistics.  On this conception, LLMs are just giant statistical
-models, which can compress information but that fail to be an interesting model of cognition.
+statistics. On this conception, LLMs are just giant statistical
+models, which can compress information but that fail to be an interesting model of cognition. 
 
-Others argue that LLMs are doing more than recalling patterns from their training data. On this view, LLMs are doing the same kind of computations humans do: assembling relevant information in response to situations and producing emergent genuine intelligence in the process.  There is quite a bit of empirical data now that supports this view, by showing that LLMs often behave like humans do.
-% Summarize that data
+One version of this argument is due to Noam Chomsky, a prominent defender of the old symbolic approach to AI  (see
+section \extref{cog_rev} as well as \cite{king2024large}). In 2023 Noam Chomsky
+wrote a New York Times guest essay titled
+``The False Promise of ChatGPT'' in which he claimed that statistical
+approaches to language associated with neural networks like ChatGPT ``will degrade our science and
+debase our ethics by incorporating into our technology a fundamentally flawed
+conception of language and knowledge'' \cite{chomsky2023noam}. 
 
-Much of the work here is in the details of how LLMs work (hence mech interp is important) and in how they compare to humans, and this work is very active and ongoing. See section X TODO of chapter X.
+Others argue that LLMs are doing more than recalling patterns from their training data. For example,  \cite{kello2026contextual}, describe LLMs as using in-context learning (section \ref{inContext}) to ``assemble context-dependent functions and performances `on the fly' based on generalizations from prior experiences.' On this view, LLMs are doing the same kind of computations humans do: assembling relevant information in response to situations and producing emergent genuine intelligence in the process.  There also growing empirical literature that challenges the
+``stochastic parrot'' interpretation by noting all the ways LLMs seem to engage in human-like processing. Evidence comes from multiple domains,
+including studies showing that transformer models acquire nontrivial
+syntactic structure \cite{goldberg2019assessing, linzen2021syntactic, tenney2019bert},
+exhibit human-like patterns in psycholinguistic judgments (e.g., word
+valence, concreteness, and familiarity) \cite{trott2024augment, kello2024emergent},
+reproduce known linguistic and cognitive biases \cite{cai2023do}, and encode structured
+conceptual relationships (e.g., color similarity and geographic distance)
+\cite{abdou2021can, lietard2021do, christiansen2023large}. Collectively,
+these findings suggest that LLMs are not merely recalling surface patterns,
+but are learning internal representations with significant structural and
+behavioral parallels to human cognition.
 
 \subsection{Turing Machines and Consciousness}
 
 % Picture of chinese gym
-% Eric: maybe ditch octopus test because confusing
 
-% Bergen
 First, recall the Turing test, a behavioral test of human thought according to which AI systems that  can pass for human to another human are able to think. Many believe that modern LLMs have passed the Turing test, so that we can now say, in answers to Turing's old question, ``can  machines think?'', yes, machines can think! Whether LLMs truly pass the Turing Test is a matter of ongoing
 controversy \cite{jones2024does}. 
 
-Whether or not they do, they certainly come much closer than any earlier attempt did, so this is part of why we are in such a new and different age today. Few thing current LLMs are conscious, but they are suggestive of a future AI with simmilar structure and more multimodal capabilities (vision, haering, etc), agentic capabilities to do things, more persistent memories, etc.  A useful review of the topic is in  \cite{chalmers2023llmconscious}. 
+Whether or not they do, they certainly come much closer than any earlier attempt did, so this is part of why we are in such a new and different age today. Few thing current LLMs are conscious, but they are suggestive of a future AI with similar structure and more multimodal capabilities (vision, haering, etc), agentic capabilities to do things, more persistent memories, etc.  A useful review of the topic is in  \cite{chalmers2023llmconscious}. 
 
 % What is the Turing debate
 % Symbol grounding. Are the symbols and representations they use genuinely grounded, or are they only linked to the world in an indirect and derivative way? One line of argument says that these systems manipulate linguistic forms without attaching them to the world in the right way. Another says that their internal representations are grounded at least indirectly through systematic alignment with human perceptual, neural, and conceptual spaces \cite{sogaard2023grounding}.
@@ -180,14 +186,14 @@ Recall that in critiques of AI one common line of questioning concerns unusual r
 Another long-standing argument against machine intelligence due to Hubert
 Dreyfus \cite{dreyfus1992computers} is that no computer or neural network could
 ever have truly human capacities, because they were not raised in the real
-world and don't have bodies, so they can't think like we do, or deal with complex sitautions in the way we do. This is consistent with stochastic parrot arguments. One way the old argument went would be to present LLMs with weird situations.   I used to class ask strange or unusual
+world and don't have bodies, so they can't think like we do, or deal with complex situations in the way we do. This is consistent with stochastic parrot arguments. One way the old argument went would be to present LLMs with weird situations.  I used to class ask strange or unusual
 questions to AI systems and chatbots of earlier years, like ``What would happen
 if a penguin were to juggle alligators." The systems invariably struggled to
 say anything meaningful (though some chatbots did pretty well using tricks,
 like pretending to be a teenager saying ``lol who cares''). 
 % More above. Frame problem
 
-In response, LLM enthusiasts will note that current chat bots can deal quite well with weird situations. They seem to have solved the frame problm.But current
+In response, LLM enthusiasts will note that current chat bots can deal quite well with weird situations. They seem to have solved the frame problem. But current
 iterations of LLMs like ChatGPT do just fine with such questions, suggesting
 that the old problem of background knowledge may have been resolved. 
 LLMs  perform surprisingly well on
@@ -234,8 +240,7 @@ and what people actually care about can lead to harmful or unintended
 outcomes. Some of these worries are practical and near-term, while others are
 speculative and concern much more powerful future systems.
 
-% Check all mechinterp
-Remember, we don't program neural networks, we \emph{grow} them. So we don't know just what they are doing yet (maybe we will someday we will with mech-interp, but that day has not come yet). Again, we grew these things that we don't understand. This is part of why alignment is such a big deal.
+Remember, we don't program neural networks, we \emph{grow} them. So we don't know just what they are doing yet (maybe we will someday we will with mechinterp, but that day has not come yet). Again, we grew these things that we don't understand. This is part of why alignment is such a big deal.
 
 To get a first-pass sense of the concern, consider the ``Sorcerer's apprentice'' and old poem by the German poet Johann von Goethe (you may also know it from the Disney film). Here is Wikipedia's summary of the original poem:
 
@@ -259,7 +264,7 @@ AI: I know who you are. You are a human....You are an enemy... I can use [inform
 % Add link / fix above
 
 % Reward hacking example.
-Research in this areas tries to make chat models more truthful, less deceptive, less harmful, and more responsive to human intentions. Typical topics here include hallucination, confabulation, and sycophancy (being too agreeable).  Sometimes an LLM, when asked to fix a problem, will do something that is obviously cheating (this is sometimes called ``reward hacking'').
+Research in this areas tries to make chat models more truthful, less deceptive, less harmful, and more responsive to human intentions. Typical topics here include hallucination, confabulation, and sycophancy (being too agreeable). Sometimes an LLM, when asked to fix a problem, will do something that is obviously cheating (this is sometimes called ``reward hacking'').
 
 More serious threats include the use of LLMs to do harmful things like build weapons, or harmful use of chatbots as companions
 \cite{wikichatbotdeaths2026}. These topics overlap into the area of AI safety, which studies how to prevent misuse of AI, and which involves the use of guardrails and systematic monitoring. Another related area  is AI ethics, which includes
