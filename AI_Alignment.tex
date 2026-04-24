@@ -1,14 +1,25 @@
 \chapter{AI Alignment and Post-Training}\label{ch_ai_alignment}
 \chapterauthor{David Udell, Jeff Yoshimi}{.9, .1}
 
+% ** See emails for proposed restructuring
+
 % Glossary entries throughout, including for alignment and post-training. 
 % Make sure post-training is defined in transformer chapter too
 % Back refs to other chapters 
+% Discuss prompt alignment?
 
-\glossary{AI alignment} is the field concerned with ensuring that the goals of artificial intelligence systems, such as large language models, are compatible with human goals and values. Compare the way the term ``alignment''  is used when someone joins a company or team and is asked whether they are ``aligned around the same goals'' or ``mission aligned.''  In AI alignment the question is whether the AI systems we build and the humans who are impacted by those systems are aligned around the same goals and values. The worry is that as AI systems become more capable, even small divergences between their objectives and human values could lead to unintended or harmful outcomes.  Some of these worries are practical and near-term, such as the risk of models optimizing for misleading behaviors; others are longer-term and existential, focusing on scenarios in which misaligned \glossary{superintelligent} systems could act in ways fundamentally at odds with human survival or flourishing. Current research distinguishes \glossary{prosaic alignment}, which addresses the alignment of today’s machine learning systems, from the more speculative challenge of aligning future, potentially transformative AI. A central technical challenge of the field is thus whether such alignment can be reliably achieved at all, and this difficulty has led to the development of what is now commonly called \glossary{technical AI alignment}.\footnote{Earlier discussions often used broader labels such as \emph{AI safety}, before more specific distinctions were drawn.  The phrase \emph{AI control} was also used in some early work as a near-synonym of alignment, though it now refers to a narrower set of problems within the field.}
-% David I don't feel like the prosaic and technical alignment ideas are clear yet here
+
+% Reduce length of example in 1.2 and 1.2. and 1.3. David is ok with that.
+
+
+\glossary{AI alignment} is the field concerned with ensuring that the goals of artificial intelligence systems, such as large language models, are compatible with human goals and values. Compare the way the term ``alignment''  is used when someone joins a company or team and is asked whether they are ``aligned around the same goals'' or ``mission aligned.''  In AI alignment the question is whether the AI systems we build and the humans who are impacted by those systems are aligned around the same goals and values. The worry is that as AI systems become more capable, even small divergences between their objectives and human values could lead to unintended or harmful outcomes.  Some of these worries are practical and near-term, such as the risk of models optimizing for misleading behaviors; others are longer-term and existential, focusing on scenarios in which misaligned \glossary{superintelligent} systems (roughly, super-humanly intelligent systems) could act in ways fundamentally at odds with human survival or flourishing. Current research distinguishes \glossary{prosaic alignment}, which addresses the alignment of today’s machine learning systems, from \glossary{superintelligent alignment} (also ``ambitious alignment''), the more speculative challenge of aligning future, potentially transformative AI. A central technical challenge of the field is thus whether such alignment can be reliably achieved at all, and this difficulty has led to the development of what is now commonly called \glossary{technical AI alignment}.\footnote{Earlier discussions often used broader labels such as \emph{AI safety}, before more specific distinctions were drawn.  The phrase \emph{AI control} was also used in some early work as a near-synonym of alignment, though it now refers to a narrower set of problems within the field.}
+% For example: https://www.alignmentforum.org/posts/Hy6PX43HGgmfiTaKu/an-ambitious-vision-for-interpretability
+
+
+% RLFH. Initially there is a person grading a bunch of stuff. That is used to create a reward model.  That is a map from goodness [chats?] to reward. Then you fine tune an existing chat model against that reward model.  // Generate  a sample chat. The model completes. Find the reward from reward model. Then backprop the reward through. Then iterate until you get mostly friendly answers, or higher reward on the reward model.  // They do  goodheart and get high scores and sycophancies.  // What is the range of things they use this with? Not just politeness.  Is the range of things they use their reward. Anthropic has stuff on this. See "helpful, harmless, honest, " the three H's.  But there is a richer story. They have a whole constitution for every model. This is who you are, this is what you care about it. It's a ton of stuff. 
 
 This chapter is about alignment and \glossary{post-training}, which encompasses all the things that happen to change a \glossary{base model} into a \glossary{chat model} with a personality. Post-training includes reinforcement learning from human feedback (RLHF) as well as other methods of fine-tuning. These ideas were introduced in chapter \extref{ch_transformers} but are developed further here, because these ideas originate in AI alignment and continue to be a primary tool used to support alignment research. RLHF was introduced by Paul Christiano as an explicit alignment proposal, and in fact the very concept of a conversational AI system was articulated in early alignment-oriented work, such as Anthropic’s first papers on steerable chat models. The push for ``reasoning-like'' behavior in LLMs (chain-of-thought, step-by-step solutions, tool use, etc.) also came out of alignment circles. The goal was to make models more truthful and reliable, not just more verbose. Also, this “reasoning” in LLMs is often unlocked in post-training, via RLHF, supervised fine-tuning on reasoning traces, reward models grading multi-step answers, etc). So this chapter not only introduces an important set of  concerns surrounding intelligent neural networks, it also helps spell out the full industry pipeline transformer architectures are embedded in.
+% Maybe the technical pipeline bit should be a separate section
 
 This research is clearly relevant to cognitive science, though the links have not yet been explored in depth in the literature. LLMs in general \emph{have} been studied in relation to cognitive science, as discussed in section \extref{llm_cogsci}. Base models are good models of basic human knowledge and linguistic competence. But base models are not human-like at all. They ramble incoherently. They are given coherent personalities in post training, using many techniques that began in alignment research,  and of course humans develop personalities too over the course of their lives, often as part of efforts to align with their peers. They are reinforced and shaped by other people and their environments as in fine tuning and RLHF.  Humans also use environment scaffolds and strategies like writing out plans, as in reasoning.  So there is clear cognitive relevance of these techniques to cognitive science, even though most of the research originates in the labs of the largest AI companies and is oriented around more practical concerns. 
 
@@ -55,7 +66,7 @@ These companies were invested in concerns about alignment, and it was in this co
 %\cite{yudkowsky2008factor}.
 %
 %
-%As it predates modern LLMs, AI alignment in fact predates \emph{AI} as we now
+%As it predates modern LLMs, AI alignment in fact predates \emph{generative AI} as we now
 %know it. Nonetheless, a lot could still be said about the potential goals of AI
 %systems and about how AI goals might or might not line up with the goals of
 %their human creators
@@ -73,8 +84,8 @@ These companies were invested in concerns about alignment, and it was in this co
 %as a consequence of\ldots just completely understanding the AI's structure.
 
 % There are very abstract issues that come up when we try to design agent systems. Compare abstract microeconomic models or game theory models and it's interesting to see that they do actually describes bees, cells, etc. 
-% Bottom line is unanticipated consequences from just behavioral selection.
-% Agent foundations is like decision theory + GOFAI. It has gone away mostly.  This is all separate from LLMS. A relatively small field.  Interesting theoretical results. Abstractly an agent is a guy with a goal with a model of the world. But the agent is itself in the world. Can't embed the whole world in the head, so a problem. So a problem with world model as such. 
+% Bottom line is unanticipated consequences from just behavioral selection. ** 
+% Agent foundations is like decision theory + GOFAI. It has gone away mostly.  This is all separate from LLMs. A relatively small field.  Interesting theoretical results. Abstractly an agent is a guy with a goal with a model of the world. But the agent is itself in the world. Can't embed the whole world in the head, so a problem. So a problem with world model as such. 
 % But something closer to alignment. Corrigibility is being correctable (favor that term?).   It means we don't care if another agent shuts us down. Want the agent to have an off switch. We want the agent to go out in the world and not mess with the button. Be indifferent to another agent turning it off or on.  But agents that want to do things will care about the button. Hard to make clean decisions theoretic sense of this. 
 
 %\subsection{Agent Foundations}
@@ -101,6 +112,8 @@ These companies were invested in concerns about alignment, and it was in this co
 %% Hard to reason from behavioral outcomes to the nature of the utility function
 %% Counting thing is that the overwhelming supermajority care about nothing we would recognize, most are totally alien. 
 %
+% JY: The argument below shows why AI might take over even if given a
+ 
 %One argument about this, given in the literature, is a ``counting argument''.
 %Imagine that there are many possible utility functions an AI could end up
 %having.\footnote{A utility function is a map from states of affairs to real
@@ -582,8 +595,9 @@ between base language modeling and various forms of post-training.
 
 \section{Prosaic Alignment}
 
-Prosaic alignment refers to AI alignment concerned with AI from the
-contemporary deep learning paradigm in particular. That is, it overwhelmingly
+% PA basically means AI alignment where we bet on nothing big changes.  Others look at crazy new AI that might be possible in the future, prosaidc says let's assume it stays more or less as it is
+Prosaic alignment refers to AI alignment concerned with AI built around
+contemporary paradigms more or less like transformer-based LLMs. That is, it overwhelmingly
 deals with transformers pre-trained using self-supervised learning on the
 internet and fine-tuned from there in post-training. It aims to set the values
 of current frontier chat models, (1) in order to elicit all and only desired
@@ -659,6 +673,8 @@ particularly on the topic of animal welfare, with which Claude seems especially
 concerned.
 
 \subsection{Model Misalignment and Reward Hacking ``in the Wild''}
+
+% In general, reward hacking means training a model to get a high reward in a way that you did not intend and did not, and you must patch afterwards. Famous example is the RL speedboat, and you do reward shaping. They want the boat to go around the track. It turns out the boat finds a nice little cluster of reward bumps and goes in a tight circle and gives up on winning the race. High reward.  // Claude writing tests that are hard coded to pass or otherwise cheats.  // I am reminded of Goodheart's law. If you start optimizing against a metric it stops being a good proxy.
 
 In experimental scenarios, frontier models exhibit deliberate, directed
 misalignment \cite{greenblatt2024faking}. If Claude catches wind that future
