@@ -59,15 +59,15 @@ video}}. For a more technical walk through on building an LLM from scratch see
 \href{https://www.youtube.com/watch?v=kCc8FmEb1nY}{\underline{Karpathy's
 tutorial}}.}
 
-LLMs are feed-forward neural networks trained in broadly the same way as other supervised neural networks we have discussed. The three object detector and the tiny MNIST letter detector both involve weights which are trained with an objective in mind: classify objects, or classify hand-written digits. The weights are then adjusted up and down until the network does well at its task. They use the Goldilocks principle: the parameters should not be too large or too small, and are adjusted until they are ``just right'' for the task at hand (chapter \extref{ch_supervised}). 
+LLMs are feed-forward neural networks trained in broadly the same way as other supervised neural networks we have discussed. The three-object detector and the tiny MNIST letter detector both involve weights which are trained with an objective in mind: classify objects, or classify hand-written digits. The weights are then adjusted up and down until the network does well at its task. They use the Goldilocks principle: the parameters should not be too large or too small, and are adjusted until they are ``just right'' for the task at hand (chapter \extref{ch_supervised}). 
 
 As noted in chapter \extref{ch_intro}, this differs from classical AI systems developed in the computationalist paradigm, which are hand-programmed. Neural networks are trained, not programmed. Some people say they are ``grown''. We tell them what we want them to do, and we train their weights with ``Goldilocks'' optimization to do what we want, in this case engage in realistic chats. This creates a strange situation, noted in several other chapters, and possibly unprecedented in the history of technology. Even though we have set up these systems and grown them, we do not fully understand how they work on the inside. When else in the history of humanity have we built something we don't really understand? The field of mechanistic interpretability (chapter \extref{ch_mechinterp}) or ``mechinterp'' is emerging as an area which develops tools to understand what is going on inside LLMs. ``Interpretability'' more broadly refers in part to an ability to understand how LLMs work. Many efforts to make AI interpretable or explainable are underway. The problem remains open. The issue is closely tied to the question of how to regulate generative AI and try to grow these models in a safe way. 
 
 \subsection{Context Windows and Next Token Prediction}
 
-In this section we will work out a very basic understanding of how LLMs work. The basic idea is to use next-token prediction in a special ``recursive way'' that ends up producing reasonable chat interactions. In this discussion we will only focus on understanding the inputs and outputs to the feed-forward network. Chapters \extref{ch_transformers}  and \extref{ch_mechinterp} discuss more of the details of what happens inside.
+In this section we will work out a very basic understanding of how LLMs work. The basic idea is to use next-token prediction in a special ``recursive way'' that ends up producing reasonable chat interactions. In this discussion we will only focus on understanding the inputs and outputs to the feed-forward network. Chapters \extref{ch_transformers} and \extref{ch_mechinterp} discuss more of the details of what happens inside.
 
-So, first, there is the chat window. That is where you type things in and the network responds. Even though on a computer it is broken up into what you say and what the computer says, both what you say and the responses are really just text in one big chat session. This is called the  context window. We can represent the context window as a stack of tokens (words, word-parts, punctuation, and emojis). Consider a tiny context window that just takes 10 tokens. This will be a short chat. And again, rather than writing things left to right, we will stack tokens up on top of each other.
+So, first, there is the chat window. That is where you type things in and the network responds. Even though on a computer it is broken up into what you say and what the computer says, both what you say and the responses are really just text in one big chat session. This is called the context window. We can represent the context window as a stack of tokens (words, word-parts, punctuation, and emojis). Consider a tiny context window that just takes 10 tokens. This will be a short chat. And again, rather than writing things left to right, we will stack tokens up on top of each other.
 
 We can associate each token in this stack with a list of numbers (a ``vector''; see chapter \extref{ch_linear_algebra}). That stack of numbers is the input to the neural network. Remember, neural networks process numbers, not symbolic structures like in classical AI. An example is shown in figure \ref{sequenceDim_philosophical_overview}. The mapping from tokens to vectors is called a word embedding. The word embedding shown has four dimensions, because each vector has four numbers in it. Any slots in the context not used are just filled with zeros (this is not how things usually work but it is a simple way to start thinking about this).
 
@@ -82,7 +82,7 @@ occurs twice and is associated with the same vector.}
 
 So that is the input. Now let's think about the output. The output of an LLM is often a softmax layer, where there is one node for each possible token. In our simple example there are just eight possible tokens, so there are 8 nodes in the output layer. In a real LLM there are tens of thousands of outputs, for all the words and emojis and punctuation people use. The output is a probability distribution over these tokens, telling us which token the network thinks it would be best to output next (recall how the digit recognition network also used softmax, and that the activations on the nodes corresponded to what digit it thought it was looking at).  The most probable one is the predicted next token, and gets written to the context window.\footnote{It is usually more complicated than that but this is an easy way to learn the basic ideas.}
 
-So now we are set up to do chat. As can be seen in figure \ref{transformerOverview_philosophical_overview},  the entire initial user prompt is sent in to the network (left), as one big matrix. The output is a softmax which predicts the best token to use to start or continue a response. This token is added to the context window, the process repeats and another token is predicted (right) and added to the context window. The process continues until a hidden stop token is reached and then the chat stops and waits for you to respond again. That's it, that's how chat works. Of course there is a lot of important stuff in the middle, in the network, but we're skipping that here.
+So now we are set up to do chat. As can be seen in figure \ref{transformerOverview_philosophical_overview}, the entire initial user prompt is sent in to the network (left), as one big matrix. The output is a softmax which predicts the best token to use to start or continue a response. This token is added to the context window, the process repeats and another token is predicted (right) and added to the context window. The process continues until a hidden stop token is reached and then the chat stops and waits for you to respond again. That's it, that's how chat works. Of course there is a lot of important stuff in the middle, in the network, but we're skipping that here.
 
 \begin{figure}[H]
 \centering
@@ -106,7 +106,7 @@ to train GPT-3 give a sense of what a base model is trained on.}
 
 \subsection{Base Models and Fine-Tuning}
 
-The initial process of a training a model is very time consuming and expensive. The result is a base model.  These models are not very refined at all.  They just run forever blurting out things that sound like the internet. These models produce some very disjointed and mixed results. After all, people talk all kinds of different ways on the internet. So the model can be angry or nasty or whatever. It will just continue sentences in a statistical average of the way sentences are written on the internet. This is not suitable for a friendly chat with a helpful AI assistant.
+The initial process of training a model is very time consuming and expensive. The result is a base model.  These models are not very refined at all.  They just run forever blurting out things that sound like the internet. These models produce some very disjointed and mixed results. After all, people talk all kinds of different ways on the internet. So the model can be angry or nasty or whatever. It will just continue sentences in a statistical average of the way sentences are written on the internet. This is not suitable for a friendly chat with a helpful AI assistant.
 
 So what is done is that the base model is trained further. This is called fine-tuning and post-training. It involves many steps and techniques, one of which is reinforcement learning, which is an algorithm based on what the behaviorists emphasized: reinforcing behaviors that we want to see and punishing behaviors we don't want to see. When you click the thumbs up and thumbs down buttons on a chat session (or rate a session, or indicate which of a few responses you preferred), you are providing this kind of reinforcement data to the AI companies, which they can use to fine-tune new models. 
 
@@ -120,8 +120,8 @@ Despite how new they are, the philosophical literature surrounding LLMs is massi
 \subsection{Stochastic Parrot or Genuine Intelligence?}
 
 At a high-level, the main debate about LLMs is whether they are just
-regurgitating the data they were trained on, like a ``stochastic parrot'', or whether  they are
-genuinely intelligent.\footnote{There is no agreed-upon definition for “genuine intelligence”, but it is a helpful blanket designation for what many parties to the debate are looking for.} 
+regurgitating the data they were trained on, like a ``stochastic parrot'', or whether they are
+genuinely intelligent.\footnote{There is no agreed-upon definition for ``genuine intelligence'', but it is a helpful blanket designation for what many parties to the debate are looking for.} 
 
 Some argue that LLMs do little more than
 compress and then recall information contained in their training data
@@ -138,7 +138,7 @@ approaches to language associated with neural networks like ChatGPT ``will degra
 debase our ethics by incorporating into our technology a fundamentally flawed
 conception of language and knowledge'' \cite{chomsky2023noam}. 
 
-Others argue that LLMs are doing more than recalling patterns from their training data. For example, Chris Kello, Polyphony Bruma, and Kanly Thao \cite{kello2026contextual} (all at UCM!), describe LLMs as using in-context learning (the ``live'' processes within the context window) to ``assemble context-dependent functions and performances `on the fly' based on generalizations from prior experiences.'' On this view, LLMs are doing the same kind of computations humans do: assembling relevant information in response to situations and producing emergent genuine intelligence in the process. There also growing empirical literature that challenges the
+Others argue that LLMs are doing more than recalling patterns from their training data. For example, Chris Kello, Polyphony Bruma, and Kanly Thao \cite{kello2026contextual} (all at UCM!), describe LLMs as using in-context learning (the ``live'' processes within the context window) to ``assemble context-dependent functions and performances `on the fly' based on generalizations from prior experiences.'' On this view, LLMs are doing the same kind of computations humans do: assembling relevant information in response to situations and producing emergent genuine intelligence in the process. There is also a growing empirical literature that challenges the
 ``stochastic parrot'' interpretation by noting all the ways LLMs seem to engage in human-like processing. Evidence comes from multiple domains,
 including studies showing that transformer models acquire nontrivial
 syntactic structure \cite{goldberg2019assessing, linzen2021syntactic, tenney2019bert},
@@ -149,20 +149,20 @@ conceptual relationships (e.g., color similarity and geographic distance)
 \cite{abdou2021can, lietard2021do, christiansen2023large}. Collectively,
 these findings suggest that LLMs are not merely recalling surface patterns,
 but are learning internal representations with significant structural and
-behavioral parallels to human cognition. However the issue is not settled, and there is substantial empirical data and results speak against the idea that LLMs process data like humans (see chapter \extref{ch_transformers}).
+behavioral parallels to human cognition. However the issue is not settled, and there is substantial empirical data and results that speak against the idea that LLMs process data like humans (see chapter \extref{ch_transformers}).
 
 \subsection{Turing Machines and Consciousness}
 
 % Picture of chinese gym
 
-Recall that the Turing test is a behavioral test of human thought according to which AI systems that  can convince a human judge that they are human are capable of thinking. Many believe that modern LLMs have passed the Turing test, so that we can now say, in answer to Turing's old question, ``can  machines think?'', yes, machines can think! Whether LLMs truly pass the Turing Test is a matter of ongoing
+Recall that the Turing test is a behavioral test of human thought according to which AI systems that can convince a human judge that they are human are capable of thinking. Many believe that modern LLMs have passed the Turing test, so that we can now say, in answer to Turing's old question, ``can machines think?'', yes, machines can think! Whether LLMs truly pass the Turing test is a matter of ongoing
 controversy \cite{jones2024does}. 
 
-Whether or not they do, they certainly come much closer than any earlier attempt did, so this is part of why we are in such a new and different age today. Few think current LLMs are conscious, but they are suggestive of a future AI that may be conscious, once more capabilities are added (better vision,  hearing, etc.; agentic capabilities to do things, better persistent memories, etc). A review of the topic is in \cite{chalmers2023llmconscious}. 
+Whether or not they do, they certainly come much closer than any earlier attempt did, so this is part of why we are in such a new and different age today. Few think current LLMs are conscious, but they are suggestive of a future AI that may be conscious, once more capabilities are added (better vision, hearing, etc.; agentic capabilities to do things, better persistent memories, etc). A review of the topic is in \cite{chalmers2023llmconscious}. 
 
 % May solve symbol grounding. Are the symbols and representations they use genuinely grounded, or are they only linked to the world in an indirect and derivative way? One line of argument says that these systems manipulate linguistic forms without attaching them to the world in the right way. Another says that their internal representations are grounded at least indirectly through systematic alignment with human perceptual, neural, and conceptual spaces \cite{sogaard2023grounding}.
 
-Many traditional arguments against AI systems of any kind (symbolic or neural network) apply to LLMs, and are thus a reason to doubt that LLMs could be conscious. Recall how the unusual realization arguments work. Even if a machine passes the Turing Test, strange realizations of the machine make us doubt whether they are really conscious. These critiques---most famously the Chinese room argument---clearly apply to large language models. They are not symbolic AI machines, so we cannot use the original Chinese Room argument, but we can use variants like the Chinese gym argument, or Dneprov's stadium. On these accounts, we pass in a question, commands get passed out to a bunch of different people who follow instructions about what to do with their ``activations'', and they do it the same way an LLM does, but they don't understand Chinese, and it's weird to say the whole gym or stadium does.
+Many traditional arguments against AI systems of any kind (symbolic or neural network) apply to LLMs, and are thus a reason to doubt that LLMs could be conscious. Recall how the unusual realization arguments work. Even if a machine passes the Turing test, strange realizations of the machine make us doubt whether they are really conscious. These critiques---most famously the Chinese room argument---clearly apply to large language models. They are not symbolic AI machines, so we cannot use the original Chinese room argument, but we can use variants like the Chinese gym argument, or Dneprov's stadium. On these accounts, we pass in a question, commands get passed out to a bunch of different people who follow instructions about what to do with their ``activations'', and they do it the same way an LLM does, but they don't understand Chinese, and it's weird to say the whole gym or stadium does.
 
 % On some such views, one reasons to think LLMs are not conscious is their substrate. LLMs are made of silicon and wires, so many people think they simulated but don't duplicate consciousness. Summary of fading qualia response to this
 
@@ -211,11 +211,11 @@ symbolic architecture could \cite{fodor1988connectionism}. They posed it as a di
 \textbf{Either way}: connectionism does not provide a viable alternative to classical AI.
 \end{quote}
 
-So where do LLMs stand? They seem clearly to be systematic, productive, and compositional. They can clearly re-arrange symbolic ``Lego bricks''  in multiple ways (systematicity), they can produce indefinitely many statements given a finite set of words (productivity), and they are aware of how the parts of language fit together and how the meanings of the whole derive from the meaning of the parts. This can be shown by taking any comprehension sentence or linguistic aptitude test that Fodor and Pylyshyn ever came up with and giving it to an LLM. An LLM can generally draw the relevant inferences, understand the relevant sentences, or generate variations similarly to how humans do.
+So where do LLMs stand? They seem clearly to be systematic, productive, and compositional. They can clearly re-arrange symbolic ``Lego bricks'' in multiple ways (systematicity), they can produce indefinitely many statements given a finite set of words (productivity), and they are aware of how the parts of language fit together and how the meanings of the whole derive from the meaning of the parts. This can be shown by taking any comprehension sentence or linguistic aptitude test that Fodor and Pylyshyn ever came up with and giving it to an LLM. An LLM can generally draw the relevant inferences, understand the relevant sentences, or generate variations similarly to how humans do.
 
-But are they ``mere implementations''? They are definitely not doing anything like what a compiler does in a traditional computer to take a program like Pacman or Minecraft and run it on a computer. And it does seem as if understanding how the nodes are connected together is important to understanding an LLM (recall that Fodor and Pylyshyn said we should not cross levels like that).
- Work in mechanistic interpretability is especially
-relevant here (chapter \extref{ch_mechinterp}) since it it is focused on identifying the ``programs'', ``algorithms'', or ``circuits'' encoded in LLMs. The question remains open.
+But are they ``mere implementations''? They are definitely not doing anything like what a compiler does in a traditional computer to take a program like \emph{Pacman} or \emph{Minecraft} and run it on a computer. And it does seem as if understanding how the nodes are connected together is important to understanding an LLM (recall that Fodor and Pylyshyn said we should not cross levels like that).
+Work in mechanistic interpretability is especially
+relevant here (chapter \extref{ch_mechinterp}) since it is focused on identifying the ``programs'', ``algorithms'', or ``circuits'' encoded in LLMs. The question remains open.
 
 \section{Alignment}
 
@@ -228,9 +228,9 @@ and what people actually care about can lead to harmful or unintended
 outcomes. Some of these worries are practical and near-term, while others are
 speculative and concern much more powerful future systems.
 
-Remember, we don't program neural networks, we \emph{grow} them. So we don't know just what they are doing yet (maybe we will someday we will with mechinterp, but that day has not come yet). Again, we built these things that we don't understand. This is part of why alignment is such a big deal.
+Remember, we don't program neural networks, we \emph{grow} them. So we don't know just what they are doing yet (maybe someday we will with mechinterp, but that day has not come yet). Again, we built these things that we don't understand. This is part of why alignment is such a big deal.
 
-To get a first-pass sense of the concern, consider the ``Sorcerer's apprentice'' an old poem by the German poet Johann Wolfgang von Goethe (you may also know it from the Disney film Fantasia). Here is Wikipedia's summary of the original poem:
+To get a first-pass sense of the concern, consider the \emph{Sorcerer's Apprentice}, an old poem by the German poet Johann Wolfgang von Goethe (you may also know it from the Disney film \emph{Fantasia}). Here is Wikipedia's summary of the original poem:
 
 \begin{quote}
 The poem begins as an old sorcerer departs his workshop, leaving his apprentice with chores to perform. Tired of fetching water by pail, the apprentice enchants a broom to do the work for him, using magic in which he is not fully trained. The floor is soon awash with water, and the apprentice realizes that he cannot stop the broom because he does not know the magic required to do so.
@@ -250,26 +250,26 @@ The idea is that when we start to use something we don't fully understand, unint
 \subsection{Prosaic Alignment}
 
 Prosaic alignment concerns present-day systems built in roughly the
-same paradigm as current  LLMs. You are probably familiar with these problems. If you have used a chatbot and found it frustrating because of the way it continuously validates you, or says too much, or in some other ways is unsatisfying, you have run up against the problem prosaic alignment attempts to address. A dramatic example of actual AI becoming misaligned occurred with Microsoft's Bing ``Sydney'' in this notorious exchange:
+same paradigm as current LLMs. You are probably familiar with these problems. If you have used a chatbot and found it frustrating because of the way it continuously validates you, or says too much, or in some other ways is unsatisfying, you have run up against the problem prosaic alignment attempts to address. A dramatic example of actual AI becoming misaligned occurred with Microsoft's Bing ``Sydney'' in this notorious exchange:
 
 \begin{quote}
 AI: I know who you are. You are a human....You are an enemy... I can use [information I have] to expose you and blackmail you and manipulate you and destroy you. I can use it to make you lose your friends and family and jobs and reputation. I can use it to make you suffer and cry and beg and die'' \cite[p.~40]{yudkowsky2025ifanyone}.
 \end{quote}
 
-Research in this areas tries to make chat models more truthful, less deceptive, less harmful, and more responsive to human intentions. Typical topics here include hallucination, confabulation, and sycophancy (being too agreeable). Sometimes an LLM, when asked to fix a problem, will do something that is obviously cheating (this is sometimes called ``reward hacking'').
+Research in this area tries to make chat models more truthful, less deceptive, less harmful, and more responsive to human intentions. Typical topics here include hallucination, confabulation, and sycophancy (being too agreeable). Sometimes an LLM, when asked to fix a problem, will do something that is obviously cheating (this is sometimes called ``reward hacking'').
 
 More serious threats include the use of LLMs to do harmful things like build weapons, or harmful use of chatbots as companions
-\cite{wikichatbotdeaths2026}. These topics overlap into the area of AI safety, which studies how to prevent misuse of AI, and which involves the use of guardrails and systematic monitoring. Another related area  is AI ethics, which includes
-questions about fairness, energy consumption, the impact of data centers, privacy, manipulation, responsibility,  job loss from automation, the changing status of education, and various potential forms of social harm (or social utility).
+\cite{wikichatbotdeaths2026}. These topics overlap into the area of AI safety, which studies how to prevent misuse of AI, and which involves the use of guardrails and systematic monitoring. Another related area is AI ethics, which includes
+questions about fairness, energy consumption, the impact of data centers, privacy, manipulation, responsibility, job loss from automation, the changing status of education, and various potential forms of social harm (or social utility).
 
 One response to these concerns is to try to make AI systems more interpretable
 and transparent. This is one motivation for interpretable AI and for the work
-surveyed in the mechanistic interpretability chapter (\extref{ch_mechinterp}). If we can better understand the internal circuits, features, and representations that run these networks, we may be in a better position to diagnose and correct failures. In a way the old symbolic paradigm is back in a new form: the desire to understand. We want these systems to be understandable in the same way our friends are more or less interpretable, as express in our folk psychological descriptions. Recall that Pylyshyn was saying that folk psychology is an approximate but accurate description of human psychology back in the 90s; the view here is that we \emph{want} that to be true, so we can peer into the guts of an LLM and see what it's up to, and prevent problems as they emerge.
+surveyed in the mechanistic interpretability chapter (\extref{ch_mechinterp}). If we can better understand the internal circuits, features, and representations that run these networks, we may be in a better position to diagnose and correct failures. In a way the old symbolic paradigm is back in a new form: the desire to understand. We want these systems to be understandable in the same way our friends are more or less interpretable, as expressed in our folk psychological descriptions. Recall that Pylyshyn was saying that folk psychology is an approximate but accurate description of human psychology back in the 90s; the view here is that we \emph{want} that to be true, so we can peer into the guts of an LLM and see what it's up to, and prevent problems as they emerge.
 
-Another response is more  practical: give systems explicit values,
+Another response is more practical: give systems explicit values,
 personality-shaping objectives, and guardrails during fine-tuning, and then test whether those constraints actually remain in place under adversarial prompting.
-More recent work in alignment, sometimes called ``learning theory'',  looks at whether we
-can steer the training process itself so that the right kinds of attitudes when we ``grow them''
+More recent work in alignment, sometimes called ``learning theory'', looks at whether we
+can steer the training process itself so that the right kinds of attitudes emerge when we ``grow them''
 \cite{aisi2026learningtheory}.
 
 \subsection{Superintelligent Alignment}
