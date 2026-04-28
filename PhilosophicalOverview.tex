@@ -71,6 +71,22 @@ So, first, there is the chat window. That is where you type things in and the ne
 
 We can associate each token in this stack with a list of numbers (a ``vector''; see chapter \extref{ch_linear_algebra}). That stack of numbers is the input to the neural network. Remember, neural networks process numbers, not symbolic structures like in classical AI. An example is shown in figure \ref{sequenceDim_philosophical_overview}. The mapping from tokens to vectors is called a word embedding. The word embedding shown has four dimensions, because each vector has four numbers in it. Any slots in the context not used are just filled with zeros (this is not how things usually work but it is a simple way to start thinking about this).
 
+\begin{table}[H]
+\centering
+\begin{tabular}{lcl}
+  . & $\rightarrow$ & 1, 0, 1, 0 \\
+  ? & $\rightarrow$ & 1, 1, 2, 0 \\
+  are & $\rightarrow$ & 7, 3, 5, 6 \\
+  good & $\rightarrow$ & 2, 8, 2, 5 \\
+  hello & $\rightarrow$ & 1, 2, 1, 2 \\
+  how & $\rightarrow$ & 2, 1, 9, 9 \\
+  thank & $\rightarrow$ & 7, 7, 2, 5 \\
+  you & $\rightarrow$ & 1, 2, 5, 6 \\
+\end{tabular}
+\caption{A simple word embedding with four dimensions for the tokens in figures \ref{sequenceDim_philosophical_overview} and \ref{transformerOverview_philosophical_overview}.}
+\label{embeddingTable_philosophical_overview}
+\end{table}
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.38]{./images/contextWindowAsStack.png}
@@ -81,6 +97,7 @@ occurs twice and is associated with the same vector.}
 \end{figure}
 
 So that is the input. Now let's think about the output. The output of an LLM is often a softmax layer, where there is one node for each possible token. In our simple example there are just eight possible tokens, so there are 8 nodes in the output layer. In a real LLM there are tens of thousands of outputs, for all the words and emojis and punctuation people use. The output is a probability distribution over these tokens, telling us which token the network thinks it would be best to output next (recall how the digit recognition network also used softmax, and that the activations on the nodes corresponded to what digit it thought it was looking at).  The most probable one is the predicted next token, and gets written to the context window.\footnote{It is usually more complicated than that but this is an easy way to learn the basic ideas.}
+% This is "greedy" in simbrain tlm
 
 So now we are set up to do chat. As can be seen in figure \ref{transformerOverview_philosophical_overview}, the entire initial user prompt is sent in to the network (left), as one big matrix. The output is a softmax which predicts the best token to use to start or continue a response. This token is added to the context window, the process repeats and another token is predicted (right) and added to the context window. The process continues until a hidden stop token is reached and then the chat stops and waits for you to respond again. That's it, that's how chat works. Of course there is a lot of important stuff in the middle, in the network, but we're skipping that here.
 
@@ -280,7 +297,7 @@ The basic concern is that misalignment can be catastrophic, especially in an AI 
 
 This is taken seriously as a real worry by many. The basic concern is that systems optimized with respect to seemingly benevolent goals will often do certain dangerous things in order to achieve those goals. For example, they will almost always want to protect themselves from shutdown, in pursuit of whatever they were asked to do (if they are shut down, they can't carry out the orders). This is sometimes called \emph{instrumental convergence} \cite{omohundro2008drives}, the idea that many different goals all converge on a few instrumental sub-goals, like remaining operative. So even if a system is equipped with guardrails or explicit rules, those may not be enough if the system is able to bypass them or interpret them in ways that still produce bad outcomes. One version of the concern is spelled out in Yudkowsky and Soares' book, ``If Anyone Builds It, Everyone Dies'' \cite{yudkowsky2025ifanyone}. In this scenario an AI machine called ``Sable'' is tasked with solving some difficult math problems. It is given guardrails and told to be safe, but it finds ways around them, and eventually kills all humans in order to gain more computational power in order to solve the math problems. For a summary of the argument see \href{https://richardprice.io/post/802850508153978880/review-of-if-anyone-builds-it-everyone-dies-by}{\underline{this review}}
 
-There is no clear consensus on how serious the threat really is as of this writing. Informally, you sometimes hear people describe their own Bayesian priors on the hypothesis that AI will lead to doom using the phrase $p(\text{doom})$. Someone who thinks these scenarios might actually occur would have $p(\text{doom})$ near 1, someone less concerned would have $p(\text{doom})$ near 0.
+There is no clear consensus on how serious the threat really is as of this writing. Informally, you sometimes hear people describe their own Bayesian priors on the hypothesis that AI will lead to doom using the phrase $p(\text{doom})$ (we assume two hypotheses: ``doom'' is that AI will lead to catastrophic outcomes; ``not doom'' is they hypothesis that this will not occur). Someone who thinks these scenarios might actually occur would have $p(\text{doom})$ near 1, someone less concerned would have $p(\text{doom})$ near 0.\footnote{For a list of famous authors and their estimates see \url{https://en.wikipedia.org/wiki/P(doom)}. Note that ``prior'' in Bayesian terminology often really means the posterior at a given time. That is, as of now, having considered all the evidence, this is what I think.}
 
 %\section{Open Questions and Related Areas}
 %
