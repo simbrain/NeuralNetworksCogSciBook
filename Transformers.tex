@@ -564,7 +564,7 @@ to the network as input. With training, these blocks learn to find long-range
 dependencies between different parts of a context. Recall that the context
 includes an original prompt, its own response to that prompt, etc.; it includes
 the \emph{entire exchange} you've had up to the current point, so long
-as it fits in the context window. Each block combines one or more \glossary{attention head}s with a standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).\footnote{MLP stands for multi-layer perceptron, that is, a vanilla feed-forward network, and is a nod to the relevant history (section \extref{ageOfPerceptron})}
+as it fits in the context window. Each block combines one or more \glossary[attention head]{attention heads} with a standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).\footnote{MLP stands for multi-layer perceptron, that is, a vanilla feed-forward network, and is a nod to the relevant history (section \extref{ageOfPerceptron})}
 Again, we maintain the ``row processing'' perspective of section
 \extref{matrixMultiplication} throughout the discussion. That is, we treat the inputs to the transformer as a stack of vectors, each corresponding to one token in the context window. These stacks are processed one vector at a time through the attention heads, and then the results of all this attentional processing are passed through the block's MLP.
 

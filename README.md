@@ -48,7 +48,7 @@ Then include `CustomGlossary.tex` in your container document.
 
 - To refer to labels in chapters outside the current chapter, use the custom command `\extref`. Note that to compile a document using this command the master document must also be compiled.
 
-- To make a glossary item use `\glossary` and be sure there is a corresponding entry in `Glossary.txt` (which is the "master" glossary document).
+- To make a glossary item use `\glossary` and be sure there is a corresponding entry in `Glossary.tex` (which is the "master" glossary document). If the displayed text differs from the glossary entry, use the optional key form, e.g. `\glossary[activation]{activations}`.
 
 - Use `\cite` command and update `NeuralNetworksCogsci.bib` as usual.
 

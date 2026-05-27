@@ -15,9 +15,10 @@
 
 %
 % Use this command to indicate glossary entries. Be sure some entry of the same name
-% exists in Glossary.txt
+% exists in Glossary.tex. Use the optional argument when the displayed text differs
+% from the glossary entry, e.g. \glossary[activation]{activations}.
 %
-\def\glossary{\textbf}
+\renewcommand{\glossary}[2][]{\textbf{#2}}
 
 %
 % extref is a reference to a label that may or may not exist in the current subdocument. 

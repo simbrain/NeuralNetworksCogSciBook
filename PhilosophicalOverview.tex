@@ -13,7 +13,7 @@
 \def\ie{{\it i.e. }}
 \def\eg{{\it e.g. }}
 \def\real{{\bf R}}
-\def\glossary{\textbf}
+\renewcommand{\glossary}[2][]{\textbf{#2}}
 
 \makeatletter
 \newcommand{\extref}[1]{\@ifundefined{r@#1}{\@ifundefined{r@A-#1}{??}{\ref{A-#1}$^*$}}{\ref{#1}}}

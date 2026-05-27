@@ -10,15 +10,13 @@
 # Notes:
 # - Unmatched \glossary items are noted in the terminal.
 # - The script handles both singular and plural forms of glossary items.
+# - Use \glossary[key]{display text} when the displayed text differs from the
+#   glossary entry. The key is used for lookup and the display text is bolded.
 # - Comments are ignored both in glossary and in chapters of the container doc 
 # 
 # TODO: Add colon after each entry but without the space \item adds.
-# TODO: Rather than manually dealing with singular / plural, find a way to specify the root word but then refer 
-#       to it in multiple ways in main text. Right now we have to force two to match, which is limiting.
-
 import sys
 import re
-import os
 
 MAIN_GLOSSARY_FILE = "Glossary.tex"
 
@@ -48,7 +46,8 @@ def find_glossary_items(files):
         for line in content.split('\n'):
             if line.startswith("%"):
                 continue
-            items.update(re.findall(r'\\glossary(?:\[[^\]]*\])?{([^}]+)}', line))
+            for key, display_text in re.findall(r'\\glossary(?:\[([^\]]+)\])?{([^}]+)}', line):
+                items.add(key or display_text)
     return sorted(item.lower() for item in items)
 
 def create_custom_glossary(ch_glossary_items, glossary_text):
