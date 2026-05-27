@@ -1,9 +1,11 @@
 \chapter{Transformer Architectures and LLMs}\label{ch_transformers}
 \chapterauthor{Jeff Yoshimi, Pierre Beckmann, David Udell, Polyphony Bruna, Tim Meyer}{.3, .25, .25, .1, .1}
 
+% Link to Simbrain demo somehow
+
 % Need a new image showing a context window and how it's broken up into user inputs, model responses, chain of thought, and maybe mentioning hidden tokens
-% Pricing is often per token. Caveman mode to save tokens. Also an example of a prompting  strategy. https://github.com/JuliusBrussee/caveman/blob/main/README.md
-% Explore features!
+
+% Explore features! (But for mechinterp?)
 % https://www.neuronpedia.org/search-explanations/?q=cup 
 
 % New chalmers papers on who you talk to with an llm
@@ -22,8 +24,6 @@
 % production AI, from bad translations to mis-pronunciation to misunderstanding
 % queries), and then within these hallucinations as a type (perhaps: LLM
 % outputs that are convincing but factually incorrect). Ref to \extref{evaluatingNN}
-
-% Link to Simbrain demo somehow
 
 In their most familiar form, a \glossary{large language model} (LLM) based on the
 \glossary{transformer architecture} generates text responses to text inputs by
@@ -184,6 +184,8 @@ traditional parameter-based learning is still the basis of much of the power of
 LLMs, and so we turn to that now.
 
 \section{Learning to Speak Internetese}\label{internetese}
+
+% Another approach to describing this. There is a kind of I (JKY) sometimes have, like what if I hundreds of years to study everything. Well, this is kind of what such a person would be like.  Except they did in a month with a very large brain and an insane force-feeding regimen.
 
 In section \extref{languageModelsRecurrent}, we saw how recurrent neural
 networks trained on example text can learn to speak in a way that reflects the
@@ -711,6 +713,10 @@ In this way, the journey of a token's representation is a process of refinement 
 
 % Add more on Turing Test (or remove the forward reference from the start of
 % the chapter)
+
+% This is due for an update. The word norms are not the most immediately gripping example. And there is of course  a ton of new work already (as of 2025).
+
+
 As with many architectures discussed in this book, transformer-based LLMs are
 major objects of scientific interest, even if they were developed for
 engineering applications (see chapter \extref{ch_applications}). They are
@@ -786,6 +792,7 @@ models, which can compress information but that fail to be an interesting model 
 Others argue that LLMs are doing more than recalling patterns from their training data. For example,  \cite{kello2026contextual}, describe LLMs as using in-context learning (section \ref{inContext}) to ``assemble context-dependent functions
 and performances `on the fly' based on generalizations from prior experiences.'' On this view, LLMs are doing the same kind of computations humans do: soft-assembling information in response to situations and producing emergent genuine intelligence in the process. In fact the entire field of mechanistic interpretability (chapter \extref{ch_mechinterp}) is focused on identifying the ``programs'', ``algorithms'', or ``circuits'' encoded in LLMs.\footnote{This is not to say everyone in the field of mechanistic interpretability endorses the ``genuine intelligence'' view; however we suspect many in the area are in fact motivated by the view that LLMs do something more than statistical extrapolation.}
 
+% Conflicted about this. Given the "false friend" situation with Searle, it's not clear whether this helps or hurts. 
 One way to make the debate vivid is via what Bender and colleagues call the
 ``Octopus test'' \cite{bender2020climbing} (see figure \ref{octopusTest}),
 which goes like this: two English-speaking castaways communicate via telegraph
@@ -1261,6 +1268,14 @@ the area of mechanistic interpretability, discussed in chapter
 % https://arxiv.org/pdf/2506.11135
 
 \section{LLMs in Practice}\label{transformersInPractice}
+
+% This section will be separated and combined with some of the fine tuning information in the ai alignment chapter
+
+% Most chat models have special tokens and meta-data. After all the model needs to know what was said by a human user vs what it said itself, and much more. It must be able to send out directions to external tools and be able to search the internet etc. OpenAI has a very comment format for this.  JSON is what is often used. Thus the model learns to spit out json, and then that is interpreted by the program.
+
+% Discuss harnesses, including learned ones. Example https://pi.dev/.  Describe how to set one up and run it using paid tokens. This can be useful. Maybe post a link to a simple example on github.
+
+% A fun example of a prompting strategy is caveman mode to save tokens. . https://github.com/JuliusBrussee/caveman/blob/main/README.md  
 
 This final section discusses how LLMs are used as functional systems in a technical stack (a collection of components and
 technologies used together in a working production system).  It's one thing to
