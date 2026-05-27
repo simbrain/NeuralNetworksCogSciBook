@@ -1,9 +1,6 @@
 \chapter{Mechanistic Interpretability}\label{ch_mechinterp}
 \chapterauthor{David Udell, Jeff Yoshimi}{.6, .4}
 
-% Activation Engineering and Representation Engineering are useful terms, but
-% not where sure to put them.
-
 % A useful mechinterp explainer and glossary: https://dynalist.io/d/n2ZWtnoYHrU1s4vnFSAQ519J
 % Also: https://transformer-circuits.pub/2025/attribution-graphs/biology.html
 
@@ -121,20 +118,22 @@ interpretability---``programs'' and ``circuits'' and, recently,
 their intuitive meanings. This is because figuring out the correct
 formalization of these concepts is in great part the challenge of mechanistic
 interpretability. Historically, for example, one obvious definition for
-``circuit'' was graph subnetwork: the idea here would be that a circuit in a
-model is the minimal set of units and edges that reconstructs a behavior and
-only that behavior. Behind this definition is the implicit assumption that
+``circuit'' was in terms of graph subnetworks: the idea was that a circuit in a
+model is the minimal set of units and edges that reconstructs a behavior. 
+Behind this definition is the implicit assumption that
 individual neurons in a model sensibly correspond to our concepts---the idea of
 a single neuron in a network representing the concept of ``grandma'' and
 feeding that to later neurons, e.g. (If this monosemanticity assumption weren't
 true, then subnetworks would not automatically be human-interpretable.)
 Empirical circuit discovery research using this notion of a circuit, though,
-has not been terribly successful at decomposing models into constituent
+has not been successful at decomposing models into constituent
 meaningful subnetworks, partially because individual neurons empirically
 \emph{aren't} monosemantic. These gotchas are frequent in mechanistic
 interpretability research, and careful, empirically informed theorizing is
 demanded.
+% Is localization really an assumption of the graph network approach. Also who makes that assumption?
 
+% Is the claim below true? Isn't mechinterp an end in itself, separately from value alignment?
 Mechanistic interpretability is largely pursued in support of value alignment
 (see chapter \extref{ch_applications}). Simply making LLMs more capable has
 chiefly been achieved through raw computational scaling. For the purpose of
@@ -249,6 +248,8 @@ space \cite{hoogland2025lossland, bushnaq2024degeneracy}.
 
 \section{The Toolbox of Mechanistic Interpretability}
 
+% Add logit lens 
+
 \subsection{Linear Probes}
 
 % Brief summary of main methods: single unit, multi-unit, local field potential 
@@ -258,7 +259,7 @@ transformer is far easier. In the transformer context, a probe is a trained
 auxiliary model that tries to determine whether a given concept is encoded at a
 particular sublayer or activation space of a neural network
 \cite{alain2018intermediate, belinkov2021classifiers}. Figure \ref{linearProbe}
-illustrates.
+illustrates the idea.
 
 \begin{figure}[ht]
 \centering
@@ -269,14 +270,20 @@ illustrates.
 \label{linearProbe}
 \end{figure}
 
-We harvest activations from somewhere in a transformer, often from somewhere in
+We harvest activations from somewhere in a transformer, often in
 its residual stream, and then train an auxiliary classification model on those
 activations to determine feature presence or absence. For the training set of
-activations we had collected, we knew whether the feature was present or
-absent, and use that knowledge to fix our training labels.
+activations we collected, we know whether the feature was present or
+absent, and use that knowledge to fix our training labels. For example, suppose we feed these simple ``caveman'' sentences through an LLM:
+\begin{quote}
+``The dog barked.''\\
+``The red car stopped.''\\
+``Alice ran home.''
+\end{quote}
+For each word in each sentence we know its part of speech (ignoring sub-word tokens for this example), and so we can extract a hidden-state vector corresponding to it, and train a linear probe to respond with the appropriate part of speech, classifying ``dog'' as a noun, ``bark'' as a verb, etc.  It is now hoped that this ``probe'' model will successfully generalize its
+classifications to any future model activations.  In the example above, the noun node should activate whenever a noun token occurs, and similarly for the verb node, adjective node, etc.
 
-It is now hoped that this ``probe'' model will successfully generalize its
-classifications to any future model activations.  Probes in a transformer are
+Probes in a transformer are
 trained using supervised learning (chapter \extref{ch_supervised}). Probes can
 be used when we know in advance what feature we are looking for inside a model
 and already know how to operationalize that feature's presence using training
@@ -286,7 +293,9 @@ the activations: it is a simple network with linear nodes and a single layer of
 weights. When a linear probe is successful, it picks out a direction in the
 latent activation space. This provides some support for the linear representation hypothesis.\footnote{However, it is not decisive support for the hypothesis, especially a strong form that claims that features are \emph{entirely} captured by linear representations. Compare a linear approximation of a curve. The line might capture much of what the curve is doing, but not everything. In fact, linear probes are usually thought of as just being approximations of a given behavior of a model.}
 
-This extra work of training a probe is necessary because the transformer itself
+%there is a challenge involved in selecting positive and negative examples that unambiguously exemplify the target feature as opposed to its many correlates: a collection of inputs mentioning politicians instantiate the feature “politician,” but the contrast class of negative examples needs to be carefully chosen to ensure that the probe does not learn to probe for the “political” feature, or even for the “person” feature, which are equally instantiated by the positive examples (see Gurnee et al., 2023).”
+
+This extra work of training a probe is necessary because the transformer 
 was not trained to make its internal machinery self-explanatory. In a similar
 way, human brain activations did not evolve under any selective pressure to
 make sense, and so we also need probes and theory to understand how we work!
@@ -359,6 +368,11 @@ all share an underlying concept. If this mapping can be found, then the SAE can
 use a single unit of its own to represent a large number of scattered
 activations.
 
+Once an SAE has been built, it can be used in to identify interpretable features. For example if a unit fires strongly for words like ``dog'', ``cat'', and ``horse'' we might suspect it is an animal feature. In practice, identifying and validating these features is labor-intensive, so researchers often rely on pretrained SAEs released by large research groups and explore their features using tools such as Neuronpedia. 
+
+
+% Add screenshots from neuronpedia and practical info about using SAE's
+
 Empirically, SAE features tend to reflect ``high-level'' concepts when the SAE
 is narrower (has fewer hidden units) and reflect ``low-level'' concepts when it
 is wider (has more hidden units). This makes sense: the number of features that
@@ -368,6 +382,8 @@ capturing the ``most active'' concepts, ignoring niche concepts that come up
 only rarely.
 
 \subsection{Activation Addition}
+
+% Rename to "steering"? 
 
 A third tool in the mechanistic interpretability toolbox is
 \glossary{activation addition}. While activations vectors in a model's neuron
