@@ -73,7 +73,7 @@ And similarly, the learning rule for biases is:
 
 This is the same as before, but multiplied by the derivative of the activation function applied to the net input (the weighted input to the node). We discuss this more below. 
 
-Note that the derivative of the activation function $f'$ is like a free parameter in this formula. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. Situations like this allow backprop to be automated in a sense. But note that some derivatives have problems, like being undefined or 0, which effectively turns off update.
+Note that the derivative of the activation function $f'$ is like a free parameter in this formula. Whatever your activation function $f$ is, to use gradient descent we just plug in $f'$ and we can do gradient descent. Situations like this allow backprop to be automated in a sense. But note that some derivatives have problems, like being undefined or 0, which effectively turns off the update.
 
 Intuitively, the idea is to scale the rate of weight change by how much the activation function is changing things. So when the activation function is changing things a lot, we want the weight to change a lot too. When it changes things very little, the derivative is small and so we change the weight less. It doesn't matter as much. Also note that if the derivative is 0, then learning stops. That can be a problem with piecewise linear and relu activation functions, and is why the threshold activation function can't be used at all. Again see below.
 

@@ -1,7 +1,7 @@
 \documentclass[11pt]{amsart}
 \usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
 %\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
-\geometry{landscape}                % Activate for for rotated page geometry
+\geometry{landscape}                % Activate for rotated page geometry
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}
 \usepackage{amssymb}
@@ -161,12 +161,12 @@ Notice that $R = 3$, $N=3$, and $M=2$. Now suppose we have a neural network that
 \end{center}
 
 % Exercise format. More questions.
-To compute SSE we need to through every row, compare each targets with its corresponding output (each of these is one error), square the result, and then add these errors together and divide by the number of rows. So we have:
+To compute SSE we need to go through every row, compare each target with its corresponding output (each of these is one error), square the result, and then add these errors together and divide by the number of rows. So we have:
 \begin{eqnarray*}
 SSE =  (1-0)^2 + (- 1-0)^2 + (-1-0)^2 + (1- 0)^2 + (1-0)^2 + (1 - 0)^2 =  \\ 
 1 + 1 + 1 + 1 + 1 + 1 = 6
 \end{eqnarray*}
-So for this network and this training set, $SSE = 6$. The is intuitively obvious since every output for every row is ``wrong'' by 1, and there are 2 outputs for each of 3 rows. And that's terrible!  Our network is doing a terrible job. 
+So for this network and this training set, $SSE = 6$. This is intuitively obvious since every output for every row is ``wrong'' by 1, and there are 2 outputs for each of 3 rows. And that's terrible!  Our network is doing a terrible job.
 
 Now suppose we train the network a bit, and it starts doing better. So now these are the outputs:
 \begin{center}
@@ -686,4 +686,3 @@ $=1+1+1+1=4$
 
 \bigskip
 \bigskip
-

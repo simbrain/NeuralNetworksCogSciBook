@@ -179,7 +179,7 @@ reasonably sized context.}
 
 % Maybe promote the email below or use it in the cog-sci section of the chapter
 In-context learning is a new capability of neural networks that has only just begun to
-be explored, especially as it relates to cognitive science.\footnote{An old critique of neural networks, going back to the 1980s, was that that while humans can learn things in a single trial, neural networks could not \cite{schneider1988structure}. Decades later, transformers have shown that neural networks \emph{can} learn things in a single trial, albeit in networks that are in many ways different from the human brain. It is not currently know how psychologically or neurally realistic these forms of learning are in LLMs.} Having said that,
+be explored, especially as it relates to cognitive science.\footnote{An old critique of neural networks, going back to the 1980s, was that while humans can learn things in a single trial, neural networks could not \cite{schneider1988structure}. Decades later, transformers have shown that neural networks \emph{can} learn things in a single trial, albeit in networks that are in many ways different from the human brain. It is not currently known how psychologically or neurally realistic these forms of learning are in LLMs.} Having said that,
 traditional parameter-based learning is still the basis of much of the power of
 LLMs, and so we turn to that now.
 
@@ -270,7 +270,7 @@ the UC system.
 \end{quote}
 
 From this excerpt, we create a bunch of training examples, a list of
-input/target pairings. For example, ``The University of" is used to predict ``California'', and ``The University of California, Merced is a public'' is used to predict ``land''.\footnote{In training, this is just one long sequence where the target
+input/target pairings. For example, ``The University of'' is used to predict ``California'', and ``The University of California, Merced is a public'' is used to predict ``land''.\footnote{In training, this is just one long sequence where the target
 sequence is a version of the input shifted one token to the left.}
 
 Technically, the transformer itself does not directly input or output text
@@ -291,7 +291,7 @@ to the token embedding for one token; it has the shape (sequence size,
 embedding dimension) and it is the actual input to the neural network. The network transforms \emph{stacks} of vectors by
 weight matrices. In this way we continue to make use of the ``row processing'' perspective introduced in section \extref{matrixMultiplication}.\footnote{What is actually fed to the transformer is a batch of these
 token embedding matrixes, that is a rank-3 tensor with shape (batch size,
-sequence size, embedding dimension); see section \extref{sect_tensors}).}
+sequence size, embedding dimension; see section \extref{sect_tensors}).}
 
 \begin{figure}[ht]
 \centering
@@ -321,7 +321,7 @@ occurs twice and is associated with the same vector.
 \label{sequenceDim}
 \end{figure}
 
-Note that each token in the stack of token embeddings sent to the network is processed separately through its many layers, acquiring different meanings and context as they do.\footnote{Recall the discussion of matrix multiplication and the ``row processing'' perspective (section \extref{matrixMultiplication}), where we can view a matrix multiplication as taking a stack of $N$ row vectors on the left, multiplying them by a matrix on the right, to produce another stack of $N$ row vectors, each of which has been \emph{separately processed} by the matrix on the right.  These ideas apply here.  In fact, with the exception of the self-attention matrix (which considers all the relationships between tokens), all other processing in an LLM operates separately on each token's representation. As a result, we can separately track the transformations a token's vector representation goes through as it makes its way through a network.  We will return to this idea below when we discuss the ``residual stream''.} For example, consider the word ``you'' in figure \ref{nextWordPrediction}. This is the same word repeated twice, so as the input level, it is associated with the same vector embedding, in this case $(1,2,5,6)$.\footnote{This is not quite right, since something called a positional encoding is often added even at the input level. But even when these positional encodings are removed the points made here apply.} But as the two tokens are processed through the network, their representation will change, reflecting their different positions and functions in the sentence. 
+Note that each token in the stack of token embeddings sent to the network is processed separately through its many layers, acquiring different meanings and context as they do.\footnote{Recall the discussion of matrix multiplication and the ``row processing'' perspective (section \extref{matrixMultiplication}), where we can view a matrix multiplication as taking a stack of $N$ row vectors on the left, multiplying them by a matrix on the right, to produce another stack of $N$ row vectors, each of which has been \emph{separately processed} by the matrix on the right.  These ideas apply here.  In fact, with the exception of the self-attention matrix (which considers all the relationships between tokens), all other processing in an LLM operates separately on each token's representation. As a result, we can separately track the transformations a token's vector representation goes through as it makes its way through a network.  We will return to this idea below when we discuss the ``residual stream''.} For example, consider the word ``you'' in figure \ref{nextWordPrediction}. This is the same word repeated twice, so at the input level, it is associated with the same vector embedding, in this case $(1,2,5,6)$.\footnote{This is not quite right, since something called a positional encoding is often added even at the input level. But even when these positional encodings are removed the points made here apply.} But as the two tokens are processed through the network, their representation will change, reflecting their different positions and functions in the sentence.
 % Residual stream as a "cumulative computational workspace" (Pierre paper)
 
 % We can picture the residual stream as a big shared whiteboard that every
@@ -461,7 +461,7 @@ The first step in a transformer is to embed inputs, converting all the tokens in
  layer does the opposite of what the embedding layer does. Rather than converting from tokens to activations, it converts from activations to tokens, and is thus a ``de-embedding'' layer.
 
 % Cohere with simbrain
-The output of an LLM is often a \glossary{softmax} layer with thousands of outputs, one for each token, which  indicate how probable each possible token is given all
+The output of an LLM is often a \glossary{softmax} layer with thousands of outputs, one for each token, which indicates how probable each possible token is given all
 the prompts and responses in the context window so far.\footnote{The
 targets used to train the network are one-hot encodings with a single ``hot''
 number (the number 1) corresponding to the predicted next word (on one-hot
@@ -798,7 +798,7 @@ One way to make the debate vivid is via what Bender and colleagues call the
 ``Octopus test'' \cite{bender2020climbing} (see figure \ref{octopusTest}),
 which goes like this: two English-speaking castaways communicate via telegraph
 across islands. A highly-intelligent octopus intercepts their messages, learns
-their statistical patterns, and, ``feeling lonely'', inserts itself into the conversation.  The imaginary octopus is able to sustain simple chatbot-like interactions, but fails in responding to strange situations involving words referring to objects the octopus has never perceived.  Here is is the test: could an LLM succeed in cases where the octopus fails?  Bender and colleagues argue that LLMs would fail such a test. They produce seemingly-meaningful outputs based solely on statistical patterns, but don't truly understand the language or the concepts they appear to discuss, because they lack any grounding in the world.  Others, on the ``genuine intelligence'' side of the debate, would say that LLMs would pass the test, and could use their emergent abilities to appropriately answer questions that stump the octopus.
+their statistical patterns, and, ``feeling lonely'', inserts itself into the conversation.  The imaginary octopus is able to sustain simple chatbot-like interactions, but fails in responding to strange situations involving words referring to objects the octopus has never perceived.  Here is the test: could an LLM succeed in cases where the octopus fails?  Bender and colleagues argue that LLMs would fail such a test. They produce seemingly-meaningful outputs based solely on statistical patterns, but don't truly understand the language or the concepts they appear to discuss, because they lack any grounding in the world.  Others, on the ``genuine intelligence'' side of the debate, would say that LLMs would pass the test, and could use their emergent abilities to appropriately answer questions that stump the octopus.
 
 \begin{figure}[ht]
 \centering
@@ -919,7 +919,7 @@ are more ambiguous in meaning (consistent with greater variability in human
 ratings, not shown). In later analyses, the authors show that the
 correspondence between human and LLM ratings on these variables tracks human
 inter-rater reliability: The more agreement in human ratings (i.e., lower
-variability), the better LLMs are able to match human behavior. .}
+variability), the better LLMs are able to match human behavior.}
 \label{humanVsLLM}
 \end{figure}
 
@@ -953,7 +953,7 @@ and natural intelligences.
 LLMs have also been studied in relation to conceptual schemes in humans. Abdou
 et al. show that language models can encode perceptual color relationships,
 even though they have never ``seen'' colors the way sighted humans have (they
-have only read about color relationship in texts) \cite{abdou2021can}. This
+have only read about color relationships in text) \cite{abdou2021can}. This
 finding mirrors behavioral evidence that semantic judgments about color terms
 are highly similar between congenitally blind and sighted individuals
 \cite{marmor1978age, saysani2018colour}. Indeed, blind individuals have been
@@ -993,10 +993,10 @@ perform well on simple analogies but that performance declines sharply on  more
 complex analogies \cite{lewis2025evaluating}. The topic remains live as of 2025.
 In June 2024 a group at Apple published a paper whose title begins with ``The
 Illusion of Thinking'' \cite{shojaee2025illusion}, which claims that large
-reasoning models like LLMs `` face a complete accuracy collapse beyond
-certain complexities''. The charge was met daya later in a response from Anthropic
-called ``The illusion of the illusion of thinking" \cite{opus2025illusion},
-which claimed that the Apple group's work ``primarily reflect experimental
+reasoning models like LLMs ``face a complete accuracy collapse beyond
+certain complexities''. The charge was met days later in a response from Anthropic
+called ``The illusion of the illusion of thinking'' \cite{opus2025illusion},
+which claimed that the Apple group's work ``primarily reflects experimental
 design limitations rather than fundamental reasoning failures'' and that when
 controlling for these errors that LLMs can succeed on reasoning tasks reported
 as failures in \cite{shojaee2025illusion}.
@@ -1105,11 +1105,11 @@ would ever be possible in a machine, like speak fluent language and arguably
 pass the Turing Test.\footnote{An extensive and helpful review of philosophical
 issues through 2024 is \cite{milliere2024philosophical1,
 milliere2024philosophical2}. Multiple new papers on topics relating to AI
-appear each week at \url{philPapers.org} so the areas is quite active.} That
+appear each week at \url{philPapers.org} so the area is quite active.} That
 this was done by a neural network has been seen by many as a decisive win for
 connectionism relative to the old debate about whether neural networks or
 symbolic architectures are best-suited to modeling cognition (see section
-\extref{cog_rev}), but that has not settled the issue. We here review  a
+\extref{cog_rev}), but that has not settled the issue. Here we review a
 smattering of topics to give a sense of the debates most relevant to the topic
 of the book: neural networks and cognitive science.  
 
@@ -1165,7 +1165,7 @@ human existence develop an intuitive sense of the full context of the lived
 world. To show this, one of the authors (Yoshimi), who has regularly taught
 Dreyfus'  argument for many years, would have the class ask strange or unusual
 questions to AI systems and chatbots of earlier years, like ``What would happen
-if a penguin were to juggle alligators." The systems invariably struggled to
+if a penguin were to juggle alligators.'' The systems invariably struggled to
 say anything meaningful (though some chatbots did pretty well using tricks,
 like pretending to be a teenager saying ``lol who cares''). But current
 iterations of LLMs like ChatGPT do just fine with such questions, suggesting
@@ -1245,7 +1245,7 @@ than consulting a giant lookup table.\footnote{This idea relates to another old
 thought experiment in philosophy of cognitive science, the ``blockhead example''
 (due to Ned Block), according to which a system that behaved intelligently just
 by consulting such a table would not actually be considered intelligent
-\cite{milliere2024philosophical1}.} So what \emph{is} going inside an LLM? Are
+\cite{milliere2024philosophical1}.} So what \emph{is} going on inside an LLM? Are
 the symbols grounded? Is there a world model in there? Is a compositional
 symbol system lurking? We hope we have provided some guidance to thinking
 about what happens inside of these machines with all of our explanations and
@@ -1344,7 +1344,7 @@ quite a form of learning, but that still impacts its ability to process
 information.  The chat system can in various ways add to or manipulate the text that flows through the
 transformer. 
 
-Suppose you enter a  query into ChatGPT. This is often called a \glossary{user prompt}, the thing you ask the
+Suppose you enter a query into ChatGPT. This is often called a \glossary{user prompt}, the thing you ask the
 system about. However, that is not what is actually fed to the network. Behind
 the scenes other information is added.  
 

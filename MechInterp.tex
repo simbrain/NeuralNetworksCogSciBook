@@ -141,7 +141,7 @@ value alignment, though, the understanding-centric approach of mechanistic
 interpretability is seen as crucially important. To take a cartoon example, if
 we could identify a ``friendliness circuit,'' more activation could be directly
 pumped into it to make the model friendlier. Or, alternatively, the ability to
-fully examine an LLMs world model and make sure there is nothing nefarious in
+fully examine an LLM's world model and make sure there is nothing nefarious in
 it would also secure guarantees about model behavior.
 
 Echoing another theme of this book, even if mechanistic
@@ -195,12 +195,12 @@ hypothesis}, according to which the internal representations or features
 developed in a neural network are best thought of as directions in an
 activation space, often the latent space corresponding to the residual stream
 in a transformer (chapter \extref{ch_transformers}).\footnote{While the linear representation hypothesis is typically framed in terms of directions (a feature corresponds to a vector axis, and semantic change is represented by translation along that axis), one could also imagine features being encoded by angles. In such a view, a feature corresponds to an orientation, and semantic change is represented by rotation rather than translation.} That is, directions in
-activation space represent the conceptual  presence of a single feature of the
-world. In particular, the  \emph{orientation} of a vector (its direction in an
+activation space represent the conceptual presence of a single feature of the
+world. In particular, the \emph{orientation} of a vector (its direction in an
 activation space) encodes its conceptual meaning, while its \emph{magnitude}
 captures ``how much'' of that feature is present. Vector operations then become
 meaningful in these internal activation spaces (again see section
-\extref{geometryWordEmbeddings})  For example, it is consistent with this
+\extref{geometryWordEmbeddings}). For example, it is consistent with this
 hypothesis that the vector sum (at a layer) of ``woman'' and ``monarch'' is
 ``queen''.
 
@@ -220,7 +220,7 @@ particular concept in a context is rare, not every concept will need a
 dedicated activation-space direction (let alone a dedicated neuron). Think
 about the highly contextual representations that develop in the deepest layers
 of a transformer. To take an example from chapter \extref{ch_transformers}, we
-might have a feature for ``Golden gate bridge in the context of a discussion of
+might have a feature for ``Golden Gate Bridge in the context of a discussion of
 its history, in a conversation that is regarding it as beautiful, in the last
 position of a noun phrase that would normally be followed by a verb.'' When
 features are rare, multiple features can profitably be assigned to the same
@@ -299,7 +299,7 @@ This extra work of training a probe is necessary because the transformer
 was not trained to make its internal machinery self-explanatory. In a similar
 way, human brain activations did not evolve under any selective pressure to
 make sense, and so we also need probes and theory to understand how we work!
-Thus, in LLMs as in human brains, an external process must be grafted on to the
+Thus, in LLMs as in human brains, an external process must be grafted onto the
 system to make sense of what is going on inside. As Elhage et al. note, ``when
 there are many equivalent ways to represent the same computation, it is likely
 that the most human-interpretable representation and the most computationally
@@ -351,7 +351,7 @@ interpretations on.
 \centering
 \includegraphics[scale=.5]{./images/saeSimbrain.png}
 \caption[Simbrain screenshot from Jeff Yoshimi.]{ A sparse auto-encoder takes
-      some input activations and maps it back to itself (notice that the
+      some input activations and maps them back to themselves (notice that the
       autoencoder is successfully reconstructing its input activations) through
       a hidden layer which gradient descent has tried to make as sparsely
       activating as possible, producing a kind of localistic representation of
@@ -368,7 +368,7 @@ all share an underlying concept. If this mapping can be found, then the SAE can
 use a single unit of its own to represent a large number of scattered
 activations.
 
-Once an SAE has been built, it can be used in to identify interpretable features. For example if a unit fires strongly for words like ``dog'', ``cat'', and ``horse'' we might suspect it is an animal feature. In practice, identifying and validating these features is labor-intensive, so researchers often rely on pretrained SAEs released by large research groups and explore their features using tools such as Neuronpedia. 
+Once an SAE has been built, it can be used to identify interpretable features. For example if a unit fires strongly for words like ``dog'', ``cat'', and ``horse'' we might suspect it is an animal feature. In practice, identifying and validating these features is labor-intensive, so researchers often rely on pretrained SAEs released by large research groups and explore their features using tools such as Neuronpedia.
 
 
 % Add screenshots from neuronpedia and practical info about using SAE's
@@ -386,11 +386,11 @@ only rarely.
 % Rename to "steering"? 
 
 A third tool in the mechanistic interpretability toolbox is
-\glossary{activation addition}. While activations vectors in a model's neuron
+\glossary{activation addition}. While activation vectors in a model's neuron
 basis are generally not interpretable, they admit certain kinds of
 (semantically meaningful) manipulations. You can record a model's own hidden
 activations during a forward pass dealing with a concept, and then re-inject
-that activation to blend that concept in to behavior in new contexts
+that activation to blend that concept into behavior in new contexts
 \cite{turner2024activation,zou2025representation}. In more detail
 
 \begin{enumerate}
@@ -466,7 +466,7 @@ neural network to do things it would not normally do; it pushes the network
 piece of a network, then, we ideally want to do so surgically, in a way that
 minimizes these out-of-distribution confounding effects on the rest of the
 network. We want to see what happens when a piece of the network drops out,
-while keeping the rest of the network remains in its typical, ``healthy''
+while keeping the rest of the network in its typical, ``healthy''
 state. That way we are measuring only the effects of the dropout, not the
 effects of incidental damage to the computation.
 
@@ -474,7 +474,7 @@ So, instead of ablating by clamping activations to $0.0$, alternative
 approaches have evolved. One option is to clamp activations to their mean or
 median activation value. The idea is that this neuron is then activating an
 average amount rather than being fully ablated, which would be unusual. Another
-option is resample ablations, in which case we take the \emph{actual
+option is resampling ablations, in which case we take the \emph{actual
 activation} from a random previous forward pass and swap that in for the
 current activation value.
 
@@ -505,11 +505,11 @@ an interpretable algorithm \cite{nanda2023progress}. The model is fairly
 complicated, but the high-level idea is that arithmetical operations can be
 represented by activations that are processed through the residual stream. For
 example, in computing $a + b$, each number is represented as a rotation, and
-the sum of their angles is computed as composition of two rotations (see figure
+the sum of their angles is computed as a composition of two rotations (see figure
 \ref{toyModelAddition}).\footnote{The details are more complicated. It is
 addition mod $P$, and uses ``discrete Fourier transforms and trigonometric
 identities'' \cite{nanda2023progress} to support the conversion.} Before the
-circuit was worked out a clue to its function was the presence of circular
+circuit was worked out, a clue to its function was the presence of circular
 structures in the activation space when measured at the attention heads and
 MLPs (\cite{nanda2023progress}, section 4.1).
 
@@ -583,7 +583,7 @@ previous sequences of tokens, both exactly and approximately
 
 Induction heads are exciting as they were one of the first windows into how
 models can intelligently \emph{learn} in-context. The trick, it seems, is to
-keep a look out for key regularities in your context, and to redeploy that
+keep a lookout for key regularities in your context, and to redeploy that
 regularity later on, when the context is again right. Induction heads are also
 interesting as a relatively smooth evolutionary progression from ``more
 primitive'' bigram and copy heads---they let us see how intelligent semantic
@@ -611,4 +611,3 @@ again (perhaps cleaning up the model's final token predictions).
 % even be scaled by scalar coefficients or added on to entirely different
 % forward passes; these interventions change model outputs in the expected
 % conceptual fashion, emphasizing or deemphasizing (Turner et al., 2023). 
-

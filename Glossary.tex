@@ -20,7 +20,7 @@
 
 \item[Anterograde amnesia] A type of memory loss or amnesia caused by brain damage in the hippocampus, where the ability to create new fact-based or declarative memories is compromised after the injury. 
 
-\item[Antipattern] Intuitively, the antipattern of a pattern $p$ is the pattern formed by ``flipping'' every value in $p$.  For a binary pattern we swap 0's and 1's. For a bipolar pattern we swap -1's and 1's. Examples: the antipattern of $(0,1,0)$ is  $(1,0,1)$. The antipattern of $(-1,1,-1)$ is  $(1,-1,1)$. Antipatterns are  kind of spurious memory.
+\item[Antipattern] Intuitively, the antipattern of a pattern $p$ is the pattern formed by ``flipping'' every value in $p$.  For a binary pattern we swap 0's and 1's. For a bipolar pattern we swap -1's and 1's. Examples: the antipattern of $(0,1,0)$ is  $(1,0,1)$. The antipattern of $(-1,1,-1)$ is  $(1,-1,1)$. Antipatterns are a kind of spurious memory.
 
 \item[Artificial neural network] (Acronym: ANN) a collection of interconnected units, which processes information in a brain-like way.
 
@@ -42,9 +42,9 @@
 
 \item[Axon] The part of the neuron that carries outgoing signals to other neurons.
 
-\item[Bag of words] A representation method that associates a document with a vector of word frequencies, where each entry of the vector corresponds to a word and the value of the entry corresponds to the number of times that word occurs in the document. The underlying idea is that the word usage frequencies would capture the (semantic) content of a document. The order and grammatical information of the words in the document is disregarded, hence the term ``bag''.  A form of document embeddings, as contrasted with token or word embeddings, are more common with neural networks.
+\item[Bag of words] A representation method that associates a document with a vector of word frequencies, where each entry of the vector corresponds to a word and the value of the entry corresponds to the number of times that word occurs in the document. The underlying idea is that the word usage frequencies would capture the (semantic) content of a document. The order and grammatical information of the words in the document is disregarded, hence the term ``bag''.  Forms of document embedding, as contrasted with token or word embeddings, are more common with neural networks.
 
-\item[Backpropagation] (Synonym: Backprop) A supervised learning algorithm that can train the weights of a multi-layer network using gradient descent. Can be thought of an extension of Least Mean Square methods for multi-layer networks. 
+\item[Backpropagation] (Synonym: Backprop) A supervised learning algorithm that can train the weights of a multi-layer network using gradient descent. Can be thought of as an extension of Least Mean Square methods for multi-layer networks.
 
 \item[Basal ganglia] A structure below the surface of the cortex (subcortical) that is involved in voluntary action and reward processing.
 
@@ -91,7 +91,7 @@ towards a given attractor.
 
 \item[Column vector] A vector whose components are written in a column \eg $\displaystyle \begin{pmatrix} 2 \\ 1 \\ 3 \end{pmatrix}$.
 
-\item[Competitive learning] A form of unsupervised learning in which outputs nodes are trained to respond to clusters in the input space. 
+\item[Competitive learning] A form of unsupervised learning in which output nodes are trained to respond to clusters in the input space.
 
 \item[Component] One entry of a tensor. For example, in the vector $(1,2,3)$ the second component is $2$.
 
@@ -105,7 +105,7 @@ towards a given attractor.
 
 \item[Convolutional layer] A special kind of weight layer where a set of weights (a ``filter'') is scanned over a previous node layer to produce activations in a target layer. This is related to the mathematical operation of convolution.
 
-\item[Controlled process] A cognitive processes that requires attention for its execution, and is relatively slow. Examples include solving math problems, doing homework, or performing an unusual task that you have not practiced.
+\item[Controlled process] A cognitive process that requires attention for its execution, and is relatively slow. Examples include solving math problems, doing homework, or performing an unusual task that you have not practiced.
 
 \item[Cortical blindness] Neurological impairment caused by damage to the occipital lobe that results in blindness or inability to see. This can occur without any damage to the eyes. 
 
@@ -153,7 +153,7 @@ towards a given attractor.
 
 \item[Error function] A function that associates a network and a training dataset with a scalar error value. Many supervised learning techniques attempt to modify network parameters so as to reduce the error function. Also called a ``loss function'' or, in the context of mathematical optimization, an ``objective function.''
 
-\item[Error surface] The graph of a function from parameters values of a network to error values of an associated error function. Each point on an error surface corresponds to different parameters (usually weight values and biases) of a network. Gradient descent finds minima on an error surface, where error is relatively low.
+\item[Error surface] The graph of a function from parameter values of a network to error values of an associated error function. Each point on an error surface corresponds to different parameters (usually weight values and biases) of a network. Gradient descent finds minima on an error surface, where error is relatively low.
 
 \item[Example] (Synonyms: instances, cases). Rows of a dataset. Used in phrases like input example, training example, etc., depending on which dataset we are considering.
 
@@ -173,11 +173,11 @@ towards a given attractor.
 
 \item[Feature superposition hypothesis] The hypothesis that large language models encode many features in the same node layer using distributed representations. This implies that multiple features can be superimposed in overlapping subspaces of the same representational layer. This is treated as an empirical hypothesis in mechanistic interpretability research.
 
-\item[Feed-forward network] A network comprised of a sequence of layers where nodes in each layer any layer are connected to neurons in subsequent layers. Contains no recurrent connections. Skip or residual connections that allow information to bypass one or more layers can also be used. Commonly used in supervised learning tasks, such as classification and regression.
+\item[Feed-forward network] A network comprised of a sequence of layers where nodes in each layer are connected to neurons in subsequent layers. Contains no recurrent connections. Skip or residual connections that allow information to bypass one or more layers can also be used. Commonly used in supervised learning tasks, such as classification and regression.
 
 \item[Few-shot] A learning paradigm where a model or person performs a task after being shown only a few examples, without updating weights (this is typically a form of in-context learning). An example is learning what a new piece of slang like ``that’s fire’’ or ``that’s mid'' means after hearing just a few examples.
 
-\item[Firing rate] number of spikes (action potentials) A neuron fires per unit time. Usually measured in hertz, that is, number of spikes per second. A higher firing rate corresponds to a more ``active'' neuron. 
+\item[Firing rate] The number of spikes (action potentials) a neuron fires per unit time. Usually measured in hertz, that is, number of spikes per second. A higher firing rate corresponds to a more ``active'' neuron.
 
 \item[Filter] (Synonym: kernel) The set of weights in a convolutional layer. This is more or less the same thing as a convolutional layer, but it refers specifically to the weights, whereas ``convolution'' also refers to the process of passing the filter over the input activations.
 
@@ -205,7 +205,7 @@ towards a given attractor.
 
 %\item[Hetero-associator] // Defunct, probbably don't need this.
 
-\item[Hallucination] A type of error made by a model where describes the something based on statistical patterns in its training data, but where that thing does not actually exist. This is usually something that seems like it \emph{ought} to exist, given the training data, but that does not in fact exist. A type of generalization error. Example: an LLM produces a reference to a paper that does not exist, by an author who does exist.
+\item[Hallucination] A type of error made by a model where it describes something based on statistical patterns in its training data, but where that thing does not actually exist. This is usually something that seems like it \emph{ought} to exist, given the training data, but that does not in fact exist. A type of generalization error. Example: an LLM produces a reference to a paper that does not exist, by an author who does exist.
 
 \item[Hemineglect] Neurological impairment caused by damage to regions of the parietal lobes characterized by a lack of attending to anything in one half of the visual field.
 
@@ -274,7 +274,7 @@ dependent is linearly independent.
 
 \item[Logic gates] Devices that compute Boolean functions. For example, an AND gate has two inputs and one output. When both inputs are set to ``True'' the gate produces a ``True'' as output; otherwise the gate produces a ``False'' as output. Simple neural networks can implement logic gates.
 
-\item[Localist representation] A representation scheme where activation of individual neurons indicate the presence of an object. Example: activation of neuron 25 indicates the presence of my grandmother.
+\item[Localist representation] A representation scheme where activation of individual neurons indicates the presence of an object. Example: activation of neuron 25 indicates the presence of my grandmother.
 
 \item[Long Term Depression] (LTD) A  process by which the efficacy of a synapse is decreased after repeated use.
 
@@ -286,7 +286,7 @@ dependent is linearly independent.
 
 \item[Mechanistic interpretability] (Acronym: mechinterp) A field that attempts to reverse-engineer the detailed circuits or algorithms implemented by trained neural networks. The goal is to understand not just what networks do, but how they do it, by identifying interpretable computational patterns.
 
-\item[Membrane potential] The voltage that results from the difference in the total sum charge of ions on either side of the cell membrane. A cell at rest typically has a resting membrane potential of -70 mV. 
+\item[Membrane potential] The voltage that results from the difference in the total charge of ions on either side of the cell membrane. A cell at rest typically has a resting membrane potential of -70 mV.
 
 \item[MLP]  An acronym for “Multi-Layer Perceptron”. A standard feed-forward neural network consisting of multiple layers of nodes trained using backprop. In the context of transformers, MLPs form one of the two main components of each transformer block (alongside attention heads), typically involving an upward projection to a larger hidden layer followed by a downward projection back to the residual stream dimension.  
 
@@ -310,7 +310,7 @@ dependent is linearly independent.
 
 \item[Occipital lobe] The lobe located in the back of the cortex where visual processing primarily takes place. 
 
-\item[One-hot encoding] A one-of-$k$ encoding technique in which  a category with $k$ values is represented by a binary vector with $k$ components and the current value of the category corresponds to which nodes is on (or ``hot''). Example: representing cheap, moderate, and expensive restaurants with vectors $(1,0,0)$,$(0,1,0)$ and $(0,0,1)$. One-hot encodings are orthogonal to each other.
+\item[One-hot encoding] A one-of-$k$ encoding technique in which  a category with $k$ values is represented by a binary vector with $k$ components and the current value of the category corresponds to which node is on (or ``hot''). Example: representing cheap, moderate, and expensive restaurants with vectors $(1,0,0)$,$(0,1,0)$ and $(0,0,1)$. One-hot encodings are orthogonal to each other.
 %For a category with $n$ members, we take an $n$-component zero-vector and then treat a 1 in the $k$-th column as representing the $k$-th category.
 
 \item[One-shot learning] A learning paradigm where a model successfully performs a task after seeing only a single example in its context. An example is learning to recognize a person after seeing a single photo of them.
@@ -378,7 +378,7 @@ dependent is linearly independent.
 
 %\item[Rate-coding]
 
-\item[Reasoning] In language models, the sequential process of working through problems step-by-step. Just as it helps a human to write out all the steps of a process then work through them, so too with LLMs  Modern reasoning capabilities are typically elicited through specialized prompting strategies that are hidden from users. See chain-of-thought for an example. Associated with the “reasoning revolution” that began around 2023.
+\item[Reasoning] In language models, the sequential process of working through problems step-by-step. Just as it helps a human to write out all the steps of a process then work through them, so too with LLMs. Modern reasoning capabilities are typically elicited through specialized prompting strategies that are hidden from users. See chain-of-thought for an example. Associated with the “reasoning revolution” that began around 2023.
 
 \item[Recurrent network] A network whose nodes are interconnected in such a way that activity can flow in repeating cycles.
 
@@ -392,9 +392,9 @@ dependent is linearly independent.
 
 \item[Residual stream] A single stream of activations that all attention heads and MLPs in a transformer read from and write to. A kind of informational bus that flows through the network, with each component adding incremental updates (residuals) to token representations.
 
-\item[Reinforcement learning] A form of learning in which a system learns to take actions that maximize reward in the long run.   Actions that produce rewards, or action that lead to actions that produce reward, are reinforced in such a way that agents learn to obtain rewards and avoid costly situation.  In humans, associated with circuits in the brain stem and basal ganglia.  Sometimes treated as a third form of learning alongside supervised and unsupervised learning.
+\item[Reinforcement learning] A form of learning in which a system learns to take actions that maximize reward in the long run.   Actions that produce rewards, or actions that lead to actions that produce reward, are reinforced in such a way that agents learn to obtain rewards and avoid costly situations.  In humans, associated with circuits in the brain stem and basal ganglia.  Sometimes treated as a third form of learning alongside supervised and unsupervised learning.
 
-\item[ReLU] A linear activation function that is clipped at  0. It's activation is 0 for weighted inputs less than or equal to 0, and it is equal to weighted inputs otherwise. It is a popular activation function for deep networks. Note that ``relu'' is short for ``rectified linear unit''.
+\item[ReLU] A linear activation function that is clipped at  0. Its activation is 0 for weighted inputs less than or equal to 0, and it is equal to weighted inputs otherwise. It is a popular activation function for deep networks. Note that ``relu'' is short for ``rectified linear unit''.
 
 \item[Repeller] (Synonym Unstable state): a state or set of states $R$ with the property that if the system is in a nearby state the system will always go away from R. Fixed points and periodic orbits can both be repellers.
 
@@ -416,9 +416,9 @@ dependent is linearly independent.
 
 \item[Self Organizing Map] (Acronym: SOM)  A network trained by unsupervised competitive learning, in which the layout of the output nodes corresponds to the layout of the input space.
 
-\item[Shape] An order lists of numbers indicating the dimensionality for each dimension of  a vector, matrix, or other tensor. For example, a matrix might have shape $(1000, 512)$ indicating 1000 rows and 512 columns, while a set of 100 color images, each 25x25 pixels, might have shape $(100, 3, 25, 25)$, with 3 channels for color.
+\item[Shape] An ordered list of numbers indicating the dimensionality for each dimension of  a vector, matrix, or other tensor. For example, a matrix might have shape $(1000, 512)$ indicating 1000 rows and 512 columns, while a set of 100 color images, each 25x25 pixels, might have shape $(100, 3, 25, 25)$, with 3 channels for color.
 
-\item[Sigmoid activation function] An activation function that whose value increases monotonically between a lower and upper bound. As the input goes infinitely far in the positive direction the value converges to the upper bound. As the input goes infinitely far in the negative direction the value converges to the lower bound.
+\item[Sigmoid activation function] An activation function whose value increases monotonically between a lower and upper bound. As the input goes infinitely far in the positive direction the value converges to the upper bound. As the input goes infinitely far in the negative direction the value converges to the lower bound.
 
 \item[Skip connection] (Synonym: residual connection) A path that adds a node layer’s activations directly to another node layer, bypassing one or more hidden layers. Often links an input to an output layer in an MLP.  If the input and output dimensions differ, a learned linear projection (e.g., a 1×1 matrix) aligns shapes before addition. Skip connections play a key role in transformers, where they can be ``stretched out'' into a single line or bus of activations known as the residual stream. Skip connections improve backprop and stabilize training in deep networks (reducing the problem of ``vanishing gradients'', by giving the error gradient a path to flow along). The term ``residual'' is used because these connections let the network learn only the difference (a residual or delta) between the identity mapping in the skip connection and the desired transformation, making optimization easier.
 
@@ -430,7 +430,7 @@ dependent is linearly independent.
 
 \item[Somatotopic map] A topographic map in the somatosensory cortex that is organized by areas of the body. Nearby regions of this area represent nearby parts of the body.
 
-\item[Self-supervised learning] A form of supervised learning where targets or labels are not provided separately but are derived from the training data itself. This allow training data to be generated without explicit annotations. See auto-regression.
+\item[Self-supervised learning] A form of supervised learning where targets or labels are not provided separately but are derived from the training data itself. This allows training data to be generated without explicit annotations. See auto-regression.
 
 \item[Somatosensory cortex] Front-most region of the parietal lobe that houses a somatotopic map of the body parts and processes tactile information from the body.
 
@@ -458,7 +458,7 @@ dependent is linearly independent.
 
 \item[Sparse matrix] A matrix in which most of the entries are 0. A sparse weight matrix represents a set of connections between nodes where most of the possible connections are missing. Contrasted with dense matrices and dense or all-to-all connectivity. 
 
-\item[Sparsity] Of a matrix is a number between $0$ and $1$ obtained by counting how many zero entries the matrix has and dividing by the total number of entries. A matrix with no zero entries has a sparsity of $0$ and a matrix with all zero entries has a sparsity of $1$.
+\item[Sparsity] The sparsity of a matrix is a number between $0$ and $1$ obtained by counting how many zero entries the matrix has and dividing by the total number of entries. A matrix with no zero entries has a sparsity of $0$ and a matrix with all zero entries has a sparsity of $1$.
 
 \item[Subspace] Any subset of a vector space that also happens to satisfy the definition of a vector space. The sum of any two vectors in a subspace is in the subspace and any scalar multiple of a vector in a subspace is in the subspace.
 
@@ -484,7 +484,7 @@ dependent is linearly independent.
 
 \item[Threshold potential] The membrane potential of the cell above which an action potential is fired. 
 
-\item[Threshold activation function] A function that has one value for  input at or below a fixed amount (the threshold) and another value for input above the threshold. Usually the value of the function is less below the  threshold than it is above the threshold.
+\item[Threshold activation function] A function that has one value for input at or below a fixed amount (the threshold) and another value for input above the threshold. Usually the value of the function is less below the threshold than it is above the threshold.
 
 \item[Token] A word, word-part, or other sequence of characters. A generalization of the concept of a word to include other word-like entities. Tokens are associated with vectors in a word embedding.
 
@@ -504,7 +504,7 @@ dependent is linearly independent.
 
 \item[Training subset] A subset of a dataset used for training a neural network model (or other machine learning model). Contrasted with testing subset.
 
-\item[Truth table] A table whose columns are the inputs and outputs of a Boolean functions.
+\item[Truth table] A table whose columns are the inputs and outputs of a Boolean function.
 
 \item[Turing Test] The Turing Test is a behavioral test that can be used to determine whether a system is intelligent or not. The standard form of the test is as follows: If a human judge communicating with a system via a text interface cannot determine whether the system is human or not, the system passes the test and can be deemed intelligent.  The test derives from a similar test due to Alan Turing (the ``imitation game'') but is not identical with the imitation game. There is controversy surrounding whether the test is an adequate test of intelligence.
 
@@ -518,7 +518,7 @@ dependent is linearly independent.
 
 \item[Vector addition] (Synonym: Vector sum) Two vectors with the same number of components can be added (or summed) by adding their corresponding components. Example: $(1,2) + (3,4) = (4,6)$.
 
-\item[Vector subtraction] Two vectors with the same number of components can be subtracted by subtracting their corresponding components.Example: $(1,2) - (3,4) = (-2,-2)$.
+\item[Vector subtraction] Two vectors with the same number of components can be subtracted by subtracting their corresponding components. Example: $(1,2) - (3,4) = (-2,-2)$.
 
 \item[Vector space] A collection of vectors, all of which have the same number of components. For example, the plane is a collection of vectors, all of which have two components. (Note that this is an  informal definition; to be a vector space, a set of vectors must meet further requirements as well).
 

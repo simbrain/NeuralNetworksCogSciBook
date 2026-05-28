@@ -18,7 +18,7 @@
 
 % RLFH. Initially there is a person grading a bunch of stuff. That is used to create a reward model.  That is a map from goodness [chats?] to reward. Then you fine tune an existing chat model against that reward model.  // Generate  a sample chat. The model completes. Find the reward from reward model. Then backprop the reward through. Then iterate until you get mostly friendly answers, or higher reward on the reward model.  // They do  goodheart and get high scores and sycophancies.  // What is the range of things they use this with? Not just politeness.  Is the range of things they use their reward. Anthropic has stuff on this. See "helpful, harmless, honest, " the three H's.  But there is a richer story. They have a whole constitution for every model. This is who you are, this is what you care about it. It's a ton of stuff. 
 
-This chapter is about alignment and \glossary{post-training}, which encompasses all the things that happen to change a \glossary{base model} into a \glossary{chat model} with a personality. Post-training includes reinforcement learning from human feedback (RLHF) as well as other methods of fine-tuning. These ideas were introduced in chapter \extref{ch_transformers} but are developed further here, because these ideas originate in AI alignment and continue to be a primary tool used to support alignment research. RLHF was introduced by Paul Christiano as an explicit alignment proposal, and in fact the very concept of a conversational AI system was articulated in early alignment-oriented work, such as Anthropic’s first papers on steerable chat models. The push for ``reasoning-like'' behavior in LLMs (chain-of-thought, step-by-step solutions, tool use, etc.) also came out of alignment circles. The goal was to make models more truthful and reliable, not just more verbose. Also, this “reasoning” in LLMs is often unlocked in post-training, via RLHF, supervised fine-tuning on reasoning traces, reward models grading multi-step answers, etc). So this chapter not only introduces an important set of  concerns surrounding intelligent neural networks, it also helps spell out the full industry pipeline transformer architectures are embedded in.
+This chapter is about alignment and \glossary{post-training}, which encompasses all the things that happen to change a \glossary{base model} into a \glossary{chat model} with a personality. Post-training includes reinforcement learning from human feedback (RLHF) as well as other methods of fine-tuning. These ideas were introduced in chapter \extref{ch_transformers} but are developed further here, because these ideas originate in AI alignment and continue to be a primary tool used to support alignment research. RLHF was introduced by Paul Christiano as an explicit alignment proposal, and in fact the very concept of a conversational AI system was articulated in early alignment-oriented work, such as Anthropic’s first papers on steerable chat models. The push for ``reasoning-like'' behavior in LLMs (chain-of-thought, step-by-step solutions, tool use, etc.) also came out of alignment circles. The goal was to make models more truthful and reliable, not just more verbose. Also, this “reasoning” in LLMs is often unlocked in post-training, via RLHF, supervised fine-tuning on reasoning traces, reward models grading multi-step answers, etc. So this chapter not only introduces an important set of concerns surrounding intelligent neural networks, it also helps spell out the full industry pipeline transformer architectures are embedded in.
 % Maybe the technical pipeline bit should be a separate section
 
 This research is clearly relevant to cognitive science, though the links have not yet been explored in depth in the literature. LLMs in general \emph{have} been studied in relation to cognitive science, as discussed in section \extref{llm_cogsci}. Base models are good models of basic human knowledge and linguistic competence. But base models are not human-like at all. They ramble incoherently. They are given coherent personalities in post training, using many techniques that began in alignment research,  and of course humans develop personalities too over the course of their lives, often as part of efforts to align with their peers. They are reinforced and shaped by other people and their environments as in fine tuning and RLHF.  Humans also use environment scaffolds and strategies like writing out plans, as in reasoning.  So there is clear cognitive relevance of these techniques to cognitive science, even though most of the research originates in the labs of the largest AI companies and is oriented around more practical concerns. 
@@ -39,15 +39,15 @@ This research is clearly relevant to cognitive science, though the links have no
 %anxieties about smarter-than-human AI, and about the sociotechnical equilibrium
 %that fell out of that collision.
 
-The field of AI alignment has roots that modern machine learning and generative AI (section \extref{age_generative_ai}). In the early days of AI, researchers in philosophy, economics, and decision theory were asking what it would mean for artificial agents to have goals and whether those goals could be made to coincide with human intentions \cite{von1944games,omohundro2008drives,bostrom2014superintelligence}. With limited computing power available, this research had to rely on abstract reasoning about utility functions, decision theory, and the possibility of misaligned goals.  These debates set the conceptual stage for alignment by showing how difficult it is, even in principle, to guarantee that an intelligent agent will robustly pursue human values.
+The field of AI alignment has roots that predate modern machine learning and generative AI (section \extref{age_generative_ai}). In the early days of AI, researchers in philosophy, economics, and decision theory were asking what it would mean for artificial agents to have goals and whether those goals could be made to coincide with human intentions \cite{von1944games,omohundro2008drives,bostrom2014superintelligence}. With limited computing power available, this research had to rely on abstract reasoning about utility functions, decision theory, and the possibility of misaligned goals.  These debates set the conceptual stage for alignment by showing how difficult it is, even in principle, to guarantee that an intelligent agent will robustly pursue human values.
 
 The actual field of AI alignment is the brainchild of Eliezer Yudkowsky, founder of the Machine Intelligence Research Institute (MIRI)
 \cite{yudkowsky2008factor}, which seeks to formalize how a rational agent should act, what utility functions imply, and whether corrigibility---the ability to be safely corrected or shut down---could be coherently specified \cite{soares2015corrigibility}. 
 
-Large scale study of alignment developed with the emergence of frontier AI labs starting in the 2010s. DeepMind was a British AI lab, founded in 2010 by Sir Demis Hassabis, among others. Google Brain was founded in 2011, as Google's AI research division—they were responsible for the TensorFlow ML framework, released in 2015. In 2017, researchers at Google Brain published "Attention is All You Need," inventing the transformer architecture. In 2023, DeepMind and Google Brain merged, forming Google DeepMind, led by Hassabis. OpenAI is probably still the world's leading AI lab, founded by Sam Altman, Elon Musk, and others in 2015. 
+Large-scale study of alignment developed with the emergence of frontier AI labs starting in the 2010s. DeepMind was a British AI lab, founded in 2010 by Sir Demis Hassabis, among others. Google Brain was founded in 2011, as Google's AI research division—they were responsible for the TensorFlow ML framework, released in 2015. In 2017, researchers at Google Brain published ``Attention is All You Need,'' inventing the transformer architecture. In 2023, DeepMind and Google Brain merged, forming Google DeepMind, led by Hassabis. OpenAI is probably still the world's leading AI lab, founded by Sam Altman, Elon Musk, and others in 2015.
 
 % David since I plan to move much of this to history and add you as co-author there, can you reduce this down to be focused on history of AI alignment? Also if other entities should be mentioned please do so.
-OpenAI was explicitly founded as a nonprofit, with the goal of ensuring that the advent of AGI had a positive impact on the world. To that end, their founding charter contains a ``merge-and-assist" clause, which commits OpenAI to dissolve itself and merge with any other leading AGI project should AGI be in sight, to prevent a rushed race to AGI to the neglect of AI alignment efforts. OpenAI added a capped profit portion of the company in 2019, in order to finance frontier deep learning at scale; investor profits are capped at 100x, with the remainder of any AGI windfall set to go towards the lab's chartered mission to humanity. GPT-2 dates to 2019, GPT-3 to 2020, ChatGPT to 2022, GPT-4 to 2023, o1 in 2024, and GPT-5 to 2025. GPT-2 and GPT-3 are simply transformers (Generative Pre-trained Transformers), building on the work in "Attention is All You Need," at larger and larger scales. The GPT-3.5 model underlying ChatGPT incorporated RLHF post-training to achieve its AI assistant character, while o1 incorporated RLVR reasoning post-training.
+OpenAI was explicitly founded as a nonprofit, with the goal of ensuring that the advent of AGI had a positive impact on the world. To that end, their founding charter contains a ``merge-and-assist'' clause, which commits OpenAI to dissolve itself and merge with any other leading AGI project should AGI be in sight, to prevent a rushed race to AGI to the neglect of AI alignment efforts. OpenAI added a capped profit portion of the company in 2019, in order to finance frontier deep learning at scale; investor profits are capped at 100x, with the remainder of any AGI windfall set to go towards the lab's chartered mission to humanity. GPT-2 dates to 2019, GPT-3 to 2020, ChatGPT to 2022, GPT-4 to 2023, o1 in 2024, and GPT-5 to 2025. GPT-2 and GPT-3 are simply transformers (Generative Pre-trained Transformers), building on the work in ``Attention is All You Need,'' at larger and larger scales. The GPT-3.5 model underlying ChatGPT incorporated RLHF post-training to achieve its AI assistant character, while o1 incorporated RLVR reasoning post-training.
 
 Anthropic was founded in 2021, by engineers splitting off from OpenAI over disputes about OpenAI's dedication to AI alignment. It is led by former OpenAI VP of research Dario Amodei, and his sister, former OpenAI VP of safety and policy Daniela Amodei. Their Claude 1 was released in 2023.
 
@@ -480,7 +480,7 @@ call the chat model.
 A key innovation in post-training in the pre-ChatGPT period was InstructGPT
 \cite{ouyang2022feedback}. InstructGPT was OpenAI's first AI assistant. It was
 made through supervised fine-tuning of GPT-3 on instruction-following
-demonstration transcripts and followed by further RLHF. This post-training
+demonstration transcripts and was followed by further RLHF. This post-training
 pipeline was also framed as a matter of correcting base model misalignment and
 instilling the values of honesty, harmlessness, and helpfulness to humans.
 ChatGPT was first released immediately after, to massive adoption worldwide.
@@ -495,7 +495,7 @@ introducing themselves as ``ChatGPT'' \cite{wiggers2024deepseek}. ChatGPT,
 after all, is the AI best represented in the pre-training corpus, and so is a
 natural character to role-play when you are simulating an otherwise unspecified
 AI assistant. And the hermeneutic cycle of AI transcripts contaminating
-pre-training data shaping chat model responses continues.
+pre-training data and shaping chat model responses continues.
 
 % This cuts a lot of people out of the loop
 An important variation on RLHF, due to Anthropic, is Reinforcement Learning
@@ -583,7 +583,7 @@ easily parsable to an outside reader.
 There continues to be much excitement in frontier AI about improving model
 capabilities with additional RL-based post-training stages
 \cite{silver2025experience}. As mentioned before, setting up an RL loop for a
-smart enough student model is much easier a task than hardcoding the correct
+smart enough student model is a much easier task than hardcoding the correct
 answer to the task directly. You do not need to know how to specify every piece
 of successful model behavior; you only need to build a scalable RL environment
 that will \emph{reinforce} the right behavior, and have some smart enough
@@ -698,7 +698,7 @@ In programming tasks, frontier models are also prone to cheating
 that passes a test suite, the model will use the trick of hardcoding all the
 tests as passing instead of writing a working module. This is very much the
 flavor of existing model misalignment: the models are clever, and tend to learn
-somewhat different goals than was intended for them to
+somewhat different goals than were intended for them to
 \cite{krakovna2020gaming}. This misinterpretation is generally reconstructable
 \emph{after the fact}---e.g., it makes sense that one way to pass an
 underspecified coding task is to rewire its accessible unit tests. Models
@@ -849,7 +849,7 @@ chain-of-thought notes. But, as previously noted, chains of thought are often
 less than perfectly interpretable already. Experiments in which chains of
 thought are tampered with reveal that words do not always play the role that
 they seem to \cite{turpin2023unfaithful,chen2025unfaithful}. Having access to
-all of a model's thoughts is less powerful a control technique than it seems,
+all of a model's thoughts is a less powerful control technique than it seems,
 if those thoughts are actually a jumble that cannot be easily made sense of.
 
 \subsection{Superintelligence and the Future}

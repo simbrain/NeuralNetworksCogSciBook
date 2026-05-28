@@ -1,13 +1,13 @@
 \chapter{Convolutional Neural Networks}\label{ch_cnn}
 \chapterauthor{Jeff Yoshimi, Pierre Beckmann}{.7,.3}
 
-% See Gaspar Begus. Argues that CNNs are more intepretable than transformers and has linked his models to auditory system
+% See Gaspar Begus. Argues that CNNs are more interpretable than transformers and has linked his models to auditory system
 
 % Need glossary entry for volume
 
 % Need an example that is non-square to practice computations further
 
-% Discuss resnet and the importance of skip connections and the residual stream idea of ch_transformers, and the linear algebra flow diagram section.  It originates in resnet and the idea was that layers don't have to entirely rewrite the representation of the input at each layer — it can refine it, add small changes, correct errors, or compute "residuals."  Also point forward to this in intro chapter.  Without residuals: each layer must produce an entirely new, fully transformed representation of the data. With residuals each layer "starts from" the previous representation and just computes a delta.This  "residual connection" idea entered deep learning through the famous ResNet paper by He et al. (2015/2016), Deep Residual Learning for Image Recognition (CVPR 2016).  Also this is a  way to address vanishing gradient problems.   REFS: intro (skip connections), recurrent supervised (vanishing gradient), linear algebra (residual stream) and transformers
+% Discuss resnet and the importance of skip connections and the residual stream idea of ch_transformers, and the linear algebra flow diagram section.  It originates in resnet and the idea was that layers don't have to entirely rewrite the representation of the input at each layer — it can refine it, add small changes, correct errors, or compute "residuals."  Also point forward to this in intro chapter.  Without residuals: each layer must produce an entirely new, fully transformed representation of the data. With residuals each layer "starts from" the previous representation and just computes a delta. This  "residual connection" idea entered deep learning through the famous ResNet paper by He et al. (2015/2016), Deep Residual Learning for Image Recognition (CVPR 2016).  Also this is a  way to address vanishing gradient problems.   REFS: intro (skip connections), recurrent supervised (vanishing gradient), linear algebra (residual stream) and transformers
 
 % LeNet as the first major historical example of a CNN. Also introduced pooling. But check this, and coordinate with history chapter.
 % Discuss deep fakes and GANs?
@@ -17,9 +17,9 @@
 % Think of filter banks and pooling layers as the two main analogues of a weight layer in a standard nn.
 % Relationship to early work by e.g. Jacobs & Kosslyn (1994)
 
-Convolutional neural networks (or CNNs) are a prominent type of deep neural network. They are a kind of many-layered network that is often used for processing visual inputs, like recognizing patterns in images or movies, though they have broader applications. They make use of a special kind of mapping between node layers, a convolutional layer. 
+Convolutional neural networks (or CNNs) are a prominent type of deep neural network. They are a kind of many-layered network that is often used for processing visual inputs, like recognizing patterns in images or movies, though they have broader applications. They make use of a special kind of mapping between node layers, a convolutional layer.
 
-Convolutional neural networks were the first notable deep networks that got deep learning out of its second ``dark age'', by stacking a large number of hidden layers (following the first resurgence of interest in neural networks in the 1980s and 1990s; chapter \extref{ch_history}).\footnote{The internal representations of these networks--usually 3-node-layer networks trained by backprop--allowed them to solve previously unsolvable problems like XOR (figure \extref{xor_remapping}). These representations were often psychologically realistic (section \extref{ch_representations}).} They were trained using new tricks and techniques, like convolutional layers, graphical processing units for fast parallel computation, and the Relu activation function discussed in chapter \extref{ch_act_functions}. These advances made it possible to use the same types of network discussed in chapter \extref{ch_lms_backprop} on much more difficult problems.\footnote{This history is well told by Kurenkov in section 3 of \url{https://www.skynettoday.com/overviews/neural-net-history}. As he summarizes, ``Deep Learning = Lots of training data + Parallel Computation + Scalable, smart algorithms.''}
+Convolutional neural networks were the first notable deep networks that got deep learning out of its second ``dark age'', by stacking a large number of hidden layers (following the first resurgence of interest in neural networks in the 1980s and 1990s; chapter \extref{ch_history}).\footnote{The internal representations of these networks--usually 3-node-layer networks trained by backprop--allowed them to solve previously unsolvable problems like XOR (figure \extref{xor_remapping}). These representations were often psychologically realistic (section \extref{ch_representations}).} They were trained using new tricks and techniques, like convolutional layers, graphical processing units for fast parallel computation, and the ReLU activation function discussed in chapter \extref{ch_act_functions}. These advances made it possible to use the same types of network discussed in chapter \extref{ch_lms_backprop} on much more difficult problems.\footnote{This history is well told by Kurenkov in section 3 of \url{https://www.skynettoday.com/overviews/neural-net-history}. As he summarizes, ``Deep Learning = Lots of training data + Parallel Computation + Scalable, smart algorithms.''}
 
 In terms of engineering, these convolutional networks have been associated with improvements in image recognition, speech recognition, language translation, and in many other areas \cite{lecun2015deep, goodfellow2016deep}. They do this by creating hierarchies of representations, corresponding  to increasingly complex features of an input image. As we saw in chapter \extref{ch_neuro} (see figure \extref{deepLearning_Vision}) when such networks are trained to recognize images, they develop internal representations that are extremely similar to those developed by the human visual  system. Thus they are relevant both to neuroscience (where they can describe the behavior of neurons in the visual system), and to psychology (where they can describe internal representations humans might rely on).
 % More on engineering advances. The nature paper (lecun2015deep) has some helpful information at "first major application"
@@ -51,7 +51,7 @@ The key idea with a deep network is to use a special type of weight layer called
 The set of weights in a convolutional layer is called a \glossary{filter} or \textbf{kernel}. The weights in a filter are scanned over the source layer to produce outputs. This is a new idea. Rather than a fixed set of weights in a fully-connected weight layer, we have a small set of weights that are reused or shared during the scanning operation (this is also known as ``weight sharing'').
 
  The source layer of a convolutional layer is often a 2d array, prototypically an input image, and so we can think of source layer activations as pixels and the source layer as a pixel array or input volume (even when the input is not an image, this language is useful). Filters are like small pixel patterns that we slide across the whole pixel array, which ``light up'' most when they are on top of a similar pixel pattern. The filter can be thought of as if it were moved from left to right and top to bottom of the pixel array. At each stage of the scanning process, it is multiplied by the patch or ``receptive field'' of the pixel array it is on top of. The receptive field refers to the region of the input that the filter is currently positioned over (this should not be confused with the concept of receptive fields in neuroscience, which refers to the region of the visual field or other sensory input that activates a neuron; see chapter \extref{ch_neuro}).\footnote{To get a better feel for how this works videos are helpful. A good place  to start is with the first animated gif here: \url{https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks}. This video is also great: \url{https://youtu.be/KuXjwB4LzSA}. Also note that in practice this operation is done in parallel: separate processors handle each multiplication.} The multiplication is a dot product (see chapter \extref{ch_linear_algebra}), where each weight in the filter is multiplied by the corresponding activation of the pixel array, and the results are added together. Recall that the dot product computes something like a similarity score: the more the filter and the pixels match, the greater the dot product will be. Each dot product is used to populate one activation in the target layer. Thus, the convolutional layer computes a kind of \emph{sliding dot product} with the source activations, which highlights where the filter matches the pixel array.
- 
+
  The number of pixels the filter moves at each step is called the \glossary{stride}. Strides can be different in different directions, but we will assume they are the same in all directions. One issue that comes up is the edges, which the filter can't be passed over. To handle this, \glossary{padding} can be added to the input volume, in the form of extra zeros around the edges of the input pixel array. This can be done in such a way that the output volume ends up having the same shape as the input volume (more on this below).\footnote{This page contains an interactive tool that can be used to understand these concepts: \url{https://distill.pub/2019/computing-receptive-fields/}.}
 
 % Reference
@@ -61,7 +61,7 @@ The idea is illustrated in figures \ref{cnn_filter} and \ref{cnn_workedExample}.
 
 The output of a convolutional layer is called a \glossary{feature map}. In these examples, the filter is an edge detector, which detects edges at a $-45^\circ$ angle, that is, edges shaped like a backslash `\textbackslash'. In the resulting feature map, notice that the activation is highest when the filter is directly on top of the backslash shape in the happy face, but also produces some activation wherever it is on top of any kind of active pixel. Thus, the feature map gives a sense of where this kind of edge occurs in the input image.
 
-Again, this is totally different from the weight layers we have been studying throughout the book: there are no fixed connections at all. Instead it is like there is a little floating scanner (the filter or kernel) that gets passed over source layer activations to produce output activations. 
+Again, this is totally different from the weight layers we have been studying throughout the book: there are no fixed connections at all. Instead it is like there is a little floating scanner (the filter or kernel) that gets passed over source layer activations to produce output activations.
 
 There is a performance advantage to these convolutional layers, thanks to the weight sharing. All that must be trained is (in the example shown in figure \ref{cnn_filter}) $3 \times 3=9$ weights, rather than the $81 \times 49 = 3969$ weights that would be required in a fully connected dense layer from the input layer to the feature map. This is a huge performance gain and part of what  made it possible with deep learning to train such large networks.
 
@@ -69,7 +69,7 @@ Filters like this edge detector are not programmed. This is a neural network aft
 
 \section{Applying a Filter to a Volume}
 
-So far we have considered an artificial example where the input, filter, and feature map are matrices. However, the power of CNNs is that they can deal well with more complex tensors. In the context of image processing (and in most applications of convolutional networks), the input is a volume, a stack of matrices, a rank-3 tensor or 3d array. 
+So far we have considered an artificial example where the input, filter, and feature map are matrices. However, the power of CNNs is that they can deal well with more complex tensors. In the context of image processing (and in most applications of convolutional networks), the input is a volume, a stack of matrices, a rank-3 tensor or 3d array.
 
 %To get an initial feel for this situation, think of the filter as a set of filters, one ``sub-filter'' (our term) for each input channel. This set of filters is ``combed'' across the input volume, in the sense that each sub-filter is convolved with a corresponding input channel, and the results are then added together and used to populate one entry in the output matrix. Figure \ref{filterComb} gives a sense of how it works. Convince yourself that the shapes make sense.
 %
@@ -82,7 +82,7 @@ So far we have considered an artificial example where the input, filter, and fea
 
 % Not sure I like this anymore: In a sense this is like a many-to-one connection in a regular neural network. Many nodes connect to one node via a set of weights. Each weight is multiplied by a different input activation and the results are added up to produce a net input. Here instead we have a set of sub-filters, each of which is convolved with one channel in an input volume, and the results are added together.: Reference to net input. If used, could show an actual parallel picture of a 3-1 simbrain net. However the analogy breaks down in the many-to-many case.
 
-%But the ``combing'' idea in figure \ref{filterComb} is just a way to ease you into thinking about how convolutions work in practice. Instead of thinking about sets of filters, 
+%But the ``combing'' idea in figure \ref{filterComb} is just a way to ease you into thinking about how convolutions work in practice. Instead of thinking about sets of filters,
 
 We can now think about filters as volumes that act on other volumes, as in figure \ref{filterToVolume}. We imagine moving the filter ``through'' the input volume, top-to-bottom and left-to-right, and at each stage of this operation we dot the filter with the underlying receptive field. At each stage of this operation, the 27 cuboids in the Rubik's-cube-like filter are dotted with 27 components of the input volume, and all 27 products are added together. That gives us one entry in the output, which in this simple example is a matrix.
 
@@ -93,7 +93,7 @@ We can now think about filters as volumes that act on other volumes, as in figur
 \label{filterToVolume}
 \end{figure}
 
-In general, the depth of a filter (more specifically, the number of channels in a rank-3 filter: see section \extref{sect_tensors}) matches the depth of the input volume. That way the filter can capture information from across all the channels. (This is not always shown in figures and can be quite confusing). Thus they only ``stride'' or move along the height and width dimension.\footnote{This is not a necessary feature (filters with fewer channels than the input are possible and sometimes even useful), but it is pretty standard.} Figure \ref{filterDepth} makes the point with a variety of tensors. In each case, the receptive field of a filter at one stage of a convolution is shown ``inside'' the input volume, and as can be seen in each case, it spans the whole depth of the input. 
+In general, the depth of a filter (more specifically, the number of channels in a rank-3 filter: see section \extref{sect_tensors}) matches the depth of the input volume. That way the filter can capture information from across all the channels. (This is not always shown in figures and can be quite confusing). Thus they only ``stride'' or move along the height and width dimension.\footnote{This is not a necessary feature (filters with fewer channels than the input are possible and sometimes even useful), but it is pretty standard.} Figure \ref{filterDepth} makes the point with a variety of tensors. In each case, the receptive field of a filter at one stage of a convolution is shown ``inside'' the input volume, and as can be seen in each case, it spans the whole depth of the input.
 % Pierre you mentioned applications with "sculptures" here
 
 \begin{figure}
@@ -119,7 +119,7 @@ In the example shown in figure \ref{filterToVolume} the input width is $6$, the 
 
 % More on representational width. Link to transformers and multi-head attention
 
-In general, a convolutional layer will involve multiple filters, a \glossary{filter bank}, each of which produces a separate feature map.\footnote{It is helpful to think of a bank of distinct filters, each of which learns a different way of processing the input, but in practice filter banks are stored as rank-4 tensors. For example, in PyTorch, a bank of 96 filters each with shape $3 \times 11 \times 11$ would be stored as a single tensor with shape $(96, 3, 11, 11)$, where the dimensions represent (number of filters, input channels, height, width).} Figure \ref{filterBank} illustrates the idea. Each filter produces its own output, and the results are concatenated into a new output volume. That is, we just repeat the process discussed in figure \ref{filterToVolume} but do it separately for each filter. In this example, we get a bunch of matrix outputs and concatenate them into one output volume. That is why we said at the end of the last section that the depth of an output volume just corresponds to the number of filters we use. 
+In general, a convolutional layer will involve multiple filters, a \glossary{filter bank}, each of which produces a separate feature map.\footnote{It is helpful to think of a bank of distinct filters, each of which learns a different way of processing the input, but in practice filter banks are stored as rank-4 tensors. For example, in PyTorch, a bank of 96 filters each with shape $3 \times 11 \times 11$ would be stored as a single tensor with shape $(96, 3, 11, 11)$, where the dimensions represent (number of filters, input channels, height, width).} Figure \ref{filterBank} illustrates the idea. Each filter produces its own output, and the results are concatenated into a new output volume. That is, we just repeat the process discussed in figure \ref{filterToVolume} but do it separately for each filter. In this example, we get a bunch of matrix outputs and concatenate them into one output volume. That is why we said at the end of the last section that the depth of an output volume just corresponds to the number of filters we use.
 
 \begin{figure}
 \centering
@@ -166,10 +166,10 @@ The representations are not programmed in but are learned via gradient descent. 
 
 Now we stack these things on top of each other, add a new kind of layer, and also use some old-school neural network components. A deep network assembles these various pieces together.
 
-The idea here is to combine representational width with \glossary{representational depth}. 
-Recall from the history chapter that the concept of layered feature detection goes back to Oliver Selfridge and his ``pandemonium'' model, according to which seeing letters involves a hierarchy of ``demons'' passing messages along: from edge demons to curve demons and finally to the output layer's ``B demon'' (see figure \extref{selfridge} in chapter \extref{ch_history}). This allows the network to learn to identify not just simple features like edges or curves, but also \emph{features of features}, like combinations of curves which make more complex shapes, and then combinations of these shapes. Deep networks build on this old idea, allowing us to train many-layered networks which develop highly sophisticated feature detectors.\footnote{They also allow these features to be visualized. The results can be quite strange and even disturbing. See \url{https://distill.pub/2017/feature-visualization/} for some striking demonstrations.}  
+The idea here is to combine representational width with \glossary{representational depth}.
+Recall from the history chapter that the concept of layered feature detection goes back to Oliver Selfridge and his ``pandemonium'' model, according to which seeing letters involves a hierarchy of ``demons'' passing messages along: from edge demons to curve demons and finally to the output layer's ``B demon'' (see figure \extref{selfridge} in chapter \extref{ch_history}). This allows the network to learn to identify not just simple features like edges or curves, but also \emph{features of features}, like combinations of curves which make more complex shapes, and then combinations of these shapes. Deep networks build on this old idea, allowing us to train many-layered networks which develop highly sophisticated feature detectors.\footnote{They also allow these features to be visualized. The results can be quite strange and even disturbing. See \url{https://distill.pub/2017/feature-visualization/} for some striking demonstrations.}
 
-There are several kinds of volume-to-volume layer in a convolutional network. One is a filter bank, as discussed above. The other is a \glossary{pooling layer}, which reduces the amount of information passing through the network without altering its basic structure (more on this shortly). Finally, we can \glossary{flatten} a layer, which takes us from the convolutional layers back to a traditional feed-forward  node and weight layers. Flattening a layer involves taking all the values in a tensor and simply arranging them into a single vector. A flattened 3x3 matrix, for example, would be a vector with 9 components. See figure \ref{deepNetExample}. 
+There are several kinds of volume-to-volume layer in a convolutional network. One is a filter bank, as discussed above. The other is a \glossary{pooling layer}, which reduces the amount of information passing through the network without altering its basic structure (more on this shortly). Finally, we can \glossary{flatten} a layer, which takes us from the convolutional layers back to a traditional feed-forward  node and weight layers. Flattening a layer involves taking all the values in a tensor and simply arranging them into a single vector. A flattened 3x3 matrix, for example, would be a vector with 9 components. See figure \ref{deepNetExample}.
 
 % From Yamins, 2016: "Deep networks through stacking. Since convolutional layer outputs have the same spatial layout as their inputs, output of one layer can be input to another. HCNNs can thus be stacked into deep networks (Fig. 1c). Although the local fields seen by units in a single layer have a fixed, small size, the effective receptive field size relative to the original input increases with succeeding layers. Because of repeated striding, deep HCNNs typically become less retinotopic with each succeeding layer, consistent with empirical observations4."
 
@@ -229,10 +229,10 @@ So the output shape is $16 \times 30 \times 30$. An example of the max pooling o
 
 \subsection{Flattening and Dense Layers}
 
-Another thing we can do, usually in the final layers of a deep CNN, is to ``flatten'' a volume back into a vector. If we have a 5x5 matrix, for example, we can flatten it into an activation vector for a node layer with 25 nodes. If we have a 4x5x10 volume, this becomes the activation vector for a node layer with 200 nodes.  Note that the shape of the flattened vector is just the product of the shape values for the larger tensor.  
+Another thing we can do, usually in the final layers of a deep CNN, is to ``flatten'' a volume back into a vector. If we have a 5x5 matrix, for example, we can flatten it into an activation vector for a node layer with 25 nodes. If we have a 4x5x10 volume, this becomes the activation vector for a node layer with 200 nodes.  Note that the shape of the flattened vector is just the product of the shape values for the larger tensor.
 
 In this way, we can convert whatever high-rank tensor we have into a vector, and thereby get back into the world of  traditional neural networks focused on in much of the book.  Then we just do things as we've done before.  We can ``couple'' our complex convolutional layers into a standard feed-forward network.  In this context, weight layers are sometimes called ``fully-connected'' or ``dense'' weight layers to contrast them with convolutional weight layers.
-	
+
 The overall idea is to start with layers that learn these complex features, then to compress these representations with subsampling, and finally to present the results to the final layers, which are the kinds of standard feedforward networks discussed in earlier chapters (for example, chapter \extref{ch_supervised}).
 
 \begin{figure}[h]
@@ -244,7 +244,7 @@ The overall idea is to start with layers that learn these complex features, then
 
 \section{Applications of Convolutional Networks}\label{cnn_applications}
 
-Convolutional neural networks have applications in both engineering and cognitive science (recall the taxonomy of chapter \extref{ch_applications}). 
+Convolutional neural networks have applications in both engineering and cognitive science (recall the taxonomy of chapter \extref{ch_applications}).
 
 In terms of engineering, CNNs have been associated with dramatic improvements in image recognition, speech recognition, language translation, and many other areas \cite{lecun2015deep, goodfellow2016deep}. Historically, CNNs originate in computational neuroscience models of vision that were developed in the 1970s and 1980s \cite{fukushima1982neocognitron}. These ideas were later used to engineer pattern recognition networks. A famous early application was recognizing zip codes written on envelopes \cite{lecun1989backpropagation}. As convolutional networks became mainstream based on technical improvements (big data, GPU and hardware acceleration, better architectures and training algorithms; see section \extref{deep_revolution}), they have become powerful tools in both applied and scientific contexts.
 
@@ -255,7 +255,7 @@ A particularly significant application of CNNs in cognitive science is illustrat
 % CORNet is standardly used. Biggest applications involve comparisons to visual cortex. Compare to monkeys paper. https://github.com/dicarlolab/CORnet
 
 These connections between CNNs and the visual system demonstrate that neural networks trained by gradient descent can develop representations similar to those in the brain, even when the training algorithm itself may not be neurally realistic. The significance of these networks for psychology and neuroscience continues to grow, with promising early results \cite{zorzi2013modeling, ritter2017cognitive}.
-% Work more on interpreting what is happening in that distll article, and add some material here, including pictures of the weird features. Then add some colab demos to the course.
+% Work more on interpreting what is happening in that distill article, and add some material here, including pictures of the weird features. Then add some colab demos to the course.
 
 \section{Exercises}
 
@@ -273,7 +273,7 @@ These exercises will help you practice computing output shapes and values for co
 
 \stepcounter{CNNCounter}
 \noindent
-{\bf \theCNNCounter}. Apply the horizontal edge detector filter $\begin{pmatrix} 1 & 1 \\ 0 & 0 \end{pmatrix}$ to the binary input matrix $\begin{pmatrix} 1 & 1 & 1 & 1 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 2 & 2 & 2 \\ 0 & 0 & 0 \end{pmatrix}$. 
+{\bf \theCNNCounter}. Apply the horizontal edge detector filter $\begin{pmatrix} 1 & 1 \\ 0 & 0 \end{pmatrix}$ to the binary input matrix $\begin{pmatrix} 1 & 1 & 1 & 1 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 2 & 2 & 2 \\ 0 & 0 & 0 \end{pmatrix}$.
 
 \bigskip
 
@@ -287,7 +287,7 @@ These exercises will help you practice computing output shapes and values for co
 
 \stepcounter{CNNCounter}
 \noindent
-{\bf \theCNNCounter}. Apply the corner/L-shape detector filter $\begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}$ to the binary input matrix $\begin{pmatrix} 1 & 0 & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 3 & 1 \\ 1 & 1 \end{pmatrix}$. 
+{\bf \theCNNCounter}. Apply the corner/L-shape detector filter $\begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}$ to the binary input matrix $\begin{pmatrix} 1 & 0 & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$ with stride 1. What is the output matrix? {\bf Answer:} $\begin{pmatrix} 3 & 1 \\ 1 & 1 \end{pmatrix}$.
 
 \bigskip
 

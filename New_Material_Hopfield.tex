@@ -26,13 +26,13 @@ relation can be concisely expressed as:
 \end{array}\right.
 \end{equation}
 The threshold $U_n$ is often set to $0$ for all of the nodes.  So $y_n(t+1)$ is 
-$0$ if $x(t)$ is not positive and it $1$ if $x(t)$ is positive.  
+$0$ if $x(t)$ is not positive and it is $1$ if $x(t)$ is positive.
 
    The output of each neuron is an input for every neuron aside from itself.
 The inputs are a linear combination of the state vector $(y_1, y_2, \ldots,
 y_N)^T$ plus an input vector from the external environment.  The contribution
 from each neuron is given by the weight matrix for the network.  The weight
-matrix is is obtained as follows.
+matrix is obtained as follows.
 
    Some of the vertices of an $N$ dimensional hypercube are chosen to be the 
 attracting fixed points for a network.  The vertex for the $n^{\mathrm{th}}$ 
@@ -86,7 +86,7 @@ and \eqref{E:hopIO}.
 
 \subsection{Types of Update}
 
-   The rules \eqref{E:hopinput} and \eqref{E:hopIO} can be apply synchronously
+   The rules \eqref{E:hopinput} and \eqref{E:hopIO} can be applied synchronously
 or asynchronously.  With synchronous update rules \eqref{E:hopinput} and 
 \eqref{E:hopIO} are successively applied to all of the neurons at the same 
 time.  For a fixed input vector this gives us a function from the state space 
@@ -693,7 +693,7 @@ state.}.
 recognize the presence of an object if the other object is absent.  If both
 objects are present then it will only recognize an object if it is already in 
 the state that corresponds to recognizing that object.  Otherwise it will
-oscillate between the states $(0,0)^T$ and $(1,1)^2$.
+oscillate between the states $(0,0)^T$ and $(1,1)^T$.
 
   Hopfield's potential function is:
 \begin{eqnarray*}
@@ -951,9 +951,9 @@ are indicated by the dots and the arrows between the dots indicate the possible
 transitions between states.  Each arrow is labeled with the probability that the
 transition will occur.  If the input vector is not $(1,1)^T$ then the system 
 eventually reaches the state that matches its input.  If the input vector is 
-$(1,1)^T$ and the system starts out in $(1,0)^T$ or $(1,0)^T$ then it will
+$(1,1)^T$ and the system starts out in $(1,0)^T$ or $(0,1)^T$ then it will
 stay in its starting state, otherwise it eventually reaches either $(1,0)^T$ or 
-$(1,0)^T$ with probability of $1/2$, and stays there.} 
+$(0,1)^T$ with probability of $1/2$, and stays there.}
 \label{F:TwoNodeHopfieldStochastic}  
 \end{figure}
 
@@ -1050,8 +1050,8 @@ Then a restricted Boltmzann machine is a trick where to make things simpler, we 
 
 They also use an energy landscape, They tend to settle into low-energy states, so that we can draw on thermodynamics analogies. There are some differences in interpretation though.
 
-But the whole thing basically acts like a stochastic version of a Hopfield network, a markov process that tends towards a few states that correspond to the fixed points of a Hopfield net.
+But the whole thing basically acts like a stochastic version of a Hopfield network, a Markov process that tends towards a few states that correspond to the fixed points of a Hopfield net.
 
 Summary of room schema.
 
-An actual use is to reccomend movies. Put in a person's set of preferred movies. Now put in a subset. The network figures out the rest. But feed-forward models can do this, and probably better, so they fell out in engineering.
+An actual use is to recommend movies. Put in a person's set of preferred movies. Now put in a subset. The network figures out the rest. But feed-forward models can do this, and probably better, so they fell out in engineering.
