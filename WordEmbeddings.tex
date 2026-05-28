@@ -3,12 +3,11 @@
 
 % TODO: Go through chapter and add glossary items
 
-This chapter elaborates on the concept of a word embedding, which was briefly discussed in section \extref{wrangling}. A word embedding associates each \glossary{token} in a set of tokens with a set of vectors (see chapter \extref{ch_linear_algebra}) in a way that captures important characteristics of the set of tokens. Tokens can include words, word-parts, and other character sequences, but we focus on words here and it is standard to call these ``word embeddings'' rather than ``token embeddings'' (in fact we will often use ``word'' interchangeably with ``token'' simply as a matter of convenience).\footnote{The concept of a ``token'' varies from one context to another. Tokens can also include punctuation, emojis, or word-parts and character sequences of various kinds. Tokens are usually extracted from a corpus using automated methods, for example byte pair encodings. See \url{https://en.wikipedia.org/wiki/Byte_pair_encoding}.} In this way words can be ``embedded'' in a vector space, in that a word is associated with lists of numbers that can in turn be processed by a neural network, and associated with points in a space. 
+This chapter elaborates on the concept of a word embedding, which was briefly discussed in section \extref{wrangling}. A word embedding associates each \glossary{token} in a set of tokens with a set of vectors (see chapter \extref{ch_linear_algebra}) in a way that captures important characteristics of the set of tokens. Tokens can include words, word-parts, and other character sequences, but we focus on words here and it is standard to call these ``word embeddings'' rather than ``token embeddings'' (in fact we will often use ``word'' interchangeably with ``token'' simply as a matter of convenience).\footnote{The concept of a ``token'' varies from one context to another. Tokens can also include punctuation, emojis, or word-parts and character sequences of various kinds. Tokens are usually extracted from a corpus using automated methods, for example byte pair encodings. See \url{https://en.wikipedia.org/wiki/Byte_pair_encoding}.} In this way words can be ``embedded'' in a vector space, in that they are associated with lists of numbers that can in turn be associated with points in a space. Word embeddings are often used as input vectors for a neural network.
 
 These techniques have a long history in linguistics and in the study of neural networks, but have become especially prominent in recent years with the advent of large language models (LLMs) like GPT (see chapter \extref{ch_transformers}). 
-%While word embeddings may seem outdated and irrelevant due to the advent of LLMs, knowledge of the principles of word embeddings are extremely helpful for understanding LLMs due to the overlap, as these more advanced models build upon these principles and incorporate related techniques.
 
-After giving some background on linguistics and natural language processing, we build up to the concept of a word embedding in stages. First we discuss document embeddings (associating whole documents with vectors of numbers), which are simpler to understand and serve as a useful basis for understanding word embeddings. Then we discuss word embeddings and their theoretical backing.  Then we discuss the kind of pre-processing and workflow often involved in actually taking a text and creating an embedding. Throughout the chapter, we mention connections between text embeddings\footnote{Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We will use ``text embedding'' as a generic way to cover both cases.} and neural networks, whether the neural networks are used to create text embeddings or used with text embeddings as the input.
+After giving some background on computational linguistics and natural language processing, we build up to the concept of a word embedding in stages. First we discuss document embeddings (associating whole documents with vectors of numbers), which are simpler to understand and serve as a useful basis for understanding word embeddings. Then we discuss word embeddings and their theoretical backing.  Then we discuss the kind of pre-processing and workflow often involved in actually taking a text and creating an embedding. Throughout the chapter, we mention connections between text embeddings\footnote{Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We will use ``text embedding'' as a generic way to cover both cases.} and neural networks, whether the neural networks are used to create text embeddings or used with text embeddings as the input.
 % Finally we give a brief summary of ways neural networks are used to process linguistic data that has been numerically coded with a text embedding.\footnote{Formally a word embedding is a function from a set of tokens to a set of vectors, and a document embedding is a function from a set of documents to a set of vectors.  We will use ``text embedding'' as a generic way to cover both cases.}
 Additionally, given the emphasis on converting words and other linguistic entities to vectors, this chapter overall also sheds further light on the concept of feature engineering (section \extref{wrangling}) and ``wrangling'' data so it can be used in neural networks. 
 
@@ -27,7 +26,7 @@ Linguistics is the study of language, which can be organized in terms of scale, 
 
 All of these levels have been studied using computational linguistics, and most of them have been studied in relation to neural networks. In some cases, features at these levels are used to generate vector representations of linguistic data (for example, word embeddings, the focus of this chapter). In other cases, neural networks have been used to analyze structures at these levels. Here is some more information on each level and their relevance to neural networks.
 
-For spoken languages, the smallest unit would be the individual speech sounds that are used to create words. These are known as phonemes, such as the [b] in /bat/ or [p] in /pat/ and are often represented using specialized symbols of the International Phonetic Alphabet (IPA\footnote{See \url{https://en.wikipedia.org/wiki/International_Phonetic_Alphabet}}). For applications such as speech recognition or text-to-speech, researchers may need to generate representations of these sounds in vector form. A simple way of doing this is to manually identify phonological features of phonemes and use them as a binary feature vector, as in figure \ref{elmanWordEmbeddings}, which is based on Elman's early work \cite{elman1990finding}. NETtalk, an early neural network model that learned to pronounce English text, used a 26-dimensional speech-code vector to encode phonemes, with 21 articulatory-feature units and five stress or syllable-boundary units \cite{sejnowski1987parallel}; see chapter \extref{ch_representations} for more on NETtalk.\footnote{In Simbrain, see \texttt{Simulations > Language > NETtalk} to see this kind of feature-vector output used with a speech synthesizer. See \url{https://docs.simbrain.net/docs/worlds/speechsynthesizer.html}.} Phonemes can also be associated with vectors using spectrograms. A spectrogram is a plot that shows time on the x-axis, frequency on the y-axis, and uses color to indicate the intensity or amplitude at a given frequency. Converting this data into vector representation can capture the frequency content of phonemes.
+For spoken languages, the smallest unit would be the individual speech sounds that are used to create words. These are known as phonemes, such as the [b] in /bat/ or [p] in /pat/ and are often represented using specialized symbols of the International Phonetic Alphabet (IPA\footnote{See \url{https://en.wikipedia.org/wiki/International_Phonetic_Alphabet}}). For applications such as speech recognition or text-to-speech, researchers may need to generate representations of these sounds in vector form. A simple way of doing this is to manually identify phonological features of phonemes and use them as a binary feature vector, as in figure \ref{elmanWordEmbeddings}, which is based on Elman's early work \cite{elman1990finding}. NETtalk, an early neural network model that learned to pronounce English text, used a 26-dimensional speech-code vector to encode phonemes, with 21 articulatory-feature units and five stress or syllable-boundary units \cite{sejnowski1987parallel}; see chapter \extref{ch_representations} for more on NETtalk.\footnote{In Simbrain, see \texttt{Simulations > Language > NETtalk} to see this kind of feature-vector output used with a speech synthesizer. See \url{https://docs.simbrain.net/docs/worlds/speechsynthesizer.html}.} Neural networks can also use more directly acoustic representations. A spectrogram is a plot that shows time on the x-axis, frequency on the y-axis, and uses color or brightness to indicate the intensity or amplitude at a given frequency. A spectrogram-like display can be flattened into a vector, or treated as a two-dimensional input pattern, so that the network receives information about how frequency content changes over time rather than just a single hand-coded description of a phoneme.\footnote{For background on these types of feature encodings in neural networks, with images of spectrogram-like speech inputs, see the classic discussion of the TRACE model in \cite{mcclelland1986interactive}. A PDF is available at \url{https://stanford.edu/~jlmcc/papers/PDP/Volume\%202/Chap15_PDP86.pdf}.}
 
 \begin{figure}[h]
 \centering
@@ -178,24 +177,25 @@ Another approach (usually applied in addition to removing stopwords) is to norma
 
 % A gram is a sequence of words (as in n-gram). A “skip-gram” allows you to skip over intermediate words so you can pair a target word with other words that are nearby in the sentence, not just immediately adjacent.
 
-Another approach to creating word embeddings is to use neural networks. A well-known example is Word2Vec \cite{mikolov2013distributed}, which trains a three-layer feed-forward neural network to predict the context for a word.\footnote{A code-based walk through of the algorithm is here: \url{https://www.tensorflow.org/tutorials/word2vec}. Predicting the surrounding context for a word (``skip-gram'') is just one flavor of word2vec. Some versions also predict words from context (``continuous bag of words''). } The input and output layers of this network have one node for each word in a vocabulary. The idea is to train a network to associate words with sets of words that tend to occur around them. For example, if we were drawing data from a book that said ``Students like going to UC Merced, it's a nice university'', we might train the network to associate ``Merced'' with its context words ``UC'', ``university'', and ``nice''.  In the actual training process, each of these associations is trained separately:
-\begin{itemize}
-\item ``Merced'' $\longrightarrow$ ``UC''
-\item ``Merced'' $\longrightarrow$ ``it's''
-\item ``Merced'' $\longrightarrow$ ``to''
-\end{itemize}
+Another approach to creating word embeddings is to use neural networks. A well-known example is Word2Vec \cite{mikolov2013distributed}, which trains a small neural network to predict words from their linguistic context, and context from words.\footnote{A code-based walk through of the algorithm is here: \url{https://www.tensorflow.org/tutorials/word2vec}. Predicting the surrounding context for a word (``skip-gram'') is just one flavor of word2vec. Some versions also predict words from context (``continuous bag of words''). In a skip-gram version, the input and output layers have one node for each word in the vocabulary. The network is trained on target-context pairs, such as ``Merced'' $\longrightarrow$ ``UC'', ``Merced'' $\longrightarrow$ ``it's'', and ``Merced'' $\longrightarrow$ ``to''. This trains a network to produce associations between a one-hot representation of a word and a probability distribution over context words, usually using a softmax output layer. The hidden layer has far fewer dimensions than the input and output layers, so it compresses information about the task of associating words with their contexts. The number of hidden-layer nodes corresponds to the embedding dimension Word2Vec produces; historically this is often around 300 dimensions, though other sizes are possible.} The basic idea is to associate each word with the words that tend to occur around it. For example, if we were drawing data from a book that said ``Students like going to UC Merced, it's a nice university'', we might train the network to associate ``Merced'' with nearby context words like ``UC'', ``university'', and ``nice''. In the process of training this network, it develops a useful word embedding at its hidden layer. Here is what a function call to Word2Vec model might look like:
 
-This trains a network to produce associations between a one-hot representation of a word and a probability distribution over context words (a softmax activation function is used on the output to obtain probabilities). The hidden layer has far fewer dimensions than the input and output layers, so that we get a kind of compressed representation of the task of associating words with their context. After the network is trained on this task, activations in the hidden layer can be used as word embeddings The number of nodes in the hidden layer corresponds to the embedding dimension of the embedding Word2Vec produces.\footnote{The embedding dimensions are typically around 300D, but newer models might exceed 700D.}  So the network is trained to predict context, but in the process of doing so it develops a useful word embedding at its hidden layer. 
+\begin{quote}
+\verb|request:  { "word": "bank" }|\\
+\verb|response: { "vector": [0.18, -0.09, ..., 0.31] }|
+\end{quote}
 
 Other variants of this approach include FastText \cite{bojanowski2016enriching}, which utilizes sub-tokens (character n-grams that make up a word, such as `ca' and `at' for `cat') in its representations to handle words that it might not have encountered during training (out-of-vocabulary terms), and GloVe \cite{pennington2014glove}, which predicts \textit{ratios} of co-occurrence probabilities from global statistical information, instead of directly predicting co-occurrence probabilities from local context as in Word2Vec. Unlike Word2Vec's local context approach, GloVe uses global co-occurrence statistics across the entire corpus to learn embeddings. 
 
-Starting around 2018, embeddings became more common in the context of transformer models such as BERT and ELMo (on transformers, see chapter \extref{ch_transformers}). These models were often trained to predict a masked word in a context (``masked language modeling''). This is in contrast to how familiar models like ChatGPT are trained (to predict next words from prior context using self-supervised learning; see  chapter \extref{ch_transformers}). As with Word2Vec, by training these models on this task, the network develops useful embeddings. 
+Starting around 2018, embeddings became more common in the context of transformer models such as BERT \cite{devlin2018bert} and ELMo (on transformers, see chapter \extref{ch_transformers}), which used the same basic architecture as a chat model like ChatGPT but are trained in a different way.\footnote{BERT and its variants are generally trained to predict a masked word in a context, for example, ``she poured the [MASK] into the mug'', rather than next word in a sequence. This is called ``masked language modeling''.} As with Word2Vec, by training these models on this task, the network develops useful embeddings.  BERT and its variants are often used to produce embeddings for words \emph{in context}. Whereas Word2Vec produces a fixed association between a word and a vector, BERT produces an embedding for a word in the context of a whole sentence. This makes it possible to distinguish different meanings of words, for example ``bank'' in the context of a river vs a financial transaction. Here's a simplified example of what a function call to this type of model might look like. Notice that in this case, the request has \emph{two} arguments: a sentence, and a target-word:
 
-BERT and its variants are still used to produce embeddings for words in context. Whereas Word2Vec produces a fixed association between a word and a vector, BERT produces an embedding for a word in the context of a whole sentence.
+\begin{quote}
+\verb|request:  { "sentence": "She sat by the river bank.", "target": "bank" }|\\
+\verb|response: { "vector": [0.12, -0.03, ..., 0.44] }|
+\end{quote}
 
-%In earlier models, like Word2Vec and GloVe, the whole point of the network was to produce the embedding that captured semantic or some type of linguistic information. But with modern transformers, the goal is to create a pre-trained model that can be adjusted to a particular task or use-case, and the embedding is just part of what gets trained overall as part of one big model. The embedding serves to enable complex functionality like chat, which relies on understanding core semantic concepts. The value of this kind of (pre-trained?) custom trained embedding is that it ends up being well-suited to whatever task (for example next word prediction) the network is trained on.\footnote{It is worth noting that while traditional Word2Vec and GloVe embeddings are still used for particular research projects, they have largely fallen out of favor relative to transformer models. Modern language models train embeddings end-to-end as part of their overall architecture, and given the fact that these models can generate contextualized word embeddings to capture context-specific word meanings, these newer transformer models have become the first step for most embedding needs.}
+If we instead sent the sentence ``She deposited cash at the bank'', the returned vector for ``bank'' would likely be different, because the model has processed the word in a different context.\footnote{See \url{https://huggingface.co/docs/transformers/model_doc/bert}. If a word is split into multiple subword tokens, one approach is to average the subtoken vectors.}
 
-% They used to _start_ with word2vec and glove, but training everything end to end ends up being better.  People were surprised by that in beginning. This is what is used and has become standard to train end to end.  \footnote{While it may be tempting to initialize an embedding with word2vec or Glove and then train it, there is a concern that doing so might push the embedding into some region of solution space that is less optimal.}
+Another approach to embeddings, that is standard with chat models, is to start with a random embedding, a random mapping from tokens to vectors, and then treat that as part of the whole network that gets trained.\footnote{Earlier models started with static word embeddings like word2vec and glove, but training everything end-to-end ends up being better. People were surprised by that in beginning. One idea of why is that starting with a pre-trained embedding might push the embedding into a nonoptimal region of solution space (Pierre Beckmann, personal communication).}
 
 \subsection{Geometric Properties of Word Embeddings}\label{geometryWordEmbeddings}
 
@@ -243,10 +243,13 @@ Corpus quality also has an impact on model performance. Larger training corpora 
 
 % If we start in-lining appendices, this can be an appendix
 
-\section{Workflow: Creating Word Embeddings}\label{createWordEmbeddings}
+\section{Sample Workflow}
 
 In practice there are many steps involved in applying these ideas. Here is a sample workflow or pipeline:
 \begin{enumerate}
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topsep}{0pt}
 \item Sentence segmentation.
 \item Word tokenization
 \item Normalization and filtering
@@ -264,6 +267,9 @@ My work is a matter of fundamental sounds, made as fully as possible. Even thoug
 For sentence segmentation, the paragraph or document is segmented into sentences. This step is particularly important when using text that has been scanned using optical character recognition (OCR), where errors might occur. Our sample document would be segmented into four sentences (given that we are segmenting just on periods):
 
 \begin{enumerate}
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topsep}{0pt}
     \item \textit{My work is a matter of fundamental sounds, made as fully as possible.}
     \item \textit{Even though they are fundamental, they bring rich aromatic hints of humor.}
     \item \textit{If people want to have headaches among the overtones, let them.}
@@ -274,6 +280,9 @@ For sentence segmentation, the paragraph or document is segmented into sentences
 
 Once the document has been segmented into sentences, a tokenizer is used to split each sentence into the comprising words. This yields a list of lists of tokens, as in
 \begin{enumerate}
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topsep}{0pt}
     \item \textit{my, work, is, a, matter, of, fundamental, sounds, made, as, fully, as, possible}
     \item \textit{even, though, they, are, fundamental, they, bring, rich, aromatic, hints, of, humor}
     \item \textit{if, people, want, to, have, headaches, among, the, overtones, let, them}
@@ -284,6 +293,9 @@ Once the document has been segmented into sentences, a tokenizer is used to spli
 
 Following tokenization, the words/tokens are generally normalized to remove capitalization or certain punctuation marks, such that the words are consistently in the same form. In this step, stopwords can be filtered out. In our case:
 \begin{enumerate}
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topsep}{0pt}
     \item \textit{work, matter, fundamental, sounds}
     \item \textit{fundamental, bring, rich, aromatic, hints, humor}
     \item \textit{people, headaches, overtones}
@@ -313,62 +325,4 @@ For a  basic word embedding algorithm, the label-context pair co-occurrences are
     \label{exampleCoocmat}
 \end{table}
 
-Once every sentence has been processed, the final co-occurrence matrix can be seen in figure \ref{coocExample}.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.4]{./images/full_cooc_matrix.png}
-    \caption[Generated using Simbrain.]{Co-occurrence matrix for the example sentences. Bidirectional window size of 2, without PPMI.}
- \label{coocExample}
-\end{figure}
-
-After processing the whole document and calculating a co-occurrence matrix, we would use PPMI to weight the vectors (recall that PPMI is used to normalize word embeddings so that common words don't drown out the representations). The result can be seen in figure \ref{ppmiExample}.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.4]{./images/weighted_cooc_matrix.png}
-    \caption[Generated using Simbrain.]{Resulting co-occurrence matrix after PPMI has been applied. Bidirectional window size of 2.}
- \label{ppmiExample}
-\end{figure}
-
-\subsection{Using a word embedding to make a document embedding}\label{wordEmbeddingMatrix}
-
-% Remove graphic example; say it in words; and point to llm chapter
-Of course word embedding can be used to generate document embeddings, simply by associating each token in a document with its vector embedding and concatenating the result. Thus we can associate a whole document with a matrix, where each row is the vector embedding for one word or token in the document. A prominent example where this idea is used is with LLMs like ChatGPT (see chapter \extref{ch_transformers}), where a context window --- a set of prompts and responses --- is converted into a matrix using a vector embedding. Let's take a small, brutish context window:  ``dog chases cat and cat chases dog!''.  First we tokenize the input, then associate each token with an index, like this (notice that the punctuation mark is a token):
-
-\begin{center}
-\begin{tabular}{c@{}c@{}c@{}c@{}c@{}c@{}c@{}c}
-   3 & 1 & 4 & 5 & 2 & 1 & 3 & \hspace{0.5cm}6 \\
-   \texttt{dog} & \texttt{\quad chases} & \texttt{\quad cat} & \texttt{\quad and} & \texttt{\quad cat} & \texttt{\quad chases} & \texttt{\quad dog} & \texttt{\quad !} \\
-\end{tabular}
-\end{center}
-
-Now we can take each integer and associate it with a row of an embedding matrix, like this (the example is shown with integer labels on rows to make the idea clear):
-\[
-\left[\begin{array}{c|ccc}
-    1 & 0.5 & 0.1 & 0.3 \\
-    2 & 0.2 & 0.4 & 0.6 \\
-    3 & 0.7 & 0.8 & 0.9 \\
-    4 & 1.0 & 1.1 & 1.2 \\
-    5 & 1.3 & 1.4 & 1.5 \\
-    6 & 0.3 & 0.1 & 1.2 \\
-\end{array}\right]
-\]
-
-If we take each token and the corresponding row for it, and stack the results vertically, we end up with a matrix representation of a set of words (that is, a document, or in an llm, a context window), like this: 
-
-\[
-\begin{bmatrix}
-    0.7 & 0.8 & 0.9 \\
-    0.5 & 0.1 & 0.3 \\
-    1.0 & 1.1 & 1.2 \\
-    1.3 & 1.4 & 1.5 \\
-    0.2 & 0.4 & 0.6 \\
-    0.5 & 0.1 & 0.3 \\
-    0.3 & 0.1 & 1.2 \\
-\end{bmatrix}
-\]
-
-So there's our vector embedding for the document, what we call a ``word embedding matrix'' or a ``token embedding matrix''. This matrix is suitable for processing in a neural network, like an LLM. 
-
-You should confirm that the token embedding matrix above makes sense, that each row corresponds to the corresponding token in the sentence ``dog chases cat and cat chases dog!''
+This process is repeated for every sentence in the document or corpus, updating the co-occurrence counts as we go. After processing the whole document and calculating a co-occurrence matrix, we use PPMI to weight the vectors (recall that PPMI is used to normalize word embeddings so that common words don't drown out the representations). The resulting rows are the word embeddings.
