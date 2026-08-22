@@ -255,8 +255,8 @@ projection method for making maps of the Earth.}
 
    We can still use the projection to get a sense of the layout of the Earth. 
 How are we able to do this?  One reason is that certain {\em topological} 
-properties of the Earth's surface--that is, properties involving 
-continuity--are preserved by the projection. For example, when we see on the 
+properties of the Earth's surface---that is, properties involving 
+continuity---are preserved by the projection. For example, when we see on the 
 map that Los Angeles and San Francisco are on the same coast, then we know we 
 can sail along the coast to get from one city to the other. San Francisco is
 closer to Merced than it is to Los Angeles, but when we see on the map that 
@@ -431,7 +431,7 @@ $\sqrt{26}$.}
 \end{figure}
 
    The upshot of this is that we can interpret the vector spaces associated 
-with neural networks--activation spaces, input spaces, weight spaces, etc.--as 
+with neural networks---activation spaces, input spaces, weight spaces, etc.---as 
 giving us a sense of how far apart relevant vectors are, and thus how similar 
 the states the vectors represent are to each other. Points nearby one another 
 in an input space correspond to similar inputs: similar smells, similar visual 
@@ -454,7 +454,7 @@ comparison to the Euclidean distance between the two sets of points.}
 \end{figure}
 
 % See the discussion of orthogonality and closeness from NeuralNets.txt. 
-When considering normalized vectors (that lie on a unit hypersphere) the dot product behaves like an inverse metric. With a Euclidean metric, vectors that are closer to each other have a smaller distance between them. With the dot product, vectors that are closer to each other--that point in a similar direction--have an \emph{larger} dot product. The dot product reaches maximum of 1 when vectors point in the same direction, and becomes increasingly negative as they point in opposite directions. The dot product for normalized vectors is between -1 and 1.
+When considering normalized vectors (that lie on a unit hypersphere) the dot product behaves like an inverse metric. With a Euclidean metric, vectors that are closer to each other have a smaller distance between them. With the dot product, vectors that are closer to each other---that point in a similar direction---have an \emph{larger} dot product. The dot product reaches maximum of 1 when vectors point in the same direction, and becomes increasingly negative as they point in opposite directions. The dot product for normalized vectors is between -1 and 1.
 %The negative cases are especially important when thinking of a weight vector as orthogonal to a decision boundary in a network with threshold units.
 
 \section{Other Vector Comparison Methods}\label{vector_comparisons}
@@ -1128,7 +1128,7 @@ Figure \ref{flowPerspective} illustrates the idea. In the left panel, a matrix i
 
 First, in the left panel we are not showing node layers at all, but are instead showing stacks of activation vectors. The purpose of this picture is to emphasize the row-processing perspective developed above. Each row of the matrix is processed separately by the weight matrices. This can be seen in the fact that the bottom two rows remain zeros, because a zero vector multiplied by a matrix is another zero vector. Also notice that the shape of the stacks of vectors changes between the two matrices ($\mathbf{UP}$ is an upward projection; $\mathbf{DOWN}$ is a downward projection), but that the number of rows stays the same.  
 
-Second, the arrow straight from the input to the output represents a \glossary{skip connection} or residual connection. This means that the input matrix is added to the output matrix during update. Addition of matrices (and other tensors, as discussed below) is defined when their shape stays the same. Notice that rather than showing the skip connection off to the side (which makes the idea of ‘skipping’ intuitive), we instead move the hidden-layer activations off to the side. This allows us to focus on the residual connection as the main processing stream of the network--what is often called the \glossary{residual stream}--and to conceptualize the MLP as something that reads from and writes back to that stream. 
+Second, the arrow straight from the input to the output represents a \glossary{skip connection} or residual connection. This means that the input matrix is added to the output matrix during update. Addition of matrices (and other tensors, as discussed below) is defined when their shape stays the same. Notice that rather than showing the skip connection off to the side (which makes the idea of ‘skipping’ intuitive), we instead move the hidden-layer activations off to the side. This allows us to focus on the residual connection as the main processing stream of the network---what is often called the \glossary{residual stream}---and to conceptualize the MLP as something that reads from and writes back to that stream. 
 
 \begin{figure}[h]
 \centering
