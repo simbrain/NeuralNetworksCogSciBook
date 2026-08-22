@@ -1,7 +1,17 @@
 \chapter{Transformer Architectures and LLMs}\label{ch_transformers}
 \chapterauthor{Jeff Yoshimi, Pierre Beckmann, David Udell, Polyphony Bruna, Tim Meyer}{.3, .25, .25, .1, .1}
 
+% Everything is context management. So it's become dynamic
+
+% Prompt processing is the initial phase where an AI model analyzes your input text. It tokenizes the prompt into smaller units, understands the context, and calculates its initial key-value representations before starting to generate an output. This stage typically occurs in large batches, allowing the model to process inputs quickly before generating new text token by token. // Also templating and prompt templates
+
+% The growing context window thing is what happens in principle, but in practice a fixed size is used and allocated in memory. The max context window size is used. Flash attention optimizes this somehow. Get clear on how this works.
+
 % Link to Simbrain demo somehow
+
+% One residual stream, or one per token. See Piere's way of saying all this with a stream per token. Also his discussion in the paper with Queloz brings out a great deal of granularity missing here.
+
+% In what sense did we "build a thing we don't understand"? Well, we can't point at a working transformer and say "this is the language circuit",  "this is the syntax circuit." We can't actually tell you down to the wiring how it accomplishes what it does. Where is San Francisco stored and how is it called up and put together with knowledge about dancing in answering a question about dance studios in SF?
 
 % Need a new image showing a context window and how it's broken up into user inputs, model responses, chain of thought, and maybe mentioning hidden tokens
 
@@ -1051,12 +1061,13 @@ caucheteux2022brains} have explored the relationship between internal
 activation patterns in LLMs as they process a text and patterns of human brain
 activity when a person reads the same text. The pattern inside the LLM as it processes or ``reads'' each token can be used to predict what activity (as measured by EEG, MEG, or fMRI) will occur in a person when they read the same tokens. It turns out that for some regions of the brain, the LLM can't predict anything, but for other regions it can. 
 
-Because this procedure can be applied across different layers of LLM and
-different brain regions, it can be used to produce  a set of prediction scores
+Because this procedure can be applied across different layers of an LLM and
+different brain regions, it can be used to produce a set of prediction scores
 indicating which parts of the model correspond best to which areas of the
 brain. These results effectively map layers of the LLM to the human brain's language
 network.
 
+% Shouldn't this be moved up?
 Transformers often outperform other computational models in predicting brain
 activity---a result echoing earlier work showing that deep CNNs predict
 activity in the visual system with higher accuracy than prior theoretical

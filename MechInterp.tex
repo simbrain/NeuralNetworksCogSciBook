@@ -1,6 +1,7 @@
 \chapter{Mechanistic Interpretability}\label{ch_mechinterp}
 \chapterauthor{David Udell, Jeff Yoshimi}{.6, .4}
 
+% On the use of linear probes to study syntax etc. "This led to the "probe wars" around 2019–2022. The modern view is that successful probing shows information is encoded in the representation, but not necessarily causally used by the network. That's one reason mechanistic interpretability became so important afterward." Should these probe wars be added as an intermediate stage?
 % A useful mechinterp explainer and glossary: https://dynalist.io/d/n2ZWtnoYHrU1s4vnFSAQ519J
 % Also: https://transformer-circuits.pub/2025/attribution-graphs/biology.html
 
@@ -270,6 +271,8 @@ illustrates the idea.
 \label{linearProbe}
 \end{figure}
 
+% see new language in pierre/ jeff paper
+% maybe add simbrain here too, since it will have no hidden layer and just be a single set of nodes (or two layers, if we re-represent the input). If we use a single set then change the sae pic so there are no hidden nodes
 We harvest activations from somewhere in a transformer, often in
 its residual stream, and then train an auxiliary classification model on those
 activations to determine feature presence or absence. For the training set of
