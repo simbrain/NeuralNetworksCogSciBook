@@ -1,4 +1,4 @@
-\chapter{Introduction}\label{ch_intro}
+\accessibleheading{H1}{\chapter}{Introduction}\label{ch_intro}
 \chapterauthor{Jeff Yoshimi}
 
 % Change most italics to glossary items
@@ -12,22 +12,22 @@ The phrase ``neural network'' has several meanings. A \glossary{biological neura
 
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.3]{./images/NeuroNet.jpg}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.3]{./images/NeuroNet.jpg}{Fluorescent microscopy image of a dense biological neural network, with green neuron cell bodies and branching processes against a red background.}}
 \hspace*{.2in}
-\raisebox{-0.5\height}{\includegraphics[scale=.5]{./images/Simple3.jpg}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.5]{./images/Simple3.jpg}{Simple artificial neural network: three source nodes with activations minus one, minus point four, and point five connect by weighted arrows to a target node with activation point two.}}
 \caption[Left: Mark Miller, Nelson Lab, Brandeis University. Licensed Under: CC BY-ND; Right: Simbrain screenshot.]{Left: A biological neural network. Right: A simple artificial neural network built in Simbrain, with three nodes connecting to another node via three weights.}
 \label{introNets}
 \end{figure}
 
 Neural networks can be made to do many fascinating things. They can, for example, drive cars, forecast weather patterns, recognize faces in images, and play the game Go at championship levels. In the early 2020s the emergence of ``generative AI'' (see section \extref{age_generative_ai}) based on neural networks revolutionized the field, and they have since become a pervasive feature of human life.\footnote{Some time in the 2010s or 2020s, it became standard to refer to neural networks as a form of ``AI'' or "Artificial Intelligence.''  From this standpoint, ``AI'' is a covering term that includes all the many forms of computer simulation that attempt to behave in an intelligent and often human-like manner.  In the earlier literature ``AI'' was used to refer to more classical, symbolic forms of artificially intelligent system, and in that era there was a kind of battle between AI and neural networks. Some of this history is covered in section \extref{cog_rev}.  The term ``AI'' is mostly avoided in this text.} (For better or worse? The debate is far from settled!) They speak language fluently, and produce realistic text, audio and video, often within seconds. Neural networks have also been used to model the brain at all of its levels, from individual neurons up to the entire brain. They have been used to model cognition in all of its forms, including memory, perception, categorization, language, and attention. In this chapter, we give a general introduction to neural networks, and survey some of these different ways they are used.
 
-\section{Structure of Neural Networks}\label{structureNets}
+\accessibleheading{H2}{\section}{Structure of Neural Networks}\label{structureNets}
 
-In figure \ref{nodesWeights} a simple neural network is shown with some of its parts labeled. In this section, we review the parts of neural networks (nodes and weights), the ways they can be structured (their topology), and the relationship between a network and its environment. In each case, bear in mind that what precisely the concepts mean depends on the type of model we are dealing with.\footnote{Neural networks can be used for engineering, modeling the brain, or modeling the mind. These different uses are discussed in chapter \ref{ch_applications}. Depending on the way a network is being used, the way its parts are interpreted differs, as we'll see.} 
+In figure \ref{nodesWeights} a simple neural network is shown with some of its parts labeled. In this section, we review the parts of neural networks (nodes and weights), the ways they can be structured (their topology), and the relationship between a network and its environment. In each case, bear in mind that what precisely the concepts mean depends on the type of model we are dealing with.\footnote{Neural networks can be used for engineering, modeling the brain, or modeling the mind. These different uses are discussed in chapter \extref{ch_applications}. Depending on the way a network is being used, the way its parts are interpreted differs, as we'll see.}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.2]{./images/labelledNet.png}
+\accessibleimage[scale=.2]{./images/labelledNet.png}{Network diagram labeling a node, a weight, weight strength, and node activation. Three lower nodes connect to one upper node; positive activations and weights are red and negative ones blue.}
 \caption[Simbrain screenshot with additional elements added by Pamela Payne.]{Nodes and their activations; weights and their strengths.}
 \label{nodesWeights}
 \end{figure}
@@ -39,7 +39,7 @@ In the figure, a circle with a number in it is an artificial neuron or \glossary
 
 The lines with filled disks at the end of them are artificial synaptic connections or \glossary[weight]{weights}. These correspond to connections between nodes, which control how activation flows through a network. The weights have a value, a \glossary{strength}. The larger the absolute value of a weight strength, the ``stronger'' it is.  2 is a stronger positive weight than 1 is, and -2 is a stronger negative weight than -1 is. Thus, to strengthen a weight is to increase its absolute value, and to weaken it is to reduce its absolute value.  Stronger weights are shown as larger disks in Simbrain. As activation flows through a network, the weights with a positive strength (the red weights in Simbrain) tend to enhance activation, and the weights with a negative strength (the blue weights) tend to reduce activation. In neuroscience terms, these correspond to excitatory and inhibitory synapses (and the neurons at the source of these synapses are called excitatory and inhibitory neurons). As you play with simulations in Simbrain and study the chapters to come, you will begin to get a feel for how different kinds of weights have different kinds of impacts on the flow of activation in a network.
 
-What weight strength represents depends on what kind of model we are dealing with (see chapter \ref{ch_applications}). In a computational neuroscience model, it would represent \glossary{synaptic efficacy}---roughly speaking the impact a pre-synaptic neuron can have on a post-synaptic neuron after the pre-synaptic neuron fires an action potential. In a connectionist or psychological model, the strength might represent an association between concepts. In a machine learning model, there might be no direct interpretation of weight strengths at all: they are mere parameters in a statistical model that does something useful, like recognize faces in images.
+What weight strength represents depends on what kind of model we are dealing with (see chapter \extref{ch_applications}). In a computational neuroscience model, it would represent \glossary{synaptic efficacy}---roughly speaking the impact a pre-synaptic neuron can have on a post-synaptic neuron after the pre-synaptic neuron fires an action potential. In a connectionist or psychological model, the strength might represent an association between concepts. In a machine learning model, there might be no direct interpretation of weight strengths at all: they are mere parameters in a statistical model that does something useful, like recognize faces in images.
 
 Node activations change in accordance with \emph{activation functions} (discussed in chapter \extref{ch_act_functions}), and weight strengths change in accordance with different types of learning algorithms discussed throughout the book. Indeed, how to train neural networks is one of the most fundamental topics in the field, and is the focus of several chapters, including chapters \extref{ch_unsupervised}, \extref{ch_supervised} and \extref{ch_lms_backprop}. 
 
@@ -62,7 +62,7 @@ We can also distinguish between the ``representational depth'' and ``representat
  
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.7]{./images/NeuralNetTypes.png}
+\accessibleimage[scale=.7]{./images/NeuralNetTypes.png}{Two neural-network topologies. Left: a feed-forward network with an input layer, hidden layer, and output layer. Right: a recurrent network with connections that form cycles.}
 \caption[Simbrain screenshots with additional elements added by Pamela Payne.]{Feed-forward network (left) and recurrent network (right). Gray arrows give a sense of how activation flows through them. The feed---forward network has 3 node layers (a representational ``depth'' of 3, which is not deep; this is not a ``deep network''), and the layers have representational ``widths'' of 5, 3, and 5. }
 \label{nn_types}
 \end{figure}
@@ -76,7 +76,7 @@ In a \glossary{recurrent network}, the nodes are interconnected in such a way th
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.45]{./images/deepNet.png}
+\accessibleimage[scale=.45]{./images/deepNet.png}{A convolutional neural-network pipeline transforms an input image of a handwritten seven through feature maps, convolution and subsampling layers, then fully connected output layers.}
 \caption[Adapted from a creative commons image by Aphex34 at \url{https://commons.wikimedia.org/wiki/File:Typical_cnn.png} ]{A deep neural network, trained to recognize images. The convolutional layers scan over the inputs they are linked to. Note that individual nodes and connections are not visible in this image.}
 \label{deep_net}
 \end{figure}
@@ -89,7 +89,7 @@ The distinction between feedforward and recurrent networks is a useful first-pas
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.7]{./images/nn_environment.png}
+\accessibleimage[scale=.7]{./images/nn_environment.png}{Diagram showing a neural network and its environment exchanging information. Numeric input patterns flow from the environment to a network; sensory objects such as cheese, a fish, and a mouse also exchange signals with a network.}
 \caption[Pamela Payne.]{The relationship between a neural network and an environment. An ``environment'' is often something as simple as a table of values (middle row). However it can also be something more complex, like a virtual world (bottom row).}
 \label{nn_environment}
 \end{figure}
@@ -97,11 +97,11 @@ The distinction between feedforward and recurrent networks is a useful first-pas
 Networks almost always exist in some kind of  \glossary{environment}, which gathers inputs for a network and receives its outputs. The environment of our brain's biological neural network is the literal environment around us. In some simulations---for example, reinforcement learning simulations---simulated environments are used for neural networks. But we can take ``environment'' in a broader sense to simply be whatever it is that produces inputs to an artificial neural network and whatever deals with the outputs. The most common environment for a neural network is a pair of tables. Training and testing datasets are discussed at length in chapter \extref{ch_data_science}. In Simbrain, we will also link neural networks to virtual environments. Figure \ref{nn_environment} shows how some of these configurations might look. Couplings between a network and an environment occur at special nodes: an \glossary{input node} is influenced by the environment, while an \glossary{output node} exerts an influence on the environment. In figure \ref{nn_types} (left), for example, the input nodes are the nodes in the input layer, and the output nodes are the nodes in the output layer.\footnote{Information on how to couple nodes to an environment in a Simbrain simulation, and thus treat them as input or output nodes, is available here: \url{https://docs.simbrain.net/docs/workspace/couplings.html}.}
 %The recurrent network on the right might also have input and output nodes (or nodes that are both at once), but this is not directly visible in that figure.
 
-\section{Computation in Neural Networks}\label{intro_comp_nn}
+\accessibleheading{H2}{\section}{Computation in Neural Networks}\label{intro_comp_nn}
 
 We've seen what the parts of a neural network are and learned some basic concepts relating to their structure. We now consider  how computation works in neural networks. We first develop a basic intuition for how they channel information, and then consider how they are trained (rather than being programmed), and contrast all this with computation in a standard computer.
 
-\subsection{Performance vs. Learning}\label{performanceLearning}
+\accessibleheading{H3}{\subsection}{Performance vs. Learning}\label{performanceLearning}
 
 % Forward reference to in-context learning as another approach
 % See Smolensky distinction between activation evolution equation and connection evolution equation. Footnote. Use that in DST too and refer back.  
@@ -113,7 +113,7 @@ To understand how performance works, we consider a network that has already been
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/2NodeSimpleFF.png}
+\accessibleimage[scale=.5]{./images/2NodeSimpleFF.png}{Three-node feed-forward network. Two lower nodes with activations five and three connect to an upper node with activation two; the left connection has weight one and the right connection has weight minus one.}
 \caption[Simbrain screenshot.]{A simple feed-forward network with clamped inputs, which can be used to develop an intuition for how performance and learning work. The nodes are linear nodes that take a weighted sum of inputs. The weight strengths are $1$ and $-1$, so the output is $5 \times 1 + 3 \times -1 = 5 - 3 = 2$. By adjusting the inputs up and down, we can make the output activation be whatever we want within the upper and lower bounds of a node (performance). Or, for a fixed pattern of input, we can make the output be whatever we want it by changing the weights (learning).}
 \label{2NodeSimpleFF}
 \end{figure}
@@ -129,13 +129,13 @@ We now consider \glossary{learning}, where a network's weights and other paramet
 \end{enumerate}
 The two weights are like two knobs that we can turn up or down, that we can use to \emph{tune} the network's response to a set of inputs. Suppose we want the output to be some other value besides $2$, like $7$, but we do \emph{not} want to change the inputs. We want the current inputs to produce a $7$ rather than $2$. To do this, we could strengthen the positive weight so that it makes the output larger. In particular, we could increase it to be $2$, so that we get $(5 \times 2) + (3 \times -1) = 10 - 3 = 7$. Or what if we wanted to get an output of $1$? In that case, we could leave the positive weight at $2$ and strengthen the negative weight from $-1$ to $-2$, so that the output is now $(5 \times 2) + (3 \times -3) = 10 - 9 = 1$.\footnote{In the first case, we could also weaken the negative weight so that it inhibits the output less. In the second case, we could also weaken the positive weight so it excites the output less.} With these two knobs we can get the network to do pretty much whatever we want. Most of the theory of neural networks is about automatically tuning the weights and other parameters of a network---often many thousands, millions, or more---to get them to channel information in a useful way.
 
-\subsection{Errors and generalization}\label{evaluatingNN}
+\accessibleheading{H3}{\subsection}{Errors and generalization}\label{evaluatingNN}
 
 It is common to want a network to do something. We are training them, and we have some idea in mind of what we want them to do (this is particularly the case with \glossary{supervised learning}; see chapter \extref{ch_supervised}). Thus we need some way to \emph{evaluate} them. This is usually done by comparing a network's actual output with some desired or target output. The difference between actual and desired output is often described as a form of \glossary{error}. The intuitive idea with error is illustrated in figure \ref{intuitiveError}. There is no error when actual output is the same as desired output. There is low error when the values are very close. And there is a lot of error when actual and desired output are completely different. In Simbrain, this can be seen by comparing how similar the color patterns are between the actual and desired outputs. There are various ways to make this numerically precise. We can take the average difference of the activations, the average squared difference, or do more complicated things. These ideas are discussed further in chapter \extref{ch_supervised}, but it is helpful to have some initial understanding of this idea. 
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.3]{./images/ErrorIntuitive.png}
+\accessibleimage[scale=.3]{./images/ErrorIntuitive.png}{Three rows compare target and actual outputs for red, white, and blue nodes. Matching outputs show no error; closer mismatches show low error; strongly different outputs show high error.}
 \caption[Jeff Yoshimi.]{Intuitively, error in a neural network corresponds to how close the activations of a set of nodes are to some desired target values. In Simbrain, we can compare how close the actual pattern of colors across a set of nodes is to some desired pattern. This idea will be made systematic in later chapters.}
 \label{intuitiveError}
 \end{figure}
@@ -144,12 +144,12 @@ The way a neural network is usually trained is by using mathematical techniques 
 
 These high-level errors arise from the fact the neural networks use \glossary{generalization}, where information in the training data is extended to new cases the network has not ``seen'' before. Generalizing is usually helpful. It's what makes us so good at recognizing new faces, new voices, and new images, just based on seeing a few.  For example, even if I only hear someone say a few things, I can usually recognize their voice again later when they say new things I've never heard before. If we show a neural network a few hand-written letters, it can often generalize to recognize new letters it has never seen before.  But generalization can also lead to errors, where a neural network makes an assumption based on the data it was trained on, but where that assumption fails to apply to new data that it was not trained on. A book or reference a neural network hallucinates will \emph{sound} like the kind of thing someone would write or publish in some context, but does not exist. These problems exist for humans too. Various forms of cognitive bias and stereotype are examples are based on generalization errors, such as making an assumption about how everyone in Merced is based on just having met 2 or 3 people from the area.
 
-\subsection{Example: The Three Object Detector}
+\accessibleheading{H3}{\subsection}{Example: The Three Object Detector}
 
 An example that illustrates these ideas is the ``three-object detector'',  shown in Fig. \ref{3ObjectClassifier}.\footnote{A video about the three object detector (including information about how to load it) is available at \url{https://youtu.be/yYzUmcPaurI?t=380}. In Simbrain 3 it is a simulation file that must be opened using ``open workspace''. In simbrain 4 it is available from the simulation menu under ``backprop.''} The three-object detector has a feed-forward topology with three nodes in the input layer, seven nodes in the hidden layer, and three nodes in the output layer.\footnote{The example is not meant to model the brain directly. It is more abstract:  it classifies inputs in a  brain-\emph{like} way. It takes a pattern of inputs, and transforms those inputs through a network of connections. This is similar to the way information processing occurs in the brain. But it is not a realistic simulation of a brain circuit (as we will see, it is a ``connectionist network'' as opposed to a ``computational neuroscience'' model; it is also similar to how computations are done in engineering applications).} In this example we also see how a network can be linked to a virtual environment. The mouse on the right of figure \ref{3ObjectClassifier} is hooked up to this network. When the mouse is moved around, the activation in the input nodes changes. This simulates the way odor molecules impact the inner lining of the nose, causing sensory neurons to fire at different levels. So the input layer is a kind of simulated nose. 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/3Node_World.png}
+\accessibleimage[scale=.4]{./images/3Node_World.png}{Three-object detector simulation. A feed-forward network with three output nodes labeled Fish, Gouda, and Blue Cheese is connected to a world containing those objects and a mouse.}
 \caption[Simbrain screenshot.]{Simple feed-forward network that recognizes three objects.}
 \label{3ObjectClassifier}
 \end{figure}
@@ -163,7 +163,7 @@ Try running the network again. It now performs the classification task quite wel
 
 % TODO: Add Tiny Mnist in a way that parallels the example above
 
-\subsection{Neural vs. Symbolic Computation}\label{classicalAIComparison}
+\accessibleheading{H3}{\subsection}{Neural vs. Symbolic Computation}\label{classicalAIComparison}
 
 In the history of cognitive science, one of the earliest debates was between those who thought human information processing was more like what occurs in a classical digital computer---that is, rule-governed manipulation of symbols---and those who thought it was more like what happens in the brain, where patterns of activation are transformed as they propagate through networks of synaptic connections (see section \extref{cog_rev}).\footnote{Of course, neural network simulations are usually run on a traditional computer performing classical computations. But that is a convenient way of implementing the formal structure of a neural network. These implementations can still take advantage of all the special properties of neural networks. Moreover, it is in fact possible to implement neural networks directly on hardware.} We won't go into the details of this debate here, but we will highlight a few prominent differences between the way a digital computer processes information and the way neural networks do, because they help to see what is distinctive about neural networks.
 
@@ -195,7 +195,7 @@ Fourth, neural networks are well-suited to using \glossary[distributed represent
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.3]{./images/Local_Rep.png}
+\accessibleimage[scale=.3]{./images/Local_Rep.png}{Simbrain screenshot illustrating a local representation: only Center 5 is active in a five-node network while the world panel shows the corresponding cheese object.}
 \caption{Localist representation}
 \label{localist}
 \end{figure}
@@ -204,7 +204,7 @@ In contrast, we can say that an object has a distributed representation in a neu
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.3]{./images/Distributed_Rep.png}
+\accessibleimage[scale=.3]{./images/Distributed_Rep.png}{Simbrain screenshot illustrating a distributed representation: several of five nodes have different activation levels while the world panel shows a bottle of poison.}
 \caption{Distributed representation}
 \label{distributed}
 \end{figure}

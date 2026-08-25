@@ -5,6 +5,13 @@
 % or to create a file to compile a single chapter
 %
 
+% Accessibility work in progress: enable tagged PDF output before loading the
+% class. The full book may expose unsupported legacy content while remediation
+% proceeds chapter by chapter; see ACCESSIBILITY.md.
+\DocumentMetadata{
+  lang=en-US,
+  testphase=phase-II
+}
 \documentclass[oneside]{book}
 \usepackage[pdftex]{graphicx}
 \usepackage{setspace,amssymb,amsmath,epstopdf,natbib,amsthm}
@@ -15,6 +22,14 @@
 \usepackage[hidelinks]{hyperref}  % Likes to be the last class loaded
 \hypersetup{bookmarksdepth=2}
 \externaldocument[A-]{NeuralNetworksCogsci}
+
+% Use this for informative raster figures. Decorative images should be marked
+% as artifacts instead; see ACCESSIBILITY.md.
+\newcommand{\accessibleimage}[3][]{%
+  \tagstructbegin{tag=Figure,alt={#3}}%
+  \includegraphics[#1]{#2}%
+  \tagstructend
+}
 
 \def\ie{{\it i.e. }}
 \def\eg{{\it e.g. }}

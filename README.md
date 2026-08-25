@@ -15,6 +15,9 @@ Calendar based versioning is used in the format `year.version`.
 
 This folder contains a master document (`NeuralNetworksCogsci.tex`) that compiles every chapter. The master document is a container document with all of the chapters.
 
+PDF accessibility conventions and the current tagged-PDF pilot are documented
+in [ACCESSIBILITY.md](ACCESSIBILITY.md).
+
 You can make your own container document that contain only the chapters of interest to you. When doing so:
 
 - Be sure to copy your container document directly from the master document. The custom commands at the top of the master document are required in all container documents.

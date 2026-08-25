@@ -1,5 +1,14 @@
 python := env_var_or_default("PYTHON", "python3")
 
+# Show the two usual build paths.
+default:
+    @echo "Container document (for example Book_124): just build Book_124.tex"
+    @echo "Master book: just build NeuralNetworksCogsci.tex"
+
+# Compile a document without changing its container setup.
+build document:
+    latexmk -pdf -interaction=nonstopmode -halt-on-error {{document}}
+
 # Prepare and compile a custom container document with CustomGlossary.tex.
 prep document:
     {{python}} scripts/prepare_container_document.py {{document}} --use-custom-glossary
