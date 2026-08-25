@@ -1,6 +1,7 @@
 # Script to create a custom glossary for a container document.
 # 
-# Usage: python create_custom_glossary.py <ContainerDocument>.tex
+# Usage: python3 scripts/create_custom_glossary.py <ContainerDocument>.tex
+#        python3 scripts/create_custom_glossary.py --check <ContainerDocument>.tex
 #
 # Structure:
 # - Find all \glossary instances in all chapters of the specified container document
@@ -15,8 +16,9 @@
 # - Comments are ignored both in glossary and in chapters of the container doc 
 # 
 # TODO: Add colon after each entry but without the space \item adds.
-import sys
+import argparse
 import re
+import sys
 
 MAIN_GLOSSARY_FILE = "Glossary.tex"
 
@@ -50,9 +52,10 @@ def find_glossary_items(files):
                 items.add(key or display_text)
     return sorted(item.lower() for item in items)
 
-def create_custom_glossary(ch_glossary_items, glossary_text):
+def glossary_entries(ch_glossary_items, glossary_text):
     added_entries = set()
     custom_glossary_entries = []
+    missing_items = []
     
     for item in ch_glossary_items:
 
@@ -69,10 +72,13 @@ def create_custom_glossary(ch_glossary_items, glossary_text):
                         custom_glossary_entries.append(line)
                         added_entries.add(line)
         else:
-            print(f"Need a glossary entry for: {item}")
+            missing_items.append(item)
     
     custom_glossary_entries.sort()
     
+    return custom_glossary_entries, missing_items
+
+def write_custom_glossary(custom_glossary_entries):
     with open("CustomGlossary.tex", "w") as custom_glossary:
         custom_glossary.write("\\chapter*{Glossary}\n\\begin{description}\n")
         for entry in custom_glossary_entries:
@@ -80,11 +86,18 @@ def create_custom_glossary(ch_glossary_items, glossary_text):
         custom_glossary.write("\\end{description}")
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python create_custom_glossary.py <ContainerDocument>.tex")
-        sys.exit(1)
-    
-    container_document = sys.argv[1]
+    parser = argparse.ArgumentParser(
+        description="Create or validate a custom glossary for a container document."
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="validate glossary references without writing CustomGlossary.tex",
+    )
+    parser.add_argument("container_document", help="the container .tex document")
+    args = parser.parse_args()
+
+    container_document = args.container_document
     chapters = find_chapters(container_document)
 
     # Finds glossary items in this container doc
@@ -94,8 +107,23 @@ def main():
     # Finds all glossary items in the main glossary file
     glossary_text = read_file(MAIN_GLOSSARY_FILE)
 
-    # Create the custom glossary as the intersection of these
-    create_custom_glossary(ch_glossary_items, glossary_text)
+    custom_glossary_entries, missing_items = glossary_entries(
+        ch_glossary_items, glossary_text
+    )
+
+    for item in missing_items:
+        print(f"Need a glossary entry for: {item}")
+
+    if args.check:
+        if missing_items:
+            return 1
+        print("Glossary check passed.")
+        return 0
+
+    write_custom_glossary(custom_glossary_entries)
+    if missing_items:
+        return 1
+    return 0
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

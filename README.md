@@ -23,13 +23,24 @@ You can make your own container document that contain only the chapters of inter
 
 - Set author attribution for your container document using: 
 ```
-python create_authorship_order.py <container document>.tex
+python3 scripts/create_authorship_order.py <container document>.tex
 ```
 The author order will automatically be set in the container document.
 
+- To prepare and compile a custom container document, use the single command:
+```
+just prep <container document>.tex
+```
+  This updates author attribution, verifies glossary coverage, generates
+  `CustomGlossary.tex`, changes the container document to include it, and
+  writes the corresponding PDF.
+  The recipes use `python3` by default. If a system uses another Python 3
+  command, set `PYTHON` first (for example, `PYTHON=py just prep book_103.tex`
+  on Windows).
+
 - If you wish, compile a custom glossary for the container document using: 
 ```
-python create_custom_glossary.py <container document>.tex
+python3 scripts/create_custom_glossary.py <container document>.tex
 ```
 Then include `CustomGlossary.tex` in your container document.
 

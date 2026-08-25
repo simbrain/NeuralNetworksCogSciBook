@@ -7,6 +7,9 @@
 *.lof
 *.bbl
 *.blg
+*.fdb_latexmk
+*.fls
+__pycache__/
 *.DS_Store
 Temp.tex
 Book_103.tex

@@ -3,7 +3,7 @@
 # author ordering on the basis of authors listed with the 
 # \chapterauthor command
 # 
-# Usage: python create_authorship_order.py <ContainerDocument>.tex
+# Usage: python3 scripts/create_authorship_order.py <ContainerDocument>.tex
 # 
 # Assumes chapter author lists are associated with an \authorweights command
 # If none is found then assume equal authorship amongst chapter co-authors
