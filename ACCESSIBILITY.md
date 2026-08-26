@@ -6,7 +6,9 @@ Compile `Book_124.tex` (for example, `just build Book_124.tex`) to create the
 pilot PDF. Tagged output remains experimental in this toolchain. The master is
 also configured for tagged output and may fail in later legacy chapters until
 they are remediated; every release must be checked in a PDF accessibility tool
-and with a screen reader.
+and with a screen reader. A mixed-remediation PDF may be released when it
+builds cleanly, but it must be described as partially remediated rather than
+fully accessible.
 
 ## Author and reviewer checklist
 
@@ -31,6 +33,40 @@ The Preface has one informative license logo. The Introduction has eleven
 informative raster images; initial descriptions are in `Preface.tex` and
 `Intro.tex` for editorial review. Apply the same convention chapter by chapter,
 prioritizing diagrams, tables, and mathematical material.
+
+## Baseline LaTeX audit
+
+Before broad accessibility rewrites, inventory the source and record results
+chapter by chapter. The audit should identify:
+
+- legacy and complex math, especially `eqnarray`, nested `array` environments,
+  hand-built matrices, and displays near floats or footnotes;
+- raw `\includegraphics` calls, separating informative figures from decorative
+  graphics;
+- headings, lists, tables, captions, code/listings, footnotes, and references
+  that bypass the project's semantic helpers;
+- preamble packages, package order, pdfTeX-specific assumptions, and custom
+  commands that may conflict with tagged-PDF support; and
+- tagged-build failures and warnings, PDF-checker findings, and screen-reader
+  spot-check results.
+
+Modernize source patterns rather than accumulating local tagger suppressions:
+for example, replace `eqnarray` with appropriate `amsmath` environments and
+adopt a dedicated accessible-math convention.
+
+## Temporary measures to retire
+
+- `LinearAlgebra.tex` currently disables automatic paragraph tagging after its
+  chapter heading. This avoids a TeX Live 2023 `tagpdf` crash in legacy display
+  math, but leaves that chapter without automatic paragraph tags. Remove this
+  suppression once the chapter's math structures have been remediated and
+  tagged deliberately.
+- The `testphase=phase-II` tagged-PDF configuration is experimental. Retest it
+  against a current LaTeX toolchain during the audit and replace or update it
+  when stable support is available.
+- Do not treat the absence of a compilation error as an accessibility result:
+  resolve tag-structure warnings and validate the emitted PDF before calling a
+  release fully accessible.
 
 This file is intentionally project documentation rather than `AGENTS.md`:
 accessibility requirements apply equally to authors, editors, and automated

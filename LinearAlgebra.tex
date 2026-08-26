@@ -1,6 +1,11 @@
 \chapter{Linear Algebra and Neural Networks}\label{ch_linear_algebra}
 \chapterauthor{Jeff Yoshimi, Scott Hotton}
 
+% The TeX Live 2023 experimental paragraph tagger is not compatible with the
+% chapter's legacy display-math structures. Keep its automatic paragraph
+% tagging disabled for this chapter while dedicated math remediation proceeds.
+\ifdefined\tagpdfsetup\tagpdfsetup{paratagging=false}\fi
+
 % Also see "indexing hell" comment at  http://neuralnetworksanddeeplearning.com/chap2.html
 % Identity matrix
 % NN discovers faster matrix product: https://www.nature.com/articles/s41586-022-05172-4. Oddly meta.
