@@ -14,7 +14,12 @@
 }
 \documentclass[oneside]{book}
 \usepackage[pdftex]{graphicx}
-\usepackage{setspace,amssymb,amsmath,epstopdf,natbib,amsthm}
+% natbib must be loaded with the numbers option: the bibliography style is
+% numeric (plain), and natbib's default author-year mode raises an error on
+% every clean build that -halt-on-error (used by the justfile and the release
+% workflow) turns fatal.
+\usepackage[numbers]{natbib}
+\usepackage{setspace,amssymb,amsmath,epstopdf,amsthm}
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{pifont}
 \usepackage{xr}
@@ -87,7 +92,12 @@
 \title{Neural Networks in Cognitive Science}
 % Author line below is automatically set using create_authorship_order.py
 \author{Jeff Yoshimi, Zo\"e Tosi, Scott Hotton, David Udell, Pierre Beckmann, Ellis Cain\\ Chelsea Gordon, David C. Noelle, Polyphony Bruna, Tim Meyer}
-\date{Version 2025.3}  % Year based semantic-versioning. Year.VersionNumber
+% CalVer placeholder -- do not hand-edit a version number here. The release
+% workflow (.github/workflows/release.yml) computes the next Year.N version
+% from the repository's git tags and substitutes it for CURRENT_RELEASE at
+% build time, so releases can't drift out of sync with their tags. Local
+% builds will show the literal text "Version CURRENT_RELEASE".
+\date{Version CURRENT_RELEASE}
 \maketitle
 
 \tableofcontents

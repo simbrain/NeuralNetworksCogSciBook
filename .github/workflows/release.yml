@@ -1,0 +1,116 @@
+# Release workflow: builds the master book PDF and creates a draft GitHub
+# release with the PDF attached.
+#
+# Triggered manually (Actions tab -> Release -> "Run workflow"). The version
+# is CalVer (Year.N): by default the workflow looks at existing v<year>.*
+# tags and picks the next N (first release of a new year becomes <year>.1).
+# The computed version is substituted for the CURRENT_RELEASE placeholder in
+# NeuralNetworksCogsci.tex before compiling, so no manual version bump or
+# version-bump commit is needed.
+#
+# The release is created as a DRAFT: edit the notes on the releases page and
+# click "Publish release" to finish. Publishing creates the git tag and moves
+# the "latest" pointer, so
+#   https://github.com/simbrain/NeuralNetworksCogSciBook/releases/latest/download/NeuralNetworksCogsci.pdf
+# always serves the newest published PDF (a stable URL websites can link to).
+
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version override (Year.N, e.g. 2026.2). Leave blank to auto-compute the next CalVer number from existing tags."
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history and tags: needed to compute the next version and to
+          # generate release notes against the previous tag.
+          fetch-depth: 0
+
+      - name: Compute version
+        id: version
+        env:
+          VERSION_OVERRIDE: ${{ inputs.version }}
+        run: |
+          if [ -n "$VERSION_OVERRIDE" ]; then
+            VERSION="$VERSION_OVERRIDE"
+          else
+            YEAR=$(date -u +%Y)
+            LAST=$(git tag -l "v${YEAR}.*" | sed "s/^v${YEAR}\.//" | sort -n | tail -1)
+            VERSION="${YEAR}.$(( ${LAST:-0} + 1 ))"
+          fi
+          if ! echo "$VERSION" | grep -Eq '^[0-9]{4}\.[0-9]+$'; then
+            echo "Version '$VERSION' is not Year.N CalVer" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Releasing version $VERSION"
+
+      - name: Fail if release already exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            echo "A release for $TAG already exists (possibly an unpublished draft)." >&2
+            echo "Publish or delete it, or re-run with an explicit version input." >&2
+            exit 1
+          fi
+
+      - name: Stamp version into master document
+        run: |
+          grep -q '{Version CURRENT_RELEASE}' NeuralNetworksCogsci.tex
+          sed -i "s/{Version CURRENT_RELEASE}/{Version ${{ steps.version.outputs.version }}}/" NeuralNetworksCogsci.tex
+
+      - name: Build PDF
+        # Keep the latexmk invocation in sync with the `build` recipe in the
+        # justfile. The image is pinned to the frozen TeX Live 2025 release:
+        # the experimental \DocumentMetadata testphase=phase-II tagged-PDF
+        # setup breaks under TeX Live 2026's expanded math tagging (tagpdf
+        # "no open structure" errors in equation-heavy chapters). Bump the pin
+        # only after retesting the tagging pilot per ACCESSIBILITY.md.
+        #
+        # The extra_mem/pool/strings environment variables raise pdfTeX's
+        # memory limits (kpathsea reads them at runtime): the tagged-PDF
+        # parent tree for the full book overflows the default 5M-word arena.
+        run: |
+          docker run --rm -v "$PWD":/work -w /work \
+            -e extra_mem_top=50000000 \
+            -e extra_mem_bot=50000000 \
+            -e pool_size=20000000 \
+            -e max_strings=1000000 \
+            -e hash_extra=1000000 \
+            -e save_size=200000 \
+            texlive/texlive:TL2025-historic \
+            latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' NeuralNetworksCogsci.tex
+
+      - name: Upload PDF as workflow artifact
+        # Backup copy attached to the workflow run itself, useful if the
+        # draft release is discarded.
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeuralNetworksCogsci-${{ steps.version.outputs.version }}
+          path: NeuralNetworksCogsci.pdf
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ steps.version.outputs.version }}" NeuralNetworksCogsci.pdf \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Version ${{ steps.version.outputs.version }}" \
+            --generate-notes \
+            --latest \
+            --draft
+          echo "Draft release created. Edit the notes and publish it on the releases page."
