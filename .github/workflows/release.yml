@@ -69,8 +69,8 @@ jobs:
 
       - name: Stamp version into master document
         run: |
-          grep -q '{Version CURRENT_RELEASE}' NeuralNetworksCogsci.tex
-          sed -i "s/{Version CURRENT_RELEASE}/{Version ${{ steps.version.outputs.version }}}/" NeuralNetworksCogsci.tex
+          grep -Fq '{Version CURRENT\_RELEASE}' NeuralNetworksCogsci.tex
+          sed -i "s/{Version CURRENT\\\\_RELEASE}/{Version ${{ steps.version.outputs.version }}}/" NeuralNetworksCogsci.tex
 
       - name: Build PDF
         # Keep the latexmk invocation in sync with the `build` recipe in the

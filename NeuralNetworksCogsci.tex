@@ -97,7 +97,9 @@
 % from the repository's git tags and substitutes it for CURRENT_RELEASE at
 % build time, so releases can't drift out of sync with their tags. Local
 % builds will show the literal text "Version CURRENT_RELEASE".
-\date{Version CURRENT_RELEASE}
+% The underscore is escaped so the placeholder is valid TeX before the
+% release workflow replaces it with a CalVer value.
+\date{Version CURRENT\_RELEASE}
 \maketitle
 
 \tableofcontents
