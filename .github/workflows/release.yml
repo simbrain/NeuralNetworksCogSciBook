@@ -72,6 +72,9 @@ jobs:
           grep -Fq '{Version CURRENT\_RELEASE}' NeuralNetworksCogsci.tex
           sed -i "s/{Version CURRENT\\\\_RELEASE}/{Version ${{ steps.version.outputs.version }}}/" NeuralNetworksCogsci.tex
 
+      - name: Validate glossary
+        run: python3 scripts/check_master_glossary.py
+
       - name: Build PDF
         # Keep the latexmk invocation in sync with the `build` recipe in the
         # justfile. The image is pinned to the frozen TeX Live 2025 release:

@@ -8,21 +8,23 @@
 
 \item[Activation addition] A mechanistic interpretability technique where semantic manipulations are applied to activation vectors in a network’s hidden layers. By recording a model's hidden activations and adding or subtracting specific activation patterns, researchers can “steer” the model's behavior in semantically meaningful ways, such as making responses more positive or negative.
 
-\item[Activation function] Function that converts weighted inputs into an activation. 
+\item[Activation function] Function that converts weighted inputs into an activation.
 
 \item[Activation space] The set of all possible activation vectors for a neural network.
 
-\item[Activation vector] A vector describing the activation values for a set of nodes in a neural network.
+%\item[Activation vector] A vector describing the activation values for a set of nodes in a neural network.
+%
+%% \item[Adaptive exponential integrate and fire model]
 
-% \item[Adaptive exponential integrate and fire model]
+\item[Agentic systems] AI systems (usually LLMs) that can take actions to achieve objectives, such as searching the internet or executing code.
 
-\item[Agentic systems] AI systems (usually LLMs) that can take actions to achieve objectives, such as searching the internet or executing code. 
-
-\item[Anterograde amnesia] A type of memory loss or amnesia caused by brain damage in the hippocampus, where the ability to create new fact-based or declarative memories is compromised after the injury. 
+\item[Anterograde amnesia] A type of memory loss or amnesia caused by brain damage in the hippocampus, where the ability to create new fact-based or declarative memories is compromised after the injury.
 
 \item[Antipattern] Intuitively, the antipattern of a pattern $p$ is the pattern formed by ``flipping'' every value in $p$.  For a binary pattern we swap 0's and 1's. For a bipolar pattern we swap -1's and 1's. Examples: the antipattern of $(0,1,0)$ is  $(1,0,1)$. The antipattern of $(-1,1,-1)$ is  $(1,-1,1)$. Antipatterns are a kind of spurious memory.
 
 \item[Artificial neural network] (Acronym: ANN) a collection of interconnected units, which processes information in a brain-like way.
+
+\item[Ataxia] Impaired coordination or clumsiness caused by neurological damage in the cerebellum.
 
 \item[Attention head] One of several parallel self-attention submodules in a transformer block. Each head  projects the residual stream into queries, keys, and values; computes attention scores; and writes a weighted sum of values back to the residual stream. Multiple heads facilitate ``representational width'', allowing a layer to respond in multiple ways to a set of token representations, in some cases ignoring those that are passing through the residual stream, in other cases emphasizing them (hence ``attention'').  See attention score.
 
@@ -30,25 +32,23 @@
 
 \item[Attractor] A state or set of states with the property that any  sufficiently nearby state will go towards it. Fixed points and periodic orbits can be attractors.
 
-\item[Ataxia] Impaired coordination or clumsiness caused by neurological damage in the cerebellum.
+\item[Auditory cortex] Regions of the temporal lobes of the brain that process sound.
 
-\item[Auditory cortex] Regions of the temporal lobes of the brain that process sound. 
+%\item[Auto-associator] A pattern associator that learns to associate vectors with themselves. In a recurrent network this can be used to model pattern completion. In a feed-forward network this can be used to test whether an input can be represented in a compressed form in the hidden layer and then recreated at the output layer.
 
-\item[Auto-associator] A pattern associator that learns to associate vectors with themselves. In a recurrent network this can be used to model pattern completion. In a feed-forward network this can be used to test whether an input can be represented in a compressed form in the hidden layer and then recreated at the output layer. 
+%\item[Automatic process] A cognitive process that does not require attention for its execution, and is relatively fast. Examples include riding a bike, driving a car, and brushing your teeth.
 
 \item[Auto-regression] A training method where a passage of text is converted into a labeled dataset by treating the vector embeddings of a sequence of tokens (minus the last token) as input, and the final token as the target. The goal is to enable models to predict the next token in a sequence from everything that comes before it. This technique makes it possible to use everyday text, which is widely available, to generate data to train neural networks. Standardly used with large language models.
 
-\item[Automatic process] A cognitive process that does not require attention for its execution, and is relatively fast. Examples include riding a bike, driving a car, and brushing your teeth.
-
 \item[Axon] The part of the neuron that carries outgoing signals to other neurons.
-
-\item[Bag of words] A representation method that associates a document with a vector of word frequencies, where each entry of the vector corresponds to a word and the value of the entry corresponds to the number of times that word occurs in the document. The underlying idea is that the word usage frequencies would capture the (semantic) content of a document. The order and grammatical information of the words in the document is disregarded, hence the term ``bag''.  Forms of document embedding, as contrasted with token or word embeddings, are more common with neural networks.
 
 \item[Backpropagation] (Synonym: Backprop) A supervised learning algorithm that can train the weights of a multi-layer network using gradient descent. Can be thought of as an extension of Least Mean Square methods for multi-layer networks.
 
+\item[Bag of words] A representation method that associates a document with a vector of word frequencies, where each entry of the vector corresponds to a word and the value of the entry corresponds to the number of times that word occurs in the document. The underlying idea is that the word usage frequencies would capture the (semantic) content of a document. The order and grammatical information of the words in the document is disregarded, hence the term ``bag''.  Forms of document embedding, as contrasted with token or word embeddings, are more common with neural networks.
+
 \item[Basal ganglia] A structure below the surface of the cortex (subcortical) that is involved in voluntary action and reward processing.
 
-\item[Base model] A statistical model of text that has been pre-trained but not yet fine-tuned for specific tasks. Base models like GPT-2 and GPT-3 lack coherent personalities and act more like auto-complete systems, generating continuations of text as it might appear on the internet rather than providing human-like responses.
+%\item[Base model] A statistical model of text that has been pre-trained but not yet fine-tuned for specific tasks. Base models like GPT-2 and GPT-3 lack coherent personalities and act more like auto-complete systems, generating continuations of text as it might appear on the internet rather than providing human-like responses.
 
 \item[Basin of attraction] The set of all states in a state space that tend 
 towards a given attractor.
@@ -63,9 +63,9 @@ towards a given attractor.
 
 \item[Biological neural network] A set of interconnected neurons in an animal brain.
 
-\item[Bipolar vector] A vector all of whose components are $-1$ or $1$.
+%\item[Bipolar vector] A vector all of whose components are $-1$ or $1$.
 
-\item[Boolean functions] Functions that take a list of 0's and 1's as input and produce a 0 or 1 as output. The 0 represents a ``False'' and the 1 represents a ``True''. Boolean functions can be realized by logic gates.
+%\item[Boolean functions] Functions that take a list of 0's and 1's as input and produce a 0 or 1 as output. The 0 represents a ``False'' and the 1 represents a ``True''. Boolean functions can be realized by logic gates.
 
 \item[Brain stem] The lowest part of the brain that connects to the spinal cord and is fundamental for breathing, heart rate, and sleep.
 
@@ -75,13 +75,13 @@ towards a given attractor.
 
 \item[Cerebellum] A structure below the surface of the cortex (subcortical) involved in balance and fine movements, as well as maintaining internal models of the world for motor control.
 
-\item[Cerebral cortex] The outer layer of the brain characterized by its structural folding (gyri and sulci); underlies complex behavior and intelligence in higher animals. 
+\item[Cerebral cortex] The outer layer of the brain characterized by its structural folding (gyri and sulci); underlies complex behavior and intelligence in higher animals.
+
+%\item[Chain of thought] A prompting technique that encourages language models to produce intermediate reasoning steps when solving problems, which often improves their final answers. By prompting models to ``think step by step'' or ``show all steps,'' the model outputs text which is then fed back into its context window. This technique is often implemented through hidden prompt injections (like ``show all steps'' for math questions) rather than being explicitly requested by users.
 
 \item[Chaotic dynamical system] A type of dynamical system in which the future behavior of the system is hard to predict. Such systems have sensitive dependence on initial conditions. Compare the ``butterfly effect.''
 
-\item[Chain of thought] A prompting technique that encourages language models to produce intermediate reasoning steps when solving problems, which often improves their final answers. By prompting models to ``think step by step'' or ``show all steps,'' the model outputs text which is then fed back into its context window. This technique is often implemented through hidden prompt injections (like ``show all steps'' for math questions) rather than being explicitly requested by users.
-
-\item[Chat model] A fine-tuned version of a base model that has been trained to behave with a coherent personality, which might include agreeability and politeness. 
+%\item[Chat model] A fine-tuned version of a base model that has been trained to behave with a coherent personality, which might include agreeability and politeness.
 
 \item[Clamped node] A node that does not change during updating. Any activation function associated with the node is ignored, and its activation stays the same.
 
@@ -95,33 +95,33 @@ towards a given attractor.
 
 \item[Component] One entry of a tensor. For example, in the vector $(1,2,3)$ the second component is $2$.
 
+\item[Computational cognitive neuroscience] The use of neural networks to simultaneously model psychological and neural processes.
+
 \item[Computational neuroscience] The study of the brain using computer models.
 
-\item[Computational cognitive neuroscience] The use of neural networks to simultaneously model psychological and neural processes.
+\item[Confabulation] The generation of plausible but misleading or false content by a neural network.
 
 \item[Connectionism] The study of psychological phenomena using artificial neural networks.
 
 \item[Context window] The set of tokens that can be converted to vectors using a word embedding and sent as input to a transformer-based LLM.  The context window encompasses both user prompts and system responses; that is, both sides of a ``conversation'' with an LLM. Larger context windows allow LLMs to produce more coherent outputs and take account of more of a conversation.
 
+%\item[Controlled process] A cognitive process that requires attention for its execution, and is relatively slow. Examples include solving math problems, doing homework, or performing an unusual task that you have not practiced.
+
 \item[Convolutional layer] A special kind of weight layer where a set of weights (a ``filter'') is scanned over a previous node layer to produce activations in a target layer. This is related to the mathematical operation of convolution.
 
-\item[Confabulation] The generation of plausible but misleading or false content by a neural network.
-
-\item[Controlled process] A cognitive process that requires attention for its execution, and is relatively slow. Examples include solving math problems, doing homework, or performing an unusual task that you have not practiced.
-
-\item[Cortical blindness] Neurological impairment caused by damage to the occipital lobe that results in blindness or inability to see. This can occur without any damage to the eyes. 
+\item[Cortical blindness] Neurological impairment caused by damage to the occipital lobe that results in blindness or inability to see. This can occur without any damage to the eyes.
 
 \item[Cosine similarity] A measure of similarity between two vectors based on the cosine of the angle between them. A dot product between normalized vectors. In neural networks, cosine similarity is often used to compare token embeddings or activation patterns, with values ranging from -1 (opposite directions) to 1 (same direction).
 
-\item[Cross talk] A phenomenon where training patterns interfere with one another when training a neural network to perform some task. 
+\item[Cross talk] A phenomenon where training patterns interfere with one another when training a neural network to perform some task.
 
 \item[Data cleaning] Removing, fixing, replacing, or otherwise dealing with bad data. Includes subsetting data, i.e. extracting rows or columns or removing rows or columns. One stage of data wrangling.
 
 \item[Data science]  An area of science and practice concerned with managing and analyzing datasets, often using tools of machine learning, including neural networks.
 
-\item[Data wrangling] (Synonyms: data munging, pre-processing) The process of transforming data into a form usable by a neural network. Encompasses obtaining, cleaning, imputing, coding, and rescaling data. 
-
 \item[Dataset] Any table of numerical values that is used by a neural network, or that will be used by a neural network after pre-processing. (This is not a standard definition, but one stipulated in this text). Input, output, target, and training datasets are specific types of tables used in specific ways by neural networks.
+
+\item[Data wrangling] (Synonyms: data munging, pre-processing) The process of transforming data into a form usable by a neural network. Encompasses obtaining, cleaning, imputing, coding, and rescaling data.
 
 \item[Decision boundary] In the context of a classification task, a hypersurface (e.g., in 2 dimensions, a line) that divides an input space into decision regions. Each decision region is associated with one possible output.
 
@@ -131,7 +131,7 @@ towards a given attractor.
 
 \item[Dendrite] The part of the neuron that receives signals from other neurons.
 
-\item[Dendritic spine] Small outgrowths on the end of a dendritic branch where the receptors to which neurotransmitters attach can be found.
+%\item[Dendritic spine] Small outgrowths on the end of a dendritic branch where the receptors to which neurotransmitters attach can be found.
 
 \item[Dimension] In the context of neural networks and vector spaces, the number of components in a vector or the number of features in a representation. For example, a word embedding might have 300 dimensions, meaning it associates words with 300-component vectors. More formally, the number of vectors in a basis for a vector space. This equals the number of components the vectors have. Examples: the line is a 1-dimensional vector space; the plane is a 2-dimensional vector space.
 
@@ -139,11 +139,11 @@ towards a given attractor.
 
 \item[Discriminative model] A model that associates feature vectors, which are often distributed representations, with discrete categories (e.g. one-hot localist vectors).  Categories can be discriminated from distributed feature vectors. This is a non-standard, informal definition. The formal definition is that a discriminative model is a model of the conditional probability of categorical outputs given inputs. Contrasted with generative models.
 
-\item[Distributed representation] A representation scheme where patterns of activation across groups of neurons indicate the presence of an object. 
+\item[Distributed representation] A representation scheme where patterns of activation across groups of neurons indicate the presence of an object.
 
-\item[Dorsal stream] Pathway that extends from the occipital lobe into the parietal lobes, underlying visuospatial processing of visual objects in space. Damage to this pathway can cause impairment in reaching and grasping for objects. 
+\item[Dorsal stream] Pathway that extends from the occipital lobe into the parietal lobes, underlying visuospatial processing of visual objects in space. Damage to this pathway can cause impairment in reaching and grasping for objects.
 
-\item[Dot product] The scalar obtained by multiplying corresponding components of two vectors then adding the resulting products together. Example: $(1,2,3) \bullet (0,1,-1) = 0+2-3 = -1$.  Positive values correspond to vectors pointing in roughly the same direction (less than 90 degrees between them); negative values to vectors pointing in roughly the opposite directions (more than 90 degrees between them); 0 corresponds to orthogonal vectors. 
+\item[Dot product] The scalar obtained by multiplying corresponding components of two vectors then adding the resulting products together. Example: $(1,2,3) \bullet (0,1,-1) = 0+2-3 = -1$.  Positive values correspond to vectors pointing in roughly the same direction (less than 90 degrees between them); negative values to vectors pointing in roughly the opposite directions (more than 90 degrees between them); 0 corresponds to orthogonal vectors.
 
 \item[Downward projection] (Also ``down projection''). A matrix that maps from a higher-dimensional space to a lower-dimensional one. Common in transformer MLPs where the hidden layer is projected back down to the residual stream dimension.
 
@@ -157,11 +157,11 @@ towards a given attractor.
 
 \item[Error surface] The graph of a function from parameter values of a network to error values of an associated error function. Each point on an error surface corresponds to different parameters (usually weight values and biases) of a network. Gradient descent finds minima on an error surface, where error is relatively low.
 
+\item[Evolutionary algorithm] An algorithm that creates a model based on simulated evolution. In the context of neural networks, or ``evolved neural networks'', a set of randomly generated neural networks is created and they are used to perform some task.  Those that perform best are kept and combined with other top performers, and the resulting networks are used to perform the same task. The process is repeated over many generations. Closely related to genetic algorithms.
+
 \item[Example] (Synonyms: instances, cases). Rows of a dataset. Used in phrases like input example, training example, etc., depending on which dataset we are considering.
 
 \item[Excitatory synapses] Synapses where an action potential in a presynaptic neuron triggers the release of neurotransmitters that then increase the likelihood of an action potential occurring in the postsynaptic neuron.
-
-\item[Evolutionary algorithm] An algorithm that creates a model based on simulated evolution. In the context of neural networks, or ``evolved neural networks'', a set of randomly generated neural networks is created and they are used to perform some task.  Those that perform best are kept and combined with other top performers, and the resulting networks are used to perform the same task. The process is repeated over many generations. Closely related to genetic algorithms.
 
 \item[Fan-in weight vector] The weight vector for all of the inputs to a node in a neural network.
 
@@ -169,9 +169,9 @@ towards a given attractor.
 
 \item[Feature] (Synonyms: attribute, property). A column of a dataset, often associated with a node of a neural network.
 
-\item[Feature Map] A node layer that is the output of a convolutional layer, in which each activation is the result of a filter being multiplied (using the dot product) to one region of the input layer.
-
 \item[Feature-extraction]  Process of translating non-numerical data (e.g. text, images, audio files, DNA sequences) into a numerical format. % Using the hyphen because of the bug with overlap with "feature"
+
+\item[Feature Map] A node layer that is the output of a convolutional layer, in which each activation is the result of a filter being multiplied (using the dot product) to one region of the input layer.
 
 \item[Feature superposition hypothesis] The hypothesis that large language models encode many features in the same node layer using distributed representations. This implies that multiple features can be superimposed in overlapping subspaces of the same representational layer. This is treated as an empirical hypothesis in mechanistic interpretability research.
 
@@ -179,13 +179,13 @@ towards a given attractor.
 
 \item[Few-shot] A learning paradigm where a model or person performs a task after being shown only a few examples, without updating weights (this is typically a form of in-context learning). An example is learning what a new piece of slang like ``that’s fire’’ or ``that’s mid'' means after hearing just a few examples.
 
-\item[Firing rate] The number of spikes (action potentials) a neuron fires per unit time. Usually measured in hertz, that is, number of spikes per second. A higher firing rate corresponds to a more ``active'' neuron.
-
 \item[Filter] (Synonym: kernel) The set of weights in a convolutional layer. This is more or less the same thing as a convolutional layer, but it refers specifically to the weights, whereas ``convolution'' also refers to the process of passing the filter over the input activations.
 
-\item[Filter Bank] A set of filters. One kind of volume-to-volume layer in a convolutional neural network. 
+\item[Filter Bank] A set of filters. One kind of volume-to-volume layer in a convolutional neural network.
 
 \item[Fine-tuning] Additional training performed on a model with a relatively small learning rate to adapt it for a specific domain or task. Fine-tuning nudges the weights to better capture new domains while preserving the broad linguistic competence and background knowledge gained during pre-training. Giving base models personalities is commonly done with fine-tuning.
+
+\item[Firing rate] The number of spikes (action potentials) a neuron fires per unit time. Usually measured in hertz, that is, number of spikes per second. A higher firing rate corresponds to a more ``active'' neuron.
 
 \item[Fixed point] A state that does not change under a dynamical system. The system ``stays'' in this state forever. An orbit consisting of a single point.
 
@@ -193,13 +193,13 @@ towards a given attractor.
 
 \item[Foundation models] Base models, often built by large companies, that then serve as a foundation for later stages of fine-tuning. Once the computationally expensive work of pre-training is complete, many different specialized model versions can be built from a good foundation model.
 
-\item[Frontal lobe] Forward-most lobe of the brain whose many roles include decision-making, action planning, and executive control. Houses many important regions, including prefrontal cortex (PFC), orbitofrontal cortex (OFC), and motor cortex. 
+\item[Frontal lobe] Forward-most lobe of the brain whose many roles include decision-making, action planning, and executive control. Houses many important regions, including prefrontal cortex (PFC), orbitofrontal cortex (OFC), and motor cortex.
 
 \item[Generalization] The ability of a neural network to perform tasks that were not included in its training dataset. An example would be a network that was trained to identify 10 faces as male, and 10 as female, being able to perform well on (or ``generalize to'') new faces it has not seen before.
 
 \item[Generative AI] Artificially intelligent systems (often neural networks) that are capable of creating text, images, video, and other content, often at a level that is passably human.
 
-\item[Generative Model] A model that can be used to generate prototypical features associated with some category, for example, associating a localist category label with a distributed feature vector. This is a non-standard definition. The formal definition is that it is a model of the joint probability distribution over a set of inputs and outputs. Contrasted with discriminative models. 
+\item[Generative Model] A model that can be used to generate prototypical features associated with some category, for example, associating a localist category label with a distributed feature vector. This is a non-standard definition. The formal definition is that it is a model of the joint probability distribution over a set of inputs and outputs. Contrasted with discriminative models.
 
 \item[Graceful degradation] A property of systems whereby decrease in performance is proportional to damage sustained. The contrast is with brittle systems, in which a small amount of damage can lead to complete failure.
 
@@ -217,17 +217,17 @@ towards a given attractor.
 
 \item[Hyperparameter] In the context of neural networks, a parameter that is not updated while a learning algorithm is applied. A learning rate is a hyperparameter, as is the size of a hidden layer, because both are set prior to training and are not updated during the training process.
 
-\item[IAC network] A neural network used to model human semantic memory by spreading activation between pools of mutually inhibitory nodes that implement a winner-take-all or competitive structure. Weights are set by hand. 
+%\item[IAC network] A neural network used to model human semantic memory by spreading activation between pools of mutually inhibitory nodes that implement a winner-take-all or competitive structure. Weights are set by hand.
 
-\item[Induction heads] Specialized attention heads in transformers that can identify and continue patterns in sequences. These heads play a crucial role in the model's ability to perform in-context learning by recognizing when similar patterns have appeared earlier in the context.
+%\item[Imputation] The process of filling-in missing data in a data set. One stage of data wrangling.
 
 \item[In-context learning] The ability of language models to learn and perform new tasks based solely on examples or instructions provided in their input context, without updating their weights and other parameters. This emergent capability allows models to adapt to new tasks during inference. See few-shot, one-shot, and zero-shot learning.
+
+\item[Induction heads] Specialized attention heads in transformers that can identify and continue patterns in sequences. These heads play a crucial role in the model's ability to perform in-context learning by recognizing when similar patterns have appeared earlier in the context.
 
 \item[Inference] Consideration of how a trained neural network responds to inputs, while keeping its weights fixed. This usage of ``inference'' derives from statistical inference, to describe the use of a trained model. When interacting with ChatGPT, it is performing inference. Contrasted with learning.  Closely related to performance, though performance has other meanings.
 
 \item[Inhibitory synapses] Synapses where an action potential in a presynaptic neuron triggers the release of neurotransmitters that then decrease the likelihood of an action potential occurring in the postsynaptic neuron.
-
-\item[Imputation] The process of filling-in missing data in a data set. One stage of data wrangling.
 
 \item[Initial condition] The state a dynamical system begins in.
 
@@ -245,9 +245,9 @@ towards a given attractor.
 
 %\item[Izhikevich model]
 
-\item[Labeled dataset] A conjunction of two datasets: an input dataset with input vectors, and a target dataset with target vectors or ``labels''. An input-target dataset. Used for supervised learning tasks.  
+\item[Labeled dataset] A conjunction of two datasets: an input dataset with input vectors, and a target dataset with target vectors or ``labels''. An input-target dataset. Used for supervised learning tasks.
 
-\item[Language model] A neural network trained to predict the probability distribution of the next token (word or word-part) in a sequence of text. Language models are usually trained using auto-regression.
+%\item[Language model] A neural network trained to predict the probability distribution of the next token (word or word-part) in a sequence of text. Language models are usually trained using auto-regression.
 
 \item[Large language model] (LLM) A language model that generates text based on a large dataset.  LLMs are typically implemented using the transformer architecture.
 
@@ -263,22 +263,22 @@ towards a given attractor.
 
 \item[Linear combination] To make a linear combination from a set of vectors we multiply each vector in the set by a scalar and then we add up the resulting vectors.
 
-\item[Linear representation hypothesis] The hypothesis that internal representations or features in neural networks are best understood as directions in activation space. The orientation of a vector encodes conceptual meaning while its magnitude captures the strength or presence of that feature.
+%\item[Linearly dependent] A set of vectors is linearly dependent if there is at least one vector in the set that can be expressed as a linear combination of the other vectors in the set.
 
-\item[Linearly dependent] A set of vectors is linearly dependent if there is at least one vector in the set that can be expressed as a linear combination of the other vectors in the set.
-
-\item[Linearly independent] A set of nonzero vectors that is not linearly
-dependent is linearly independent.
+%\item[Linearly independent] A set of nonzero vectors that is not linearly
+%dependent is linearly independent.
 
 \item[Linearly inseparable] A classification task that is not linearly separable.
 
 \item[Linearly separable] A classification task can be solved using a decision boundary that is a line (or, in more than 2-dimensions, a plane or hyperplane).
 
-\item[Logic gates] Devices that compute Boolean functions. For example, an AND gate has two inputs and one output. When both inputs are set to ``True'' the gate produces a ``True'' as output; otherwise the gate produces a ``False'' as output. Simple neural networks can implement logic gates.
+%\item[Linear representation hypothesis] The hypothesis that internal representations or features in neural networks are best understood as directions in activation space. The orientation of a vector encodes conceptual meaning while its magnitude captures the strength or presence of that feature.
 
 \item[Localist representation] A representation scheme where activation of individual neurons indicates the presence of an object. Example: activation of neuron 25 indicates the presence of my grandmother.
 
-\item[Long Term Depression] (LTD) A  process by which the efficacy of a synapse is decreased after repeated use.
+%\item[Logic gates] Devices that compute Boolean functions. For example, an AND gate has two inputs and one output. When both inputs are set to ``True'' the gate produces a ``True'' as output; otherwise the gate produces a ``False'' as output. Simple neural networks can implement logic gates.
+
+%\item[Long Term Depression] (LTD) A  process by which the efficacy of a synapse is decreased after repeated use.
 
 \item[Long Term Potentiation] (LTP) A process by which the efficacy of a synapse is increased after repeated use. LTP is part of the basis of the Hebb rule.
 
@@ -294,23 +294,23 @@ dependent is linearly independent.
 
 %\item[Metabotropic]
 
-\item[Motor cortex] Region of cortex that resides in very rear-most part of the frontal lobes that is responsible for the planning and execution of movement. 
+%\item[Motor cortex] Region of cortex that resides in very rear-most part of the frontal lobes that is responsible for the planning and execution of movement.
 
 \item[N-cycle] A finite set of $n$ states that a discrete-time dynamical system visits in the same repeating sequence. For discrete-time dynamical systems periodic orbits are $n$-cycles.
 
-\item[Neuron] A cell in the nervous system specialized to transmit information.
+%\item[Neuron] A cell in the nervous system specialized to transmit information.
 
-\item[Neurotransmitters] Small chemical packages that transmit signals from one neuron to another via synapses. These packages are released when an action potential in a pre-synaptic neuron stimulates their release from vesicles on the axon terminals into the synaptic cleft where they travel to receptors on the dendrites of a post-synaptic neuron. 
+\item[Neurotransmitters] Small chemical packages that transmit signals from one neuron to another via synapses. These packages are released when an action potential in a pre-synaptic neuron stimulates their release from vesicles on the axon terminals into the synaptic cleft where they travel to receptors on the dendrites of a post-synaptic neuron.
 
 \item[Node] (Synonyms: unit, artificial neuron) A simulated neuron or neuron-like element in an artificial neural network.  Sometimes simply referred to as ``neurons.''
 
 \item[Node Layer] A collection of nodes that are treated as a group. For example, in a feed-forward network every node in one layer can be connected to every node in another layer. The activations in a node layer can be represented with an activation vector. Without qualification, ``layer'' means node layer.
 
-\item[Norm] A mathematical function that assigns a length or size to vectors. Common norms include the L2 norm (Euclidean length) and L1 norm (sum of absolute values). 
+\item[Norm] A mathematical function that assigns a length or size to vectors. Common norms include the L2 norm (Euclidean length) and L1 norm (sum of absolute values).
 
 \item[Numerical data] Data that is integer or real-valued. Examples include age, weight, and height. Data for a neural network must usually be converted into a numerical form.
 
-\item[Occipital lobe] The lobe located in the back of the cortex where visual processing primarily takes place. 
+\item[Occipital lobe] The lobe located in the back of the cortex where visual processing primarily takes place.
 
 \item[One-hot encoding] A one-of-$k$ encoding technique in which  a category with $k$ values is represented by a binary vector with $k$ components and the current value of the category corresponds to which node is on (or ``hot''). Example: representing cheap, moderate, and expensive restaurants with vectors $(1,0,0)$,$(0,1,0)$ and $(0,0,1)$. One-hot encodings are orthogonal to each other.
 %For a category with $n$ members, we take an $n$-component zero-vector and then treat a 1 in the $k$-th column as representing the $k$-th category.
@@ -319,15 +319,15 @@ dependent is linearly independent.
 
 \item[Optimization] The process of finding the maximum or minimum of a function. In neural networks, it is often used to find network parameters for which error is lowest.
 
-\item[Orbit] (Synonym: trajectory) The set of states visited by a dynamical system from an initial condition. 
+\item[Orbit] (Synonym: trajectory) The set of states visited by a dynamical system from an initial condition.
+
+%\item[Orbitofrontal cortex] Front-most region of prefrontal cortex associated with decision-making.
 
 \item[Orthogonal] Two vectors are orthogonal to each other if their dot product is zero. One-hot vectors are orthogonal. They are widely separated in input space and tend not to produce cross-talk in learning tasks.
 
-\item[Orbitofrontal cortex] Front-most region of prefrontal cortex associated with decision-making.
+\item[Output dataset] A dataset whose rows correspond to output vectors recorded from a neural network.
 
-\item[Output dataset] A dataset whose rows correspond to output vectors recorded from a neural network. 
-
-\item[Output node] A node that provides information to an external environment.  
+\item[Output node] A node that provides information to an external environment.
 
 \item[Output space] The vector space associated with the output layer of a neural network. The set of all possible output vectors for a neural network.
 
@@ -335,22 +335,22 @@ dependent is linearly independent.
 
 \item[Parallel processing] Processing many items at once, concurrently. Contrasted with serial processing, where items are processed one at a time.  Neural networks are known for processing items in parallel, whereas classical computers process items in serial.
 
-\item[Parameter] A quantity for a dynamical system that is fixed as the system runs but can be adjusted and run again with a different value. Used in the description of bifurcations. In a neural network, the weights and the biases are usually treated as parameters. This concept is also important when treating a neural network as a trainable model, whose parameters are updated using optimization techniques in order to improve performance. 
+\item[Parameter] A quantity for a dynamical system that is fixed as the system runs but can be adjusted and run again with a different value. Used in the description of bifurcations. In a neural network, the weights and the biases are usually treated as parameters. This concept is also important when treating a neural network as a trainable model, whose parameters are updated using optimization techniques in order to improve performance.
 
 \item[Parietal lobe] The lobe located behind the frontal lobe and above the occipital lobe. This part of cortex plays a role in processing spatial information, integrating multisensory information, and is home to the somatosensory cortex, which processes information about touch sensation.
 
-\item[Pattern associator] A neural network that associates each input vector in a set of input patterns with an output vector in a set of output (or ``target'') patterns. In most cases a pattern associator can be thought of as a vector-valued function. Most feed-forward networks are pattern associators, but the term is no longer commonly used.
-	
-%\item[Pattern Classification] See classification task
-
-%\item[Pattern completion] // not sure... is this a task or network type? 
+%\item[Pattern associator] A neural network that associates each input vector in a set of input patterns with an output vector in a set of output (or ``target'') patterns. In most cases a pattern associator can be thought of as a vector-valued function. Most feed-forward networks are pattern associators, but the term is no longer commonly used.
+%
+%%\item[Pattern Classification] See classification task
+%
+%%\item[Pattern completion] // not sure... is this a task or network type?
 
 \item[Performance] (Synonym: inference) Consideration of how a network responds to inputs, while keeping its weights fixed. Contrasted with learning, where the weights and biases of a network are updated. Often the term is also used to consider how well it is doing relative to an error function or objective function.
 
-\item[Period of a periodic orbit] For a continuous time dynamical system the period is the time it takes the dynamical system to cover the periodic orbit. For a discrete time dynamical system the period is the number of points in the periodic orbit.
-
 \item[Periodic orbit] A set of points that a dynamical system visits repeatedly and in the same order. An $n$-cycle is a type of periodic orbit.
-% "limit cycle" is not synonymous with "perioidic orbit". 
+% "limit cycle" is not synonymous with "perioidic orbit".
+
+%\item[Period of a periodic orbit] For a continuous time dynamical system the period is the time it takes the dynamical system to cover the periodic orbit. For a discrete time dynamical system the period is the number of points in the periodic orbit.
 
 \item[Phase portrait] A picture of a state space with important orbits drawn in it. A picture of the dynamics of a system.
 
@@ -358,55 +358,55 @@ dependent is linearly independent.
 
 \item[Pool shape] The dimensions of a pooling window in a convolutional neural network, consisting of height and width (e.g., $2 \times 2$ or $3 \times 3$), but no depth. The pooling window slides only in the spatial dimensions.
 
-\item[Positional encoding] A method used in transformer models to add information about the position of tokens in a sequence to an activity pattern. This is important because transformers process information in parallel without knowledge of where a token occurs in a sequence.
+%\item[Positional encoding] A method used in transformer models to add information about the position of tokens in a sequence to an activity pattern. This is important because transformers process information in parallel without knowledge of where a token occurs in a sequence.
 
-\item[Post-training] The phase of model training that follows pre-training, where a base model is fine-tuned to produce a useful AI assistant. Post-training often cultivates the personalities and behaviors that users experience when interacting with chat models.
+%\item[Post-training] The phase of model training that follows pre-training, where a base model is fine-tuned to produce a useful AI assistant. Post-training often cultivates the personalities and behaviors that users experience when interacting with chat models.
+
+\item[Prefrontal cortex] The front-most part of the frontal cortex, which is involved in executive function, decision-making, and planning. It is also thought to have an attractor-based structure that supports the operation of working memory.
 
 \item[Pre-processing] The process of transforming data into a form usable by a neural network. Compare data-wrangling.
 
 %\item[Point neurons]
 
-\item[Prefrontal cortex] The front-most part of the frontal cortex, which is involved in executive function, decision-making, and planning. It is also thought to have an attractor-based structure that supports the operation of working memory.
+\item[Primary motor cortex] Strip in the motor cortex that houses a somatotopic map of the body and controls simple movement production.
 
-\item[Primary motor cortex] Strip in the motor cortex that houses a somatotopic map of the body and controls simple movement production. 
+%\item[Projection] A way of representing a group of points in a high-dimensional space in a lower dimensional space.
 
 \item[Prompting strategy] Techniques for crafting inputs to language models to elicit desired behaviors or outputs. Effective prompting strategies can significantly improve model performance on tasks by providing appropriate context, examples, or instructions. See chain of thought.
 
 \item[Proposition] (Synonyms Statement, sentence): an expression that can be true or false.
 
-\item[Projection] A way of representing a group of points in a high-dimensional space in a lower dimensional space.
-
 \item[Prosopagnosia] An impairment in recognizing faces that results from damage to particular regions of the ventral stream.
 
 %\item[Rate-coding]
 
-\item[Reasoning] In language models, the sequential process of working through problems step-by-step. Just as it helps a human to write out all the steps of a process then work through them, so too with LLMs. Modern reasoning capabilities are typically elicited through specialized prompting strategies that are hidden from users. See chain-of-thought for an example. Associated with the “reasoning revolution” that began around 2023.
-
-\item[Recurrent network] A network whose nodes are interconnected in such a way that activity can flow in repeating cycles.
+%\item[Reasoning] In language models, the sequential process of working through problems step-by-step. Just as it helps a human to write out all the steps of a process then work through them, so too with LLMs. Modern reasoning capabilities are typically elicited through specialized prompting strategies that are hidden from users. See chain-of-thought for an example. Associated with the “reasoning revolution” that began around 2023.
 
 \item[Receptors] Binding sites at the ends of dendrite branches of the post-synaptic neuron where neurotransmitters attach.
 
 %\item[Refractory period]
 
+\item[Recurrent network] A network whose nodes are interconnected in such a way that activity can flow in repeating cycles.
+
 \item[Regression task] A supervised learning task in which the goal is to create a network that produces outputs as close as possible to a set of target values. Targets are real-valued rather than binary (as they often are in classification tasks). An example would be predicting the exact price of a house based on its features.
 
-%\item[Reinforcement learning with human feedback] (Acronym: RLHF) A technique for training language models where human evaluators provide feedback on outputs, which is then used to train a reward model that guides further optimization via reinforcement learning. Typically involves three stages: supervised fine-tuning on demonstrations, training a reward model from human preference comparisons, and using reinforcement learning to optimize the language model against the reward model. RLHF is commonly used in post-training to align language models with human preferences and values, making them more helpful, harmless, and honest. This technique was crucial in transforming base models into chat models with coherent personalities.
-
-\item[Residual stream] A single stream of activations that all attention heads and MLPs in a transformer read from and write to. A kind of informational bus that flows through the network, with each component adding incremental updates (residuals) to token representations.
-
 \item[Reinforcement learning] A form of learning in which a system learns to take actions that maximize reward in the long run.   Actions that produce rewards, or actions that lead to actions that produce reward, are reinforced in such a way that agents learn to obtain rewards and avoid costly situations.  In humans, associated with circuits in the brain stem and basal ganglia.  Sometimes treated as a third form of learning alongside supervised and unsupervised learning.
+
+\item[Reinforcement learning with human feedback] (Acronym: RLHF) A technique for training language models where human evaluators provide feedback on outputs, which is then used to train a reward model that guides further optimization via reinforcement learning. Typically involves three stages: supervised fine-tuning on demonstrations, training a reward model from human preference comparisons, and using reinforcement learning to optimize the language model against the reward model. RLHF is commonly used in post-training to align language models with human preferences and values, making them more helpful, harmless, and honest. This technique was crucial in transforming base models into chat models with coherent personalities.
 
 \item[ReLU] A linear activation function that is clipped at  0. Its activation is 0 for weighted inputs less than or equal to 0, and it is equal to weighted inputs otherwise. It is a popular activation function for deep networks. Note that ``relu'' is short for ``rectified linear unit''.
 
 \item[Repeller] (Synonym Unstable state): a state or set of states $R$ with the property that if the system is in a nearby state the system will always go away from R. Fixed points and periodic orbits can both be repellers.
 
 \item[Representational depth] The number of node layers in a feed-forward network. More generally a description of the number of  layer-like structures stacked in a neural network. Deeper networks can produce more complex representations which aggregate representations of earlier layers. (The term ``depth'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height. That is a separate, unrelated use of the term).
- 
+
 \item[Representational width] The number of nodes in a node layer of a feed-forward network. More generally a description of the representational capacity of a layer or layer-like structure in a neural network. Wider layers can capture more features of the previous layer. This is non-standard terminology adopted in this book as a useful organizing principle. (The term ``width'' also refers to a way of describing one component of the size a tensor, as in depth-by-width-by-height. That is a separate, unrelated use of the term).
 
 \item[Rescaling] A mathematical transformation of a set of samples in a dataset that preserves their relations to one another but changes their values. Often values are rescaled to lie in the interval $(0,1)$ or $(-1,1)$. One stage of data wrangling.
 
-%\item[Reservoir Computing] 
+\item[Reservoir computing] A recurrent-network approach in which the internal connections remain fixed and only the output layer is trained.
+
+\item[Residual stream] A single stream of activations that all attention heads and MLPs in a transformer read from and write to. A kind of informational bus that flows through the network, with each component adding incremental updates (residuals) to token representations.
 
 \item[Retinotopic map] A topographic map of locations in the retina. Regions of the brain that are retinotopic maps have the property that neurons near one another process information about nearby areas in visual space.
 
@@ -418,25 +418,31 @@ dependent is linearly independent.
 
 \item[Self Organizing Map] (Acronym: SOM)  A network trained by unsupervised competitive learning, in which the layout of the output nodes corresponds to the layout of the input space.
 
+\item[Self-supervised learning] A form of supervised learning where targets or labels are not provided separately but are derived from the training data itself. This allows training data to be generated without explicit annotations. See auto-regression.
+
 \item[Shape] An ordered list of numbers indicating the dimensionality for each dimension of  a vector, matrix, or other tensor. For example, a matrix might have shape $(1000, 512)$ indicating 1000 rows and 512 columns, while a set of 100 color images, each 25x25 pixels, might have shape $(100, 3, 25, 25)$, with 3 channels for color.
 
 \item[Sigmoid activation function] An activation function whose value increases monotonically between a lower and upper bound. As the input goes infinitely far in the positive direction the value converges to the upper bound. As the input goes infinitely far in the negative direction the value converges to the lower bound.
 
+\item[Simple recurrent network] A recurrent neural network with a context layer that stores the previous hidden-layer activations.
+
 \item[Skip connection] (Synonym: residual connection) A path that adds a node layer’s activations directly to another node layer, bypassing one or more hidden layers. Often links an input to an output layer in an MLP.  If the input and output dimensions differ, a learned linear projection (e.g., a 1×1 matrix) aligns shapes before addition. Skip connections play a key role in transformers, where they can be ``stretched out'' into a single line or bus of activations known as the residual stream. Skip connections improve backprop and stabilize training in deep networks (reducing the problem of ``vanishing gradients'', by giving the error gradient a path to flow along). The term ``residual'' is used because these connections let the network learn only the difference (a residual or delta) between the identity mapping in the skip connection and the desired transformation, making optimization easier.
 
-%\item[Simple Recurrent Network]
+\item[Softmax] An activation function which normalizes inputs so that its activations in a layer can be interpreted as a probability distribution. Each activation is between 0 and 1 and the sum over all the activations in a softmax layer is 1.
 
 \item[Soma] (Synonym Cell body): the central part of a neuron, which the dendrites and axons connect to.
 
-\item[Softmax] An activation function which normalizes inputs so that its activations in a layer can be interpreted as a probability distribution. Each activation is between 0 and 1 and the sum over all the activations in a softmax layer is 1. 
+\item[Somatosensory cortex] Front-most region of the parietal lobe that houses a somatotopic map of the body parts and processes tactile information from the body.
 
 \item[Somatotopic map] A topographic map in the somatosensory cortex that is organized by areas of the body. Nearby regions of this area represent nearby parts of the body.
 
-\item[Self-supervised learning] A form of supervised learning where targets or labels are not provided separately but are derived from the training data itself. This allows training data to be generated without explicit annotations. See auto-regression.
-
-\item[Somatosensory cortex] Front-most region of the parietal lobe that houses a somatotopic map of the body parts and processes tactile information from the body.
-
 \item[Span] The set of all linear combinations of a set of vectors is called the span of that set of vectors.
+
+\item[Sparse autoencoder] (Acronym: SAE) A neural network trained to associate patterns with themselves (autoencoder) through a hidden unit space with sparse activations. SAEs are used in mechanistic interpretability research as tools to discover and interpret features in the internal layers of a neural network.
+
+\item[Sparse matrix] A matrix in which most of the entries are 0. A sparse weight matrix represents a set of connections between nodes where most of the possible connections are missing. Contrasted with dense matrices and dense or all-to-all connectivity.
+
+\item[Sparsity] The sparsity of a matrix is a number between $0$ and $1$ obtained by counting how many zero entries the matrix has and dividing by the total number of entries. A matrix with no zero entries has a sparsity of $0$ and a matrix with all zero entries has a sparsity of $1$.
 
 \item[Spike] A discrete event that models the action potential for a neuron.
 
@@ -454,27 +460,21 @@ dependent is linearly independent.
 
 \item[Stride] In a filter bank or pooling layer, the number of pixels the filter or kernel or pooling window is moved when it is scanned across its input.
 
-%\item[Sum of Squared Error] 
-
-\item[Sparse autoencoder] (Acronym: SAE) A neural network trained to associate patterns with themselves (autoencoder) through a hidden unit space with sparse activations. SAEs are used in mechanistic interpretability research as tools to discover and interpret features in the internal layers of a neural network.
-
-\item[Sparse matrix] A matrix in which most of the entries are 0. A sparse weight matrix represents a set of connections between nodes where most of the possible connections are missing. Contrasted with dense matrices and dense or all-to-all connectivity. 
-
-\item[Sparsity] The sparsity of a matrix is a number between $0$ and $1$ obtained by counting how many zero entries the matrix has and dividing by the total number of entries. A matrix with no zero entries has a sparsity of $0$ and a matrix with all zero entries has a sparsity of $1$.
+%\item[Sum of Squared Error]
 
 \item[Subspace] Any subset of a vector space that also happens to satisfy the definition of a vector space. The sum of any two vectors in a subspace is in the subspace and any scalar multiple of a vector in a subspace is in the subspace.
-
-\item[Supervised learning] A learning rule in which weights are adjusted using an explicit representation of desired outputs.
 
 \item[Superposition] A property of neural networks whereby a single set of nodes can encode many representations using overlapping patterns of activity.  For example, a set of 3 nodes might encode 20 patterns. Closely related to distributed representations. 
 
 %\item[Supervised Recurrent Networks]
 
+\item[Supervised learning] A learning rule in which weights are adjusted using an explicit representation of desired outputs.
+
 \item[Synapse] The junction between nerve cells where information is transferred from one neuron to another.
 
 \item[Synaptic efficacy] The degree to which a pre-synaptic spike increases the probability of a post-synaptic spike at a synapse.
 
-\item[System prompt] Instructions or context provided to a chat model that establish its role, personality, and behavioral guidelines for a conversation. System prompts are generally hidden from the user, and are processed ``behind the scenes''. 
+\item[System prompt] Instructions or context provided to a chat model that establish its role, personality, and behavioral guidelines for a conversation. System prompts are generally hidden from the user, and are processed ``behind the scenes''.
 
 \item[Target dataset] A dataset whose rows correspond to target outputs we'd like a neural network to produce for corresponding input vectors. For classification tasks, a set of \emph{class labels}.
 
@@ -482,57 +482,57 @@ dependent is linearly independent.
 
 \item[Tensor] A generalization of the concept of a vector that encompasses numbers, lists of numbers, matrices, sets of matrices, sets of these sets, etc. The rank of a tensor is the number of indices it takes to specify an ``entry'' in it.  A number is rank 0 because it requires no indices. A vector is rank 1 because it takes one index to specify an entry in a vector. A matrix is rank 2, because it takes two numbers to specify an entry (a row and column). A set of matrices is rank 3, because it takes 3 indices to specify an entry. Etc.
 
-\item[Thalamus] An internal brain structure that relays information from sensory and motor structures to the cortex.
+\item[Testing subset] A subset of a dataset used for testing a neural network model (or other machine learning model). This data has not been used in training (it has been ``held out'') and thus the testing data can be used to see how well a model generalizes from what it was trained on to new data.
 
-\item[Threshold potential] The membrane potential of the cell above which an action potential is fired. 
+\item[Thalamus] An internal brain structure that relays information from sensory and motor structures to the cortex.
 
 \item[Threshold activation function] A function that has one value for input at or below a fixed amount (the threshold) and another value for input above the threshold. Usually the value of the function is less below the threshold than it is above the threshold.
 
+\item[Threshold potential] The membrane potential of the cell above which an action potential is fired.
+
 \item[Token] A word, word-part, or other sequence of characters. A generalization of the concept of a word to include other word-like entities. Tokens are associated with vectors in a word embedding.
 
-\item[Token embedding] (Near synonym: Word embedding). A way of associating each token or word in a document with a numerical vector. Useful in neural networks as a way to convert written text to network inputs. Modern LLMs utilize these token-level embeddings to deal with out-of-vocabulary terms, by breaking words down into sub-tokens. Many types of word embedding algorithm exist.
-
-\item[Topology] The way the nodes and weights of a network are wired together. A network's ``architecture.''
+%\item[Token embedding] (Near synonym: Word embedding). A way of associating each token or word in a document with a numerical vector. Useful in neural networks as a way to convert written text to network inputs. Modern LLMs utilize these token-level embeddings to deal with out-of-vocabulary terms, by breaking words down into sub-tokens. Many types of word embedding algorithm exist.
 
 \item[Tonotopic map] A topographic map in the auditory cortex that is organized by frequency of sounds. Similar sounds (in terms of frequency) are processed by neurons that are near one another.
 
+\item[Topology] The way the nodes and weights of a network are wired together. A network's ``architecture.''
+
 \item[Toy model] A neural network (often a relatively small transformer model) that is used for research purposes to understand how the network performs some task. Often used in mechanistic interpretability research. An example is a small transformer trained to perform arithmetic operations or play a game like Othello.
-
-\item[Transformer architecture] A complex feed-forward network structure which includes a ``self-attention'' mechanism that allows hidden layers to be ``aware'' of multiple kinds of relationships between different parts of a sequence of input activations. In the context of LLMs these networks can develop representations of words even when they are far apart in a document.
-
-\item[Transpose] A matrix operation that flips a matrix over its diagonal, switching row and column indices. The transpose of matrix $\textbf{A}$ is denoted $\textbf{A}^T$, where element $(i,j)$ in $\textbf{A}$ becomes element $(j,i)$ in $\textbf{A}^T$. 
-
-\item[Testing subset] A subset of a dataset used for testing a neural network model (or other machine learning model). This data has not been used in training (it has been ``held out'') and thus the testing data can be used to see how well a model generalizes from what it was trained on to new data.
 
 \item[Training subset] A subset of a dataset used for training a neural network model (or other machine learning model). Contrasted with testing subset.
 
-\item[Truth table] A table whose columns are the inputs and outputs of a Boolean function.
+\item[Transformer architecture] A complex feed-forward network structure which includes a ``self-attention'' mechanism that allows hidden layers to be ``aware'' of multiple kinds of relationships between different parts of a sequence of input activations. In the context of LLMs these networks can develop representations of words even when they are far apart in a document.
+
+\item[Transpose] A matrix operation that flips a matrix over its diagonal, switching row and column indices. The transpose of matrix $\textbf{A}$ is denoted $\textbf{A}^T$, where element $(i,j)$ in $\textbf{A}$ becomes element $(j,i)$ in $\textbf{A}^T$.
+
+%\item[Truth table] A table whose columns are the inputs and outputs of a Boolean function.
 
 \item[Turing Test] The Turing Test is a behavioral test that can be used to determine whether a system is intelligent or not. The standard form of the test is as follows: If a human judge communicating with a system via a text interface cannot determine whether the system is human or not, the system passes the test and can be deemed intelligent.  The test derives from a similar test due to Alan Turing (the ``imitation game'') but is not identical with the imitation game. There is controversy surrounding whether the test is an adequate test of intelligence.
 
-\item[Upward projection] (Also ``up projection''). A weight matrix that maps from a lower-dimensional space to a higher-dimensional one. Common in transformer MLPs where the residual stream is projected to a larger hidden dimension.
-
 \item[Unsupervised learning] A learning rule in which weights are adjusted without an explicit representation of desired outputs.
+
+\item[Upward projection] (Also ``up projection''). A weight matrix that maps from a lower-dimensional space to a higher-dimensional one. Common in transformer MLPs where the residual stream is projected to a larger hidden dimension.
 
 \item[User prompt] The input text provided by a human user to interact with a language model or AI system. If you have used an LLM, this is the text you enter into the chat window. Contrasted with system prompts, which are hidden from the user, or reasoning techniques, which create prompts that are hidden or only summarized to the user.
 
 \item[Vector] Ordered list of numbers ($n$-tuple of numbers). The numbers in a vector are its components. In many cases a vector represents a point. For example: $(2,2)$ is a vector with two components, which represents a point in a plane.
 
-\item[Vector addition] (Synonym: Vector sum) Two vectors with the same number of components can be added (or summed) by adding their corresponding components. Example: $(1,2) + (3,4) = (4,6)$.
-
-\item[Vector subtraction] Two vectors with the same number of components can be subtracted by subtracting their corresponding components. Example: $(1,2) - (3,4) = (-2,-2)$.
+%\item[Vector addition] (Synonym: Vector sum) Two vectors with the same number of components can be added (or summed) by adding their corresponding components. Example: $(1,2) + (3,4) = (4,6)$.
 
 \item[Vector space] A collection of vectors, all of which have the same number of components. For example, the plane is a collection of vectors, all of which have two components. (Note that this is an  informal definition; to be a vector space, a set of vectors must meet further requirements as well).
 
-\item[Vector-valued function] A function that takes vectors as inputs and produces vectors as outputs. (A more precise designation would be ``vector valued function of vector valued inputs''). 
+\item[Vector subtraction] Two vectors with the same number of components can be subtracted by subtracting their corresponding components. Example: $(1,2) - (3,4) = (-2,-2)$.
 
-\item[Ventral stream] Pathway that extends from the occipital lobe into the temporal lobes, underlying processing of visual object recognition. 
+%\item[Vector-valued function] A function that takes vectors as inputs and produces vectors as outputs. (A more precise designation would be ``vector valued function of vector valued inputs'').
 
-\item[Vesicles] The parts at the end of axon terminals where the neurotransmitters are stored for release. Upon triggering caused by action potentials, these vesicles will open and release the neurotransmitters into the synaptic cleft.
+\item[Ventral stream] Pathway that extends from the occipital lobe into the temporal lobes, underlying processing of visual object recognition.
+
+%\item[Vesicles] The parts at the end of axon terminals where the neurotransmitters are stored for release. Upon triggering caused by action potentials, these vesicles will open and release the neurotransmitters into the synaptic cleft.
 
 \item[Visual cortex] Rear-most region in the occipital lobe involved in visual processing, where primary and secondary visual cortex are housed.
 
-\item[Weight] (Synonyms: Connection, artificial synapse) A simulated synapse or synapse-like element in a neural network. 
+\item[Weight] (Synonyms: Connection, artificial synapse) A simulated synapse or synapse-like element in a neural network.
 
 \item[Weighted Input] (Synonym: Net input) Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
 
@@ -544,10 +544,9 @@ dependent is linearly independent.
 
 \item[Wernicke's area] A region of the temporal lobe associated with written and spoken language comprehension. Damage to this area can lead to Wernicke's aphasia, affecting the ability to understand language, even if language production remains intact.
 
-\item[Winner-Take-All] A pool of nodes structured (often with mutually inhibitory connections) so that the node receiving the highest weighted inputs ``wins'' and becomes active, while the other nodes become inactive. Also a type of non-local activation function where the node in the group receiving the most net input is active at a winning value and the rest take on a losing value (usually zero). 
+\item[Winner-Take-All] A pool of nodes structured (often with mutually inhibitory connections) so that the node receiving the highest weighted inputs ``wins'' and becomes active, while the other nodes become inactive. Also a type of non-local activation function where the node in the group receiving the most net input is active at a winning value and the rest take on a losing value (usually zero).
 
 \item[Zero-shot] The ability of a model or person to perform a task without having seen any specific examples of that task in the context. Zero-shot performance demonstrates that the model has learned generalizable capabilities that transfer to novel situations. Examples include being able to say what will happen if an armload of glassware is dropped or whether a toddler could win an olympic medal.
 
-\item[Zero vector] A vector whose components are all $0$. Adding the zero vector to any vector produces the same vector.
-
+%\item[Zero vector] A vector whose components are all $0$. Adding the zero vector to any vector produces the same vector.
 \end{description}

@@ -24,3 +24,15 @@ prep-master document="NeuralNetworksCogsci.tex":
 # Check glossary coverage without changing a container document.
 check-glossary document="NeuralNetworksCogsci.tex":
     {{python}} scripts/create_custom_glossary.py --check {{document}}
+
+# Validate the canonical glossary and its references in the full book.
+check-master-glossary:
+    {{python}} scripts/check_master_glossary.py
+
+# Audit for master glossary entries that are not referenced in the full book.
+check-stranded-glossary:
+    {{python}} scripts/create_custom_glossary.py --check --check-stranded NeuralNetworksCogsci.tex
+
+# Alphabetize the canonical master glossary after editing it.
+format-glossary:
+    {{python}} scripts/create_custom_glossary.py --format

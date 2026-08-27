@@ -64,6 +64,11 @@ Then include `CustomGlossary.tex` in your container document.
 
 - To make a glossary item use `\glossary` and be sure there is a corresponding entry in `Glossary.tex` (which is the "master" glossary document). If the displayed text differs from the glossary entry, use the optional key form, e.g. `\glossary[activation]{activations}`.
 
+- `Glossary.tex` is the canonical, alphabetized glossary and is manually edited. The release build runs the master glossary check; run `just check-master-glossary` locally to validate that every full-book `\glossary` reference has an entry. To audit the master glossary for entries not referenced in the full book, run `just check-stranded-glossary`. To alphabetize the master glossary after editing it, run:
+```
+just format-glossary
+```
+
 - Use `\cite` command and update `NeuralNetworksCogsci.bib` as usual.
 
 - When using `\caption` in the figure environment, be sure to include a bracketed sentence to be used in the figure attribution list.

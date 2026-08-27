@@ -1,129 +1,161 @@
-# Script to create a custom glossary for a container document.
-# 
-# Usage: python3 scripts/create_custom_glossary.py <ContainerDocument>.tex
-#        python3 scripts/create_custom_glossary.py --check <ContainerDocument>.tex
-#
-# Structure:
-# - Find all \glossary instances in all chapters of the specified container document
-# - Search for a match for each glossary item in the main glossary file (Glossary.tex).
-# - Add matching entries to the custom glossary file (CustomGlossary.tex).
-#
-# Notes:
-# - Unmatched \glossary items are noted in the terminal.
-# - The script handles both singular and plural forms of glossary items.
-# - Use \glossary[key]{display text} when the displayed text differs from the
-#   glossary entry. The key is used for lookup and the display text is bolded.
-# - Comments are ignored both in glossary and in chapters of the container doc 
-# 
-# TODO: Add colon after each entry but without the space \item adds.
+"""Create, validate, and format the book's glossary."""
+
 import argparse
+from pathlib import Path
 import re
 import sys
 
-MAIN_GLOSSARY_FILE = "Glossary.tex"
+
+REPOSITORY_ROOT = Path(__file__).resolve().parent.parent
+MAIN_GLOSSARY_FILE = REPOSITORY_ROOT / "Glossary.tex"
+ITEM_PATTERN = re.compile(r"(?m)^\s*\\item\[([^]]+)\]")
+GLOSSARY_PATTERN = re.compile(r"\\glossary(?:\[([^\]]+)\])?\{([^}]+)\}")
+
 
 def read_file(file_path):
     try:
-        with open(file_path, 'r') as textfile:
-            return textfile.read()
+        return Path(file_path).read_text()
     except FileNotFoundError:
         print(f"Error: File not found - {file_path}")
         sys.exit(1)
 
+
+def sort_key(term):
+    """Use a case-insensitive, punctuation-insensitive alphabetical order."""
+    return re.sub(r"[^\w]+", "", term, flags=re.UNICODE).casefold()
+
+
 def find_chapters(container_document):
     chapters = []
-    content = read_file(container_document)
-    for line in content.split('\n'):
-        if line.startswith("%"):
+    for line in read_file(container_document).splitlines():
+        if line.lstrip().startswith("%"):
             continue
-        match = re.search(r"^\\input{([^}]+)}", line)
+        match = re.search(r"^\s*\\input\{([^}]+)\}", line)
         if match:
-            chapters.append(match.group(1) + ".tex")
+            chapters.append(Path(container_document).parent / f"{match.group(1)}.tex")
     return chapters
+
 
 def find_glossary_items(files):
     items = set()
     for file in files:
-        content = read_file(file)
-        for line in content.split('\n'):
-            if line.startswith("%"):
+        for line in read_file(file).splitlines():
+            if line.lstrip().startswith("%"):
                 continue
-            for key, display_text in re.findall(r'\\glossary(?:\[([^\]]+)\])?{([^}]+)}', line):
-                items.add(key or display_text)
-    return sorted(item.lower() for item in items)
+            for key, display_text in GLOSSARY_PATTERN.findall(line):
+                items.add((key or display_text).strip())
+    return items
 
-def glossary_entries(ch_glossary_items, glossary_text):
-    added_entries = set()
-    custom_glossary_entries = []
-    missing_items = []
-    
-    for item in ch_glossary_items:
 
-        # Strip a single trailing s 
-        singular_item = item[:-1] if item.endswith('s') else item
-        
-        # Find a match to the item inside an \item[...] entry in the glossary
-        pattern = rf'\\item\[{re.escape(singular_item)}s?\]'
-        
-        if re.search(pattern, glossary_text, re.IGNORECASE):
-            for line in glossary_text.split('\n'):
-                if re.search(pattern, line, re.IGNORECASE):
-                    if line not in added_entries:
-                        custom_glossary_entries.append(line)
-                        added_entries.add(line)
-        else:
-            missing_items.append(item)
-    
-    custom_glossary_entries.sort()
-    
-    return custom_glossary_entries, missing_items
+def parse_entries(glossary_text):
+    """Return complete glossary entry blocks, keyed by their displayed term."""
+    matches = list(ITEM_PATTERN.finditer(glossary_text))
+    entries = []
+    for index, match in enumerate(matches):
+        end = matches[index + 1].start() if index + 1 < len(matches) else glossary_text.find(
+            r"\end{description}", match.end()
+        )
+        if end == -1:
+            raise ValueError("Glossary.tex has an item without a closing description environment")
+        entries.append((match.group(1).strip(), glossary_text[match.start():end].strip()))
+    return entries
 
-def write_custom_glossary(custom_glossary_entries):
-    with open("CustomGlossary.tex", "w") as custom_glossary:
-        custom_glossary.write("\\chapter*{Glossary}\n\\begin{description}\n")
-        for entry in custom_glossary_entries:
-            custom_glossary.write(entry + '\n')
-        custom_glossary.write("\\end{description}")
+
+def matching_entry(term, entries):
+    """Match the legacy singular/plural convention used by ``\\glossary``."""
+    normalized = term.casefold()
+    singular = normalized[:-1] if normalized.endswith("s") else normalized
+    matches = [
+        entry
+        for label, entry in entries
+        if (label.casefold()[:-1] if label.casefold().endswith("s") else label.casefold())
+        == singular
+    ]
+    return matches[0] if matches else None
+
+
+def validate(entries, referenced_items, check_stranded):
+    labels = [label for label, _ in entries]
+    errors = []
+    duplicate_labels = sorted({label for label in labels if sum(label.casefold() == other.casefold() for other in labels) > 1})
+    for label in duplicate_labels:
+        errors.append(f"Duplicate glossary entry: {label}")
+    for previous, following in zip(labels, labels[1:]):
+        if sort_key(previous) > sort_key(following):
+            errors.append(f"Glossary out of order: {previous} should follow {following}")
+    missing = sorted(
+        (item for item in referenced_items if not matching_entry(item, entries)),
+        key=sort_key,
+    )
+    for item in missing:
+        errors.append(f"Need a glossary entry for: {item}")
+    if check_stranded:
+        stranded = sorted(
+            (
+                label
+                for label in labels
+                if matching_entry(label, [(item, "") for item in referenced_items]) is None
+            ),
+            key=sort_key,
+        )
+        for label in stranded:
+            errors.append(f"Glossary entry is not referenced: {label}")
+    return errors
+
+
+def write_custom_glossary(entries, referenced_items):
+    selected = []
+    seen = set()
+    for item in referenced_items:
+        entry = matching_entry(item, entries)
+        if entry and entry not in seen:
+            selected.append(entry)
+            seen.add(entry)
+    selected.sort(key=lambda entry: sort_key(ITEM_PATTERN.match(entry).group(1)))
+    output = "\\chapter*{Glossary}\n\\begin{description}\n\n"
+    output += "\n\n".join(selected)
+    output += "\n\\end{description}\n"
+    (REPOSITORY_ROOT / "CustomGlossary.tex").write_text(output)
+
+
+def format_master_glossary(glossary_text, entries):
+    start = glossary_text.index(r"\begin{description}") + len(r"\begin{description}")
+    end = glossary_text.index(r"\end{description}", start)
+    ordered_entries = sorted(entries, key=lambda entry: sort_key(entry[0]))
+    body = "\n\n" + "\n\n".join(entry for _, entry in ordered_entries) + "\n"
+    return glossary_text[:start] + body + glossary_text[end:]
+
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Create or validate a custom glossary for a container document."
-    )
-    parser.add_argument(
-        "--check",
-        action="store_true",
-        help="validate glossary references without writing CustomGlossary.tex",
-    )
-    parser.add_argument("container_document", help="the container .tex document")
+    parser = argparse.ArgumentParser(description="Create, validate, or format a glossary.")
+    parser.add_argument("--check", action="store_true", help="validate without writing CustomGlossary.tex")
+    parser.add_argument("--check-stranded", action="store_true", help="also fail on unreferenced master entries")
+    parser.add_argument("--format", action="store_true", help="alphabetize Glossary.tex in place")
+    parser.add_argument("container_document", nargs="?", help="container .tex document")
     args = parser.parse_args()
 
-    container_document = args.container_document
-    chapters = find_chapters(container_document)
-
-    # Finds glossary items in this container doc
-    ch_glossary_items = find_glossary_items(chapters)
-    # print(ch_glossary_items)
-    
-    # Finds all glossary items in the main glossary file
     glossary_text = read_file(MAIN_GLOSSARY_FILE)
+    entries = parse_entries(glossary_text)
+    if args.format:
+        MAIN_GLOSSARY_FILE.write_text(format_master_glossary(glossary_text, entries))
+        print("Formatted Glossary.tex.")
+        return 0
+    if not args.container_document:
+        parser.error("container_document is required unless --format is used")
 
-    custom_glossary_entries, missing_items = glossary_entries(
-        ch_glossary_items, glossary_text
-    )
-
-    for item in missing_items:
-        print(f"Need a glossary entry for: {item}")
-
+    container = REPOSITORY_ROOT / args.container_document
+    referenced_items = find_glossary_items(find_chapters(container))
+    errors = validate(entries, referenced_items, args.check_stranded)
+    for error in errors:
+        print(error)
+    if errors:
+        return 1
     if args.check:
-        if missing_items:
-            return 1
         print("Glossary check passed.")
         return 0
-
-    write_custom_glossary(custom_glossary_entries)
-    if missing_items:
-        return 1
+    write_custom_glossary(entries, referenced_items)
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -65,6 +65,11 @@ def main():
         action="store_true",
         help="replace \\input{Glossary} with \\input{CustomGlossary}",
     )
+    parser.add_argument(
+        "--check-stranded-glossary-entries",
+        action="store_true",
+        help="also fail if a master glossary entry is not referenced",
+    )
     args = parser.parse_args()
 
     document = Path(args.container_document)
@@ -80,7 +85,10 @@ def main():
         parser.error("container document must be inside this repository")
 
     run("create_authorship_order.py", document_argument)
-    run("create_custom_glossary.py", "--check", document_argument)
+    check_arguments = ["--check"]
+    if args.check_stranded_glossary_entries:
+        check_arguments.append("--check-stranded")
+    run("create_custom_glossary.py", *check_arguments, document_argument)
     if args.write_custom_glossary or args.use_custom_glossary:
         run("create_custom_glossary.py", document_argument)
     if args.use_custom_glossary:
