@@ -9,8 +9,9 @@
 # version-bump commit is needed.
 #
 # The release is created as a DRAFT: edit the notes on the releases page and
-# click "Publish release" to finish. Publishing creates the git tag and moves
-# the "latest" pointer, so
+# click "Publish release" to finish. The workflow creates and pushes an
+# annotated git tag before creating the draft; publishing moves the "latest"
+# pointer, so
 #   https://github.com/simbrain/NeuralNetworksCogSciBook/releases/latest/download/NeuralNetworksCogsci.pdf
 # always serves the newest published PDF (a stable URL websites can link to).
 
@@ -67,6 +68,15 @@ jobs:
             exit 1
           fi
 
+      - name: Fail if tag already exists without a release
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null; then
+            echo "Tag $TAG already exists, but no matching release was found." >&2
+            echo "Use a new explicit version, or create/publish the matching release." >&2
+            exit 1
+          fi
+
       - name: Stamp version into master document
         run: |
           grep -Fq '{Version CURRENT\_RELEASE}' NeuralNetworksCogsci.tex
@@ -105,6 +115,14 @@ jobs:
           name: NeuralNetworksCogsci-${{ steps.version.outputs.version }}
           path: NeuralNetworksCogsci.pdf
 
+      - name: Create annotated release tag
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag --annotate "$TAG" "$GITHUB_SHA" --message "Version ${{ steps.version.outputs.version }}"
+          git push origin "$TAG"
+
       - name: Create draft release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -112,6 +130,7 @@ jobs:
           gh release create "v${{ steps.version.outputs.version }}" NeuralNetworksCogsci.pdf \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
+            --verify-tag \
             --title "Version ${{ steps.version.outputs.version }}" \
             --generate-notes \
             --latest \
