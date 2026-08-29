@@ -34,7 +34,7 @@ As an example, consider the Motor Trend Cars dataset  (``\emph{mtcars}''),  show
 % Include code for this in image_masters
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.6]{./images/CarsBase.png}
+\accessibleimage[scale=0.6]{./images/CarsBase.png}{Excerpt of the mtcars table. Rows are car models and columns include miles per gallon, cylinders, displacement, horsepower, weight, and quarter-mile time.}
 \caption[Screenshot of the Motor Trend Car Road Tests dataset included with R.]{A fragment of  the \emph {mtcars} dataset showing some of its examples (rows) and some of its features (columns) }
 \label{cars_dataset}
 \end{figure}
@@ -47,7 +47,7 @@ To get a general sense of how datasets are used with neural networks, see Fig \r
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.9]{./images/dataset_inputs.png}
+\accessibleimage[scale=.9]{./images/dataset_inputs.png}{Simbrain workflow showing a data-table row highlighted in red and sent as an input vector to a neural network above it.}
 \caption[Simbrain screenshot with graphical elements added by Pamela Payne.]{An example of an input dataset, which illustrates one standard way datasets are used with neural networks. Each row of the dataset is thought of as one input vector for the neural network.}
 \label{data_inputs}
 \end{figure}
@@ -97,7 +97,7 @@ Here are some examples of feature extraction in this fairly broad sense.
 
 \begin{figure}[h]
 \centering
-\includegraphics[height=50mm]{./images/CarsOneHot.png}
+\accessibleimage[height=50mm]{./images/CarsOneHot.png}{The mtcars table after one-hot encoding the cylinders column. A red dashed box emphasizes three new binary columns labeled 4 Cyl, 6 Cyl, and 8 Cyl, where each car has one value of 1.}
 \caption[Screenshot of the Motor Trend Car Road Tests dataset included in R.]{Convert cylinders to a binary ``one-hot'' encoding.}
 \label{cars_onehot}
 \end{figure}
@@ -106,7 +106,7 @@ Having coded all data as numerical, additional work often remains to be done, in
 
 \begin{figure}[h]
 \centering
-\includegraphics[height=50mm]{./images/CarsScaled.png}
+\accessibleimage[height=50mm]{./images/CarsScaled.png}{The mtcars table with numeric columns rescaled to values between zero and one; for example, miles per gallon, cylinders, displacement, horsepower, weight, and quarter-mile time are all normalized.}
 \caption[Screenshot of Motor Trend Car Road Tests dataset included with R.]{Data from Fig. \ref{cars_dataset} rescaled to $(0,1)$.}
 \label{cars_dataset_scaled}
 \end{figure}
@@ -140,7 +140,7 @@ A \glossary{labeled dataset} (also \emph{labeled data} or \emph{input-target dat
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{./images/datasetTypes.png}
+\accessibleimage[width=0.7\textwidth]{./images/datasetTypes.png}{Four small tables, from left to right: inputs, outputs, targets, and a labeled dataset that combines inputs with their target values.}
 \caption[Jeff Yoshimi.]{From left to right: an input dataset, output dataset, target dataset, and labeled dataset.}
 \label{datasetTypes}
 \end{figure}
@@ -169,7 +169,7 @@ The idea is illustrated in Fig. \ref{trainTest}. The idea is that we first train
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.3]{./images/trainTest2.png}
+\accessibleimage[scale=0.3]{./images/trainTest2.png}{Labeled dataset divided horizontally into training and testing subsets and vertically into inputs and targets. The four resulting regions are numbered: training inputs, training targets, testing inputs, and testing targets.}
 \caption[Jeff Yoshimi.]{The rows of a labeled dataset (with inputs and targets) divided into a training and a  testing subset. The training subset is used to train our model, and the testing subset is used to validate how well it generalizes. Thus we end up with four tables: (1) training inputs, (2)  training targets or labels, (3) testing inputs, and (4) testing targets. }
 \label{trainTest}
 \end{figure}
@@ -190,7 +190,7 @@ We can distinguish two general ways of training a feed-forward neural network: s
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.2\textwidth]{./images/dataset_unsupervised.png}
+\accessibleimage[width=0.2\textwidth]{./images/dataset_unsupervised.png}{Unsupervised-learning workflow: rows from an input data table feed a neural network, with no target table or teacher signal.}
 \caption[Simbrain screenshot with graphical elements added by Pamela Payne.]{Illustration of how unsupervised learning relies only on an input dataset.}
 \label{unsupervised_learning}
 \end{figure}
@@ -202,7 +202,7 @@ This is more neurally and psychologically realistic. After all, humans and anima
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.4\textwidth]{./images/dataset_supervised.png}
+\accessibleimage[width=0.4\textwidth]{./images/dataset_supervised.png}{Supervised-learning workflow: an input data table feeds a neural network while a separate target data table supplies desired outputs, indicated by a large arrow labeled TARGET.}
 \caption[Simbrain screenshot with graphical elements added by Pamela Payne.]{Illustration of how supervised learning uses both input and target datasets.}
 \label{supervised_learning}
 \end{figure}

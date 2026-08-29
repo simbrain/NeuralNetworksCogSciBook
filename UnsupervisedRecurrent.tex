@@ -18,7 +18,7 @@ Because they associate parts of a pattern with a whole pattern, these networks a
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.45]{./images/patternCompletion_Cue}
+\accessibleimage[scale=.45]{./images/patternCompletion_Cue}{Auto-associative network with a partial L-shaped activity pattern in its nodes. Strong red connections link the co-active nodes, so the network can complete the stored pattern.}
 \caption[Simbrain screenshot.]{Cued recall of an ``L'' shaped pattern. Notice that the ``L'' pattern is visible in the red weights, which indicate how the pattern will be completed. In the past, those neurons fired together, so they were wired together by the Hebb rule.}
 \label{patternCompletionL}
 \end{figure}
@@ -32,7 +32,7 @@ These ideas can be used to understand conceptually how visual image completion m
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.8]{./images/patternCompletionBeerDog.png}
+\accessibleimage[scale=.8]{./images/patternCompletionBeerDog.png}{Two pattern-completion sequences. A partial beer-bottle image and a partial dog image at left become clearer intermediate images and complete images at right.}
 \caption[From Hertz, Krogh, and Palmer, 1991 \cite{hertz1991introduction}.]{Pattern completion in a recurrent network with $130 \cdot 180 = 23,400$ nodes. The left-most image in each row shows the initial cue. The middle image shows the network part-way through the pattern completion process. The right image shows the final image. From Hertz et al. 1991. The network is a Hopfield network, which uses a variant on the Hebb rule.}
 \label{patternCompletionBeerDog}
 \end{figure}
@@ -40,7 +40,7 @@ These ideas can be used to understand conceptually how visual image completion m
 
 \begin{figure}[h]
 \centering
-\frame{\includegraphics[scale=.5]{./images/attractorsBeerDog.png}}
+\frame{\accessibleimage[scale=.5]{./images/attractorsBeerDog.png}{Attractor landscape for beer-bottle and dog memories. Partial-image cues begin on sloping paths and flow into separate basin minima containing the completed beer-bottle and dog images.}}
 \caption[Pamela Payne, using elements from Hertz, Krogh, and Palmer, 1991 \cite{hertz1991introduction}.]{Schematic diagram of the attractors and basins of attraction for the images shown in Fig. \ref{patternCompletionBeerDog}. Fragments of images correspond to initial conditions, that evolve under the network dynamics to completed images, which correspond to attracting fixed points.}
 \label{beerDogAttractors}
 \end{figure}
@@ -61,14 +61,14 @@ Second, the memories you train the recurrent network on can interfere with one a
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.6]{./images/hebb_binary_9.png}
+\accessibleimage[scale=.6]{./images/hebb_binary_9.png}{Binary auto-associative network trained on a pattern. Active nodes are red, inactive nodes are white, and strengthened connections occur only between co-active nodes.}
 \caption[Simbrain screenshot.]{An auto associative network trained on a single binary pattern using Hebb's rule. Notice that only weights between co-active nodes have been strengthened. Since the other nodes have activations of 0, weights to and from them are not changed.}
 \label{binary}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.6]{./images/hebb_bipolar_9.png}
+\accessibleimage[scale=.6]{./images/hebb_bipolar_9.png}{Bipolar auto-associative network trained on the same pattern. Red nodes have value one and blue nodes minus one; red and blue connections show excitatory and inhibitory learned weights.}
 \caption[Simbrain screenshot]{Bipolar version of pattern from Fig. \ref{binary}, after training on a bipolar version of the same pattern. Notice how some of the weights have turned blue. Thus, when the pattern is recreated incompatible patterns will be inhibited. This version of the network can learn several patterns.}
 \label{bipolar}
 \end{figure}
@@ -92,7 +92,7 @@ A special type of recurrent, auto associative, Hebbian network is a Hopfield net
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.34]{./images/Hopfield.png}
+\accessibleimage[scale=.34]{./images/Hopfield.png}{Hopfield network simulation storing a Z-shaped bipolar pattern. A grid of nodes shows the pattern, and a weight matrix uses red and blue cells for positive and negative weights.}
 \caption[Simbrain screenshot]{Hopfield network trained on the pattern for a ``Z''. Though a binary pattern is displayed behind the scenes this network uses bipolar patterns, with -1's where 0s are.}
 \label{F:hopfield}
 \end{figure}
@@ -100,4 +100,3 @@ A special type of recurrent, auto associative, Hebbian network is a Hopfield net
 % TODO: Check this. Does not work in practice? Is that capacity with or without antipatterns?
 % Update using formal derivations of the capacity in the limit (see Amit). Other sources use 14% as the capacity, and note that greater than that can be achieved using things like Storkey's rule. 
 A Hopfield network with 80 nodes is shown in Fig. \ref{F:hopfield} after it has retrieved one of the 4 memories it was trained on, a memory corresponding to the letter ``Z''. The memory capacity of Hopfield networks has been estimated to be 15\%  of its number of nodes.\footnote{Discussions of storage capacity for associative memories are in Fausett \cite{fausett1994fundamentals}, p. 140 and section 3.3.4, and in Hopfield's original paper at \cite{hopfield1982neural}, p. 2556.}  Thus, a network with 20 nodes should be able to store about $3 = .15 \cdot 20$ memories. Hopfield networks have the advantage of not producing oscillations. However, they do produce spurious memories. To get a feel for how Hopfield networks work, you are encouraged to try the Simbrain simulation \emph{hopfieldNet.zip} or to make and train a Hopfield network from scratch. 
-

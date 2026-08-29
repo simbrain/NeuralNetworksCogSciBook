@@ -26,7 +26,7 @@ A labeled dataset can be thought of as a contract for a pattern association task
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/TablesAndNets.png}
+\accessibleimage[scale=.4]{./images/TablesAndNets.png}{Three supervised-learning examples. Each pairs a small input-target table with a network: a one-to-one network, a two-to-one network, and a two-to-two network.}
 \caption[Jeff Yoshimi.]{Some labeled datasets and the types of neural network topologies those training sets could be used on. Each dataset contains an input dataset and a target dataset with 4 rows. In each case, the input dataset has as many columns as its paired network has input nodes and the target dataset has as many columns as its paired network has output nodes. A classification task is shown in the middle (binary valued targets) and regression tasks are shown on the left and right (real-valued targets).}
 \label{tables_nets}
 \end{figure}
@@ -79,7 +79,7 @@ In a \glossary{classification task}, the network sorts inputs into categories. T
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/letterClassification.png}
+\accessibleimage[scale=.4]{./images/letterClassification.png}{Feed-forward classifier for letter patterns. A grid-like input layer feeds hidden layers and output units, with the active output identifying the presented letter.}
 \caption[Simbrain screenshot.]{An example of classification. A feed-forward network trained via supervised learning to classify letter inputs as specific letters.}
 \label{F:letter_classify}
 \end{figure}
@@ -92,11 +92,11 @@ In a \glossary{regression task}, a network trained has real valued target values
 % Improve. Blue dots. Perhaps make 2 node network vertical.
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.35]{./images/linearRegressionTable.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.35]{./images/linearRegressionTable.png}{Table of hours studied and SAT scores, showing scores generally increasing with study hours.}}
 \hspace*{.4in}
-\raisebox{-0.5\height}{\includegraphics[scale=.4]{./images/linearRegression.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.4]{./images/linearRegression.png}{Scatterplot of SAT score versus hours studied with an upward-sloping linear regression line.}}
 \hspace*{.4in}
-\raisebox{-0.5\height}{\includegraphics[scale=.3]{./images/2Node_Network.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.3]{./images/2Node_Network.png}{Two-node linear network. An input node labeled Hours Studied connects by a weighted arrow to an output node labeled SAT Score.}}
 \caption[Jeff Yoshimi.]{An example of regression. (Left) The data used to train the network. Hours of study vs. score on the SAT. (Middle) A plot of the data with a regression line. These are points in an input-target space, as discussed in chapter \extref{ch_supervised}. This line can be used to predict how well someone will do based on how much they study. (Right) A simple 2-node network that could implement this regression solution. Enter hours studied in the input node, and it should display a  predicted SAT score in the output node.}
 \label{F:linearRegression}
 \end{figure}
@@ -124,7 +124,7 @@ The goal of a classification task is to create a model that correctly classifies
 % Fix all the graphics. Datapoints in blue, models in black. Next two figures.
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth]{images/visualizeClassification.png}
+\accessibleimage[width=0.9\textwidth]{images/visualizeClassification.png}{Classification in input space. A one-input network has a threshold point that separates output classes zero and one; a two-input network has a diagonal decision boundary that separates the two classes.}
 \caption[Jeff Yoshimi.]{A classification task for a 1-1 network (Left) and a 2-1 network (Right). Both networks use threshold activation functions on the output nodes. Points in the input space are shown in  blue. The decision boundaries between points classified as 0 or 1 are shown in gray. On the left, the decision boundary is a point shown as a small vertical hatchmark. On the right, the decision boundary is a diagonal line. The decision boundaries partition the input spaces into two decision regions, corresponding to outputs of 0 or 1.}
 \label{visualize_classification}
 \end{figure}
@@ -149,7 +149,7 @@ The goal of a regression task is to create a network that produces outputs as cl
 % Take the boundaries out of the linear picture
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/visualizeRegression.png}
+\accessibleimage[scale=.4]{./images/visualizeRegression.png}{Regression in input-target space. A one-input linear network maps points to a fitted line; a two-input linear network maps points to a fitted plane.}
 \caption[Jeff Yoshimi.]{A regression task for a 1-1 (Left) and a 2-1 network (Right) network of linear nodes. Datapoints in the input-target space are shown in  blue. The network implements a linear function from inputs to outputs, which is a line in the two dimensional input-target space on the left, and a plane in the three dimensional input-target space on the right. }
 \label{visualize_regression}
 \end{figure}
@@ -189,7 +189,7 @@ Suppose we are given a network and labeled dataset, and have computed the output
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/ErrorComputation_1.png}
+\accessibleimage[scale=.5]{./images/ErrorComputation_1.png}{Sum-of-squared-error calculation for one output node. A table of targets and outputs is subtracted row by row, the small errors are squared, and their sum gives low SSE.}
 \caption[Jeff Yoshimi.]{Computing SSE for a network with one output node. As can be seen, each output is just $.1$ below the target, and so SSE is pretty low. }
 \label{error_computation1}
 \end{figure}
@@ -209,14 +209,14 @@ Sample computations for a network with two outputs are shown in figures \ref{err
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/ErrorComputation_2_low.png}
+\accessibleimage[scale=.5]{./images/ErrorComputation_2_low.png}{Sum-of-squared-error calculation for two output nodes with outputs close to their targets, producing a low total error.}
 \caption[Jeff Yoshimi.]{Computing SSE for a network with two outputs. Error is fairly low.}
 \label{error_computation2_low}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/ErrorComputation_2_high.png}
+\accessibleimage[scale=.5]{./images/ErrorComputation_2_high.png}{Sum-of-squared-error calculation for two output nodes with outputs far from their targets, producing a higher total error.}
 \caption[Jeff Yoshimi.]{Computing SSE for a network with two outputs when error is higher, as might happen when we start with random weights, which, for example, cause the outputs to always be 1.}
 \label{error_computation2_high}
 \end{figure}
@@ -239,7 +239,7 @@ Figure \ref{error_surfaces} shows error surfaces for two cases that we can visua
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/ErrorSurfaces.png}
+\accessibleimage[scale=.5]{./images/ErrorSurfaces.png}{Error surfaces for supervised learning. With one adjustable weight the surface is a one-dimensional curve; with two adjustable weights it is a three-dimensional bowl-shaped surface.}
 \caption[Jeff Yoshimi.]{(Left) error surface for a 1-to-1 network where only the weight is adjusted. (Right) Error surface for a 2-to-1 network where the two weights are adjusted. In each case, the error surface also depends on the training data (the tables in figure \ref{tables_nets}). }
 \label{error_surfaces}
 \end{figure}
@@ -256,7 +256,7 @@ Optimization automates this kind of process, providing an automatic way to solve
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/GradientDescent.png}
+\accessibleimage[scale=.5]{./images/GradientDescent.png}{Gradient descent on a one-weight error curve. Arrows show successive weight updates moving downhill toward the minimum error at the bottom of the curve.}
 \caption[Jeff Yoshimi.]{Error gradient on an error surface. The actual changes that happen in the weight space are shown on the horizontal axis.}
 \label{gradient_descent}
 \end{figure}
@@ -267,7 +267,7 @@ The main method we will discuss for minimizing the error function is  \glossary{
 The process is illustrated in figure \ref{gradient_descent}. The error surface has a bowl shape. Wherever you start in the bowl, just follow the arrows down until you get to the low point. That's it!  That's how it works.
 % Convex guaranteed to have no more than one minimum, thought it might have none. You will have none or one.
 
-We use the ``arrows'' on the error surface to derive a learning rule, which produces a \emph{dynamical system on weight space}. In chapter \extref{ch_dst} we mainly considered activation dynamics. Here we consider weight dynamics. The weight dynamics are shown in the bottom horizontal line of the figure; in that line a one-dimensional system describing how a single weight changes in order to implement a model of the training data. As noted in chapter \extref{ch_dst}, when a ``play''  button \includegraphics[scale=.5]{./images/Play.png} is pressed in Simbrain  a dynamical process is simulated. In this case we will have a tools in Simbrain for running gradient descent using a play button, and observing error reduction.\footnote{See the screenshot here: \url{https://docs.simbrain.net/docs/network/learning/supervisedLearning.html}.} What we are doing is like what we did there when we looked for fixed points of a recurrent network. Here the initial conditions are random weight values, which put us at a random point in the error surface, orbits are the paths we follow in weight space (which is our state space in this case), and we usually end up  at an attracting fixed point, a weight state with low error.
+We use the ``arrows'' on the error surface to derive a learning rule, which produces a \emph{dynamical system on weight space}. In chapter \extref{ch_dst} we mainly considered activation dynamics. Here we consider weight dynamics. The weight dynamics are shown in the bottom horizontal line of the figure; in that line a one-dimensional system describing how a single weight changes in order to implement a model of the training data. As noted in chapter \extref{ch_dst}, when a ``play''  button \accessibleartifact[scale=.5]{./images/Play.png} is pressed in Simbrain  a dynamical process is simulated. In this case we will have a tools in Simbrain for running gradient descent using a play button, and observing error reduction.\footnote{See the screenshot here: \url{https://docs.simbrain.net/docs/network/learning/supervisedLearning.html}.} What we are doing is like what we did there when we looked for fixed points of a recurrent network. Here the initial conditions are random weight values, which put us at a random point in the error surface, orbits are the paths we follow in weight space (which is our state space in this case), and we usually end up  at an attracting fixed point, a weight state with low error.
 
 % Mention convexity below?
 % Possibly clarify that global minimum is itself a local minimum (local connotes neighborhood of state space)
@@ -277,7 +277,7 @@ We usually don't have a picture of an error surface. Still, we can use a program
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/LocalMinima1d2d.png}
+\accessibleimage[scale=.4]{./images/LocalMinima1d2d.png}{Error surfaces with difficult optimization features. The one-dimensional curve has two local minima and a plateau; the two-dimensional surface has multiple valleys and minima.}
 \caption[Jeff Yoshimi and Scott Hotton.]{(Left) an error surface for one weight, with two local minima and a plateau. (Right) An error surface for two weights, with two local minima.}
 \label{local_minima}
 \end{figure}

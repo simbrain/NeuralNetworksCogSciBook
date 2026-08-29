@@ -16,7 +16,7 @@ When neural networks are used as engineering tools, they are used to do useful t
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{./images/TypesOfNNResearch.png}
+\accessibleimage[scale=0.4]{./images/TypesOfNNResearch.png}{Tree diagram classifying neural-network research into engineering and scientific modeling. Scientific modeling branches into computational neuroscience, computational cognitive neuroscience, and connectionism.}
 \caption[Jeff Yoshimi.]{A taxonomy of types of neural network research, which serves as a guide to this section. Engineering uses (section \ref{machineLearning}) where the goal is to just make something useful, and scientific models where the goal is use neural networks to model the mind (connectionism, section \ref{connectionism}), the brain (computational neuroscience, section \ref{computationalNeuroscience}), or both (computational cognitive neuroscience, section \ref{mixedCases}).}
 \label{typesNN}
 \end{figure}
@@ -43,9 +43,9 @@ We will see in later chapters how to systematically classify these different kin
 
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.4]{./images/wood_network_stimuli.jpg}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.4]{./images/wood_network_stimuli.jpg}{Grid of example lumber images for seven knot classes: sound, decayed, dry, encased, leaf, horn, and edge knots.}}
 \hspace*{.2in}
-\raisebox{-0.5\height}{\includegraphics[scale=.3]{./images/wood_network_flowchart.jpg}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.3]{./images/wood_network_flowchart.jpg}{Flowchart for classifying a lumber knot. An RGB image supplies color features and shape features filtered by Gabor filters; their color and shape histograms enter an MLP classifier, which outputs scores for sound, dry, decayed, encased, edge, leaf, and horn knots.}}
 \caption[From Heikkonen et al., 1999 \cite{heikkonen1999building}. Licensed Under CC BY-NC]{Left: Sample inputs to the knot classification network. Right: The knot classification system. The neural network is labelled ``MLP.''}
 \label{knotNet}
 \end{figure}
@@ -61,7 +61,7 @@ We now turn from neural networks used as engineering tools, to neural networks u
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{./images/3typesmodels.png}
+\accessibleimage[width=0.8\textwidth]{./images/3typesmodels.png}{Three computational-neuroscience scales. At left, detailed branching neurons illustrate micro-scale modeling; at center, a three-dimensional network of many connected neurons illustrates meso-scale modeling; at right, a brain-shaped graph of labeled regions and their connections illustrates macro-scale modeling.}
 \caption[Layout by Pamela Payne. Top Left: ; Bottom Left: ; Middle: Screenshot by Zach Tosi ; Right: From Hagmann et al., 2008 \cite{hagmann2008mapping}, Licensed Under CC BY]{Micro, meso, and macro-level models in computational neuroscience. Left: micro-level models of individual neurons. Middle: meso-level model of a network of several thousand neurons. Right: macro-level model of neuronal connections spread out through the entire brain.}
 \label{compNeuro}
 \end{figure}
@@ -97,7 +97,7 @@ As an example, consider the ``IAC'' or ``Interactive Activation and Competition'
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.3]{./images/IAC_JetsSharks.png}
+\accessibleimage[scale=.3]{./images/IAC_JetsSharks.png}{Interactive Activation and Competition network. A central pool of black instance nodes connects to labeled pools for names, ages, education, occupations, gang membership, and marital status. Arrows link associated properties, and nodes within each pool inhibit one another.}
 \caption[From McClelland and Rumelhart, 1989 \cite{mcclelland1989explorations}.]{A fragment of the Jets and Sharks model. Nodes in this model don't represent neural activity, but activation of concepts in semantic memory.}
 \label{iac}
 \end{figure}
@@ -118,7 +118,7 @@ Though IAC networks are models of semantic memory, and are brain-like (spreading
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{./images/seidWordNet_Data3.png}
+\accessibleimage[width=0.8\textwidth]{./images/seidWordNet_Data3.png}{Two line graphs show a word-frequency effect. In the human data, mean naming latency rises from about 573 milliseconds for high-frequency words to about 624 milliseconds for low-frequency words. In the neural-network data, mean squared error rises from about 3.2 for high-frequency words to about 6.4 for low-frequency words.}
 \caption[From McClelland and Seidenberg, 1989 \cite{seidenberg1989distributed}. Redrawn by Pamela Payne.]{Data associated with Seidenberg and McClelland (1989)'s reading model. Human data are on the left, neural network data are on the right. Humans pronounce high-frequency words more quickly than low-frequency words. The neural network makes fewer errors on high-frequency than low-frequency words.}
 \label{regularityData}
 \end{figure}
@@ -140,9 +140,9 @@ We will refer to these as \glossary{computational cognitive neuroscience} models
 % Emergent ref since I have a spaun ref?
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.3]{./images/EmergentScreenshot.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.3]{./images/EmergentScreenshot.png}{Emergent visual-processing simulation. Layers of many small model units are connected across a perspective grid, with activity highlighted in red and yellow; inset panels show a leopard image and labels for visual-processing areas.}}
 \hspace*{.4in}
-\raisebox{-0.5\height}{\includegraphics[scale=.6]{./images/spaun.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.6]{./images/spaun.png}{Spaun simulation diagram. A labeled brain with colored activity pathways receives a visual digit as input and controls a drawing arm to reproduce the digit on a nearby screen.}}
 \caption[Left: From \url{https://grey.colorado.edu/emergent/index.php/File:Screenshot_vision.png}; Right: Spaun screenshot. Cf. \cite{eliasmith2012large}.]{(Left) An Emergent simulation of visual processing, with labels indicating which brain areas each group of nodes represents. (Right) A Nengo simulation of the human ability to retrace a visually perceived number.}
 \label{ccn}
 \end{figure}

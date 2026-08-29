@@ -1,9 +1,9 @@
 \chapter{Linear Algebra and Neural Networks}\label{ch_linear_algebra}
 \chapterauthor{Jeff Yoshimi, Scott Hotton}
 
-% The TeX Live 2023 experimental paragraph tagger is not compatible with the
-% chapter's legacy display-math structures. Keep its automatic paragraph
-% tagging disabled for this chapter while dedicated math remediation proceeds.
+% The TeX Live 2023 experimental paragraph tagger remains incompatible with
+% several complex matrix displays in this chapter. Keep automatic paragraph
+% tagging disabled until those structures receive a dedicated tagged-math pass.
 \ifdefined\tagpdfsetup\tagpdfsetup{paratagging=false}\fi
 
 % Also see "indexing hell" comment at  http://neuralnetworksanddeeplearning.com/chap2.html
@@ -117,7 +117,7 @@ For 2-dimensional spaces, finding your way around is a bit like using an ``Etch 
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.175]{./images/grid2.png}
+\accessibleimage[scale=0.175]{./images/grid2.png}{Coordinate grid showing three vectors drawn from the origin to the points approximately (3,4), (-2,-1), and (4,-2).}
 \caption[Scott Hotton.]{Each vector in a 2 dimensional vector space is associated to a point 
 in the Euclidean plane by treating the components of the vector as the 
 coordinates of the point. Try to find the vectors $(3,4)$, $(-2,-1)$, and 
@@ -159,9 +159,9 @@ for the network) that correspond to that point.}
 
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.5]{./images/ff.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.5]{./images/ff.png}{Feed-forward network with three input nodes, two hidden nodes, and two output nodes. Nodes show positive red and negative blue activations.}}
 \hspace*{1in}
-\raisebox{-0.5\height}{\includegraphics[scale=.3]{./images/recurrent.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.3]{./images/recurrent.png}{Two-node recurrent network. Each node has a self-connection and the nodes are connected in both directions; their displayed activations are positive and negative.}}
 \caption[Simbrain screenshots.]{A feed forward and recurrent network in Simbrain. Try to identify the dimensionality of the activation space, input space, hidden unit space, output space, and weight spaces of each network. Left: A feed-forward neural network with activations showing. Right: A 2-node recurrent network with activations showing.}
 \label{ffRecurrent}
 \end{figure}
@@ -189,12 +189,12 @@ in a 12 dimensional weight space (see figure \ref{labelledNets}). The recurrent 
 % Low priority discussion item: do we need an indexing system for weights such that we can consistently define weight vectors, including fan-in and fan-out weight vectors?   
 
 It can also be useful to talk about a \glossary{fan-in weight vector} (the list of weight strengths for the set of weights attaching to a node), and a \glossary{fan-out weight vector} (the list of weight strengths for the set of weights exiting a node). A version of the networks in figure \ref{ffRecurrent} with zeroed out activations, labeled node indices, and weight strengths  is shown in figure \ref{labelledNets} below. Some sample weight vectors for these networks are:
-\begin{eqnarray*}
-\mbox{Feed forward network, neuron 3 fan-in} \;  \;  \;  (1,-2) \\
-\mbox{Feed forward network, neuron 3 fan-out} \; \; \; (-2,0.9) \\
-\mbox{Feed forward network, neuron 7 fan-in} \; \; \;  (0.9,-1,-1.2) \\
-\mbox{Recurrent network, neuron 2 fan-in} \; \; \; (1,-2) \\
-\end{eqnarray*}
+\begin{align*}
+\text{Feed-forward network, neuron 3 fan-in} &\quad (1,-2) \\
+\text{Feed-forward network, neuron 3 fan-out} &\quad (-2,0.9) \\
+\text{Feed-forward network, neuron 7 fan-in} &\quad (0.9,-1,-1.2) \\
+\text{Recurrent network, neuron 2 fan-in} &\quad (1,-2)
+\end{align*}
 
 Some of these weight vectors have 2 components, some have 3 components. Of course for larger networks, fan-in and fan-out vectors can be in higher dimensional weight spaces.\footnote{Notice that the fan-in weight vectors for the hidden units of the feed-forward network have the same number of dimensions as the input vectors. The input vectors and hidden layer fan-in weight vectors live in the same vector space. This fact is useful sometimes.}
 
@@ -205,19 +205,19 @@ Some of these weight vectors have 2 components, some have 3 components. Of cours
 
    How can we visualize sets of vectors that have more than three components?  For
 example here are nine vectors in a 6 dimensional space:
-\begin{eqnarray*}
+\[
 \begin{array}{rrr}
-  ( 2,\;~0,\; 0,\; 0,\; 0,\; 0), \quad 
-& ( 0,\; 0,\; 2,\;~0,\; 0,\; 0), \quad 
+  ( 2,\;~0,\; 0,\; 0,\; 0,\; 0), \quad
+& ( 0,\; 0,\; 2,\;~0,\; 0,\; 0), \quad
 & ( 0,\; 0,\; 0,\; 0,\; 2,\;~0)  \\
-  ( 1,\;~1,\; 0,\; 0,\; 0,\; 0), \quad 
-& ( 0,\; 0,\; 1,\;~1,\; 0,\; 0), \quad 
+  ( 1,\;~1,\; 0,\; 0,\; 0,\; 0), \quad
+& ( 0,\; 0,\; 1,\;~1,\; 0,\; 0), \quad
 & ( 0,\; 0,\; 0,\; 0,\; 1,\;~1)  \\
-  ( 1,  -1,\; 0,\; 0,\; 0,\; 0), \quad 
-& ( 0,\; 0,\; 1,  -1,\; 0,\; 0), \quad 
+  ( 1,  -1,\; 0,\; 0,\; 0,\; 0), \quad
+& ( 0,\; 0,\; 1,  -1,\; 0,\; 0), \quad
 & ( 0,\; 0,\; 0,\; 0,\; 1,  -1)
 \end{array}
-\end{eqnarray*}
+\]
 We can't directly visualize these vectors since we only live in a 3 dimensional 
 world but we can project them down to a lower dimension. Figure
 \ref{F:projection} shows the projection of these vectors down to 2 dimensions.
@@ -239,7 +239,7 @@ especially distorted at the two poles, farthest away from the equator.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.8]{./images/Mercator.jpg}
+\accessibleimage[scale=1.8]{./images/Mercator.jpg}{A globe covered by a latitude-longitude grid is mapped to a rectangular Mercator world map, illustrating projection from a curved surface to a plane.}
 \caption[Scott Hotton's modification of an image from the Cartographic Research Lab at the University of Alabama.]{The Earth's surface in 3 dimensional space is rendered as a flat, 2
 dimensional surface by the Mercator projection method. Most of the distortion
 produced by the projection occurs near the Earth's poles so small regions 
@@ -295,8 +295,8 @@ many neural networks.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=2.7]{./images/Sammon3.png}
-\includegraphics[scale=0.22]{./images/torus.png}
+\accessibleimage[scale=2.7]{./images/Sammon3.png}{Two-dimensional projection of nine points from a higher-dimensional space. The points form a three-lobed, symmetric curve.}
+\accessibleimage[scale=0.22]{./images/torus.png}{A torus-like surface embedded in a higher-dimensional coordinate system, shown as a stacked ring with x, y, and z axes.}
 \caption[Scott Hotton.]{(Left) The projection of a symmetrical curve in a 6 dimensional space 
 so that we can see its symmetry. The nine vectors listed at the beginning of 
 section \ref{S:dimred} are shown as nine large blue dots. (Right) A 
@@ -321,7 +321,7 @@ a large dot: $\bullet$. It is also common to say that we are ``dotting'' one
 vector with another.
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.7]{./images/Simple3Labelled.png}
+\accessibleimage[scale=.7]{./images/Simple3Labelled.png}{Three-input feed-forward network. Nodes 1, 2, and 3 with activations minus one, minus point four, and point five connect to node 4 with activation two.}
 \caption[Simbrain screenshot.]{Simple feed-forward network with nodes labeled. 
 The dot product can be used to compute the weighted inputs to node 4.} 
 \label{F:simplelabelled}
@@ -330,29 +330,29 @@ The dot product can be used to compute the weighted inputs to node 4.}
    The dot product is computed by multiplying each of the corresponding 
 components of a pair of vectors, and summing the resulting products. For 
 example
-\begin{eqnarray*}
-&(1,2,3)  \bullet  (4,5,6)& = \quad 1 \cdot 4 \,+\, 2 \cdot 5 \,+\, 3 \cdot 6 
+\begin{align*}
+(1,2,3)  \bullet  (4,5,6) &= 1 \cdot 4 \,+\, 2 \cdot 5 \,+\, 3 \cdot 6
 = 32 \\
-&(0,0,0)  \bullet  (4,5,6)& = \quad 0 \cdot 4 \,+\, 0 \cdot 5 \,+\, 0 \cdot 6 
+(0,0,0)  \bullet  (4,5,6) &= 0 \cdot 4 \,+\, 0 \cdot 5 \,+\, 0 \cdot 6
 = 0  \\
-&(2,3,-1) \bullet (-1,1,1)& = \quad 2 \cdot (-1) \,+\, 3 \cdot 1 \,+\, (-1) 
+(2,3,-1) \bullet (-1,1,1) &= 2 \cdot (-1) \,+\, 3 \cdot 1 \,+\, (-1)
 \cdot 1 = 0 \\
-&(1,1,1,1,1) \bullet (1,1,1,1,1)& = \quad  
+(1,1,1,1,1) \bullet (1,1,1,1,1) &=
  1 \cdot 1 \,+\, 1 \cdot 1 \,+\,  1 \cdot 1 \,+\, 1 \cdot 1 \,+\, 1 \cdot 1 = 5
-\end{eqnarray*}
+\end{align*}
 
 % dot product of a and b is norm or length of a times length of projection or shadow of on b
 % cosine similarity is the exact same but we've normalize both vectors
 
 The sign of the dot product tells us whether two vectors are pointing in the same direction, opposite directions, or are at right angles to or \glossary{orthogonal} to one another (see figure \ref{dotProductDirections}).\footnote{A useful interactive visualization of the dot product that can be used to confirm these ideas is available at \url{http://www.falstad.com/dotproduct/}.} If the dot product of $\textbf{u}$ and $\textbf{v}$ is greater than 0, then $\textbf{u}$ and $\textbf{v}$ are pointing ``in the same general direction'' in the sense the angle between them is less than 90 degrees.  If the dot product of $\textbf{u}$ and $\textbf{v}$ is less than 0, then $\textbf{u}$ and $\textbf{v}$ are pointing ``in the opposite general direction'' in the sense the angle between them is more than 90 degrees. When the dot product of two non-zero vectors $\textbf{u}$ and $\textbf{v}$ is 0, they are orthogonal (perpendicular) to each other: the angle between them is exactly 90 degrees.\footnote{They must be non-zero because the product of any vector with the zero vector (the vector whose components are all $0$) is $0$. Moreover, if at least one of them is the zero-vector, there is no meaning to the idea that there is an angle between them.} It might be hard to tell right away that the vectors $(2,-1,1,-3,1,1)$, and $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation
 shows us that it is true:
-\begin{eqnarray*}
-           (2,-1,1,-3,1,1) \bullet (1,2,3,1,1,-1) = 0
-\end{eqnarray*}
+\[
+  (2,-1,1,-3,1,1) \bullet (1,2,3,1,1,-1) = 0
+\]
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.2]{./images/dotProductDirections.pdf}
+\accessibleimage[scale=1.2]{./images/dotProductDirections.pdf}{Three coordinate-plane examples of dot products: vectors in similar directions have a positive product, perpendicular vectors have zero product, and opposite directions have a negative product.}
 \caption[Scott Hotton.]{How to interpret the dot product geometrically. Vectors pointing in roughly the same direction have a positive dot product; vectors that are orthogonal have a dot product of 0;  vectors pointing in roughly opposite directions have a negative dot product.}
 \label{dotProductDirections}
 \end{figure}
@@ -396,7 +396,7 @@ The process of normalizing a vector involves rescaling it so that its norm is 1 
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.5]{./images/normalizingVectors.pdf}
+\accessibleimage[scale=1.5]{./images/normalizingVectors.pdf}{Coordinate-plane diagram showing a vector and its unit-length normalized version pointing in the same direction.}
 \caption[Scott Hotton.]{Normalizing vectors leaves their direction unchanged but scales their length to 1.}
 \label{normalizeVectors}
 \end{figure}
@@ -425,9 +425,9 @@ panel of Fig. \ref{metricfig}. We then take the norm of this difference, which i
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.55]{./images/Norm.pdf}
+\accessibleimage[scale=1.55]{./images/Norm.pdf}{Coordinate-plane diagram of vectors from the origin to (-3,4) and (2,5), labeled with lengths five and square root of 29.}
 \qquad
-\includegraphics[scale=1.55]{./images/dist.pdf}
+\accessibleimage[scale=1.55]{./images/dist.pdf}{Coordinate-plane diagram showing the displacement vector between the endpoints of vectors (2,5) and (-3,4); its length is square root of 26.}
 \caption{(left) The norm of $(-3,4)$ is $5$ and the norm of $(2,5)$ is 
 $\sqrt{29} \approx 5.385$. (right) The vector $(-5,-1)$ is shown with its tail at the head 
 of $(2,5)$ and its head at the head of $(-3,4)$. The norm of $(-5,-1)$ is 
@@ -451,7 +451,7 @@ example which illustrates the importance of this way of thinking is figure
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1.55]{./images/Nearfar.pdf}
+\accessibleimage[scale=1.55]{./images/Nearfar.pdf}{Two dotted clusters of points in a coordinate plane. Lines from the origin show that distances within each cluster are small compared with the distance between clusters.}
 \caption{Two sets of four points in $\real^2$ are enclosed by a dotted curve. 
 The Euclidean distances between the points within each group are small in 
 comparison to the Euclidean distance between the two sets of points.}
@@ -567,11 +567,10 @@ the mean value of each vector from its components. We let $\mu_x$ be the
 mean of $\mathbf{x}$ and $\mu_y$ be the mean of $\mathbf{y}$. This gives 
 us two vectors whose components are called the \emph{centered data} for the 
 variables.
-\begin{eqnarray}
-\widetilde{\mathbf{x}} &=& (x_1 - \mu_x, \, \dots, \, x_n - \mu_x) 
-                                                             \nonumber \\[1mm]
-\widetilde{\mathbf{y}} &=& (y_1 - \mu_y, \, \dots, \, y_n - \mu_y) 
-\end{eqnarray}
+\begin{align}
+\widetilde{\mathbf{x}} &= (x_1 - \mu_x, \, \dots, \, x_n - \mu_x) \notag \\[1mm]
+\widetilde{\mathbf{y}} &= (y_1 - \mu_y, \, \dots, \, y_n - \mu_y)
+\end{align}
 The covariance is the dot product of the vectors for the centered data divided 
 by $n$.\footnote{Sometimes $n-1$ is used instead of $n$.}
 \begin{equation}\label{E:covdef}
@@ -693,7 +692,7 @@ In Simbrain there is a tool that is often useful for comparing a set of vectors 
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.45]{./images/corrPlot.png}
+\accessibleimage[scale=.45]{./images/corrPlot.png}{Simbrain comparison matrix set to cosine similarity. Colored cells compare vectors A through H; diagonal cells are one, indicating each vector is maximally similar to itself.}
 \caption[Simbrain screenshot from Jeff Yoshimi.]{A plot in Simbrain that shows how a set of vectors (here labeled ``A'', ``B'', etc.) can be compared using any of the vector comparison methods discussed in this chapter, here cosine similarity. The diagonals show maximal values for cosine similarity, since vectors are maximally similar to themselves.}
 \label{corrPlot}
 \end{figure}
@@ -724,9 +723,9 @@ exist in vector spaces called ``matrix spaces''). However, it will be easier for
 
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.45]{./images/ff_labelled.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.45]{./images/ff_labelled.png}{Labeled feed-forward network with node indices, zero activations, and red and blue weighted connections.}}
 \hspace*{.7in}
-\raisebox{-0.5\height}{\includegraphics[scale=.2]{./images/recurrent_labelled.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.2]{./images/recurrent_labelled.png}{Labeled two-node recurrent network with zero activations, self-connections, and red and blue weighted connections.}}
 \caption[Simbrain screenshots modified by Jeff Yoshimi.]{Feedforward and recurrent networks with nodes labeled, and weight strengths shown. Each weight layer of the feedforward network and the weights of the recurrent network can be associated with weight matrices. }
 \label{labelledNets}
 \end{figure}
@@ -801,7 +800,7 @@ We now consider the recurrent case, starting with the recurrent network shown in
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{./images/sparseRecurrent.png}
+\accessibleimage[scale=0.5]{./images/sparseRecurrent.png}{Sparse recurrent network of four numbered nodes. Only four directed connections are present: two red positive weights and two blue negative weights, including a self-connection on node four.}
 \caption[Jeff Yoshimi.]{A sparse recurrent network, where most of the possible connections do not exist, so that in its matrix representation most entries will be 0. In this network red weights have a strength of 1 and blue weights have a strength of -1.} 
 \label{sparseRecurrent}
 \end{figure}
@@ -881,7 +880,7 @@ as shown in the right panel of figure \ref{sourceTargetConvention}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.75\textwidth]{images/sourceTarget.png}
+\accessibleimage[width=0.75\textwidth]{images/sourceTarget.png}{Source-target matrix convention. A feed-forward network, its weight matrix, and an activation-flow diagram show row-vector activations entering from the left and producing output above.}
 \caption[Jeff Yoshimi.]{Graphical model for thinking about a matrix multiplication using a source-target representation. Fan-in weight vectors at the output layer correspond to columns of the weight matrix (fan-in weight vectors at the output layer correspond to columns of the weight matrix). We think of the vectors as entering the matrix on the left, being multiplied and added, and exiting up top. (Left) a standard neural network representation. (Right) The actual matrix multiplication this process corresponds to. (Center) How to conceptualize activation flowing through the matrix in this case. }
 \label{sourceTargetConvention}
 \end{figure}
@@ -890,7 +889,7 @@ Figure \ref{sourceTargetSimbrain} shows how this looks in Simbrain. You are enco
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.85\textwidth]{images/sourceTargetSimbrain.png}
+\accessibleimage[width=0.85\textwidth]{images/sourceTargetSimbrain.png}{Simbrain source-target example: a small feed-forward network is linked to a displayed weight matrix and activation vectors, with arrows showing input activations moving left-to-right through the matrix.}
 \caption[Jeff Yoshimi.]{Using a source-target representation in Simbrain. We think of the vectors as entering the matrix on the left and exiting up top.}
 \label{sourceTargetSimbrain}
 \end{figure}
@@ -904,7 +903,7 @@ Figure \ref{targetSourceConvention} shows how to think of a matrix in target-sou
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.75\textwidth]{images/targetSource.png}
+\accessibleimage[width=0.75\textwidth]{images/targetSource.png}{Target-source matrix convention. A feed-forward network, its weight matrix, and an activation-flow diagram show column-vector activations entering from below and producing output to the right.}
 \caption[Jeff Yoshimi.]{Graphical model for thinking about a weight matrix using a target-source representation.  Fan-in weight vectors at the output layer correspond to rows of the weight matrix (fan-out weight vectors at the input layer correspond to columns of the weight matrix). We think of the vectors as entering the matrix from below, being multiplied and added, and exiting to the right. (Left) a standard neural network representation. (Right) The actual matrix multiplication this process corresponds to. (Center) How to conceptualize activation flowing through the matrix in this case. }
 \label{targetSourceConvention}
 \end{figure}
@@ -913,7 +912,7 @@ Figure \ref{targetSourceSimbrain} shows how this configuration looks in Simbrain
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{images/targetSourceSimbrain.png}
+\accessibleimage[width=0.8\textwidth]{images/targetSourceSimbrain.png}{Simbrain target-source example: a small feed-forward network is linked to a displayed weight matrix and activation vectors, with arrows showing input activations moving upward through the matrix.}
 \caption[Jeff Yoshimi.]{Using a target-source representation in Simbrain. We think of the vectors as entering the matrix from below and exiting to the right.}
 \label{targetSourceSimbrain}
 \end{figure}
@@ -935,7 +934,7 @@ With right multiplication we start with a row vector and multiply it by a matrix
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.6\textwidth]{images/vectorMatrixProduct.png}
+\accessibleimage[width=0.6\textwidth]{images/vectorMatrixProduct.png}{Right matrix multiplication diagram. A row vector multiplies a matrix to form another row vector; colored entries highlight successive dot products with matrix columns.}
 \caption[Jeff Yoshimi.]{The row vector can be thought of as being rotated and scanned along the matrix to its right, writing out the output vector, which is also a row vector. Alternatively the columns of the matrix can be thought of as being removed one by one and dotted with the row vector, writing out the output vector.}
 \label{vectorMatrixProduct}
 \end{figure}
@@ -957,7 +956,7 @@ The same example can also be represented by a left multiplication, where we tran
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.4\textwidth]{images/matrixVectorProduct.png}
+\accessibleimage[width=0.4\textwidth]{images/matrixVectorProduct.png}{Left matrix multiplication diagram. A matrix multiplies a column vector to form a column vector; curved arrows highlight dot products between rows and the input vector.}
 \caption[Jeff Yoshimi.]{The column vector can be thought of as being mentally rotated and scanned across the rows of the matrix to its left, taking dot products along the way which are written out to the output vector, which is also a column vector. Alternatively, think of removing the rows from the matrix one by one, and dotting with the column vector, writing out the output vector as we do.}
 \label{matrixVectorProduct}
 \end{figure}
@@ -1061,7 +1060,7 @@ A multiplication $\mathbf{A}\mathbf{B} = \mathbf{C}$ can be interpreted in sever
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{images/matrixProductEntryWise.png}
+\accessibleimage[width=0.5\textwidth]{images/matrixProductEntryWise.png}{Entrywise matrix multiplication diagram. A highlighted row of matrix A and column of matrix B are dotted to produce the highlighted entry in matrix C.}
 \caption[Jeff Yoshimi.]{Row $i$, column $j$ of $\mathbf{C}$ is the dot product of row $i$ of $\mathbf{A}$ and column $j$ of $\mathbf{B}$. Here entry $(2,1)$ of $\mathbf{C}$ is the dot product of row $2$ of $\mathbf{A}$ and column $1$ of $\mathbf{B}$.}
 \label{entryWiseMatrixProduct}
 \end{figure}
@@ -1094,7 +1093,7 @@ We will start with the ``row processing'' respective. Here we view $\mathbf{A}$ 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{images/rowPerspective.png}
+\accessibleimage[width=0.5\textwidth]{images/rowPerspective.png}{Row-processing view of matrix multiplication. Each row of matrix A is multiplied by matrix B, and the resulting rows stack to form matrix C.}
 \caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``row processing''. The rows of the left matrix $\mathbf{A}$ are taken one by one, and multiplied by matrix $\mathbf{B}$  on the right, using the methods described in the section above on right multiplication. This is done for each row (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a stack of rows, each of which has been processed by $\mathbf{B}$.}
 \label{rowPerspective}
 \end{figure} 
@@ -1118,7 +1117,7 @@ We can also take a column perspective on generic matrix multiplications, treatin
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.6\textwidth]{images/columnPerspective.png}
+\accessibleimage[width=0.6\textwidth]{images/columnPerspective.png}{Column-processing view of matrix multiplication. Each column of matrix B is multiplied by matrix A, and the resulting columns assemble into matrix C.}
 \caption[Jeff Yoshimi.]{How to view a matrix multiplication  $\mathbf{A}\mathbf{B} = \mathbf{C}$ as ``column processing''. The columns of the right matrix $\mathbf{B}$ are taken one by one, and multiplied by matrix $\mathbf{A}$  on the left, using the methods of the section above on left multiplication. This is done for each column (as is shown in the center panel), and the end result is an output matrix $\mathbf{C}$ that can be thought of as a file of columns, each of which has been processed by $\mathbf{A}$.}
 \label{columnPerspective}
 \end{figure} 
@@ -1137,7 +1136,7 @@ Second, the arrow straight from the input to the output represents a \glossary{s
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.35\textwidth]{images/flowPerspective.png}
+\accessibleimage[width=0.35\textwidth]{images/flowPerspective.png}{Residual-stream flow diagram. An input matrix passes through two matrix transformations while a skip connection carries the input directly to the output, where the paths are added.}
 \caption[Jeff Yoshimi.]{(Left panel) Two matrices are used to process a matrix input conceptualized as a stack of rows. A skip or residual connection connects the input to the output. (Right panel) The entire diagram can be reduced to a simpler diagram in which only the flow of activations is shown. Here the combined result of the two matrices is being reduced to a single box labeled  $\mathbf{MLP}$. Note that in practice a non-linear activation function would also be applied to the hidden layer activations.}
 \label{flowPerspective}
 \end{figure} 
@@ -1170,14 +1169,14 @@ Examples of each of these types of tensor are shown in figure \ref{tensorTypes}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.6]{./images/tensorTypes.png}
+\accessibleimage[scale=0.6]{./images/tensorTypes.png}{Tensor shapes shown from left to right: a scalar, vector, matrix, three-dimensional volume, and a batch of three-dimensional volumes, representing ranks zero through four.}
 \caption[Soraya Boza.]{Schematic of different types of tensor. From left to right: a scalar, a vector, a matrix, a volume, and a batch of volumes. It can be seen that they are 0d, 1d, 2d, 3d and 4d arrays, or rank 0, 1, 2, 3, and 4 tensors. Numbers are not drawn in; only the abstract shape of the tensors are shown.} 
 \label{tensorTypes}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.3]{./images/tensorVisualStyles.png}
+\accessibleimage[scale=0.3]{./images/tensorVisualStyles.png}{Two visual styles for a three-dimensional tensor: a stack of two-dimensional matrices and a single cube-like volume.}
 \caption[Soraya Boza.]{Two ways of representing a 3d array: a stack of matrices (left) vs. a solid ``Rubik's cube''  or volume (right). Depending on the context one or the other representation is more useful.}
 \label{tensorVisualStyles}
 \end{figure}
@@ -1203,8 +1202,9 @@ space.
 addition}, is simply the component-wise addition of the two vectors. This is 
 easiest to see by example. Here are two examples of adding vectors with three 
 components, as row vectors and as column vectors:
-\begin{eqnarray*}
- (\; 0,\; -1,\; 9) + (\; 1,\; 2,\; 4) = (\; 0+1,\; -1+2,\; 9+4) = (1, 1, 13) \\
+\begin{equation*}
+\begin{gathered}
+ (\; 0,\; -1,\; 9) + (\; 1,\; 2,\; 4) = (\; 0+1,\; -1+2,\; 9+4) = (1, 1, 13) \\[1em]
 \begin{pmatrix}
 ~~0 \\ -1 \\ ~~9
 \end{pmatrix}
@@ -1219,16 +1219,17 @@ components, as row vectors and as column vectors:
 =
 \begin{pmatrix}
 1 \\ 1 \\ 13
-\end{pmatrix} \qquad  \qquad  \qquad 
-\end{eqnarray*}
+\end{pmatrix}
+\end{gathered}
+\end{equation*}
 
 Here are a few more examples:
-\begin{eqnarray*}
-(1,1) + (2,3) &=& (3,4)  \\
-(1,-1,1) + (0,0,0) &=& (1,-1,1)  \\
-(2,3,5,8,13,21) + (3,5,8,13,21,34) &=& (5,8,13,21,34,55) \\
-(-1,.5,\sqrt{7}) + (-1,-2,.8) &=& (-2,-1.5,\sqrt{7}+.8)
-\end{eqnarray*}
+\begin{align*}
+(1,1) + (2,3) &= (3,4)  \\
+(1,-1,1) + (0,0,0) &= (1,-1,1)  \\
+(2,3,5,8,13,21) + (3,5,8,13,21,34) &= (5,8,13,21,34,55) \\
+(-1,.5,\sqrt{7}) + (-1,-2,.8) &= (-2,-1.5,\sqrt{7}+.8)
+\end{align*}
 If all of the components of a vector are $0$ we call it the \glossary{zero 
 vector}. Adding the zero vector to any vector leaves it unchanged.
 
@@ -1259,7 +1260,7 @@ parallelogram.
 \begin{figure}[h]
 \centering
 % \includegraphics[scale=0.3]{./images/vectorMath.png}
-\includegraphics[scale=1.2]{./images/VectorOps.pdf}
+\accessibleimage[scale=1.2]{./images/VectorOps.pdf}{Three coordinate-plane diagrams illustrating vector addition by a parallelogram, vector subtraction by a displacement arrow, and scalar multiplication by changing a vector's length.}
 %\includegraphics[scale=1.2]{./images/VectorAdd.pdf}
 %\includegraphics[scale=1.2]{./images/Vectortmp.pdf}
 %\includegraphics[scale=1.2]{./images/VectorDiff.pdf}
@@ -1284,12 +1285,12 @@ subtraction can be defined in terms of vector addition and scalar
 multiplication. Thus vector subtraction is not fundamental to the definition 
 of a vector space. It is nonetheless presented here because it is used in 
 several other places in this book.}  Here are some examples:
-\begin{eqnarray*}
-(1,1,1) - (0,1,0) = (1-0,1-1,1-0) &=& (1,0,1) \\
-(10,5) - (5,10) = (10-5,5-10) &=& (5,-5) \\
-(1,2,3,4,5,6,7) - (0,0,0,0,0,0,0) &=& (1,2,3,4,5,6,7) \\
-(2,6,1) - (.5,20,-100) &=& (1.5,-14,101)
-\end{eqnarray*}
+\begin{align*}
+(1,1,1) - (0,1,0) = (1-0,1-1,1-0) &= (1,0,1) \\
+(10,5) - (5,10) = (10-5,5-10) &= (5,-5) \\
+(1,2,3,4,5,6,7) - (0,0,0,0,0,0,0) &= (1,2,3,4,5,6,7) \\
+(2,6,1) - (.5,20,-100) &= (1.5,-14,101)
+\end{align*}
 
    A geometric/physical way to think about vector subtraction is shown in the 
 middle panel of figure \ref{vectorMath}. When the vector $\mathbf{v}_1 - 
@@ -1337,10 +1338,10 @@ of the vector. We define \glossary{vector subtraction} of one vector from
 another as the addition of the vector's negative. This is shown in the 
 middle panel of figure \ref{vectorMath}. Subtracting a vector from itself is 
 the zero vector.
-\begin{eqnarray*}
+\[
   (\; 1, \; 2, \; 4) - (\; 1, \; 2, \; 4) = 
   (\; 1, \; 2, \; 4) + (\; -1, \; -2, \; -4) = (0,0,0)
-\end{eqnarray*}
+\]
 
    A subset of a vector space that satisfies two conditions:
 \begin{quote}
@@ -1366,23 +1367,23 @@ convention, when the vector space only contains the zero vector its dimension
 is $0$.
 
    For example
-\begin{eqnarray*}
+\[
 \{ (1,0), (0,1) \} \quad \{ (1,2), (1,1) \}
-\end{eqnarray*}
+\]
 are both basis for the same 2 dimensional vector space. Every vector $(x,y)$
 can be written as
-\begin{eqnarray*}
+\[
 (x,y) = x(1,0)+y(0,1)
-\end{eqnarray*}  
+\]
 so $\{ (1,0), (0,1) \}$ spans the plane. But every vector in the span of
 $(1,0)$ has $0$ for it second component and every vector in the span of $(0,1)$
 has $0$ for its first component, so we cannot write every vector in the plane 
 without using both $(1,0)$ and $(0,1)$. The set $\{ (1,0), (0,1) \}$ is a basis for the plane. It is called the {\bf standard basis}. 
 
    Every vector $(x,y)$ can also be written as
-\begin{eqnarray*}
+\[
  (x,y) =(y-x)(1,2) +(2x-y)(1,1)
-\end{eqnarray*}  
+\]
 so the set $\{ (1,2), (1,1) \}$ spans the plane. The second component of every
 vector in the span of $(1,2)$ is twice the first and the components of every 
 vector in the span of $(1,1)$ are equal to each other. So we can not write a
@@ -1430,15 +1431,15 @@ equivalent.
 The elementwise (or Hadamard) product of two vectors or tensors $\mathbf{a}$ and $\mathbf{b}$ with the same shape is denoted by $\mathbf{a} \odot \mathbf{b}$ and is defined as a vector or tensor whose entries are the products of the corresponding components of $\mathbf{a}$  and $\mathbf{b}$. For example, we multiply corresponding components of the two vectors to produce a new vector or with the same shape as the original. In a way this is the most intuitive way to multiply vectors. Just line them up and multiply entries.
 
 For example
-\begin{eqnarray}
+\begin{equation}
 (1,2) \odot (3,4) = (1 \cdot 3,  2 \cdot 4) =  (3,8)
-\end{eqnarray}
+\end{equation}
 
 The operation also works on matrices and higher-rank tensors. For example
 
-\begin{eqnarray}
-\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} \odot \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix} &=& \begin{pmatrix} 1 \cdot 5 & 2 \cdot 6 \\ 3 \cdot 7 & 4 \cdot 8 \end{pmatrix} = \begin{pmatrix} 5 & 12 \\ 21 & 32 \end{pmatrix}.
-\end{eqnarray}
+\begin{equation}
+\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} \odot \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix} = \begin{pmatrix} 1 \cdot 5 & 2 \cdot 6 \\ 3 \cdot 7 & 4 \cdot 8 \end{pmatrix} = \begin{pmatrix} 5 & 12 \\ 21 & 32 \end{pmatrix}.
+\end{equation}
 
 
 \section{Appendix: Block Matrix Representations}
@@ -1518,7 +1519,7 @@ This is a ``block matrix'' containing two blocks of non-zero values (correspondi
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.45]{./images/3NodeNet.png}
+\accessibleimage[scale=0.45]{./images/3NodeNet.png}{Three-node recurrent network labeled one, two, and three, with directed weighted connections from one to two, two to three, and three to one.}
 \caption[Jeff Yoshimi.]{A recurrent network with three nodes labeled $1,2,3$ and weights $w_{1,2} = -1, w_{2,3}=0.5, w_{3,1}=2$.}
 \label{sampleNetRecurrent}
 \end{figure}

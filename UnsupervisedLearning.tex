@@ -110,7 +110,7 @@ To build this kind of model in Simbrain, take the following steps:
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/net-3-2.png}
+\accessibleimage[scale=.4]{./images/net-3-2.png}{Feed-forward associative network after one Hebbian training example. Three active input nodes connect to two output nodes; the connections between co-active nodes are strengthened.}
 \caption[Simbrain screenshot.]{Learning one association in a feed-forward network using the Hebb rule.}
 \label{ffAssociator}
 \end{figure}
@@ -143,7 +143,7 @@ One thing that Oja's rule can do is dimensionality reduction. Recall from chapte
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/OjasRule.png}
+\accessibleimage[scale=.4]{./images/OjasRule.png}{Simbrain illustration of Oja's rule. Three inputs include two noise signals and a sine wave; an output node trained by Oja's rule develops a time series that follows the sine-wave component, unlike an untrained comparison node.}
 \caption[Simbrain screenshot]{An illustration of Oja's rule for dimensionality reduction. Two of the input nodes produce random noise, and the third produces a sine wave. Think of each output node as performing a 3-to-1 dimensionality reduction. The output node on the left was initialized with fixed random weights that don't change. The output node on the right has weights trained by Oja's rule. Time series for two output nodes are shown in the middle and right panels. Notice that the node with weights trained by Oja's rule extracts the sine wave, which is the most informative part of the 3-dimensional input signal.}
 \label{oja_dim_reduction}
 \end{figure}
@@ -183,7 +183,7 @@ The basic idea is shown in Fig. \ref{competitive_3} and Fig. \ref{competitiveInp
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/competitive_3.png}
+\accessibleimage[scale=.4]{./images/competitive_3.png}{Competitive network for classifying three kinds of simulated odors. Five input nodes connect to three output nodes; the active output node identifies the current odor class.}
 \caption[Simbrain screenshot]{Competitive network with 3 output nodes, which can learn to detect up to 3 clusters in an 5-dimensional input space. Inputs correspond to smells of flowers. Once the network has been trained, the output nodes can be labelled. Which output node ends up classifying which type of smell will change from one run to another of this network.}
 \label{competitive_3}
 \end{figure}
@@ -193,7 +193,7 @@ The way a competitive network learns can be understood visually in terms of the 
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1]{./images/competitiveInputSpace.png}
+\accessibleimage[scale=1]{./images/competitiveInputSpace.png}{Two-dimensional input-space plot with three clusters of blue points representing Swiss cheese, Gouda, and a blue flower. Each cluster corresponds to a learned competitive-network category.}
 \caption[Pamela Payne.]{Geometrical illustration of how competitive networks learn. If we think of this as a representation of the smell inputs in Fig. \ref{competitive_3}, then each blue dot corresponds to one smell from one location in the virtual world, and the three clusters correspond to the three objects: Swiss cheese, Gouda, and the blue flower. }
 \label{competitiveInputSpace}
 \end{figure}
@@ -233,7 +233,7 @@ The new idea with a SOM is to update the weights not just around the winning nod
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/som_labelled.png}
+\accessibleimage[scale=.5]{./images/som_labelled.png}{Trained self-organizing map in a Simbrain world. Its output units have been hand-labeled to show categories associated with different regions of the map.}
 \caption[Simbrain screenshot.]{A self organizing map after it has been trained for several hundred iterations, with some of the categorizations it produces hand-labelled.}
 % Replace cluster talk with region talk?
 \label{som_labelled}
@@ -251,7 +251,7 @@ Some of the maps, especially those in the primary sensory areas, are ordered acc
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.6]{./images/edgeDetectorsCortex.jpg}
+\accessibleimage[scale=.6]{./images/edgeDetectorsCortex.jpg}{Top-down map of visual cortex organized by edge orientation. Neighboring colored regions represent similar edge angles; an adjacent key shows the orientations associated with the colors.}
 \caption[From \url{https://grey.colorado.edu/CompCogNeuro/index.php/File:fig_v1_orientation_cols_data.jpg}.]{Topographically organized edge detectors in visual cortex. The main panel shows a top-down view on an area of cortex, with neurons colored according to what kind of edge they represent. To the right of the panel these edge orientations are shown. Notice that nearby neurons represent similar edges, that is, edges at similar angles. From  \url{https://grey.colorado.edu/CompCogNeuro/index.php/CCNBook/Perception}.}
 \label{edgeDetectors}
 \end{figure}
@@ -261,7 +261,7 @@ In more abstract regions of the brain, nearby neurons may come to represent simi
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/SOM_SemanticMap.png}
+\accessibleimage[scale=.5]{./images/SOM_SemanticMap.png}{Semantic self-organizing map with words arranged by grammatical and semantic similarity. Nouns, verbs, and adverbs occupy distinct regions, while related words such as dog and horse appear near one another.}
 \caption[From Kohonen, 1998 \cite{kohonen1990self}.]{A self organizing map trained to represent semantic features of sentences. Each dot corresponds to an output node, and labels show what concepts these nodes have learned to represent. Notice that nouns, adjectives, and verbs are represented in specific parts of the network. From Kohonen (1990), p. 1476.}
 \label{somSemantic}
 \end{figure}

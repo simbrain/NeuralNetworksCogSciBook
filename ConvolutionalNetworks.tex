@@ -38,14 +38,14 @@ The key idea with a deep network is to use a special type of weight layer called
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{images/happyConvolution.png}
+\accessibleimage[width=0.5\textwidth]{images/happyConvolution.png}{Convolution example with a pixelated happy face, a 3 by 3 edge-detection filter, and a feature map. The filter is slid across the image, and each local dot product becomes one feature-map value.}
 \caption[Soraya Boza, adapting this image from User Cecbur, \url{https://commons.wikimedia.org/wiki/File:Convolutional_Neural_Network_NeuralNetworkFilter.gif}, with labels added by Jeff Yoshimi.]{A convolutional layer and its components. From left to right: an input image, a 3x3 convolutional filter (which detects edges with a $-45^\circ$ angle), and the resulting feature map. The filter is scanned across the image. At each stage of this scanning process, the dot product of the filter's receptive field in the input image is computed and used to populate the feature map. This whole process is known as a convolution and a layer like this is a convolutional layer. The filter itself is a set of shared weights and so this is essentially a complex form of weight layer.}
 \label{cnn_filter}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{images/CNN_WorkedExample.png}
+\accessibleimage[width=0.7\textwidth]{images/CNN_WorkedExample.png}{Worked convolution calculation: a 3 by 3 binary filter moves over a binary input array. Matching entries yield a feature map whose maximum value, three, occurs where the filter aligns with a backslash-shaped line.}
 \caption[Jeff Yoshimi]{Worked example of a convolutional layer. Notice that the feature map has the highest values where the filter matches the pixel array. In the case shown, the filter matches the pixel array in one pixel only. Imagine the filter sliding over the pixel array, and computing dot products (here: numbers of matching $1$'s), which are used to populate the feature map.}
 \label{cnn_workedExample}
 \end{figure}
@@ -91,7 +91,7 @@ We can now think about filters as volumes that act on other volumes, as in figur
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{images/filterToVolume.png}
+\accessibleimage[width=0.5\textwidth]{images/filterToVolume.png}{Three-dimensional convolution diagram. A shaded filter occupies one receptive field in an input volume, and its dot product produces the corresponding shaded cell in an output volume.}
 \caption[Soraya Boza and Jeff Yoshimi.]{Imagine the filter being passed ``through'' the input volume, and being dotted with its receptive field at each stage of the operation, producing one number in the output. The current location of the filter in the input volume is shaded in, as is the corresponding square of the output array. }
 \label{filterToVolume}
 \end{figure}
@@ -101,7 +101,7 @@ In general, the depth of a filter (more specifically, the number of channels in 
 
 \begin{figure}
 \centering
-\includegraphics[width=1.0\textwidth]{images/filterDepth.png}
+\accessibleimage[width=1.0\textwidth]{images/filterDepth.png}{Diagram showing that a convolutional filter spans the full depth of its input volume. Two example filters each cover a stack of input channels and produce one two-dimensional output feature map.}
 \caption[Soraya Boza.]{Filters usually have a depth that matches the input volume they are passed over. Shown are sample receptive fields for two filters, at one stage of a convolutional pass. Notice that the output of the operation is just a matrix, with one entry for each ``position'' of the filter inside the input volume. In practice, a bank of filters would be used, resulting in an output volume with depth greater than one.}
 \label{filterDepth}
 \end{figure}
@@ -126,7 +126,7 @@ In general, a convolutional layer will involve multiple filters, a \glossary{fil
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{images/filterBank}
+\accessibleimage[width=0.5\textwidth]{images/filterBank}{Filter-bank diagram: five 3 by 3 by 3 filters are applied to a 6 by 6 by 3 input volume with stride one, producing a 5 by 4 by 4 output volume whose depth equals the number of filters.}
 \caption[Soraya Boza and Jeff Yoshimi.]{Result of applying a filter bank of 5 $3 \times 3 \times 3$ filters to a $6 \times 6 \times 3$ input volume with a stride of 1 to produce an output volume that is $5 \times 4 \times 4$. The output depth of $5$ comes from the number of filters in the bank; the output height and width come from the formula in the main text.}
 \label{filterBank}
 \end{figure}
@@ -184,7 +184,7 @@ There are several kinds of volume-to-volume layer in a convolutional network. On
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.3]{./images/maxPooling.png}
+\accessibleimage[scale=.3]{./images/maxPooling.png}{Max-pooling example. A 2 by 2 window moves across an input matrix with stride two; the largest value from each window is retained in a smaller output matrix.}
 \caption[Jeff Yoshimi ]{The max pooling operation applied to a matrix input, producing a smaller output that retains the same core information. In this example the pool shape is $2 \times 2$ and the stride is 2, so the pooling window is scanned across the input in increments of 2. The maximum value in each pooling window is used to populate the output. Pooling operates only on the spatial dimensions (height and width), with no depth dimension.}
 \label{maxPooling}
 \end{figure}
@@ -240,7 +240,7 @@ The overall idea is to start with layers that learn these complex features, then
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.45]{./images/deepNetExample.png}
+\accessibleimage[scale=.45]{./images/deepNetExample.png}{Example convolutional network pipeline showing an input volume followed by convolutional layers, pooling layers, and fully connected layers. The spatial dimensions shrink while feature depth increases before final outputs.}
 \caption[Soraya Boza and Jeff Yoshimi ]{Sample deep network showing convolutional layers and pooling layers. You should try to apply the shape equations to convince yourself that the sizes make sense. }
 \label{deepNetExample}
 \end{figure}

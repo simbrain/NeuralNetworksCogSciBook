@@ -1,7 +1,7 @@
 \chapter{Dynamical Systems Theory}\label{ch_dst}
 \chapterauthor{Jeff Yoshimi, Scott Hotton}
 
-  In chapters \extref{ch_act_functions}, \extref{ch_linear_algebra}, and \extref{ch_supervised}, we have noted that when the ``play''  button \includegraphics[scale=.5]{./images/Play.png} is pressed in Simbrain a dynamical process is simulated; neurons start firing and changing, weights will sometimes change their size, etc.
+  In chapters \extref{ch_act_functions}, \extref{ch_linear_algebra}, and \extref{ch_supervised}, we have noted that when the ``play''  button \accessibleartifact[scale=.5]{./images/Play.png} is pressed in Simbrain a dynamical process is simulated; neurons start firing and changing, weights will sometimes change their size, etc.
 A \glossary{dynamical system} is a rule that says how a system changes its state in time. Neural networks are dynamical systems,  which say how patterns of node activations, weight strengths, and other quantities change in time. When you press play in Simbrain, you run a dynamical system. Simbrain has special features, like the projection plot, which support dynamical systems analysis by allowing you to visualize network dynamics as they unfold in real-time.
 
 Dynamical systems theory provides a formal, mathematical way to both analyze and visualize processes in neural networks (especially recurrent networks). Think of it this way: it's one thing to run a neural network in Simbrain and see a bunch of colors changing, or to look at a set of equations describing a neural network. But in these cases it's hard to say much about what exactly is happening in the network. However, when we use dynamical systems theory to describe and visualize that same neural network, suddenly we can see things that were previously invisible. We might find that no matter what state we initialize a network to, when we run it, it always ends up settling into just one of two possible states. Or we might find that it oscillates in one of three possible oscillatory patterns. These are things we can clearly see in a dynamical systems analysis, that would otherwise be hidden from us. As examples of this kind of visualization see  Figs. \ref{F:stateSpaceParts}, \ref{F:hopfieldStateSpace}, \ref{F:pendulumStateSpace}, \ref{F:chaoticStateSpace}, and \ref{F:attractorsRepellers} below.
@@ -18,7 +18,7 @@ how they can be used to study neural networks.
 % Image below the point shown is not above the line. Simple fix.
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.45]{./images/StateSpaceParts.png}
+\accessibleimage[scale=.45]{./images/StateSpaceParts.png}{Phase portrait in a square two-dimensional state space. Arrows trace several orbits from initial conditions toward one central attracting fixed point.}
 \caption[Pamela Payne.]{Some basic components of a dynamical system. The square region is the \emph{state space} for a 2-dimensional system. Each point in that region is a \emph{state}. Each state can be treated as an \emph{initial condition}. When the system is run, an \emph{orbit} unfolds from the initial condition. A picture like this that shows selected orbits in the state space is a \emph{phase portrait}. The phase portrait shows in a concise, visually intuitive way what the dynamics of a system are. In this case we have a system with a single attracting fixed point. All orbits lead to that same state. Recurrent neural networks often display attractor dynamics.}
 \label{F:stateSpaceParts}
 \end{figure}
@@ -41,9 +41,9 @@ The state of the network in Fig. \ref{F:hopfieldStateSpace} is $(-.8,.8)$, which
 % The basin picture is misleading because the circle is not around a basin of attraction
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.2]{./images/HopfieldNetAttractor.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.2]{./images/HopfieldNetAttractor.png}{Two-node recurrent Hopfield network. A blue node with activation minus point eight connects reciprocally to a red node with activation point eight.}}
 \hspace*{1in}
-\raisebox{-0.5\height}{\includegraphics[scale=.6]{./images/HopfieldPortrait.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.6]{./images/HopfieldPortrait.png}{Phase portrait for the two-node Hopfield network. Orbits spiral toward two attractors near minus point eight, point eight and point eight, minus point eight, while the origin is a saddle point.}}
 \caption[Left: Simbrain screenshot; Right: Jeff Yoshimi.]{A 2 node recurrent network (left) and its phase portrait (right). The phase portrait has two fixed point attractors at $(-.8,.8)$ and $(.8,-.8)$, each with its own basin of attraction. There is a fixed point at the origin $(0,0)$ which is attracting in one direction but repelling in the other (a ``saddle-node''). This is a Hopfield network that was trained using a variant of the Hebb rule. The network stores two memories, corresponding to the two attractors.}
 \label{F:hopfieldStateSpace}
 \end{figure}
@@ -81,9 +81,9 @@ Depending on whether ``time'' is taken to be continuous or discrete, we have a c
 % Add numbers for vertical axis
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.15]{./images/Pendulum.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.15]{./images/Pendulum.png}{Simple pendulum: a bob suspended from a pivot swings through an arc on either side of vertical.}}
 \hspace*{.8in}
-\raisebox{-0.5\height}{\includegraphics[scale=.2]{./images/PendulumPortrait.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.2]{./images/PendulumPortrait.png}{Pendulum phase portrait. Curved orbits in angular-displacement and angular-velocity space spiral inward toward the resting state at zero, zero.}}
 \caption[Left: From \url{https://commons.wikimedia.org/wiki/File:Simple_gravity_pendulum.svg}; Right: Scott Hotton.]{Pendulum (Left) and its state space with a phase portrait (Right). The vertical dimension of the state space corresponds to angular velocity; the horizontal dimension corresponds to angular displacement away from hanging straight down.}
 \label{F:pendulumStateSpace}
 \end{figure}
@@ -110,7 +110,7 @@ Since dynamical systems are deterministic, they can be used to predict exactly w
 %Change color to blue
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{./images/lorenzAttractor.png}
+\accessibleimage[width=0.5\textwidth]{./images/lorenzAttractor.png}{Lorenz attractor: a trajectory repeatedly loops around two adjacent lobes without settling into a repeating orbit.}
 \caption[\url{https://commons.wikimedia.org/wiki/File:Lorenz_attractor2.svg}.]{An orbit from a famous chaotic system called ``The Lorenz Attractor.'' Nearby initial conditions can diverge arbitrarily far apart (within the attractor) over time. }
 \label{F:chaoticStateSpace}
 \end{figure}
@@ -133,7 +133,7 @@ These sudden shifts in the behavior of a system when parameters are changed are 
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/bifurcation.png}
+\accessibleimage[scale=.5]{./images/bifurcation.png}{Hopf bifurcation comparison. At left, trajectories spiral into a stable fixed point; at right, the fixed point repels and trajectories approach a stable circular orbit.}
 \caption[Scott Hotton.]{A bifurcation where a fixed point goes from being
 attracting to repelling, and in which an attracting periodic orbit appears.
 (This is called a ``Hopf bifurcation''). }
@@ -151,7 +151,7 @@ In this section, we  introduce some language for classifying orbits and using th
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/AttractorsRepellers.png}
+\accessibleimage[scale=.5]{./images/AttractorsRepellers.png}{Four phase portraits: an attracting fixed point, a repelling fixed point, an attracting periodic orbit, and a repelling periodic orbit. Blue trajectories approach attractors and leave repellers.}
 \caption[Pamela Payne.]{An attracting fixed point (upper left), repelling fixed point (upper right), attracting periodic orbit (lower left), and repelling periodic orbit (lower right). Attractors / repellers are shown in black; transient orbits approaching or leaving attractors and repellers are shown in blue.}
 \label{F:attractorsRepellers}
 \end{figure}
@@ -203,7 +203,7 @@ $n$-cycles.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.1]{./images/Two5-cycles.png}
+\accessibleimage[scale=0.1]{./images/Two5-cycles.png}{Two discrete five-cycles. Open circles connected by directed dashed arrows show five states visited in sequence; the left cycle is a pentagon and the right is an irregular crossing path.}
 \caption[Scott Hotton.]{Two $5$-cycles in a two dimensional state space. The
 points in the $5$-cycles are indicated with open circles. The arrows on the
 dashed lines connecting the open circles indicate where each point in a
@@ -215,8 +215,8 @@ $5$-cycle for a more complicated dynamical system.}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.333]{./images/Attracting5-cycle.pdf}
-\includegraphics[scale=0.333]{./images/Repelling5-cycle.pdf}
+\accessibleimage[scale=0.333]{./images/Attracting5-cycle.pdf}{Attracting five-cycle. Directed paths from nearby filled points move toward the five open-circle cycle.}
+\accessibleimage[scale=0.333]{./images/Repelling5-cycle.pdf}{Repelling five-cycle. Directed paths from nearby filled points move away from the five open-circle cycle.}
 \caption[Scott Hotton.]{The $5$-cycles are shown as in the left panel of Fig.
 \ref{F:Two5cycles}.  The filled dots indicate points that are not part of the
 $5$-cycle.  The arrows on the dashed lines connecting the dots indicate where
@@ -274,7 +274,7 @@ comes to rest at and the whole valley is its basin of attraction. The state spac
 % Talk about basin boundaries, separatrices, etc.
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/BasinAttraction.jpeg}
+\accessibleimage[scale=.5]{./images/BasinAttraction.jpeg}{Hill-and-valley landscape representing basins of attraction. Red balls on a wavy surface roll toward low points in separate valleys.}
 \caption[From \url{http://www.scholarpedia.org/article/File:Hopfieldattractor.jpg}. Licensed Under CC BY-NC-SA]{Attractors and basins of attraction pictured using a hill and valley
 metaphor.}
 \label{F:basins}
@@ -313,9 +313,9 @@ Recurrent networks displaying all four types of orbit can  be created in Simbrai
 
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\fbox{\includegraphics[scale=.45]{./images/projectionFixedPoints.png}}}
+\raisebox{-0.5\height}{\fbox{\accessibleimage[scale=.45]{./images/projectionFixedPoints.png}{Simbrain projection plot with trajectories converging on two attracting fixed points in a two-dimensional projection of a 25-dimensional activation space.}}}
 \hspace*{.5 in}
-\raisebox{-0.5\height}{\fbox{\includegraphics[scale=.35]{./images/projectionPeriodic.png}}}
+\raisebox{-0.5\height}{\fbox{\accessibleimage[scale=.35]{./images/projectionPeriodic.png}{Simbrain projection plot with trajectories converging on one attracting periodic orbit in a two-dimensional projection of a 25-dimensional activation space.}}}
 \caption[Simbrain screenshots.]{Phase portraits generated using Simbrain. A system with two attracting fixed points (Left) and a system with one attracting periodic orbit (Right). Both are projections from a 25 dimensional activation space to 2 dimensions. The red point is the current point in each simulation. }
 \label{F:simbrainStateSpace}
 \end{figure}

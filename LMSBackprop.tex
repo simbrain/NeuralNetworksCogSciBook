@@ -15,15 +15,15 @@ Note that LMS is an algorithm that only works with 2-layer networks. It cannot b
 % Any linearly separable problem can be solved with this algorithm. The perceptron convergence theorem.
 
 LMS follows the template from section \extref{SupervisedFirstPass}: begin with random parameters (weights and biases), iterate through each of the input patterns, compute errors, and use these errors to update weights and biases in such a way that errors are reduced. We will focus on the case of a single linear output node here. \footnote{We will not formally derive it, or state the algorithm in its full generality. However, the derivation is not too difficult: the key step involves taking the derivative of the error function with respect to a weight (how much is error changing as a function of that particular weight). A brief derivation is at \url{https://en.wikipedia.org/wiki/Delta_rule} and a more detailed discussion is at \url{http://uni-obuda.hu/users/fuller.robert/delta.pdf}. In subsequent planned sections we derive the rule, and extend it to handle many outputs, and more complex activation functions.} When applying the rule, a change in a weight $w_{i,j}$ is equal to the product of a learning rate $\epsilon$, the activation of the input node to that weight, $a_i$, and the difference between a desired and actual activation ($t_j - a_j$) for that node:
-\begin{eqnarray*}
+\[
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
-\end{eqnarray*}
+\]
 Since $(t_j - a_j)$ is error  (with a small ``e''), the rule says that the change in a weight is equal to a learning rate times the activation of the input node for that weight, times the error (that is, $\Delta w_{i,j}  =  \epsilon a_i e_j$).  This means that for positive inputs, weights are changed in the direction of error.\footnote{The input scales things so they work for positive or negative inputs and so that changes are bigger for bigger inputs, and the learning rate allows us to control how quickly learning happens. Even though we are giving interpretations for each factor in the rule, it can be derived purely from calculus.} Notice that the form of the rule is identical to the Hebb rule, except with output activation replaced by error.
 
 LMS changes the bias $b_j$ of an output node $j$ as follows:
-\begin{eqnarray*}
+\[
 \Delta b_j  =  \epsilon (t_j - a_j)
-\end{eqnarray*}
+\]
 That is, the change in a bias for a node $j$ is just the learning rate times the error on output node $j$.\footnote{Note that this is really the same as the weight change rule, if we think of the bias in terms of another input neuron, clamped at 1, and attached to this output neuron by a modifiable weight (which is in effect the bias).}
 
 % The new_material doc contains additional material here, but I'm not sure it's useful.
@@ -69,12 +69,12 @@ We label the target value $t$. We will not consider updates to the bias term. As
 
 % Explicitly explain that a prime means next time step, for all variables
 We can now work out a complete example, and in the process see how LMS implements gradient descent. Suppose we are given:
-\begin{eqnarray*}
-& a_1 = 1 \\
-& w_{1,2} = 1.5 \\
-& t = 2  \\
-& \epsilon = .5  \\
-\end{eqnarray*}
+\begin{align*}
+a_1 &= 1 \\
+w_{1,2} &= 1.5 \\
+t &= 2  \\
+\epsilon &= .5
+\end{align*}
 With this information we can determine: (1) the output activation $a_2$ of the network (our ``forward pass''), (2) SSE, (3) the updated weight value at the next time step, which we designate $w_{1,2}'$, (4) the output activation $a_2'$, and (5) error at the next time step, SSE$'$. We can then repeat these steps and check to see that SSE is reduced over time, which moves us down the error surface for this task, which is shown in Fig. \ref{error_lms}.
 
 (1) The network will produce a $1.5$ in response to an input of $1$, since the input activation is $1$, the weight is $1.5$, and $1 \cdot 1.5 = 1.5$ (we are, again, assuming output bias of 0 and slope of 1).
@@ -83,23 +83,23 @@ With this information we can determine: (1) the output activation $a_2$ of the n
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{images/error_lms.png}
+\accessibleimage[width=0.5\textwidth]{images/error_lms.png}{Parabolic sum-squared-error curve plotted against weight strength. Successive black points descend from weight 1.5 and error 0.25 toward the minimum near weight 2 and zero error.}
 \caption[Jeff Yoshimi.]{Gradient descent on the error surface for the LMS example discussed in Section \ref{lms_example}. As the LMS rule is applied the weight strength changes in a way that minimizes sum squared error.}
 \label{error_lms}
 \end{figure}
 
 (3) Applying the formula above
-\begin{eqnarray*}
+\[
 \Delta w_{i,j}  =  \epsilon a_i (t_j - a_j)
-\end{eqnarray*}
+\]
 we get
-\begin{eqnarray*}
+\[
 \Delta w_{1,2}  =  .5 \cdot 1 \cdot (2- 1.5) = .25
-\end{eqnarray*}
+\]
 We then use $\Delta w$ to update the weight value from its old value of 1.5, so that
-\begin{eqnarray*}
+\[
 w_{1,2}' = w_{1,2} + \Delta w_{1,2}  = 1.5 +.25  = 1.75
-\end{eqnarray*}
+\]
 So our new weight value is 1.75.
 
 (4) With this new weight, the network produces an output  $a_2' = 1 \cdot 1.75 = 1.75$.
@@ -108,10 +108,10 @@ So our new weight value is 1.75.
 
 In subsequent time steps we get:
 
-\begin{eqnarray*}
+\begin{align*}
 w_{1,2}'' = 1.75 + .5 \cdot 1 \cdot (2 - 1.75) = 1.875 \\
-w_{1,2}''' = 1.875 + .5 \cdot 1 \cdot (2 - 1.875) = 1. 9375 \\
-\end{eqnarray*}
+w_{1,2}''' = 1.875 + .5 \cdot 1 \cdot (2 - 1.875) = 1.9375
+\end{align*}
 As you can see, applying this rule leads to SSE getting lower and lower, and the output getting closer and closer to the desired output of 2. Ten successive points on the error curve are shown in figure \ref{error_lms}.
 
 \section{Linearly Separable and Inseparable Problems}
@@ -129,11 +129,11 @@ To understand what linear separability (and inseparability) are, recall that a c
 
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.4]{./images/decisionBoundaries1.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.4]{./images/decisionBoundaries1.png}{Scatterplot of binary classes in two-dimensional input space. Zero-valued points cluster lower left and one-valued points cluster upper right, making the classes linearly separable.}}
 \hspace*{.4in}
-\raisebox{-0.5\height}{\includegraphics[scale=.4]{./images/decisionBoundaries2.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.4]{./images/decisionBoundaries2.png}{The same linearly separable binary-class scatterplot with a diagonal line separating the zero-valued lower-left points from the one-valued upper-right points.}}
 \hspace*{.4in}
-\raisebox{-0.5\height}{\includegraphics[scale=.4]{./images/decisionBoundaries3.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.4]{./images/decisionBoundaries3.png}{Binary-class scatterplot whose zero and one points cannot be separated by one straight line; a dashed nonlinear curve separates the classes.}}
 \caption[Jeff Yoshimi.]{Three classification tasks. (Left) A linearly separable task. (Middle) A decision boundary that will solve the task. (Right) A linearly inseparable task and a non-linear decision boundary that can solve it.}
 \label{F:decisionBoundaries}
 \end{figure}
@@ -148,7 +148,7 @@ Logic gates provide a convenient and historically important class of tasks that 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth]{images/booleanInputSpaces.png}
+\accessibleimage[width=0.9\textwidth]{images/booleanInputSpaces.png}{Three plots show the input spaces for AND, OR, and XOR. Open circles are output zero and filled circles output one; AND and OR are linearly separable, while XOR has opposite corners in each class and is not.}
 \caption[Jeff Yoshimi.]{Input spaces for AND (left), OR (middle), and XOR (right). Open dots correspond to 0, filled dots to 1. Which tasks are linearly separable?}
 \label{boolean_inputspace}
 \end{figure}
@@ -172,15 +172,15 @@ In this section we cover what is probably the best known form of supervised lear
 Backprop can be thought of as a generalization of the LMS technique or ``Delta rule'' described in the last few sections. In fact, backprop is sometimes called the ``generalized delta rule.'' This rule had been proposed as early as the late 1960s / early 1970s \cite{bryson1969applied, werbos1974beyond} and was independently discovered by several theorists in the 1980s \cite{le1986learning, parker1985learning}.\footnote{A detailed study of the history of backprop, with reference to others beyond those already cited, is \cite{schmidhuber2020deep}, available at \url{https://people.idsia.ch/~juergen/deep-learning-miraculous-year-1990-1991.html}.} It was popularized by Rumelhart, McClelland, and Williams in the late 1980s \cite{rumelhart1986parallel}. The discovery and popularization of backprop led to a revival of interest in neural networks in the 1980s and 1990s, following the ``dark ages'' of the 1970s (again, see chapter \extref{ch_history}).
 
 We will not cover the details of the backpropagation algorithm here\footnote{Though, as with the details of LMS, a detailed discussion of backprop is being planned now.}, but will instead describe it in a qualitative way. It is identical to LMS at the output layer, but adds a way to update the hidden weights. The weight updates are also almost the same, but the computation of the error is more complex, because we don't have direct access to the targets. That is, for a weight $w_{i,j}$ connecting an input node $a_i$ to a hidden layer node $a_j$, the update rule is:
-\begin{eqnarray*}
+\[
 \Delta w_{i,j}  =  \epsilon a_i e_j
-\end{eqnarray*}
+\]
 Where $e_j$ is now just a different kind of error. This error is computed by a kind of reversal of how weighted inputs are computed in forward propagation. When weighted inputs or net inputs (see chapter \extref{ch_act_functions}) to a node are computed, activations are multiplied by intervening weights and added together. In linear algebra terms, the dot product of an input vector and fan-in weight vector is taken. This propagates activation forward. But now, we do the reverse. We take the errors on nodes at some level of a feedforward network, and multiply them by the intervening weights from the previous layer, and add the resulting products.  That is, we backpropagate error. More precisely, for a single hidden unit, the error at that unit is the dot product of the output error vector and the fan-in weight vector to that unit. This is the same operation as computing weighted inputs (chapter \extref{ch_act_functions}), but applied to errors rather than activations and flowing backwards through the network rather than forwards. The idea is illustrated in figure \ref{backprop_error}.
 
  In the example shown, assume the weights from the hidden unit to the output are 1, so that the backpropped error is the dot product $(2, 0) \cdot (1, 1) = 2$. That error can then be used to update $w_{1,2}$ using  $\Delta w_{1,2}  =  \epsilon a_1 e_2$. Notice that all that has changed from LMS is that we got the error via this backpropagation procedure.\footnote{If $\epsilon = 1$, the weight  $w_{1,2}$ will be updated from 1 to $1 + 1 \cdot 1 \cdot 2 = 3$. This will improve $a_3$ but make $a_4$ worse (however, repeated application of the rule with a lower learning rate $\epsilon$  would reduce error).}
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{images/backpropError}
+\accessibleimage[width=0.5\textwidth]{images/backpropError}{Three-node network illustrating backpropagated error. Input node a1 has activation 1 and connects to hidden node a2 with activation 0.5 and error 2; a2 connects to output nodes a3 and a4, whose activations are 1 and minus 1 and errors 2 and 0.}
 \caption[Jeff Yoshimi.]{How error is backpropagated. Output errors are multiplied by intervening weights and added together to produce the error at the hidden unit (this is ``weighted inputs in reverse''). In this example, assume the target values are $t_3 = 3$ and $t_4 = -1$ and the weights are all $1$. The errors at the output layer are $e_3 = 3-1=2$ and $e_4 = -1 - (-1) =  0$.  The error at the hidden unit is computed as the dot product of the error vector and the fan-in weight vector: $e_2 = (2, 0) \cdot (1, 1) = 2$.}
 \label{backprop_error}
 \end{figure}
@@ -220,7 +220,7 @@ As we saw, two-layer networks with linear units cannot solve this type of proble
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{images/xor_internal_rep.png}
+\accessibleimage[width=0.7\textwidth]{images/xor_internal_rep.png}{Diagram of XOR remapping. The lower input-space plot has diagonally opposed class labels, which are linearly inseparable; arrows map those points into a hidden-unit space where the two classes separate, then to a three-layer network at right.}
 \caption[Pamela Payne.]{A remapping of the input space to the hidden unit space in the XOR problem. Note that the bottom panel shows the input space for XOR, and that it is linearly inseparable. The network then maps $(0,0)$ and $(1,1)$,  to $(0,0)$ in the hidden unit space. $(0,1)$ and $(1,0)$ are mapped to $(0,.5)$ in the hidden unit space. Now notice that the hidden unit space is linearly separable!  Also notice that the hidden unit space has developed an internal representation of the two main cases of interest: just one unit is one (represented by $(0,.5)$) and both units are in the same state (represented by $(0,0)$). Thus the separated hidden unit states can be mapped to the appropriate output states.}
 \label{xor_remapping}
 \end{figure}

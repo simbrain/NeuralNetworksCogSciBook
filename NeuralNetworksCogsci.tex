@@ -5,13 +5,15 @@
 % or to create a file to compile a single chapter
 %
 
-% Accessibility work in progress: enable tagged PDF output before loading the
-% class. The full book may expose unsupported legacy content while remediation
-% proceeds chapter by chapter; see ACCESSIBILITY.md.
-\DocumentMetadata{
-  lang=en-US,
-  testphase=phase-II
-}
+% Tagged PDF output is temporarily disabled for the master.  TeX Live 2023's
+% experimental tagpdf implementation loops while finalizing this full book;
+% restore this block after validating the tagged build on the pinned TeX Live
+% 2025 toolchain.  The accessibility helpers below retain their descriptions
+% and become harmless no-ops while tagging is disabled.
+%\DocumentMetadata{
+%  lang=en-US,
+%  testphase=phase-II
+%}
 \documentclass[oneside]{book}
 \usepackage[pdftex]{graphicx}
 % natbib must be loaded with the numbers option: the bibliography style is
@@ -25,8 +27,12 @@
 \usepackage{xr}
 \usepackage{listings}
 \usepackage[hidelinks]{hyperref}  % Likes to be the last class loaded
-\hypersetup{bookmarksdepth=2}
 \externaldocument[A-]{NeuralNetworksCogsci}
+
+\providecommand{\tagstructbegin}[1]{}
+\providecommand{\tagstructend}{}
+\providecommand{\tagmcbegin}[1]{}
+\providecommand{\tagmcend}{}
 
 % Use this for informative raster figures. Decorative images should be marked
 % as artifacts instead; see ACCESSIBILITY.md.
@@ -34,6 +40,14 @@
   \tagstructbegin{tag=Figure,alt={#3}}%
   \includegraphics[#1]{#2}%
   \tagstructend
+}
+
+% Use this for decorative graphics whose information is already supplied in
+% adjacent text. It prevents redundant screen-reader output.
+\newcommand{\accessibleartifact}[2][]{%
+  \tagmcbegin{artifact}%
+  \includegraphics[#1]{#2}%
+  \tagmcend
 }
 
 \def\ie{{\it i.e. }}

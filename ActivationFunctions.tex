@@ -5,7 +5,7 @@
 
  As discussed in the introduction, artificial neural networks are comprised of nodes connected by weights. The nodes are usually pictured as circles and are associated with a number called an activation, while the weights are represented by lines connecting the nodes and are associated with a number called a strength. In Simbrain, node activations correspond to the colors of the nodes and to the number inside the nodes, and weight strengths correspond to the color and size of the filled disks at the end of the lines connecting nodes. In figure \ref{F:simplenet1} (Left), three nodes are connected to one node via three weights.
 
-When a neural network simulation is run, node activations and weight strengths change. Neural networks have \emph{dynamics}, which describe a changing pattern of activation across the nodes and (in some cases) a changing pattern of strengths across the weights. To see these dynamics in Simbrain, look for the triangular ``play''  button \includegraphics[scale=.5]{./images/Play.png}. When you press it you usually see node activations change, and in some cases weight strengths. In this chapter we describe some of the rules that govern changing node activations.\footnote{When you open up a dialog to train a network, there is another play button that is used to modify the weights. When these buttons are pressed the dynamics of nodes and weights is simulated. In chapters \extref{ch_linear_algebra}, \extref{ch_unsupervised}, and \extref{ch_supervised}, we discuss the rules governing changes in weight strengths.} These are based loosely on the physiology of neurons and action potentials, which was discussed in chapter \extref{ch_neuro}.
+When a neural network simulation is run, node activations and weight strengths change. Neural networks have \emph{dynamics}, which describe a changing pattern of activation across the nodes and (in some cases) a changing pattern of strengths across the weights. To see these dynamics in Simbrain, look for the triangular ``play''  button \accessibleartifact[scale=.5]{./images/Play.png}. When you press it you usually see node activations change, and in some cases weight strengths. In this chapter we describe some of the rules that govern changing node activations.\footnote{When you open up a dialog to train a network, there is another play button that is used to modify the weights. When these buttons are pressed the dynamics of nodes and weights is simulated. In chapters \extref{ch_linear_algebra}, \extref{ch_unsupervised}, and \extref{ch_supervised}, we discuss the rules governing changes in weight strengths.} These are based loosely on the physiology of neurons and action potentials, which was discussed in chapter \extref{ch_neuro}.
 
 Rules for updating node activations make use of an \glossary{activation function}, which sets the activation of a node based on the values of incoming node activations and the weights connecting them together. These are classical rules that have been used in many kinds of simulations since the early days of neural networks. There are many other rules for updating neural networks---some geared more towards computational neuroscience, some towards engineering---but even today these classical rules are frequently used.\footnote{To get a sense of the diversity of functions available, try editing a few nodes in Simbrain and changing the
 ``update rule'' drop down box. As you change the selection, you will notice that
@@ -14,9 +14,9 @@ network and just see what happens when you use these rules. Several neurally rea
 
 \begin{figure}[h]
 \centering
-\raisebox{-0.5\height}{\includegraphics[scale=.7]{./images/Simple3Labelled.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.7]{./images/Simple3Labelled.png}{Four-node network. Nodes 1, 2, and 3, with activations minus one, minus four, and five, connect to node 4, with activation two.}}
 \hspace*{.4in}
-\raisebox{-0.5\height}{\includegraphics[scale=.7]{./images/activationFunction.png}}
+\raisebox{-0.5\height}{\accessibleimage[scale=.7]{./images/activationFunction.png}{Schematic of the same three-input network. A weighted-sum stage, labeled sigma and bias b subscript 4, feeds an activation function f that produces node 4.}}
 \caption[Left: Simbrain screenshot; Right: Jeff Yoshimi.]{(Left) A simple neural network with three nodes attached to one node via three weights. (Right) Schematic of the same network to illustrate the notation being used here. Nodes $1,2, 3$ are connected to node $4$. In this example, $a_1 = -1$, $a_2 = -4$, $a_3=5$ and (though weight strengths are not visible) $w_{1,4} = -1$, $w_{2,4} = 1$, $w_{3,4} = 1$, $b_4 = 0$ and the activation function is linear with a slope of 1, so that $a_4 = 2$. $\Sigma$ represents the weighted inputs, and $f$ represents the activation function. A network like this is included with Simbrain as \emph{simpleNet.zip}}
 \label{F:simplenet1}
 \end{figure}
@@ -33,7 +33,7 @@ linear, and sigmoid.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.130]{./images/graph_binary.pdf}
+\accessibleimage[scale=0.130]{./images/graph_binary.pdf}{Three activation-function graphs. A threshold function jumps from zero to one at input point five; a piecewise-linear function rises between lower and upper clipping bounds; and a sigmoid rises smoothly from near zero to near one.}
 \caption[Scott Hotton.]{The graphs for three activation functions. In each of the graphs, the
 horizontal axis is the weighted input, $n_k$, and the vertical axis is the
 activation, $a_k$. Left: A threshold activation function with $(u,\ell,\theta)
@@ -168,7 +168,7 @@ A piecewise linear function is basically a clipped or truncated linear function.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/relu.png}
+\accessibleimage[scale=.4]{./images/relu.png}{Graph of the ReLU activation function: output is zero for negative input and then increases linearly with slope one for positive input.}
 \caption[Scott Hotton.]{Graph for the rectified linear or ``ReLU'' activation function.}
 \label{relu}
 \end{figure}
@@ -238,7 +238,7 @@ The activation functions we have discussed thus far are local in the sense of be
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/softmax_wta.png}
+\accessibleimage[scale=.4]{./images/softmax_wta.png}{Comparison of winner-take-all and softmax groups. Both receive inputs three, two, and one. Winner-take-all outputs one, zero, zero; softmax outputs approximately point seven, point two, point one.}
 \caption[Jeff Yoshimi.]{A winner-take-all and a softmax activation function. All weight strengths are 1 and the connections are one-to-one so the weighted inputs are just the input values visible in the figure. The boundary around the nodes in the ``neuron group'' indicates that they are all taken into consideration when computing the activations.}
 \label{wta_softmax}
 \end{figure}
@@ -271,7 +271,7 @@ The exponentiation step increases the influence of larger input values, producin
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/exponentialFunction.png}
+\accessibleimage[scale=.5]{./images/exponentialFunction.png}{Graph of the exponential function from minus five to five. It stays close to zero for negative inputs and rises rapidly for positive inputs.}
 \caption[Jeff Yoshimi using Wolfram Alpha.]{The exponential function from -5 to 5. As can be seen, negative values and small positive values are close to 0, but positive values grow rapidly.}
 \label{exponentiation}
 \end{figure}
@@ -280,7 +280,7 @@ The temperature $T$ is a scaling parameter that controls how sharply peaked the 
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.4]{./images/softmaxDiffTemps.png}
+\accessibleimage[scale=.4]{./images/softmaxDiffTemps.png}{Three softmax groups with the same inputs three, two, and one at temperatures point zero five, one, and three. The output distribution is sharply concentrated at low temperature and progressively more even at higher temperatures.}
 \caption[Jeff Yoshimi.]{Softmax for relatively low, medium, and high temperatures of $.05$, $1$, and $3$, respectively. At lower temperatures the probability distributions over nodes is more sharply peaked and at higher temperatures it is more spread out.}
 \label{softmaxTemps}
 \end{figure}

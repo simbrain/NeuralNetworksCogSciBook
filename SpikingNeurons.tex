@@ -18,14 +18,14 @@ What do we want out of a neuron model? The answer to this depends upon the quest
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{./images/NeuronComparison.png}
+\accessibleimage[width=\textwidth]{./images/NeuronComparison.png}{Comparison table for canonical artificial and biological neuron models. Both integrate input and send output, while biological models receive chemical or electrical input, can transmit with delays, and distinguish excitatory from inhibitory neurons.}
 \caption[Simbrain Screenshot by Zo\"e Tosi ]{A broad comparison of neurons typically found in artificial neural networks and those found in computational neuroscience network models. These characterizations are not completely definitive, but can be thought of as describing the prototypical or canonical instantiation of each type.}
 \label{NeuComp}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{./images/SpikeNonSpikeTimeSeries.png}
+\accessibleimage[width=\textwidth]{./images/SpikeNonSpikeTimeSeries.png}{Simbrain comparison of a logistic neuron and a spiking neuron given sinusoidal input. The logistic unit's blue activation changes smoothly, while the spiking unit's green membrane-potential trace contains repeated sharp spikes.}
 \caption[Simbrain screenshot by Zo\"e Tosi]{A Simbrain desktop with two cells receiving inputs from activity generators. Both are providing the same sinusoidal input. Above is a typical connectionist neuron using a logistic activation function (bounded on (-5, 5)) , and below is a spiking neuron model. Across from each is a time series of activation (blue)  and membrane potential (mV; green) for the logistic and spiking neurons respectively. Notice the sharp increases and rapid decrease in membrane potential; these are ``spikes'' and if this neuron were connected to other neurons a signal would be propagating down the outgoing synapses. Also notice that the spikes are not the same in quantity or overall size and that there are small variations in their distance from one another. These are the result of the spiking neuron having its own internal dynamics unlike the logistic neuron.}
 \label{TSComp}
 \end{figure}
@@ -44,7 +44,7 @@ An action potential begins with some sort of forcing, which can be produced by s
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\textwidth]{./images/ActionPotential.png}
+\accessibleimage[width=\textwidth]{./images/ActionPotential.png}{Annotated action-potential trace. Membrane potential rises from resting potential past threshold during sodium-channel depolarization, peaks, then falls through potassium-channel repolarization and hyperpolarization before returning to rest.}
 	\caption[Simbrain screenshot]{A canonical action potential.}
 	\label{ActPot}
 \end{figure}
@@ -77,7 +77,7 @@ The linear integrate and fire model is one of the simplest of spiking neuron mod
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{./images/LinIF_VoltTrace.png}
+\accessibleimage[width=\textwidth]{./images/LinIF_VoltTrace.png}{Two time-series plots for a linear integrate-and-fire neuron. A constant red current step drives a blue membrane potential upward to threshold, after which it resets sharply and begins rising again.}
 \caption[Simbrain screenshot by Zo\"e Tosi]{The response in the membrane potential of a linear integrate and fire neuron (blue/top) to a constant current injection (red/bottom). Notice the \emph{nonlinear} dynamical response in the LinIF neuron's membrane potential to a constant step in current. }
 \label{LinIF_Traces}
 \end{figure}
@@ -133,7 +133,7 @@ Here all variables are the same as in the previous section. Notice that we will 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{./images/SR_VoltTraces.png}
+\accessibleimage[width=\textwidth]{./images/SR_VoltTraces.png}{Four Simbrain examples of postsynaptic response mechanisms. Each row pairs a red synaptic-response trace with a blue integrate-and-fire membrane-potential trace: step function, instantaneous jump and decay, convolutional jump and decay, and rise and decay.}
 \caption[Simbrain screenshot by Zo\"e Tosi]{The post-synaptic responses for 4 different spike response mechanisms (red) plotted alongside the resulting change in post-synaptic membrane potential (blue). From top to bottom, we have a step-function, an instantaneous jump and decay with no convolution, a convolutional jump and decay, and a rise and decay function. Here post-synaptic neurons obeyed a linear integrate and fire rule. Notice the dynamical response from the post-synaptic IF neurons. }
 \label{SR_Traces}
 \end{figure}
@@ -153,7 +153,7 @@ Spike-Timing Dependent Plasticity (STDP) is to spiking neurons what Hebbian lear
 
 \begin{figure} [h]
 \centering
-\includegraphics[width=\textwidth]{./images/STDP_intro_fig.png}
+\accessibleimage[width=\textwidth]{./images/STDP_intro_fig.png}{Spike-timing-dependent plasticity diagram and data. When a presynaptic spike precedes a postsynaptic spike, the synapse strengthens; reversing the order weakens it. A scatterplot shows the change in EPSC amplitude versus spike-timing difference.}
 \caption[From Bi and Poo, 1998 \cite{bi1998synaptic}]{A diagram of STDP paired with empirical data showing the change in amplitude of the excitatory post-synaptic current (EPSC) produced by a synapse impinging on a neuron after repeated external stimulation of a pre- and post-synaptic neuron so as to force spikes in the two neurons with specific temporal differences. For each pair the stimulation protocol was repeated 60 times at a rate of 1 Hz and changes in synaptic efficacy were measured at 20 minutes after the protocol  \cite{bi1998synaptic}. A distinct shape can be seen whereby synapses where the pre-synaptic neuron was forced to spike immediately before its post-synaptic partner  experienced the greatest increase in strength with this increase dropping off exponentially with an increase in temporal difference between the pairs. Likewise pairs ordered such that the post-synaptic neuron fired first experienced a decrease in efficacy, which was most extreme if paired closely and also fell off exponentially with distance.}
 \label{STDP_intro}
 \end{figure}
@@ -186,4 +186,3 @@ where $u = t^f_j-t^f_i$ and $t^f$ is the most recent time that either neuron $i$
 %	\bibitem{} O'Reilly, RC, Munakata, Y, Frank, MJ, and Hazy TE. Computational Cognitive Neuroscience https://grey.colorado.edu/CompCogNeuro/index.php/CCNBook/Neuron
 %
 %\end{thebibliography}
-

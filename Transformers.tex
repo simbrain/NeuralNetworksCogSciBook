@@ -223,7 +223,7 @@ extensive period practicing, these models successfully speak ``internetese''.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.4]{./images/gptDatasets}
+\accessibleimage[scale=.4]{./images/gptDatasets}{Table of datasets in the GPT-3 training mix. Common Crawl supplies 410 billion tokens and 60 percent of the mix, followed by WebText2, Books1, Books2, and Wikipedia.}
 \caption[From \cite{brown2020language}.]{The datasets used to train GPT-3.
 These mostly consist of data scraped from the internet, including all of
 Wikipedia, though lots of scanned books are also included.}
@@ -305,7 +305,7 @@ sequence size, embedding dimension; see section \extref{sect_tensors}).}
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.45]{./images/contextWindow.png}
+\accessibleimage[scale=.45]{./images/contextWindow.png}{Context-window example for predicting the next token. Eleven rows list the tokens ``Hello how are you ? Good thank you .'' beside four-dimensional embedding vectors.}
 \caption[Jeff Yoshimi]{How text sequences can be converted into training
 datasets using the method of auto-regression. A set of tokens is converted into
 vectors using a token embedding (the vectors shown are arbitrary, just to
@@ -323,7 +323,7 @@ is quite a bit larger. For example, the embedding dimension is over 12,000 for G
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.45]{./images/contextWindowAsStack.png}
+\accessibleimage[scale=.45]{./images/contextWindowAsStack.png}{Two transformer steps for next-word prediction. The context ``Hello how are you?'' produces ``Good'', then the extended context produces ``thank''; each passes through a transformer to a next-token output.}
 \caption[Jeff Yoshimi]{The context is associated with a matrix that can
 be thought of as a stack of vectors, one for each token. Notice that ``you''
 occurs twice and is associated with the same vector.
@@ -422,7 +422,7 @@ repeated until a response is written out.
   
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.7]{./images/gptRecursedInputs.png}
+\accessibleimage[scale=.7]{./images/gptRecursedInputs.png}{Autoregressive GPT process. A context window of tokens and embeddings enters stacked transformer blocks to predict a next token; the predicted token is added to the context and the process repeats.}
 \caption[Jeff Yoshimi]{A schematic view of how ``conversations'' are generated
 from feed-forward networks in systems like ChatGPT. The output at one time is
 concatenated to the input at that time, and that is then used as the input at
@@ -452,8 +452,8 @@ Context windows can be remarkably large. GPT-3 has a context window of about 2,0
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.2]{./images/TransformerOverview.png} \; \; \; 
-\includegraphics[scale=.2]{./images/TransformerOverview2.png}
+\accessibleimage[scale=.2]{./images/TransformerOverview.png}{Transformer overview: a context window passes through an embedding layer and stacked transformer blocks to a softmax output. Each block contains multiple attention heads followed by an MLP.} \; \; \;
+\accessibleimage[scale=.2]{./images/TransformerOverview2.png}{Transformer overview with a GPT model-size table. The network maps a context window through embeddings, repeated transformer blocks, and softmax output; the table lists GPT-3 variants with parameter counts and training settings.}
 \caption[Jeff Yoshimi]{A first look at the process of a conversation unfolding
 through a network, showing the stack of word embeddings associated with the
 context, the transformer blocks, and the softmax output. Note that the
@@ -529,7 +529,7 @@ same ideas are being used but on a larger scale.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.4]{./images/gpt3_params.png}
+\accessibleimage[scale=.4]{./images/gpt3_params.png}{Table comparing GPT-3 model variants by number of parameters, layers, hidden units, heads, batch size, and learning rate. Parameter counts range from 125 million for GPT-3 Small to 175 billion for GPT-3.}
 \caption[\url{https://arxiv.org/abs/2005.14165}.]{Number of parameters and
 values for some of the hyperparameters used in training different versions of
 GPT-3.
@@ -586,7 +586,7 @@ simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``h
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.25]{./images/transformerBlockResidualStream.png}
+\accessibleimage[scale=.25]{./images/transformerBlockResidualStream.png}{Transformer-block schematic. A residual stream rises through an attention head and an MLP; each component reads from the stream and adds its output back into it. The attention head contains key, query, and value inputs.}
 \caption[Jeff Yoshimi and Pierre Beckman, with consultation from Tim Meyer.]{(Left) One transformer
 block, with a single attention head. The matrix (or tensor) of activations input to
 the block is processed by three matrices: $\textbf{K}$, $\textbf{Q}$, and
@@ -644,7 +644,7 @@ Representational width also applies to the MLPs, which typically involve a proje
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.35]{./images/transformerBlockMultiHeadResidualStream.png}
+\accessibleimage[scale=.35]{./images/transformerBlockMultiHeadResidualStream.png}{Stacked transformer architecture with a shared residual stream. Each of k blocks contains several attention heads and an MLP; all read from and write additions to the vertical residual stream before softmax output.}
 \caption[Jeff Yoshimi with consultation from Tim Meyer.]{Schematic of the
 transformer architecture. Multiple transformer blocks are stacked, capturing
 representational depth, as in a CNN (the number of layers is here given as $k$, but elsewhere in the chapter as $n_{\mbox{layers}}$). Each block contains a multi-head attention
@@ -812,7 +812,7 @@ their statistical patterns, and, ``feeling lonely'', inserts itself into the con
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.20]{./images/octopusTest.png}
+\accessibleimage[scale=.20]{./images/octopusTest.png}{Two-panel octopus test cartoon. People on separate islands communicate by an underwater cable while an octopus listens; in the lower panel, the octopus cuts the cable and imitates the messages to one person.}
 \caption[Soraya Boza.]{The octopus test. In the upper panel the octopus is
 observing the information being passed back and forth. At a certain point the
 octopus intercepts the wire and starts passing statistically similar messages
@@ -918,7 +918,7 @@ Gemini 1.5 & 5.40\\
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.8]{./images/humanVsLLM.png}
+\accessibleimage[scale=.8]{./images/humanVsLLM.png}{Eleven scatterplots compare human and LLM mean ratings for psycholinguistic variables including age of acquisition, arousal, concreteness, dominance, familiarity, gender association, humorousness, imageability, semantic size, socialness, and valence. Points and fitted lines show positive correlations.}
 \caption[Figure borrowed from Kello et al. (2025, under review) with author
 permission.]{Correlations of mean ratings  for 11 psycholinguistic variables
 between LLMs ($x$-axis) and humans ($y$-axis) on a list of 390 words. Overall,
@@ -1013,7 +1013,7 @@ as failures in \cite{shojaee2025illusion}.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.8]{./images/llmStandardizedExams.png}
+\accessibleimage[scale=.8]{./images/llmStandardizedExams.png}{Table of standardized-exam performance for GPT-4, GPT-4 with vision, and GPT-3.5. GPT-4 scores near the top percentiles on many exams, while the Writing GRE result is comparatively middling.}
 \caption[From \cite{achiam2023gpt}.]{Some of the performance results on
 standardized tests noted in the GPT-4 technical report.  Note the high
 performance on most tests shown, but middling performance on the Writing GRE.
@@ -1023,7 +1023,7 @@ performance on most tests shown, but middling performance on the Writing GRE.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.8]{./images/llmAnalogical.png}
+\accessibleimage[scale=.8]{./images/llmAnalogical.png}{Bar chart comparing GPT-3 and human accuracy on matrix reasoning, letter-string analogies, verbal analogies, and story analogies. GPT-3 is similar to or exceeds human accuracy on most tasks, with individual data points shown.}
 \caption[From \cite{webb2023emergent}.]{LLMs perform comparably to humans on a
 variety of analogical reasoning tasks. The Letter problems are based on
 problems developed by Hofstadter and Mitchell.
@@ -1086,7 +1086,7 @@ The figure was generated by first focusing on language-responsive voxels (areas 
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=.9]{./images/brainPredictionsLLM.png}
+\accessibleimage[scale=.9]{./images/brainPredictionsLLM.png}{Lateral views of a brain labeled GPT2-xl. Yellow regions within language-responsive cortex indicate where LLM activation patterns best predict fMRI activity; a color bar ranges from red at zero to yellow at one.}
 \caption[From \cite{schrimpf2021neural}.]{Highlighted regions correspond to
 areas where brain activity (voxel activity in fMRI) is best predicted by
 the internal activation patterns of an LLM. Note that the color gradient is only applied to regions independently shown to be language-relevant in the brain.}

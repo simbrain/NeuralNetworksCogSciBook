@@ -30,7 +30,7 @@ For spoken languages, the smallest unit would be the individual speech sounds th
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{./images/elmanPhonemeEmbeddings.png}
+\accessibleimage[scale=.5]{./images/elmanPhonemeEmbeddings.png}{Table of binary phoneme feature vectors. Rows for six consonants are labeled b, d, g, m, n, and w; columns identify consonant, vowel, interrupted, high, back, and voiced features.}
 \caption[From \cite{elman1990finding}.]{Some of Elman's vector representations of phonemes, which involved hand-crafted feature vectors based on linguistic attributes. This illustrates the general idea that a linguistic item (here phonemes, later tokens) can be associated with a numeric vector. }
 \label{elmanWordEmbeddings}
 \end{figure}
@@ -41,7 +41,7 @@ Syntax studies the order and hierarchical structures of words in sentences. This
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.45]{./images/treeBank.jpg}
+\accessibleimage[scale=.45]{./images/treeBank.jpg}{Syntactic parse tree for the sentence ``The house at the end of the street is red.'' The sentence branches into a noun phrase and verb phrase, with nested phrase and part-of-speech labels.}
 \caption[From \url{https://commons.wikimedia.org/wiki/File:The_house_at_the_end_of_the_street.jpg}]{A treebank for the sentence ``The house at the end of the street'' which annotates each word with its syntactic or grammatical category and describes dependencies between parts of the sentence.}
 \label{treeBank}
 \end{figure}
@@ -95,7 +95,7 @@ Figure \ref{f:writerPainterExample} shows seven words embedded in a space. The e
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=.2]{./images/Word_vector_demo.png}
+    \accessibleimage[scale=.2]{./images/Word_vector_demo.png}{Word-embedding scatterplot. Music is near composer, book is near author and critic, and painting is near painter, illustrating that semantically related words occupy nearby positions.}
     \caption[Adapted from an image generated using \url{http://vectors.nlpl.eu/explore/embeddings/en/}.]{Example of a word embedding in a semantic space. Each word is associated with a point in a space and the distance between points corresponds to semantic similarity. Notice that intuitively similar words are near each other in this space. }
  \label{f:writerPainterExample}
 \end{figure}
@@ -203,7 +203,7 @@ One striking feature of word or token embeddings is that we can perform mathemat
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{./images/kingQueen.png}
+\accessibleimage[scale=0.4]{./images/kingQueen.png}{Two vector diagrams show analogy directions in a word-embedding space. Parallel arrows link man to woman, uncle to aunt, and king to queen; a second panel similarly links singular nouns to plural forms.}
 \caption[From \cite{mikolov2013linguistic}.]{The left panel shows that the vectors between ``man'' and ``woman'', ``uncle'' and ``aunt'', and ``king'' and ``queen'' all point in the same direction. Thus gender appears to captured by a specific direction in the embedding space. The right panel shows a similar idea for the concept of a plural: the vectors between nouns and the plurals generally point in the same direction.}
 \label{geometryWordEmbedding}
 \end{figure}
