@@ -2,19 +2,29 @@ python := env_var_or_default("PYTHON", "python3")
 
 # Show the two usual build paths.
 default:
-    @echo "Container document (for example Book_124): just build Book_124.tex"
-    @echo "Master book: just build NeuralNetworksCogsci.tex"
+    @echo
+    @echo "Master book:"
+    @echo "  just build-master"
+    @echo
+    @echo "Container document (for example Book_124):"
+    @echo "  just build Book_124"
+    @echo "  (.tex is optional)"
+    @echo
 
-# Compile a document without changing its container setup.
-# $max_repeat is raised because a from-scratch build of the full book needs
-# more than latexmk's default 5 passes to stabilize (table of contents, figure
-# attributions, bibliography, xr cross-references, and PDF tagging).
+# Prepare and compile a container document using the existing authorship and
+# custom-glossary scripts, so its PDF has current metadata and glossary.
 build document:
+    {{python}} scripts/prepare_container_document.py {{document}} --use-custom-glossary
     latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
 
-# Prepare and compile a custom container document with CustomGlossary.tex.
+# Backwards-compatible name for the container build recipe.
 prep document:
     {{python}} scripts/prepare_container_document.py {{document}} --use-custom-glossary
+    latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
+
+# Prepare and compile the master without replacing its canonical glossary.
+build-master document="NeuralNetworksCogsci.tex":
+    {{python}} scripts/prepare_container_document.py {{document}}
     latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
 
 # Update the master document's author line and validate its full glossary.

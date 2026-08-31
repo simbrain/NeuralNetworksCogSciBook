@@ -73,6 +73,8 @@ def main():
     args = parser.parse_args()
 
     document = Path(args.container_document)
+    if not document.suffix:
+        document = document.with_suffix(".tex")
     if not document.is_absolute():
         document = REPOSITORY_ROOT / document
     document = document.resolve()

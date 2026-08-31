@@ -24,28 +24,23 @@ You can make your own container document that contain only the chapters of inter
 
 - It is requested that you include `Preface.tex` which credits those involved in the broader project, information about the nature of the document, and information useful to readers such as an explanation of the *-notation for external citations.*
 
-- Set author attribution for your container document using: 
+- To prepare and compile a custom container document, use:
 ```
-python3 scripts/create_authorship_order.py <container document>.tex
+just build <container document>.tex
 ```
-The author order will automatically be set in the container document.
+  The `.tex` suffix is optional, so `just build Book_124` is equivalent to
+  `just build Book_124.tex`.
 
-- To prepare and compile a custom container document, use the single command:
-```
-just prep <container document>.tex
-```
   This updates author attribution, verifies glossary coverage, generates
   `CustomGlossary.tex`, changes the container document to include it, and
   writes the corresponding PDF.
   The recipes use `python3` by default. If a system uses another Python 3
-  command, set `PYTHON` first (for example, `PYTHON=py just prep book_103.tex`
+  command, set `PYTHON` first (for example, `PYTHON=py just build book_103.tex`
   on Windows).
 
-- If you wish, compile a custom glossary for the container document using: 
-```
-python3 scripts/create_custom_glossary.py <container document>.tex
-```
-Then include `CustomGlossary.tex` in your container document.
+  `just prep <container document>.tex` remains an alias for this command.
+  Build the full book with `just build-master`; it retains the canonical
+  `Glossary.tex` rather than using `CustomGlossary.tex`.
 
 - If you wish, add a bibliography using:
 ```latex

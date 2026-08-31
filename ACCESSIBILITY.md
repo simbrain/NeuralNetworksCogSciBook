@@ -5,7 +5,9 @@ experimental in this toolchain; do not describe a release as fully accessible
 until it has passed an external PDF check and a screen-reader spot check.
 
 Compile `Book_124.tex` (for example, `just build Book_124.tex`) to create the
-pilot PDF. Tagged output remains experimental in this toolchain. The master is
+pilot PDF.  The container build first regenerates its author line and
+`CustomGlossary.tex`; all container documents use that custom glossary. Tagged
+output remains experimental in this toolchain. The master is
 also configured for tagged output and may fail in later legacy chapters until
 they are remediated; every release must be checked in a PDF accessibility tool
 and with a screen reader. A mixed-remediation PDF may be released when it
