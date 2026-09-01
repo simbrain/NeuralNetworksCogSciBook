@@ -175,6 +175,8 @@ towards a given attractor.
 
 \item[Feature superposition hypothesis] The hypothesis that large language models encode many features in the same node layer using distributed representations. This implies that multiple features can be superimposed in overlapping subspaces of the same representational layer. This is treated as an empirical hypothesis in mechanistic interpretability research.
 
+\item[Feature vector] A vector of numerical values representing relevant properties or features of an item. For example, a feature vector for an image of a piece of wood might represent its color, texture, and the type of knot it contains.
+
 \item[Feed-forward network] A network comprised of a sequence of layers where nodes in each layer are connected to neurons in subsequent layers. Contains no recurrent connections. Skip or residual connections that allow information to bypass one or more layers can also be used. Commonly used in supervised learning tasks, such as classification and regression.
 
 \item[Few-shot] A learning paradigm where a model or person performs a task after being shown only a few examples, without updating weights (this is typically a form of in-context learning). An example is learning what a new piece of slang like ``that’s fire’’ or ``that’s mid'' means after hearing just a few examples.
@@ -426,7 +428,7 @@ towards a given attractor.
 
 \item[Simple recurrent network] A recurrent neural network with a context layer that stores the previous hidden-layer activations.
 
-\item[Skip connection] (Synonym: residual connection) A path that adds a node layer’s activations directly to another node layer, bypassing one or more hidden layers. Often links an input to an output layer in an MLP.  If the input and output dimensions differ, a learned linear projection (e.g., a 1×1 matrix) aligns shapes before addition. Skip connections play a key role in transformers, where they can be ``stretched out'' into a single line or bus of activations known as the residual stream. Skip connections improve backprop and stabilize training in deep networks (reducing the problem of ``vanishing gradients'', by giving the error gradient a path to flow along). The term ``residual'' is used because these connections let the network learn only the difference (a residual or delta) between the identity mapping in the skip connection and the desired transformation, making optimization easier.
+\item[Skip connection] (Synonym: residual connection) A connection between two nonadjacent layers of a feed-forward network that carries an activation vector past at least one intervening hidden layer. Skip connections are an important part of transformer architectures where they are part of a structure called the ``residual stream.''
 
 \item[Softmax] An activation function which normalizes inputs so that its activations in a layer can be interpreted as a probability distribution. Each activation is between 0 and 1 and the sum over all the activations in a softmax layer is 1.
 
@@ -445,6 +447,8 @@ towards a given attractor.
 \item[Sparsity] The sparsity of a matrix is a number between $0$ and $1$ obtained by counting how many zero entries the matrix has and dividing by the total number of entries. A matrix with no zero entries has a sparsity of $0$ and a matrix with all zero entries has a sparsity of $1$.
 
 \item[Spike] A discrete event that models the action potential for a neuron.
+
+\item[Spiking neuron] A neuron model that represents neural signaling as discrete spikes, or action potentials, occurring at particular times.
 
 \item[Spurious memory] An activation pattern in a recurrent network that is stable (a fixed point attractor) but does not correspond to any of the original patterns the network was trained on. A common form of spurious memory in a recurrent network is an \textbf{antipattern}.
 
@@ -544,7 +548,7 @@ towards a given attractor.
 
 \item[Wernicke's area] A region of the temporal lobe associated with written and spoken language comprehension. Damage to this area can lead to Wernicke's aphasia, affecting the ability to understand language, even if language production remains intact.
 
-\item[Winner-Take-All] A pool of nodes structured (often with mutually inhibitory connections) so that the node receiving the highest weighted inputs ``wins'' and becomes active, while the other nodes become inactive. Also a type of non-local activation function where the node in the group receiving the most net input is active at a winning value and the rest take on a losing value (usually zero).
+\item[Winner-Take-All] A pool of nodes structured (often with mutually inhibitory connections) so that the node receiving the highest weighted inputs ``wins'' and becomes active, while the other nodes become inactive.
 
 \item[Zero-shot] The ability of a model or person to perform a task without having seen any specific examples of that task in the context. Zero-shot performance demonstrates that the model has learned generalizable capabilities that transfer to novel situations. Examples include being able to say what will happen if an armload of glassware is dropped or whether a toddler could win an olympic medal.
 
