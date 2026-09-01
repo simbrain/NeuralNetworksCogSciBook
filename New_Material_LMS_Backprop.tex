@@ -113,7 +113,7 @@ Consider the network shown in figure \ref{lms_vector_pre}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.55\textwidth]{images/vectorLMSBeforeTrain.png}
+\accessibleimage[width=0.55\textwidth]{images/vectorLMSBeforeTrain.png}{Three-output, two-input network before vectorized LMS training. Input vector zero, one produces all-zero output because every weight is zero; the target output is one, zero, one.}
 \caption[Jeff Yoshimi.]{A network with empty weights. We want it to learn to associate the input vector $(0,1)$ with the output vector $(1,0,1)$, but right now the weights are all zero so it just outputs $(0,0,0)$. }
 \label{lms_vector_pre}
 \end{figure}
@@ -151,7 +151,7 @@ And again, keeping in mind that rows are fan-in of output and columns are fan-ou
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.55\textwidth]{images/vectorLMSAfterTrain.png}
+\accessibleimage[width=0.55\textwidth]{images/vectorLMSAfterTrain.png}{The same network after one vectorized LMS update. The learned weights map input vector zero, one to the target output vector one, zero, one.}
 \caption[Jeff Yoshimi.]{The network after training}
 \label{lms_vector_2}
 \end{figure}

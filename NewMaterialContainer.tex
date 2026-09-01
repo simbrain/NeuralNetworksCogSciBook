@@ -1,3 +1,8 @@
+% Enable tagged PDF output before loading the class. See ACCESSIBILITY.md.
+\DocumentMetadata{
+  lang=en-US,
+  testphase=phase-II
+}
 \documentclass[oneside]{book}
 \usepackage[pdftex]{graphicx}
 \usepackage{setspace,amssymb,amsmath,epstopdf,natbib,amsthm}
@@ -8,6 +13,10 @@
 \usepackage[hidelinks]{hyperref}  % Likes to be the last class loaded
 \hypersetup{bookmarksdepth=2}
 \externaldocument[A-]{NeuralNetworksCogsci}
+
+% Use these for informative and decorative graphics, respectively.
+\newcommand{\accessibleimage}[3][]{\includegraphics[#1,alt={#3}]{#2}}
+\newcommand{\accessibleartifact}[2][]{\includegraphics[#1,artifact]{#2}}
 
 \def\ie{{\it i.e. }}
 \def\eg{{\it e.g. }}

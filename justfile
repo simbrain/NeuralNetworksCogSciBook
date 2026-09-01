@@ -23,9 +23,11 @@ prep document:
     latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
 
 # Prepare and compile the master without replacing its canonical glossary.
+# The tagged master needs additional pdfTeX memory to serialize its parent tree
+# on current TeX Live releases.
 build-master document="NeuralNetworksCogsci.tex":
     {{python}} scripts/prepare_container_document.py {{document}}
-    latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
+    extra_mem_top=50000000 extra_mem_bot=50000000 pool_size=20000000 max_strings=1000000 hash_extra=1000000 save_size=200000 latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
 
 # Update the master document's author line and validate its full glossary.
 prep-master document="NeuralNetworksCogsci.tex":

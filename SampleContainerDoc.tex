@@ -5,6 +5,11 @@
 % or to create a file to compile a single chapter
 % 
 % After assembling chapters, run  create_authorship_order.py and create_custom_glossary as described in the Readme
+% Enable tagged PDF output before loading the class. See ACCESSIBILITY.md.
+\DocumentMetadata{
+  lang=en-US,
+  testphase=phase-II
+}
 \documentclass[oneside]{book}
 \usepackage[pdftex]{graphicx}
 \usepackage{setspace,amssymb,amsmath,epstopdf,natbib,amsthm}
@@ -16,8 +21,10 @@
 \hypersetup{bookmarksdepth=2}
 \externaldocument[A-]{NeuralNetworksCogsci}
 
-\newcommand{\accessibleimage}[3][]{\includegraphics[#1]{#2}}
-\newcommand{\accessibleartifact}[2][]{\includegraphics[#1]{#2}}
+% Pass descriptions to graphicx's native tagged-PDF keys.  Do not wrap
+% \includegraphics manually: that makes the tagger fall back to the filename.
+\newcommand{\accessibleimage}[3][]{\includegraphics[#1,alt={#3}]{#2}}
+\newcommand{\accessibleartifact}[2][]{\includegraphics[#1,artifact]{#2}}
 
 \def\ie{{\it i.e. }}
 \def\eg{{\it e.g. }}

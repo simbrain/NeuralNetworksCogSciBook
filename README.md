@@ -18,6 +18,13 @@ This folder contains a master document (`NeuralNetworksCogsci.tex`) that compile
 PDF accessibility conventions and the current tagged-PDF pilot are documented
 in [ACCESSIBILITY.md](ACCESSIBILITY.md).
 
+## Build requirements
+
+The supported LaTeX toolchain is **TeX Live 2026**. Tagged-PDF builds require
+TeX Live 2026; build the master with `just build-master`. A small BasicTeX
+installation is sufficient, provided that the `latexmk` and `cm-super`
+packages are also installed.
+
 You can make your own container document that contain only the chapters of interest to you. When doing so:
 
 - Be sure to copy your container document directly from the master document. The custom commands at the top of the master document are required in all container documents.
