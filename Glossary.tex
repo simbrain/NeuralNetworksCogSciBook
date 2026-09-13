@@ -99,7 +99,7 @@ towards a given attractor.
 
 \item[Computational neuroscience] The study of the brain using computer models.
 
-\item[Confabulation] The generation of plausible but misleading or false content by a neural network.
+\item[Confabulation] The generation of plausible but misleading or false content by a model.
 
 \item[Connectionism] The study of psychological phenomena using artificial neural networks.
 
@@ -207,11 +207,11 @@ towards a given attractor.
 
 \item[Gradient descent] A technique for finding a local minimum of (in a neural network context) an error function. Network parameters are iteratively updated using the negative of the gradient of the error function, which can be thought of as an arrow pointing in the direction in which the error surface is dropping most rapidly.
 
-%\item[Hetero-associator] // Defunct, probbably don't need this.
-
 \item[Hallucination] A type of error made by a model where it describes something based on statistical patterns in its training data, but where that thing does not actually exist. This is usually something that seems like it \emph{ought} to exist, given the training data, but that does not in fact exist. A type of generalization error. Example: an LLM produces a reference to a paper that does not exist, by an author who does exist.
 
 \item[Hemineglect] Neurological impairment caused by damage to regions of the parietal lobes characterized by a lack of attending to anything in one half of the visual field.
+
+\item[Hidden unit space] The space of activation vectors for a network's hidden units.
 
 \item[Hippocampus] A structure below the surface of the cortex (subcortical) that is involved in long-term memory consolidation and spatial maps. Damage to this structure can cause memory loss, or amnesia. 
 
@@ -279,6 +279,8 @@ towards a given attractor.
 \item[Localist representation] A representation scheme where activation of individual neurons indicates the presence of an object. Example: activation of neuron 25 indicates the presence of my grandmother.
 
 %\item[Logic gates] Devices that compute Boolean functions. For example, an AND gate has two inputs and one output. When both inputs are set to ``True'' the gate produces a ``True'' as output; otherwise the gate produces a ``False'' as output. Simple neural networks can implement logic gates.
+
+\item[Logits] Scores produced by a classification output layer before conversion to probabilities. For a softmax output layer, these are the weighted inputs, including biases. Logits can be any real numbers and need not sum to one; softmax converts the vector of logits into a probability distribution.
 
 %\item[Long Term Depression] (LTD) A  process by which the efficacy of a synapse is decreased after repeated use.
 
@@ -422,7 +424,7 @@ towards a given attractor.
 
 \item[Self-supervised learning] A form of supervised learning where targets or labels are not provided separately but are derived from the training data itself. This allows training data to be generated without explicit annotations. See auto-regression.
 
-\item[Shape] An ordered list of numbers indicating the dimensionality for each dimension of  a vector, matrix, or other tensor. For example, a matrix might have shape $(1000, 512)$ indicating 1000 rows and 512 columns, while a set of 100 color images, each 25x25 pixels, might have shape $(100, 3, 25, 25)$, with 3 channels for color.
+\item[Shape] An ordered list giving the size along each axis of an array. For a matrix, shape gives the number of rows followed by the number of columns: $(1000,512)$ means 1000 rows and 512 columns. A batch of 100 RGB images, each with 25 rows and 25 columns, has shape $(100,3,25,25)$ in batch, channel, row, column order. In this book, we use shape notation for matrices and higher-rank arrays; programming libraries also report shapes for scalars and vectors.
 
 \item[Sigmoid activation function] An activation function whose value increases monotonically between a lower and upper bound. As the input goes infinitely far in the positive direction the value converges to the upper bound. As the input goes infinitely far in the negative direction the value converges to the lower bound.
 

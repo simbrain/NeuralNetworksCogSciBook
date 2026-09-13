@@ -1,0 +1,555 @@
+\chapter{Activation Functions and Linear Algebra}\label{ch_activation_linear_algebra}
+\chapterauthor{Jeff Yoshimi\footnote{This abridged chapter was adapted by Jeff Yoshimi from the chapters ``Activation Functions'' and ``Linear Algebra and Neural Networks'' in \textit{Neural Networks in Cognitive Science}. Scott Hotton is a co-author on both chapters but has not approved this abridgment so is not currently listed as a co-author here.}}
+
+Artificial neural networks consist of nodes connected by weights. Each node has a number called an activation, and each weight has a number called a strength. We begin with the rules that govern changes in individual node activations, from computing weighted inputs to applying activation functions. We then move from individual nodes and weights to lists and tables of their values: vectors, matrices, and tensors.
+
+Linear algebra also provides a geometric way to visualize the structure and dynamics of a network. An activation vector can be pictured as a point in a space, and changing activations as a moving point; projections help us visualize these spaces when they have more than three dimensions. Finally, we use dot products and vector--matrix products to compute how activation passes through a feed-forward layer and how a recurrent network changes over successive time steps.
+
+\section{Weighted Inputs and Activation Functions}
+
+We represent the activation of the $j^{\rm th}$ node by $a_j$, and the strength of the weight connecting node $j$ to node $k$ by $w_{j,k}$. Activation is updated by first computing the \glossary{weighted input} (roughly, the weighted sum of incoming activations) and then passing that value through an activation function $f$.
+
+Each incoming activation is multiplied by the intervening weight strength, and these products are added together. Nodes can also have a \glossary{bias}, a fixed and unweighted input that determines the node's baseline activation. For $N$ inputs, the weighted input to node $k$ is
+\[
+ n_k = \sum_{j=1}^{N} a_jw_{j,k}+b_k.
+\]
+An activation function associates weighted inputs with activation values: $a_k=f(n_k)$. The choice of function strongly affects what a network can represent and how it can be trained.
+
+The basic flow of operations is shown in figure \ref{abridged_simple_network}. In this example, the weighted input to node $4$ is
+\[
+n_4=(-1)(-1)+(-4)(1)+(5)(1)+0=2.
+\]
+
+\begin{figure}[htbp]
+\centering
+\raisebox{-0.5\height}{\accessibleimage[scale=.7]{./images/Simple3Labelled.png}{Nodes 1, 2, and 3, with activations minus one, minus four, and five, connect to node 4, with activation two.}}
+\hspace*{.4in}
+\raisebox{-0.5\height}{\accessibleimage[scale=.7]{./images/activationFunction.png}{The three inputs feed a weighted-sum stage with bias, followed by activation function f and output node 4.}}
+\caption[Left: Simbrain screenshot; Right: Jeff Yoshimi.]{(Left) A simple neural network with three nodes attached to one node via three weights. (Right) Schematic of the same network to illustrate the notation being used here. Nodes $1,2,3$ are connected to node $4$. In this example, $a_1=-1$, $a_2=-4$, $a_3=5$ and (though weight strengths are not visible) $w_{1,4}=-1$, $w_{2,4}=1$, $w_{3,4}=1$, and $b_4=0$. The activation function is linear with a slope of $1$, so that $a_4=2$. $\Sigma$ represents the weighted inputs, and $f$ represents the activation function.}
+\label{abridged_simple_network}
+\end{figure}
+
+\subsection{Threshold, Linear, and Sigmoid Functions}
+
+A \glossary{threshold activation function} (also called a binary or step function) has an upper value $u$ and lower value $\ell$. If weighted input is below a threshold $\theta$, the activation takes the lower value; otherwise it takes the upper value:
+\[
+ a_k=f(n_k)=
+ \begin{cases}
+ \ell & \text{if } n_k<\theta,\\
+ u & \text{if } n_k\geq\theta.
+ \end{cases}
+\]
+Threshold functions are inspired by the discrete, on--off behavior of neurons firing action potentials.
+
+\begin{figure}[htbp]
+\centering
+\accessibleimage[width=.95\textwidth]{./images/graph_binary.pdf}{Three activation-function graphs: threshold, clipped linear, and sigmoid.}
+\caption[Scott Hotton.]{The graphs for three activation functions. The horizontal axis is weighted input, $n_k$, and the vertical axis is activation, $a_k$. Left: A threshold function with $(u,\ell,\theta)=(1,0,0.5)$. Middle: A piecewise linear function with $(u,\ell)=(1,0)$. Right: A sigmoid with $(u,\ell,m)=(1,0,1)$. The dotted tangent line at the sigmoid's inflection point has slope $1$.}
+\label{abridged_activation_functions}
+\end{figure}
+
+A \glossary{linear activation function} computes activation as a simple linear function of weighted input,
+\[
+ a_k=f(n_k)=m\,n_k,
+\]
+where $m$ is a positive slope. Usually $m=1$, so the function is the identity: activation simply equals weighted input. A piecewise linear function clips very large and very small inputs to prescribed upper and lower bounds.
+
+\begin{figure}[h]
+\centering
+\accessibleimage[scale=.4]{./images/relu.png}{Graph of the ReLU activation function: output is zero for negative input and then increases linearly with slope one for positive input.}
+\caption[Scott Hotton.]{Graph for the rectified linear or ``ReLU'' activation function.}
+\label{abridged_relu}
+\end{figure}
+
+A \glossary{ReLU} (rectified linear unit) is a particularly important piecewise linear function. It cuts off negative values, replacing them with $0$, and leaves weighted input unchanged otherwise:
+\[
+ a_k=f(n_k)=\max(0,n_k).
+\]
+Unlike a clipped linear or sigmoid function, ReLU can take on any positive value. This gives it greater representational power and has made it especially useful for training deep networks. Its clipping at $0$ also preserves a non-linearity: many layers of unclipped linear nodes are mathematically equivalent to one linear layer.
+
+
+A \glossary{sigmoid activation function} is a smoothed version of a piecewise linear activation function. As weighted input increases, activation approaches an upper value, usually $1$; as it decreases, activation approaches a lower value, usually $0$ or $-1$. Near its inflection point, activation changes rapidly. Since outputs are squeezed between upper and lower bounds, it is sometimes called a squashing function. One common logistic sigmoid is
+\[
+ a_k=f(n_k)=\frac{1}{1+e^{-4mn_k}}.
+\]
+Sigmoids are differentiable everywhere, a property that made backpropagation-based training practical for networks using them.
+
+The sigmoid functions get their name from the Greek letter for s, and their graphs resemble a stretched-out letter s (figure \ref{abridged_activation_functions}). For the logistic formula above, activation is exactly $.5$ when weighted input is $0$, and $m$ is the slope at this inflection point.
+
+\subsection{Logits and Softmax}
+
+The preceding functions are local: a node can compute its activation from information available through its connections. \glossary{Softmax}, by contrast, computes all activations in a group together. It converts weighted inputs into a probability distribution: values between $0$ and $1$ that sum to $1$. For a layer with $N$ nodes,
+\[
+ a_k=\operatorname{softmax}(\mathbf{n}/T)_k=\frac{\exp(n_k/T)}{\displaystyle\sum_{j=1}^{N}\exp(n_j/T)}.
+\]
+The exponentiation step increases the influence of larger inputs. $T$ is a temperature parameter: values above $1$ make the distribution more dispersed, while values between $0$ and $1$ make it more sharply peaked. In a classification layer with cat, dog, and raccoon nodes, softmax activations of $.05$, $.9$, and $.05$ can be interpreted as corresponding class probabilities.
+
+Weighted inputs to a softmax layer have a special name. They are called \glossary{logits}. Logits can be negative or positive and need not sum to one. Logits are easy to interpret as ``scores'' for a particular output node, which is often a classification of some kind (like that an input vector representing an image corresponds to a particular animal or person). Larger logits like 15 or 42 correspond to strong scores, -15 and 42 to weaker scores.  Softmax converts the entire vector of logits into probabilities. 
+ 
+An example of softmax applied to logits is shown in the right panel of figure \ref{abridged_softmax}. Note how the inputs (logits) are $3$, $2$, and $1$, but the softmax probabilities are approximately $.7$, $.2$, and $.1$. The exponentiation step has accentuated the difference between the inputs. The left panel shows a winner-take-all function for comparison: the node with the greatest weighted input is set to $1$, and the rest are set to $0$.
+
+\begin{figure}[htbp]
+\centering
+\accessibleimage[width=.65\textwidth]{./images/softmax_wta.png}{Winner-take-all and softmax groups receive inputs three, two, and one. Winner-take-all outputs one, zero, zero; softmax outputs approximately 0.7, 0.2, 0.1.}
+\caption[Jeff Yoshimi.]{A winner-take-all and a softmax activation function. All weight strengths are $1$ and the connections are one-to-one, so the weighted inputs are just the input values visible in the figure. The boundary around the nodes indicates that they are all taken into consideration when computing the activations. The one-to-one connections make it easy to see how weighted inputs (logits) become outputs; in a typical classification layer, each logit combines many incoming activations.}
+\label{abridged_softmax}
+\end{figure}
+
+Figure \ref{abridged_softmax_temperatures} shows how changing temperature affects the same inputs.
+
+\begin{figure}[htbp]
+\centering
+\accessibleimage[width=.9\textwidth]{./images/softmaxDiffTemps.png}{Softmax groups at temperatures 0.05, one, and three, with progressively more evenly distributed outputs.}
+\caption[Jeff Yoshimi.]{Softmax for relatively low, medium, and high temperatures of $.05$, $1$, and $3$, respectively. At lower temperatures the probability distributions over nodes are more sharply peaked and at higher temperatures they are more spread out.}
+\label{abridged_softmax_temperatures}
+\end{figure}
+
+\section{Vectors, Matrices, Tensors, and Shapes}
+
+\glossary{Vectors} are ordered lists of numbers, called components. We often use bold lowercase letters for vectors, such as $\mathbf{a}$ for an activation vector, and reserve non-bold italic letters such as $a_2$ for components. A vector can be written as a row, $(1,2,3)$, or a column,
+\[
+\begin{pmatrix}1\\2\\3\end{pmatrix}.
+\]
+A \glossary{vector space} is a collection of objects called vectors along with mathematical operations that we can perform with them. For instance, we can add two vectors together to get another vector. There is also a type of multiplication between a vector and a \glossary{scalar}. We will focus on the case where scalars are real numbers, like $2$, $-1.2$, or $5.9$.
+
+For any positive integer $n$, the set of all $n$-tuples of real numbers forms a vector space. The integer $n$ is called its \glossary{dimension}. For example, the set of all ordered pairs of real numbers is a 2 dimensional real vector space $\mathbb{R}^2$. The set of all ordered triples is a 3 dimensional real vector space $\mathbb{R}^3$.
+
+The components of a vector can be thought of as the coordinates of a point in Euclidean geometry. To locate the point corresponding to the vector $(3,4)$, for example, we move $3$ units to the right along the horizontal axis and $4$ units upwards along the vertical axis. In this way a 2 dimensional real vector space can be thought of as a Euclidean plane (figure \ref{abridged_euclidean_plane}).\footnote{Forbes recounts the story that Ren{\'e} Descartes gained insight into the coordinate principle while watching a fly crawl across his bedroom ceiling \cite[p.~143]{forbes1977descartes}. As a teaching example, imagine superimposing a grid on the ceiling: a fly at $(3,4)$ is 3 units to the right and 4 units up; a fly at $(-2,-1)$ is 2 units to the left and 1 unit down; and a fly at $(4,-2)$ is 4 units to the right and 2 units down (see figure \ref{abridged_euclidean_plane}).} A collection of points can form a recognizable image: the coordinate pairs on the right of figure \ref{abridged_euclidean_plane} reveal a happy face when plotted.
+
+Vectors can also be represented geometrically using arrows. The arrows have a magnitude and direction. In that case we draw the arrow from the origin (the tail) to the point specified by the ordered list of scalars (the head). Figure \ref{abridged_euclidean_plane} (left) has some examples.
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[c]{.39\textwidth}
+\centering
+\accessibleimage[width=\linewidth]{./images/grid2.png}{Coordinate grid showing vectors from the origin to (3,4), (-2,-1), and (4,-2).}
+\end{minipage}
+\hspace{.04\textwidth}
+\begin{minipage}[c]{.44\textwidth}
+\centering
+\textbf{Points in a happy face}\\[3pt]
+{\small
+$(-2,2),\ (2,2),\ (-3,0),$\\
+$(-2,-1),\ (-1,-2),\ (0,-2),$\\
+$(1,-2),\ (2,-1),\ (3,0)$
+}\\[6pt]
+\accessibleimage[width=.75\linewidth]{./images/coordinateHappyFace.pdf}{Nine plotted points form a happy face: two eyes at minus two, two and two, two, and seven points tracing a smile below them.}
+\end{minipage}
+\caption[Left: Scott Hotton. Right: coordinate plot created for this abridgment.]{Each vector in a 2 dimensional vector space is associated to a point in the Euclidean plane by treating the components of the vector as the coordinates of the point. (Left) Try to find the vectors $(3,4)$, $(-2,-1)$, and $(4,-2)$. (Right) A list of coordinate pairs and its plot. The same numbers become recognizable as a happy face when viewed as points.}
+\label{abridged_euclidean_plane}
+\end{figure}
+
+The number of dimensions of the vector spaces that arise in the study of neural networks can be much larger than 3. We cannot geometrically visualize these higher-dimensional spaces directly. To work mathematically in these spaces, it is helpful to keep in mind that our starting point is the $n$-tuples, which are just lists of numbers. Here are two vectors in a 5 dimensional vector space:
+\[
+(0,-1,1,0.4,9) \qquad (-1,2,4,-3,9).
+\]
+The vectors that make up a 100 dimensional vector space are just lists of 100 numbers.
+
+Thus dimension tells us how many independent coordinates are needed to specify a vector in the space. For example, the three input activations in figure \ref{abridged_simple_network} form the vector $(-1,-4,5)$ in a 3 dimensional input space; the activations of all four nodes form a vector in a 4 dimensional activation space.
+
+Various types of structure in a neural network are naturally described using vectors and vector spaces. Below is a list. Use the labeled networks in figures \ref{abridged_labelled_ff} and \ref{abridged_sparse_recurrent} below to identify examples of these vectors and count the dimensions of the corresponding spaces. 
+\begin{center}
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{.28\linewidth}p{.38\linewidth}p{.26\linewidth}@{}}
+\hline
+Vector & Values collected & Space \\
+\hline
+\glossary{Activation vector} & All the node activations & \glossary{Activation space} \\
+Input vector & The input activations & \glossary{Input space} \\
+Hidden unit vector & The activations in a hidden layer & \glossary{Hidden unit space} \\
+Output vector & The output activations & \glossary{Output space} \\
+\glossary{Fan-in weight vector} & The strengths of the weights entering a node &  \\
+\glossary{Fan-out weight vector} & The strengths of the weights leaving a node & \\
+\hline
+\end{tabular}
+\endgroup
+\end{center}
+
+A \glossary{matrix} is a rectangular array of numbers, with its \glossary{shape} stated as rows $\times$ columns. We use bold uppercase letters for matrices. For example, the matrix
+\[
+\mathbf{W}=
+\begin{pmatrix}
+1 & .7 & 2\\
+-2 & -1 & 2.1
+\end{pmatrix}
+\]
+has shape $2\times3$. 
+
+Matrices can represent a weight layer in a feed-forward network or the connections among the nodes of a recurrent network. We consider a labeled example of each below.
+
+There are different conventions for representing weights using a matrix, determined by the order of the weight indices. We use a ``source--target convention'': a connection from source node $j$ to target node $k$ is written $w_{j,k}$.\footnote{The alternative target--source convention writes the same connection as $w_{k,j}$, putting targets in rows and sources in columns. The same weights would then form a $3\times2$ matrix, obtained by exchanging the rows and columns of the matrix above (\emph{transposing} it). Both conventions are used in practice, but target--source is more common. We use source--target because the indices follow the direction of the connection, making it an intuitive starting point for learning to read weights. In Simbrain, the setting is under \emph{File $>$ Network Preferences $>$ Gui $>$ Weight Matrix target-source format}. Turn this option off to use the source--target convention presented here. Having to change the setting is a useful reminder that we are departing from the more common convention for a pedagogical reason.}
+
+Figure \ref{abridged_labelled_ff} shows a feed-forward network whose input-to-hidden weight layer is represented by the $2\times3$ matrix above. The inputs are nodes $1,2$ and the hidden nodes are $3,4,5$. Labeling the rows and columns by these node numbers makes the correspondence explicit:
+\[
+\begin{array}{c|rrr}
+ & 3 & 4 & 5\\\hline
+1 & 1 & .7 & 2\\
+2 & -2 & -1 & 2.1
+\end{array}
+\]
+The connection from node $2$ to node $5$ has strength $2.1$ and occupies row $2$, column $3$ of the matrix. This connection is represented as $w_{2,5}$. Note that rows correspond to fan-out weights and columns correspond to fan-in weights. For example, the column headed $4$ contains the incoming weights to hidden node $4$, $(.7,-1)$.
+
+\begin{figure}[!ht]
+\centering
+\accessibleimage[width=.32\textwidth]{./images/ff_labelled.png}{Feed-forward network with inputs labeled 1 and 2, hidden nodes 3, 4, and 5, and outputs 6 and 7. All activations are zero and connection strengths are labeled. The input-to-hidden weights are 1, 0.7, and 2 from node 1, and minus 2, minus 1, and 2.1 from node 2.}
+\caption[Simbrain screenshot modified by Jeff Yoshimi.]{A labeled feed-forward network. The first weight layer (from input to hidden) is represented by a $2\times 3$ weight matrix and the second (from hidden to output ) by $3 \times 2$ weight matrix. }
+\label{abridged_labelled_ff}
+\end{figure}
+
+In a feed-forward network, a weight matrix connects two layers. In a recurrent network, it represents connections among the same set of nodes: each node can be a source and a target. A network with $n$ nodes therefore has an $n\times n$ weight matrix. In source--target form, we put the strength of the connection from node $j$ to node $k$ in row $j$, column $k$. We use $0$ wherever a connection is absent. Diagonal entries represent connections from nodes to themselves.
+
+Figure \ref{abridged_sparse_recurrent} shows a four-node example from chapter \extref{ch_linear_algebra}.
+
+\begin{figure}[!ht]
+\centering
+\accessibleimage[width=.36\textwidth]{./images/sparseRecurrent.png}{Four-node recurrent network: node 1 connects to node 4 with weight 1, node 2 to node 1 with weight minus 1, node 3 to node 1 with weight 1, and node 4 to itself with weight minus 1. All displayed activations are zero.}
+\caption[Jeff Yoshimi.]{The recurrent network represented by $\mathbf{W}_r$. Red weights have strength $1$ and blue weights have strength $-1$; the colored disk marks the target end of each connection. The screenshot shows zero activations; for the worked iterations, we set node $2$ to $1$.}
+\label{abridged_sparse_recurrent}
+\end{figure}
+
+Its source--target weight matrix is
+\[
+\mathbf{W}_r=
+\begin{pmatrix}
+0&0&0&1\\
+-1&0&0&0\\
+1&0&0&0\\
+0&0&0&-1
+\end{pmatrix}.
+\]
+Both the rows and columns are ordered by node labels $1,2,3,4$. For example, $w_{2,1}=-1$ is the weight from node $2$ to node $1$, whereas $w_{1,2}=0$ means there is no connection from node $1$ to node $2$ in this example. The diagonal entry $w_{4,4}=-1$ is a connection from node $4$ to itself. Column $1$, $(0,-1,1,0)^{\mathsf{T}}$, lists the incoming weights to node $1$; row $1$, $(0,0,0,1)$, lists the outgoing weights from node $1$.
+
+A network or layer's connection strengths can also be collected into a single vector, representing a point in \glossary{weight space}. With one coordinate per connection and excluding biases, the six weights in the input-to-hidden matrix specify a point in a 6 dimensional weight space. 
+
+It is often useful to think about collections of points in these spaces, or motion through them. A set of inputs is a collection of points in input space; training moves the network through weight space; and a recurrent network's changing activations trace a path through activation space. Thinking of network values as points, and changes as motion, is a useful conceptual template to keep in mind throughout the book.
+
+A \glossary{tensor} generalizes vectors and matrices to arrays with any number of indices. A scalar is a rank-0 tensor, a vector a rank-1 tensor, and a matrix a rank-2 tensor. A stack of matrices, or volume, is rank 3. The \glossary{shape} of a tensor is a list of numbers in parentheses that reports the size along each array dimension. We already saw shape with matrices: a matrix with 2 rows and 3 columns has shape $(2,3)$, also written $2\times3$. An RGB image involves 3 color values for each pixel.\footnote{RGB is a way to represent an image. RGB stands for red, green, and blue. Each pixel's color can be represented by three values giving the amounts of these color components. See \url{https://en.wikipedia.org/wiki/RGB_color_model}.} An RGB image with 25 rows and 25 columns has shape $(3,25,25)$: three color channels, each $25\times25$. A \emph{batch} is a group of examples processed together, for example when training a network (see chapter \extref{ch_data_science}). A batch of 100 such RGB images has shape $(100,3,25,25)$.
+
+The following table summarizes how we report shapes. For images, we use channel, row, column order, with the image index first for a batch. Other axis orders are possible, so the convention should always be stated.
+
+\begin{center}
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{.16\linewidth}p{.08\linewidth}p{.30\linewidth}p{.34\linewidth}@{}}
+\hline
+Array type & Rank & Index order and names & Example and shape \\
+\hline
+Scalar (0d array) & 0 & No indices & Single activation \\
+Vector (1d array) & 1 & $i$: entry & Activation vector \\
+Matrix (2d array) & 2 & $r,s$: row, column & Weight matrix: $(2,3)$ \\
+Volume (3d array) & 3 & $c,r,s$: channel, row, column & RGB image: $(3,25,25)$ \\
+Batch of volumes (4d array) & 4 & $b,c,r,s$: image in batch, channel, row, column & Batch of RGB images: $(100,3,25,25)$ \\
+\hline
+\end{tabular}
+\endgroup
+\end{center}
+
+In this book, we report shapes only for matrices and higher-rank arrays.\footnote{In machine-learning libraries, shapes are defined for all tensors, including scalars and vectors. In Python array notation, a scalar has shape \texttt{()}, an empty tuple, and a five-component vector has shape \texttt{(5,)}. The trailing comma makes this a tuple with one entry. Rank is the number of axes, or entries in the shape: a scalar has no axes and is rank 0, while this vector has one axis and is rank 1. The vector's shape is neutral about row versus column orientation. An explicit row or column is instead a rank-2 matrix with shape \texttt{(1, 5)} or \texttt{(5, 1)}, respectively. In all three representations, the five components specify a point in a 5 dimensional vector space.}
+
+Figure \ref{abridged_tensor_types} shows examples of these different types of tensor. 
+
+\begin{figure}[htbp]
+\centering
+\accessibleimage[width=.95\textwidth]{./images/tensorTypes.png}{Tensor shapes from left to right: scalar, vector, matrix, volume, and batch of volumes, representing ranks zero through four.}
+\caption[Soraya Boza.]{Schematic of different types of tensor. From left to right: a scalar, a vector, a matrix, a volume, and a batch of volumes. These are 0d, 1d, 2d, 3d, and 4d arrays, or rank 0, 1, 2, 3, and 4 tensors. Numbers are not drawn in; only the abstract shapes of the tensors are shown.}
+\label{abridged_tensor_types}
+\end{figure}
+
+\section{Projection}
+
+
+Neural-network vector spaces can have far more than three dimensions, so they cannot be directly visualized. A \glossary{projection} maps a higher-dimensional space to a lower-dimensional one, allowing high-dimensional data to be visualized. This is analogous to projecting the three-dimensional Earth onto a two-dimensional map: the projection introduces distortion, but can preserve enough structure to be useful.
+
+There are different ways of projecting globes to pages, each of which introduces distinct types of distortions. For example, in a standard Mercator projection of the Earth (figure \ref{abridged_mercator}), Antarctica and Greenland look huge, and things are especially distorted near the two poles, farthest away from the equator. Even so, we still generally get a sense of the objects' shapes and their arrangement. When we see on the map that Los Angeles and San Francisco are on the same coast, we know we can sail along the coast to get from one city to the other. Distances and areas are distorted, but useful relationships are preserved.
+
+\begin{figure}[htbp]
+\centering
+\accessibleimage[width=.8\textwidth]{./images/Mercator.jpg}{A globe with a latitude-longitude grid is mapped to a rectangular Mercator world map.}
+\caption[Scott Hotton's modification of an image from the Cartographic Research Lab at the University of Alabama.]{The Earth's surface in 3 dimensional space is rendered as a flat, 2 dimensional surface by the Mercator projection method. Distortion increases toward the poles, so small regions around the poles are cropped out from the maps.}
+\label{abridged_mercator}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\accessibleimage[scale=2.7]{./images/Sammon3.png}{Two-dimensional projection of nine points from a higher-dimensional space. The points form a three-lobed, symmetric curve.}
+\caption[Scott Hotton.]{A projection of a symmetrical curve in a 6 dimensional space, making its symmetry visible.}
+\label{abridged_projection}
+\end{figure}
+
+A method for producing a projection is a \glossary{dimensionality reduction} technique. Different methods have different tradeoffs and introduce different distortions; using projections can nevertheless make structure apparent that is hard or impossible to see in a list of high-dimensional vectors.
+
+Imagine being given these three points in a 6 dimensional space:
+\[
+\begin{aligned}
+\mathbf{p}&=(1,2,0,-1,3,1),\\
+\mathbf{q}&=(1.2,1.9,0,-1,3,1),\\
+\mathbf{r}&=(8,9,7,6,10,8).
+\end{aligned}
+\]
+Even though you cannot picture six dimensions, you can compare the lists: $\mathbf{p}$ and $\mathbf{q}$ differ only slightly, whereas $\mathbf{r}$ differs substantially from both. Now try making up two more vectors, one near $\mathbf{p}$ and one far from it. To make a nearby point, change one coordinate a little; to make a distant point, change one or more coordinates a lot. For example,
+\[
+\mathbf{u}=(1.1,2,0,-1,3,1),\qquad
+\mathbf{v}=(1,2,0,-1,3,21).
+\]
+The point $\mathbf{u}$ is only $0.1$ units from $\mathbf{p}$, while $\mathbf{v}$ is $20$ units away.
+
+Imagine plotting all five points using a projection that tries to preserve distances. In a good projection we would see $\mathbf{p}$, $\mathbf{q}$, and $\mathbf{u}$ close together, with $\mathbf{r}$ and $\mathbf{v}$ farther away. 
+
+\section{The Dot Product}
+
+The \glossary{dot product} is a function of two vectors with the same number of components. It is computed by multiplying corresponding components and summing the products:
+\begin{align*}
+(1,2,3)\bullet(4,5,6) &= 1\cdot4+2\cdot5+3\cdot6=32,\\
+(0,0,0)\bullet(4,5,6) &= 0\cdot4+0\cdot5+0\cdot6=0,\\
+(2,3,-1)\bullet(-1,1,1) &= 2\cdot(-1)+3\cdot1+(-1)\cdot1=0,\\
+(1,1,1,1,1)\bullet(1,1,1,1,1) &= 1\cdot1+1\cdot1+1\cdot1+1\cdot1+1\cdot1=5.
+\end{align*}
+
+The sign of the dot product tells us whether two vectors are pointing in the same general direction, opposite general directions, or are at right angles to one another (figure \ref{abridged_dot_directions}). If the dot product of $\mathbf{u}$ and $\mathbf{v}$ is greater than $0$, the angle between them is less than 90 degrees. If the dot product is less than $0$, the angle between them is more than 90 degrees.
+
+When the dot product of two non-zero vectors is $0$, they are \glossary{orthogonal} (perpendicular) to each other: the angle between them is exactly 90 degrees.\footnote{They must be non-zero because the dot product of any vector with the zero vector is $0$, but the zero vector has no direction, so there is no angle between them.} It might be hard to tell right away that the vectors $(2,-1,1,-3,1,1)$ and $(1,2,3,1,1,-1)$ are orthogonal to each other, but a quick calculation shows us that it is true:
+\[
+(2,-1,1,-3,1,1)\bullet(1,2,3,1,1,-1)=2-2+3-3+1-1=0.
+\]
+
+\begin{figure}[htbp]
+\centering
+\accessibleimage[width=.9\textwidth]{./images/dotProductDirections.pdf}{Three examples: similar directions yield a positive dot product, perpendicular vectors yield zero, and opposite general directions yield a negative dot product.}
+\caption[Scott Hotton.]{How to interpret the dot product geometrically. Vectors pointing in roughly the same direction have a positive dot product; vectors that are orthogonal have a dot product of $0$; vectors pointing in roughly opposite directions have a negative dot product.}
+\label{abridged_dot_directions}
+\end{figure}
+
+The dot product is sensitive to the length of vectors. For two vectors pointing in the same general direction, if you increase the length of either vector, their dot product will increase.
+
+
+The weighted input to a node is a dot product of the incoming activation vector and its fan-in weight vector, plus bias. Returning to figure \ref{abridged_simple_network}, for activations $(-1,-4,5)$, weights $(-1,1,1)$, and bias $0$,
+\[
+n_4=(-1,-4,5)\bullet(-1,1,1)+0=1-4+5=2.
+\]
+
+\section{Vector--Matrix Products}
+
+We now discuss the matrix product, an operation for multiplying matrices with compatible shapes.\footnote{For a fuller treatment, see sections \extref{matrixProduct1} and \extref{matrixMultiplication} of chapter \extref{ch_linear_algebra}.} We focus on two examples of a vector multiplying a matrix: first, a weight layer connecting two layers of a feed-forward network; second, the full weight matrix of a recurrent network. In both cases, we assume the source--target format introduced above. We therefore use \emph{right multiplication}: the activation row vector is multiplied by a matrix on its right, $\mathbf{a}\mathbf{W}$.\footnote{In the more common target--source format, the forward pass uses \emph{left multiplication}, $\mathbf{W}\mathbf{a}$, with the matrix on the left of an activation column vector. This is the form you are more likely to encounter in other discussions.}
+
+\subsection{Feed-Forward Networks}
+
+For a feed-forward layer, multiplying the input activation vector by the weight matrix computes one weighted input for each target node. Take the dot product of the input row vector with each column of the matrix, writing the results from left to right:
+\[
+\begin{pmatrix}1&2\end{pmatrix}
+\begin{pmatrix}1&3&0\\2&4&1\end{pmatrix}
+=\begin{pmatrix}5&11&2\end{pmatrix}.
+\]
+The three entries are $1(1)+2(2)=5$, $1(3)+2(4)=11$, and $1(0)+2(1)=2$. Each column collects the incoming weights for one target, so each dot product is that target's weighted sum.
+
+Here is a quick way to sanity check your work using the shapes of the vectors and matrices. The input vector must have as many components as the matrix has rows, and the output must have as many components as the matrix has columns. In the example above the input has 2 components and the weight matrix has two rows, and the output has three components and the weight matrix has three rows.
+
+For a feed-forward network, this operation computes a layer's weighted-input vector. With linear activations of slope $1$, no clipping, and zero bias,
+\[
+\mathbf{a}_{hidden}=\mathbf{a}_{input}\mathbf{W}_{input,hidden}.
+\]
+With nonzero biases, add the bias vector to the product before applying the activation function. For functions such as ReLU or sigmoid, this final step is performed component by component. This kind of  compact calculation is one reason matrices are central to neural networks.
+
+Figure \ref{abridged_source_target} shows a way to visualize how the vector-matrix product relates to what is happening in a feed-forward network. The left panel shows a network in Simbrain; the right panel shows the mathematical operation, and the middle panel is a kind of bridge that gives a way to visualize how they are related (the weights are arranged like the matrix, with red for 1s and white for 0s)  These are three views of the same operation; the center view helps us connect the arithmetic to activation flowing through a network.
+
+\begin{figure}[htp]
+\centering
+\accessibleimage[width=.9\textwidth]{./images/sourceTarget.png}{A feed-forward network, a schematic of activation flowing through its weight matrix, and the corresponding row-vector matrix product illustrate the source-target convention.}
+\caption[Jeff Yoshimi.]{Three views of a vector--matrix product in source--target format. (Right) The calculation $(0,1)\mathbf{W}=(1,0,1)$. (Center) A diagram connecting the calculation to the network: input activations enter beside the rows and outputs appear above the columns. (Left) The corresponding feed-forward network, with linear activations of slope $1$ and zero biases.}
+\label{abridged_source_target}
+\end{figure}
+
+\subsection{Iterating a Recurrent Network}\label{abridged_recurrent_iterations}
+
+We now return to the four-node network in figure \ref{abridged_sparse_recurrent} and its weight matrix $\mathbf{W}_r$ introduced above. We write out that same matrix in each update below so that each dot product can be checked directly. A vector--matrix product carries the activation of these four nodes from one time step to the next, and the new vector becomes the input for the following update. With linear activation functions of slope $1$, zero biases, and no clipping, the rule is
+\[
+\mathbf{a}(t+1)=\mathbf{a}(t)\mathbf{W}_r.
+\]
+Here $t$ is the time step. All nodes update simultaneously: every component of $\mathbf{a}(t+1)$ is computed from the old vector $\mathbf{a}(t)$. The product has shape $(1,4)$, so it can be multiplied by the same $4\times4$ matrix again at the next step.
+
+Start at time 0 with only node $2$ active: $\mathbf{a}(0)=(0,1,0,0)$. Dotting this vector with each column gives
+\[
+\mathbf{a}(1)=
+\begin{pmatrix}0&1&0&0\end{pmatrix}\;\begin{pmatrix}
+0&0&0&1\\
+-1&0&0&0\\
+1&0&0&0\\
+0&0&0&-1
+\end{pmatrix}
+=\begin{pmatrix}-1&0&0&0\end{pmatrix}.
+\]
+For example, the first component is $0(0)+1(-1)+0(1)+0(0)=-1$. Repeating the same operation with each new activation vector gives
+\[
+\mathbf{a}(2)=\begin{pmatrix}-1&0&0&0\end{pmatrix}\;\begin{pmatrix}
+0&0&0&1\\
+-1&0&0&0\\
+1&0&0&0\\
+0&0&0&-1
+\end{pmatrix}
+=\begin{pmatrix}0&0&0&-1\end{pmatrix},
+\]
+\[
+\mathbf{a}(3)=\begin{pmatrix}0&0&0&-1\end{pmatrix}\;\begin{pmatrix}
+0&0&0&1\\
+-1&0&0&0\\
+1&0&0&0\\
+0&0&0&-1
+\end{pmatrix}
+=\begin{pmatrix}0&0&0&1\end{pmatrix},
+\]
+\[
+\mathbf{a}(4)=\begin{pmatrix}0&0&0&1\end{pmatrix}\;\begin{pmatrix}
+0&0&0&1\\
+-1&0&0&0\\
+1&0&0&0\\
+0&0&0&-1
+\end{pmatrix}
+=\begin{pmatrix}0&0&0&-1\end{pmatrix}.
+\]
+The network now alternates between the last two states: node $4$'s negative self-connection reverses its activation at each step. The weight matrix remains fixed throughout; it is the activation vector that changes. This sequence is an example of an orbit in activation space (see chapter \extref{ch_dst}). 
+
+\clearpage
+\section{Exercises}
+
+The activation-function and linear-algebra questions below are adapted from the exercises in the original chapters, with additional questions on shapes. For numerical softmax calculations, use a calculator and round to three decimal places.
+
+\begin{enumerate}
+\item \textbf{Weighted input.} Consider the network shown in figure \ref{abridged_simple_network}. The activations on the input nodes are $(a_1,a_2,a_3)=(-1,-4,5)$, the weights are $(w_{1,4},w_{2,4},w_{3,4})=(-1,1,1)$, and the bias is $b_4=0$. What is the weighted input to node $4$?
+
+\item Suppose we have the same network as in the preceding exercise, except $b_4=1$. What is the weighted input to node $4$?
+
+\item Suppose again that we have the same network as in the first exercise, except this time the activations are $(a_1,a_2,a_3)=(0,0,0)$. What is the weighted input to node $4$?
+
+\item \textbf{Threshold.} Suppose node $k$ has a threshold activation function described by $(u,\ell,\theta)=(1,0,0.5)$, the same as in figure \ref{abridged_activation_functions}. And suppose $n_k=2$. What is the activation of node $k$?
+
+\item \textbf{Linear.} Suppose node $k$ has a linear activation function with $m=3$ and weighted input $n_k=2$. What is the activation of node $k$?
+
+\item Suppose node $k$ has a linear activation function with $m=1$ and weighted input $n_k=-0.5$. What is the activation of node $k$?
+
+\item Suppose node $k$ has a piecewise linear activation function with $(u,\ell,m)=(10,-10,1)$ and weighted input $n_k=4$. What is the activation of node $k$?
+
+\item Suppose node $k$ has a piecewise linear activation function with $(u,\ell,m)=(1,0,1)$ and weighted input $n_k=10$. What is the activation of node $k$?
+
+\item \textbf{ReLU.} Suppose node $k$ has a ReLU activation function and weighted input $n_k=-10$. What is the activation of node $k$? What if the weighted input is $19$?
+
+\item \textbf{Sigmoid.} Suppose node $k$ has a sigmoid activation function with $(u,\ell,m)=(1,0,1)$. This is the sigmoid function shown in figure \ref{abridged_activation_functions}. Consult that graph. Suppose the weighted input is $0.75$. What, approximately, is the activation of node $k$? Find $0.75$ on the horizontal axis and find the vertical coordinate of the corresponding point on the graph. What is the activation if the weighted input is $0$?
+
+\item \textbf{Weighted input and activation.} Suppose we have a network with two input nodes (labeled $1$ and $2$) connected to a third node (labeled $3$). The activations are $(a_1,a_2)=(1,-1)$, the weights are $(w_{1,3},w_{2,3})=(-1,1)$, and the bias is $b_3=1$. Suppose node $3$ has a ReLU activation function. What is the activation of node $3$? First compute the weighted input, then apply the activation function.
+
+\item Suppose node $k$ has a sigmoid activation function with $(u,\ell,m)=(10,0,1)$ and weighted input $0$. What is the activation of node $k$? What, approximately, is its activation if the weighted input is $-100$? Use the midpoint and limiting values of the sigmoid; the logistic formula in the chapter applies only to bounds $(1,0)$.
+
+\item Suppose node $k$ has a sigmoid activation function and consider three possible values for the weighted input: $n_k=0$, $n_k=2$, and $n_k=2.5$. How can we design the sigmoid activation function so that the activation for $n_k=0$ is $0.5$ while the activation for $n_k=2$ and $n_k=2.5$ is far below $1$? Consider its bounds and slope.
+
+\item Suppose we have a network with two input nodes (labeled $1$ and $2$) connected to a third node (labeled $3$). The activations are $(a_1,a_2)=(-1,1)$, the weights are $(w_{1,3},w_{2,3})=(0,.5)$, and the bias is $b_3=0$. Suppose node $3$ has a piecewise linear activation function with $(u,\ell,m)=(2,-2,1)$. What is the activation of node $3$?
+
+\item Compute activation for node $3$ when $(a_1,a_2)=(1,1)$, $(w_{1,3},w_{2,3})=(0,4)$, and $b_3=1$. Suppose node $3$ has a threshold activation function with $(u,\ell,\theta)=(10,-10,1)$.
+
+\item Compute activation for node $5$ when $(a_1,a_2,a_3,a_4)=(1,1,-1,-1)$, $(w_{1,5},w_{2,5},w_{3,5},w_{4,5})=(0,0,1,1)$, and $b_5=0$. Suppose node $5$ has a threshold activation function with $(u,\ell,\theta)=(1,-1,0)$.
+
+\item Suppose we have $(a_1,a_2)=(1,-1)$, $(w_{1,3},w_{2,3})=(-1,1)$, and $b_3=5$. What is $n_3$?
+
+\item \textbf{Softmax.} Compute softmax for inputs $(3,2,1)$ with temperature $T=1$. Check that the probabilities sum to $1$ before rounding. Which node has the largest activation? Without calculating, describe what happens when the temperature is increased to $3$. What would the probabilities be if all three inputs were equal?
+
+\item \textbf{Vectors and spaces.} Consider a feed-forward network with 2 input nodes, 3 hidden nodes, and 2 output nodes. What is the dimensionality of its input space, hidden unit space, output space, and full activation space? If every input connects to every hidden node and every hidden node connects to every output, with no other connections, what is the dimensionality of its weight space? Count connection weights only, excluding biases.
+
+\item What is the dimensionality of the weight space and activation space of a two-node recurrent network with all four possible connections, including a connection from each node to itself? Count connection weights only, excluding biases.
+
+\item What is the dimensionality of the weight space and activation space of a three-node recurrent network with just three connections: node $1$ to node $2$, node $2$ to node $3$, and node $3$ to node $1$?
+
+\item \textbf{The Euclidean plane.} Plot and label the points $A=(3,4)$, $B=(-2,-1)$, and $C=(4,-2)$ on a coordinate plane. Which points lie above the horizontal axis? Which lie to the left of the vertical axis?
+
+\item Plot and label $(0,0)$, $(0,3)$, $(3,0)$, and $(-2,0)$ as points. Which lie on the horizontal axis, which lie on the vertical axis, and which lie on both?
+
+\item Plot the points $(1,2)$, $(1,3)$, $(4,2)$, and $(-3,-2)$. Which pairs share a first coordinate? Which share a second coordinate? How does this appear in the plot?
+
+\item \textbf{Vector shapes.} Write the vector $(0,-1,1,0.4,9)$ as both a row vector and a column vector. What is the matrix shape of each? What is the dimension of the vector space? Explain why a list with five components is a rank-1 tensor even though it represents a point in a 5 dimensional vector space.
+
+\item \textbf{Matrix shapes.} What is the shape of the following matrix? How many row vectors and column vectors does it have? How many components are in each row vector and each column vector? What is the entry in row $3$, column $2$?
+\[
+\begin{pmatrix}
+1&9&7\\5&3&2\\0.3&-1&0\\0&-0.4&0
+\end{pmatrix}
+\]
+
+\item \textbf{Matrix indexing.} Let
+\[
+\mathbf{W}=\begin{pmatrix}1&.7&2\\-2&-1&2.1\end{pmatrix}.
+\]
+Use indices starting at $1$. What is $w_{2,3}$? Which indices identify the entry $-2$? What source and target nodes does that entry connect? Write row $2$ as a row vector and column $3$ as a column vector. If this is a source--target weight matrix from a two-node input layer to a three-node hidden layer, what is the strength of the weight from the second input node to the third hidden node? Which row or column gives that hidden node's fan-in weight vector?
+
+\item \textbf{Image shapes.} Give the shape and rank of a single RGB image with 25 rows and 25 columns, using the order channel, row, column. How would its shape change if it were grayscale, retaining a channel dimension of size $1$? How many scalar entries does each image contain?
+
+\item \textbf{Batch shapes.} A batch contains 20 RGB images, each with 28 rows and 28 columns. Give its tensor shape using the order batch, channel, row, column, and state its rank. How many scalar entries does it contain? What are the shape and rank of one image removed from the batch, and of one color channel removed from that image?
+
+\item \textbf{Tensor indexing.} Let $\mathbf{X}$ be a batch of RGB images with shape $(20,3,28,28)$, in image, channel, row, column order. Use indices starting at $1$ and channel order red, green, blue. Describe exactly what the scalar entry $X_{7,2,10,12}$ represents. Write the indices for the blue intensity at row $4$, column $9$ of image $5$. If we select image $7$ and then its green channel, what is the shape of the remaining array?
+
+\item \textbf{Reading a shape.} A tensor has shape $(60000,1,28,28)$ in batch, channel, row, column order. How many images does it contain? Are they grayscale or RGB? How many rows and columns does each image have? What shape would a batch of just 100 of these images have?
+
+\item \textbf{Weight-matrix shapes.} A feed-forward network has 4 input nodes, 6 hidden nodes, and 2 output nodes, with all-to-all connections between consecutive layers. In source--target form, what are the shapes of its input-to-hidden and hidden-to-output weight matrices? How many weights does each matrix contain? What would their shapes be in target--source form?
+
+\item \textbf{Projection from 3 dimensions.} Consider the points
+\[
+A=(0,0,0),\quad B=(0,0,1),\quad C=(0,0,10),\quad D=(8,8,0).
+\]
+Which pair is closest together in the original 3 dimensional space? Project the points to the plane by keeping only the first two coordinates: $(x,y,z)\mapsto(x,y)$. List the projected points. Which points now appear at the same location, even though they were separated in the original space?
+
+\item Consider the points
+\[
+A=(1,1,0),\quad B=(1,2,0),\quad C=(1,1,20),\quad D=(9,9,20).
+\]
+Which pair is closest in 3 dimensions? Which pair appears closest when you keep only the first two coordinates? Now keep only the first and third coordinates, $(x,y,z)\mapsto(x,z)$. Which pair appears closest in this projection?
+
+\item \textbf{Projection from 4 dimensions.} Consider the points
+\[
+A=(0,0,0,0),\quad B=(0,0,0,1),\quad
+C=(0,0,10,10),\quad D=(7,7,10,10).
+\]
+Which pair is closest in the original space? List the projected points when you keep only the first two coordinates. Which points appear close together or coincide? Repeat using only the last two coordinates. Which points appear close together or coincide in that projection?
+
+\item \textbf{Dot products and orthogonality.} Compute the following dot products. For each pair, say whether the vectors point in the same general direction, are orthogonal, or point in opposite general directions:
+\[
+(1,1,1)\bullet(1,1,1),\qquad
+(-1,0,1)\bullet(-1,-1,0),
+\]
+\[
+(10,2,-10)\bullet(0,10,-10),\qquad
+(.5,-1,1,-1)\bullet(10,-2,1,2),
+\]
+\[
+(2,3,-1)\bullet(-1,1,1),\qquad
+(1,2)\bullet(-1,-2).
+\]
+Why does a dot product of $0$ with the zero vector not imply an angle of 90 degrees?
+
+\item \textbf{Vector--matrix products.} What are the following products?
+\[
+\begin{pmatrix}1&1\end{pmatrix}\begin{pmatrix}1&2\\3&4\end{pmatrix},
+\qquad
+\begin{pmatrix}-1&1\end{pmatrix}\begin{pmatrix}1&-2\\3&4\end{pmatrix},
+\]
+\[
+\begin{pmatrix}-10&10\end{pmatrix}\begin{pmatrix}0.5&-0.5\\-1&1\end{pmatrix}.
+\]
+
+\item \textbf{A forward pass.} Let
+\[
+\mathbf{a}_{input}=\begin{pmatrix}1&2\end{pmatrix},
+\qquad
+\mathbf{W}=\begin{pmatrix}1&.7&2\\-2&-1&2.1\end{pmatrix}.
+\]
+Using the source--target convention, first identify $w_{1,2}$ and $w_{2,1}$ and state which connection each describes. Write the fan-in weight vector for the second hidden node. Then, with zero biases, compute the three weighted inputs by taking dot products with the columns of $\mathbf{W}$. Then compute the hidden activation vector first with linear activations of slope $1$, and then with ReLU. State the input-space and hidden-unit-space dimensions.
+
+\item \textbf{Conventions and compatible shapes.} For the preceding exercise, write the same weight matrix in target--source form by exchanging its rows and columns. Write the input as a column vector and check that left multiplication gives the same weighted inputs. In source--target form, what shape must the next weight matrix have to transform the three hidden activations into two outputs?
+
+\item \textbf{Reading recurrent weight indices.} Use the four-node matrix $\mathbf{W}_r$ accompanying figure \ref{abridged_sparse_recurrent}. What are $w_{1,4}$, $w_{4,1}$, and $w_{4,4}$, and which connection does each describe? List the index pairs $(j,k)$ for all nonzero entries. Which entry represents a self-connection? Write the full fan-in column and fan-out row for node $4$, including zeros. Use the fan-in column to write a formula for $a_4(t+1)$ in terms of the old activations, assuming linear activations of slope $1$ and zero biases.
+
+\item \textbf{Recurrent weight matrix.}\label{abridged_ex_recurrent} A recurrent network has three nodes labeled $1,2,3$ and just three weights: $w_{1,2}=-1$, $w_{2,3}=0.5$, and $w_{3,1}=2$. What is the matrix representation of its weights in source--target form? Use $0$ for absent connections. What is the fan-in weight vector for node $2$, listing only existing incoming weights? What is the corresponding full column of the weight matrix?
+
+\item If the network in exercise \ref{abridged_ex_recurrent} has linear nodes of slope $1$, zero biases, and no clipping, and is given the activation vector $(a_1,a_2,a_3)=(1,1,1)$, what will its activation be in the next time step? Update all nodes simultaneously using the old activation vector.
+
+\item If the same network is given the activation vector $(a_1,a_2,a_3)=(-1,-1,2)$, what will its activation be in the next time step?
+
+\item Starting again from $(1,1,1)$, if the network is iterated four times, what will its activation vectors be in those four time steps? Use each new activation vector as the input for the next step.
+\end{enumerate}
