@@ -16,6 +16,26 @@ import operator
 
 CONTAINER_DOCUMENT = sys.argv[1]
 
+def remove_footnotes(text):
+    """Exclude chapter attribution notes from names, including nested LaTeX."""
+    pattern = re.compile(r"\\footnote\s*(?:\[[^\]]*\]\s*)?\{")
+    while match := pattern.search(text):
+        end = match.end()
+        depth = 1
+        while end < len(text) and depth:
+            if text[end] == "\\":
+                end += 2  # Escaped braces do not open or close groups.
+                continue
+            if text[end] == "{":
+                depth += 1
+            elif text[end] == "}":
+                depth -= 1
+            end += 1
+        if depth:
+            raise ValueError("Unclosed footnote in chapter source")
+        text = text[:match.start()] + text[end:]
+    return text
+
 # 
 # Find chapters in container document
 # 
@@ -40,7 +60,7 @@ with open(CONTAINER_DOCUMENT, 'r') as textfile:
 book_authors = defaultdict(int) # Author to summed weightings
 for chapter in included_chapters:
     with open(chapter, 'r') as textfile:
-        text = textfile.read()
+        text = remove_footnotes(textfile.read())
         # TODO: Will this work on commented out \chapterauthor?
         # TODO: Allow for curly braces in the regex (e.g. {\''e} fails) 
         reg_author = re.compile(r"\\chapterauthor\{([^}]+)\}(\{[^}]+\})*")
