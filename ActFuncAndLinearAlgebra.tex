@@ -413,7 +413,7 @@ The network now alternates between the last two states: node $4$'s negative self
 \clearpage
 \section{Exercises}
 
-The activation-function and linear-algebra questions below are adapted from the exercises in the original chapters, with additional questions on shapes. For numerical softmax calculations, use a calculator and round to three decimal places.
+The activation-function and linear-algebra questions below are adapted from the exercises in the original chapters, with additional questions on shapes.
 
 \begin{enumerate}
 \item \textbf{Weighted input.} Consider the network shown in figure \ref{abridged_simple_network}. The activations on the input nodes are $(a_1,a_2,a_3)=(-1,-4,5)$, the weights are $(w_{1,4},w_{2,4},w_{3,4})=(-1,1,1)$, and the bias is $b_4=0$. What is the weighted input to node $4$?
@@ -424,25 +424,19 @@ The activation-function and linear-algebra questions below are adapted from the 
 
 \item \textbf{Threshold.} Suppose node $k$ has a threshold activation function described by $(u,\ell,\theta)=(1,0,0.5)$, the same as in figure \ref{abridged_activation_functions}. And suppose $n_k=2$. What is the activation of node $k$?
 
-\item \textbf{Linear.} Suppose node $k$ has a linear activation function with $m=3$ and weighted input $n_k=2$. What is the activation of node $k$?
+\item \textbf{Piecewise linear.} Suppose node $k$ has a piecewise linear activation function with $(u,\ell)=(1,0)$. What is its activation if $n_k=0$, $n_k=0.5$, or $n_k=10$?
 
-\item Suppose node $k$ has a linear activation function with $m=1$ and weighted input $n_k=-0.5$. What is the activation of node $k$?
+\item Suppose node $k$ has a piecewise linear activation function with $(u,\ell)=(2,-2)$. What is its activation if $n_k=0$, $n_k=-10$, or $n_k=10$?
 
-\item Suppose node $k$ has a piecewise linear activation function with $(u,\ell,m)=(10,-10,1)$ and weighted input $n_k=4$. What is the activation of node $k$?
+\item \textbf{ReLU.} Suppose node $k$ has a ReLU activation function. What is its activation for each weighted input $n_k=-10$, $n_k=0$, and $n_k=19$?
 
-\item Suppose node $k$ has a piecewise linear activation function with $(u,\ell,m)=(1,0,1)$ and weighted input $n_k=10$. What is the activation of node $k$?
+\item \textbf{Sigmoid.} Suppose node $k$ has a sigmoid activation function with $(u,\ell)=(1,0)$. What is its activation if $n_k=0$? Approximately what is it if $n_k=-45$ or $n_k=104$?
 
-\item \textbf{ReLU.} Suppose node $k$ has a ReLU activation function and weighted input $n_k=-10$. What is the activation of node $k$? What if the weighted input is $19$?
+\item Suppose node $k$ has a sigmoid activation function with $(u,\ell)=(1,-1)$. What is its activation if $n_k=0$? Approximately what is it if $n_k=-45$ or $n_k=104$?
 
-\item \textbf{Sigmoid.} Suppose node $k$ has a sigmoid activation function with $(u,\ell,m)=(1,0,1)$. This is the sigmoid function shown in figure \ref{abridged_activation_functions}. Consult that graph. Suppose the weighted input is $0.75$. What, approximately, is the activation of node $k$? Find $0.75$ on the horizontal axis and find the vertical coordinate of the corresponding point on the graph. What is the activation if the weighted input is $0$?
+\item Suppose node $k$ has a sigmoid activation function with $(u,\ell)=(10,0)$. What is its activation if $n_k=0$? Approximately what is it if $n_k=-45$ or $n_k=104$?
 
 \item \textbf{Weighted input and activation.} Suppose we have a network with two input nodes (labeled $1$ and $2$) connected to a third node (labeled $3$). The activations are $(a_1,a_2)=(1,-1)$, the weights are $(w_{1,3},w_{2,3})=(-1,1)$, and the bias is $b_3=1$. Suppose node $3$ has a ReLU activation function. What is the activation of node $3$? First compute the weighted input, then apply the activation function.
-
-\item Suppose node $k$ has a sigmoid activation function with $(u,\ell,m)=(10,0,1)$ and weighted input $0$. What is the activation of node $k$? What, approximately, is its activation if the weighted input is $-100$? Use the midpoint and limiting values of the sigmoid; the logistic formula in the chapter applies only to bounds $(1,0)$.
-
-\item Suppose node $k$ has a sigmoid activation function and consider three possible values for the weighted input: $n_k=0$, $n_k=2$, and $n_k=2.5$. How can we design the sigmoid activation function so that the activation for $n_k=0$ is $0.5$ while the activation for $n_k=2$ and $n_k=2.5$ is far below $1$? Consider its bounds and slope.
-
-\item Suppose we have a network with two input nodes (labeled $1$ and $2$) connected to a third node (labeled $3$). The activations are $(a_1,a_2)=(-1,1)$, the weights are $(w_{1,3},w_{2,3})=(0,.5)$, and the bias is $b_3=0$. Suppose node $3$ has a piecewise linear activation function with $(u,\ell,m)=(2,-2,1)$. What is the activation of node $3$?
 
 \item Compute activation for node $3$ when $(a_1,a_2)=(1,1)$, $(w_{1,3},w_{2,3})=(0,4)$, and $b_3=1$. Suppose node $3$ has a threshold activation function with $(u,\ell,\theta)=(10,-10,1)$.
 
@@ -450,21 +444,17 @@ The activation-function and linear-algebra questions below are adapted from the 
 
 \item Suppose we have $(a_1,a_2)=(1,-1)$, $(w_{1,3},w_{2,3})=(-1,1)$, and $b_3=5$. What is $n_3$?
 
-\item \textbf{Softmax.} Compute softmax for inputs $(3,2,1)$ with temperature $T=1$. Check that the probabilities sum to $1$ before rounding. Which node has the largest activation? Without calculating, describe what happens when the temperature is increased to $3$. What would the probabilities be if all three inputs were equal?
+\item \textbf{Softmax.} Three nodes have logits $(3,2,1)$ and temperature $T=1$. Which node will have the highest probability? How will the probabilities change if the temperature is increased to $T=3$ or decreased to $T=0.1$? \textbf{Advanced:} Compute the probabilities at $T=1$ to two decimal places.
 
-\item \textbf{Vectors and spaces.} Consider a feed-forward network with 2 input nodes, 3 hidden nodes, and 2 output nodes. What is the dimensionality of its input space, hidden unit space, output space, and full activation space? If every input connects to every hidden node and every hidden node connects to every output, with no other connections, what is the dimensionality of its weight space? Count connection weights only, excluding biases.
+\item \textbf{Vectors and spaces.} Consider a feed-forward network with 2 input nodes, 3 hidden nodes, and 2 output nodes. What is the dimensionality of its input space, hidden unit space, output space, and full activation space? If every input connects to every hidden node and every hidden node connects to every output, with no other connections, what is the dimensionality of its weight space?
 
-\item What is the dimensionality of the weight space and activation space of a two-node recurrent network with all four possible connections, including a connection from each node to itself? Count connection weights only, excluding biases.
-
-\item What is the dimensionality of the weight space and activation space of a three-node recurrent network with just three connections: node $1$ to node $2$, node $2$ to node $3$, and node $3$ to node $1$?
+\item What is the dimensionality of the weight space and activation space of a two-node recurrent network with all four possible connections, including a connection from each node to itself?
 
 \item \textbf{The Euclidean plane.} Plot and label the points $A=(3,4)$, $B=(-2,-1)$, and $C=(4,-2)$ on a coordinate plane. Which points lie above the horizontal axis? Which lie to the left of the vertical axis?
 
 \item Plot and label $(0,0)$, $(0,3)$, $(3,0)$, and $(-2,0)$ as points. Which lie on the horizontal axis, which lie on the vertical axis, and which lie on both?
 
-\item Plot the points $(1,2)$, $(1,3)$, $(4,2)$, and $(-3,-2)$. Which pairs share a first coordinate? Which share a second coordinate? How does this appear in the plot?
-
-\item \textbf{Vector shapes.} Write the vector $(0,-1,1,0.4,9)$ as both a row vector and a column vector. What is the matrix shape of each? What is the dimension of the vector space? Explain why a list with five components is a rank-1 tensor even though it represents a point in a 5 dimensional vector space.
+\item Plot the points $(1,2)$, $(1,3)$, $(4,2)$, and $(-3,-2)$. Which pairs share a first component? Which share a second component? How does this appear in the plot?
 
 \item \textbf{Matrix shapes.} What is the shape of the following matrix? How many row vectors and column vectors does it have? How many components are in each row vector and each column vector? What is the entry in row $3$, column $2$?
 \[
@@ -473,40 +463,38 @@ The activation-function and linear-algebra questions below are adapted from the 
 \end{pmatrix}
 \]
 
-\item \textbf{Matrix indexing.} Let
-\[
-\mathbf{W}=\begin{pmatrix}1&.7&2\\-2&-1&2.1\end{pmatrix}.
-\]
-Use indices starting at $1$. What is $w_{2,3}$? Which indices identify the entry $-2$? What source and target nodes does that entry connect? Write row $2$ as a row vector and column $3$ as a column vector. If this is a source--target weight matrix from a two-node input layer to a three-node hidden layer, what is the strength of the weight from the second input node to the third hidden node? Which row or column gives that hidden node's fan-in weight vector?
+\item \textbf{Weight-matrix shapes.} A feed-forward network has 4 input nodes, 6 hidden nodes, and 2 output nodes, with all-to-all connections between consecutive layers. Using the conventions in the chapter, what are the shapes of its input-to-hidden and hidden-to-output weight matrices? How many weights does each matrix contain?
 
-\item \textbf{Image shapes.} Give the shape and rank of a single RGB image with 25 rows and 25 columns, using the order channel, row, column. How would its shape change if it were grayscale, retaining a channel dimension of size $1$? How many scalar entries does each image contain?
+\item \textbf{Reading recurrent weight indices.} Use the four-node matrix $\mathbf{W}_r$ accompanying figure \ref{abridged_sparse_recurrent}. What are $w_{1,4}$, $w_{4,1}$, and $w_{4,4}$, and which connection does each describe? List the index pairs $(j,k)$ for all nonzero entries. Which entry represents a self-connection?
 
-\item \textbf{Batch shapes.} A batch contains 20 RGB images, each with 28 rows and 28 columns. Give its tensor shape using the order batch, channel, row, column, and state its rank. How many scalar entries does it contain? What are the shape and rank of one image removed from the batch, and of one color channel removed from that image?
+\item \textbf{Recurrent weight matrix.}\label{abridged_ex_recurrent} A recurrent network has three nodes labeled $1,2,3$ and just three weights: $w_{1,2}=-1$, $w_{2,3}=0.5$, and $w_{3,1}=2$. What is the matrix representation of its weights using the conventions in the chapter?
 
-\item \textbf{Tensor indexing.} Let $\mathbf{X}$ be a batch of RGB images with shape $(20,3,28,28)$, in image, channel, row, column order. Use indices starting at $1$ and channel order red, green, blue. Describe exactly what the scalar entry $X_{7,2,10,12}$ represents. Write the indices for the blue intensity at row $4$, column $9$ of image $5$. If we select image $7$ and then its green channel, what is the shape of the remaining array?
+\item \textbf{Image shapes.} Using the conventions in the chapter, give the shape and rank of a single RGB image with 25 rows and 25 columns. How would its shape change if it were grayscale?
 
-\item \textbf{Reading a shape.} A tensor has shape $(60000,1,28,28)$ in batch, channel, row, column order. How many images does it contain? Are they grayscale or RGB? How many rows and columns does each image have? What shape would a batch of just 100 of these images have?
+\item \textbf{Batch shapes.} A batch contains 20 RGB images, each with 28 rows and 28 columns. Give its tensor shape using the conventions in the chapter.
 
-\item \textbf{Weight-matrix shapes.} A feed-forward network has 4 input nodes, 6 hidden nodes, and 2 output nodes, with all-to-all connections between consecutive layers. In source--target form, what are the shapes of its input-to-hidden and hidden-to-output weight matrices? How many weights does each matrix contain? What would their shapes be in target--source form?
+\item \textbf{Tensor indexing.} Let $\mathbf{X}$ be a batch of RGB images with shape $(20,3,28,28)$. Use the conventions in the chapter. Describe exactly what the scalar entry $X_{7,2,10,12}$ represents. Write the indices for the blue intensity at row $4$, column $9$ of image $5$. If we select image $7$ and then its green channel, what is the shape of the remaining array?
 
-\item \textbf{Projection from 3 dimensions.} Consider the points
+\item \textbf{Reading a shape.} A tensor has shape $(60000,1,28,28)$ using the conventions in the chapter. How many images does it contain? Are they grayscale or RGB? How many rows and columns does each image have? What shape would a batch of just 100 of these images have?
+
+\item \textbf{Distance in 3 dimensions.} Consider the points
 \[
 A=(0,0,0),\quad B=(0,0,1),\quad C=(0,0,10),\quad D=(8,8,0).
 \]
-Which pair is closest together in the original 3 dimensional space? Project the points to the plane by keeping only the first two coordinates: $(x,y,z)\mapsto(x,y)$. List the projected points. Which points now appear at the same location, even though they were separated in the original space?
+Which pair is closest together in the original 3 dimensional space?
 
 \item Consider the points
 \[
 A=(1,1,0),\quad B=(1,2,0),\quad C=(1,1,20),\quad D=(9,9,20).
 \]
-Which pair is closest in 3 dimensions? Which pair appears closest when you keep only the first two coordinates? Now keep only the first and third coordinates, $(x,y,z)\mapsto(x,z)$. Which pair appears closest in this projection?
+Which pair is closest in 3 dimensions?
 
-\item \textbf{Projection from 4 dimensions.} Consider the points
+\item \textbf{Distance in 4 dimensions.} Consider the points
 \[
 A=(0,0,0,0),\quad B=(0,0,0,1),\quad
 C=(0,0,10,10),\quad D=(7,7,10,10).
 \]
-Which pair is closest in the original space? List the projected points when you keep only the first two coordinates. Which points appear close together or coincide? Repeat using only the last two coordinates. Which points appear close together or coincide in that projection?
+Which pair is closest in the original 4 dimensional space?
 
 \item \textbf{Dot products and orthogonality.} Compute the following dot products. For each pair, say whether the vectors point in the same general direction, are orthogonal, or point in opposite general directions:
 \[
@@ -521,7 +509,6 @@ Which pair is closest in the original space? List the projected points when you 
 (2,3,-1)\bullet(-1,1,1),\qquad
 (1,2)\bullet(-1,-2).
 \]
-Why does a dot product of $0$ with the zero vector not imply an angle of 90 degrees?
 
 \item \textbf{Vector--matrix products.} What are the following products?
 \[
@@ -533,23 +520,29 @@ Why does a dot product of $0$ with the zero vector not imply an angle of 90 degr
 \begin{pmatrix}-10&10\end{pmatrix}\begin{pmatrix}0.5&-0.5\\-1&1\end{pmatrix}.
 \]
 
-\item \textbf{A forward pass.} Let
+\item \textbf{A forward pass.} A feed-forward network has two weight layers:
 \[
-\mathbf{a}_{input}=\begin{pmatrix}1&2\end{pmatrix},
+\mathbf{W}_{input,hidden}=\begin{pmatrix}1&.7&2\\-2&-1&2.1\end{pmatrix},
 \qquad
-\mathbf{W}=\begin{pmatrix}1&.7&2\\-2&-1&2.1\end{pmatrix}.
+\mathbf{W}_{hidden,output}=\begin{pmatrix}1&-1\\0.5&2\\-1&1\end{pmatrix}.
 \]
-Using the source--target convention, first identify $w_{1,2}$ and $w_{2,1}$ and state which connection each describes. Write the fan-in weight vector for the second hidden node. Then, with zero biases, compute the three weighted inputs by taking dot products with the columns of $\mathbf{W}$. Then compute the hidden activation vector first with linear activations of slope $1$, and then with ReLU. State the input-space and hidden-unit-space dimensions.
+For $\mathbf{a}_{input}=(1,2)$, what is the hidden activation vector with zero biases and no activation function? What is it with ReLU?
 
-\item \textbf{Conventions and compatible shapes.} For the preceding exercise, write the same weight matrix in target--source form by exchanging its rows and columns. Write the input as a column vector and check that left multiplication gives the same weighted inputs. In source--target form, what shape must the next weight matrix have to transform the three hidden activations into two outputs?
+\item For the same network, suppose $\mathbf{a}_{hidden}=(1,0,2)$. What is the output activation vector with zero biases and no activation function? What is it with ReLU?
 
-\item \textbf{Reading recurrent weight indices.} Use the four-node matrix $\mathbf{W}_r$ accompanying figure \ref{abridged_sparse_recurrent}. What are $w_{1,4}$, $w_{4,1}$, and $w_{4,4}$, and which connection does each describe? List the index pairs $(j,k)$ for all nonzero entries. Which entry represents a self-connection? Write the full fan-in column and fan-out row for node $4$, including zeros. Use the fan-in column to write a formula for $a_4(t+1)$ in terms of the old activations, assuming linear activations of slope $1$ and zero biases.
+\item Starting from $\mathbf{a}_{input}=(1,2)$, what are the hidden and output activation vectors after propagating through both weight layers with zero biases and no activation functions?
 
-\item \textbf{Recurrent weight matrix.}\label{abridged_ex_recurrent} A recurrent network has three nodes labeled $1,2,3$ and just three weights: $w_{1,2}=-1$, $w_{2,3}=0.5$, and $w_{3,1}=2$. What is the matrix representation of its weights in source--target form? Use $0$ for absent connections. What is the fan-in weight vector for node $2$, listing only existing incoming weights? What is the corresponding full column of the weight matrix?
+\item Repeat the full forward pass with bias vectors $\mathbf{b}_{hidden}=(4,0,-1)$, $\mathbf{b}_{output}=(1,-2)$, and ReLU in both the hidden and output layers.
 
-\item If the network in exercise \ref{abridged_ex_recurrent} has linear nodes of slope $1$, zero biases, and no clipping, and is given the activation vector $(a_1,a_2,a_3)=(1,1,1)$, what will its activation be in the next time step? Update all nodes simultaneously using the old activation vector.
+\item \textbf{Recurrent dynamics.} Let
+\[
+\mathbf{a}(0)=\begin{pmatrix}1&1&1\end{pmatrix},
+\qquad
+\mathbf{W}=\begin{pmatrix}0&-1&0\\0&0&0.5\\2&0&0\end{pmatrix}.
+\]
+What is the activation vector after one time step with zero biases and no activation function? What is it with ReLU?
 
-\item If the same network is given the activation vector $(a_1,a_2,a_3)=(-1,-1,2)$, what will its activation be in the next time step?
+\item For the same recurrent network, let $\mathbf{a}(0)=(-1,-1,2)$. What is the activation vector after one time step with no activation function? What is it with ReLU?
 
-\item Starting again from $(1,1,1)$, if the network is iterated four times, what will its activation vectors be in those four time steps? Use each new activation vector as the input for the next step.
+\item Starting again from $\mathbf{a}(0)=(1,1,1)$, what are the activation vectors after each of four time steps with no activation function? Repeat with ReLU.
 \end{enumerate}
