@@ -13,7 +13,11 @@ Calendar based versioning is used in the format `year.version`.
 
 # How To Use This Book
 
-This folder contains a master document (`NeuralNetworksCogsci.tex`) that compiles every chapter. The master document is a container document with all of the chapters.
+This folder contains a master document (`NeuralNetworksCogsci.tex`) whose chapter inputs define the full book.
+
+Custom container documents can be created containing specific chapters of interest, as well as other custom docs that are in this repo but not in the master document, including abridgements of long chapters (as in [ActFuncAndLinearAlgebra.tex](ActFuncAndLinearAlgebra.tex)), syntheses and condensations of other chapters (as in [PhilosophicalOverview.tex](PhilosophicalOverview.tex)) and unfinished material. Two sample container docs are [SampleContainerDoc.tex](SampleContainerDoc.tex) and [NewMaterialContainer.tex](NewMaterialContainer.tex).
+
+# Accessibility
 
 PDF accessibility conventions and the current tagged-PDF pilot are documented
 in [ACCESSIBILITY.md](ACCESSIBILITY.md).

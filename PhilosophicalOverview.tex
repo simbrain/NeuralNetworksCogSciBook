@@ -1,37 +1,5 @@
-% If the master document has been compiled, some \extref cross-references still resolve via NeuralNetworksCogsci.aux, but this file is not intended to be maintained as a regular chapter in the main build.
-
-\documentclass[11pt]{article}
-
-\usepackage[pdftex]{graphicx}
-\usepackage{setspace,amssymb,amsmath,epstopdf,natbib}
-\usepackage{float}
-\usepackage[hidelinks]{hyperref}
-\usepackage{xr}
-
-\IfFileExists{NeuralNetworksCogsci.aux}{\externaldocument[A-]{NeuralNetworksCogsci}}{}
-
-\def\ie{{\it i.e. }}
-\def\eg{{\it e.g. }}
-\def\real{{\bf R}}
-\renewcommand{\glossary}[2][]{\textbf{#2}}
-
-\makeatletter
-\newcommand{\extref}[1]{\@ifundefined{r@#1}{\@ifundefined{r@A-#1}{??}{\ref{A-#1}$^*$}}{\ref{#1}}}
-\makeatother
-
-\setlength{\textwidth}{6.5in}
-\setlength{\textheight}{9.0in}
-\setlength{\oddsidemargin}{0in}
-\setlength{\evensidemargin}{0in}
-\setlength{\topmargin}{-0.5in}
-
-\title{Philosophical Issues in Generative AI}
-\author{Jeff Yoshimi and Others\footnote{Fragments of text are taken from co-authored chapters of ``Neural Networks in Cognitive Science.'' These chapters are referenced where they occur. Changes to relevant texts are Yoshimi's and were not vetted by those chapter authors.}}
-\date{}
-
-
-\begin{document}
-\maketitle
+\chapter{Philosophical Issues in Generative AI}\label{ch_philosophical_overview}
+\chapterauthor{Jeff Yoshimi and Others\footnote{Fragments of text are taken from co-authored chapters of ``Neural Networks in Cognitive Science. These chapters are referenced where they occur. Changes to relevant texts are Yoshimi's and were not vetted by those chapter authors.}}{}
 
 \section{Introduction}
 
@@ -317,9 +285,3 @@ There is no clear consensus on how serious the threat really is as of this writi
 %One question concerns who or what we are talking to when we talk to an LLM: ``is it simply a model, such as GPT-4o or Claude 4.6 Opus? Is it an
 %instance or an implementation of a model running on a GPU? Or is it a more evanescent system
 %tied to a thread of conversation?'' The quote is from an interesting discussion of the topic by Dave Chalmers \cite{chalmers2026talkto}.
-
-
-\bibliography{NeuralNetworksCogsci}{}
-\bibliographystyle{plain}
-
-\end{document}

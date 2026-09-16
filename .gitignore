@@ -11,7 +11,8 @@
 *.fls
 __pycache__/
 *.DS_Store
-Temp.tex
+# Temporary chapter container documents (Temp, temp2, etc.)
+[Tt][Ee][Mm][Pp]*.tex
 Book_124.tex
 CustomGlossary.tex
 GradNN.tex
