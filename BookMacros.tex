@@ -1,0 +1,113 @@
+%
+% Shared preamble for all container documents (including the master).
+% \input this file as the first line of a container document. It provides the
+% tagged-PDF metadata, document class, packages, page geometry, and custom
+% commands common to every container doc.
+%
+% Anything specific to one container doc only -- extra packages, additional
+% \hypersetup keys like pdftitle/pdfauthor -- should be added in that doc,
+% after this \input.
+%
+% Editing a command or setting here updates every container doc that inputs
+% this file, instead of requiring the same edit to be repeated in each one.
+%
+
+% Enable tagged PDF output before loading the class. See ACCESSIBILITY.md.
+\DocumentMetadata{
+  lang=en-US,
+  testphase=phase-II
+}
+\documentclass[oneside]{book}
+
+\usepackage[pdftex]{graphicx}
+% natbib must be loaded with the numbers option: the bibliography style is
+% numeric (plain), and natbib's default author-year mode raises an error on
+% every clean build that -halt-on-error (used by the justfile and the release
+% workflow) turns fatal.
+\usepackage[numbers]{natbib}
+\usepackage{setspace,amssymb,amsmath,epstopdf,amsthm}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{pifont}
+\usepackage{xr}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}  % Likes to be the last class loaded
+\hypersetup{bookmarksdepth=2}
+\externaldocument[A-]{NeuralNetworksCogsci}
+
+\setlength{\textwidth=6.5in}
+\setlength{\textheight=9.0in}
+\hoffset=-0.80in
+\voffset=-1.00in
+
+% Pass descriptions to graphicx's native tagged-PDF keys.  Do not wrap
+% \includegraphics manually: that makes the tagger fall back to the filename.
+\newcommand{\accessibleimage}[3][]{\includegraphics[#1,alt={#3}]{#2}}
+\newcommand{\accessibleartifact}[2][]{\includegraphics[#1,artifact]{#2}}
+
+\def\ie{{\it i.e. }}
+\def\eg{{\it e.g. }}
+\def\real{{\bf R}}
+
+% Code and file-name references (e.g. \code{README.md}).
+\DeclareRobustCommand{\code}[1]{{\fontfamily{pcr}\selectfont #1}}
+
+% References to a named menu item or submenu in an application, e.g. Simbrain
+% (e.g. \simref{Actor critic}).
+\DeclareRobustCommand{\simref}[1]{\emph{#1}}
+
+%
+% Use this command to indicate glossary entries. Be sure some entry of the same name
+% exists in Glossary.tex. Use the optional argument when the displayed text differs
+% from the glossary entry, e.g. \glossary[activation]{activations}.
+%
+\renewcommand{\glossary}[2][]{\textbf{#2}}
+
+%
+% extref is a reference to a label that may or may not exist in the current subdocument.
+% If it does, a regular reference is produced. If it is not found in the current subdocument,
+% a reference to the label in the master document is given, and a * is added to indicate this.
+% Note that this only works if the master document has been compiled
+%
+% Example (cf. Chapter \extef{ch_intro}) compiles to:
+% (cf. Chapter 1) 	If the chapter is in the subdocument
+% (cf. Chapter 1*) 	If the chapter is not in the subdocument
+%
+\makeatletter
+\newcommand{\extref}[1]{\@ifundefined{r@#1}{\ref{A-#1}$^*$}{\ref{#1}}}
+\makeatother
+
+%
+% Use this command to designate chapter authors. An optional second command indicates
+% their relative contribution to the chapter.
+%
+% Example: \chapterauthor{Scott Hotton, Chelsea Gordon, Jeff Yoshimi}{.5,.3,2}
+%
+% If the second argument is not used, it is assumed all chapter authors contributed equally.
+%
+\makeatletter
+\newcommand{\chapterauthor}[2]{%
+  {\parindent0pt\vspace*{-25pt}%
+  \linespread{1.1}\large\scshape#1%
+  \par\nobreak\vspace*{35pt}}
+  \@afterheading%
+}
+\makeatother
+
+% Renaming ``List of Figures'' to  ``Figure Attributions''
+\renewcommand*\listfigurename{Figure Attributions}
+
+% Lists figure attributions in the table of contents, then prints them.
+\newcommand{\figureAttributions}{%
+  \phantomsection
+  \addcontentsline{toc}{chapter}{Figure Attributions}
+  \listoffigures
+}
+
+% Lists references in the table of contents, then prints the bibliography
+% (NeuralNetworksCogsci.bib, plain numeric style).
+\newcommand{\bookReferences}{%
+  \phantomsection
+  \addcontentsline{toc}{chapter}{References}
+  \bibliography{NeuralNetworksCogsci}{}
+  \bibliographystyle{plain}
+}

@@ -31,7 +31,7 @@ packages are also installed.
 
 You can make your own container document that contain only the chapters of interest to you. When doing so:
 
-- Be sure to copy your container document directly from the master document. The custom commands at the top of the master document are required in all container documents.
+- Be sure to copy your container document directly from the master document. Every container document (including the master) starts with `\input{BookMacros}` — this single line enables tagged-PDF output (see [ACCESSIBILITY.md](ACCESSIBILITY.md)), sets `\documentclass[oneside]{book}`, and pulls in the packages, page geometry, and custom commands (`\code`, `\simref`, `\extref`, `\chapterauthor`, `\glossary`, `\figureAttributions`, `\bookReferences`, etc.) shared across all container docs. Anything specific to one container doc only (an extra package, additional `\hypersetup` keys like `pdftitle`/`pdfauthor`) goes in that doc, right after the `\input{BookMacros}` line. Edit `BookMacros.tex` itself, not a per-document copy, when changing something shared, so the change applies everywhere at once.
 
 - It is requested that you include `Preface.tex` which credits those involved in the broader project, information about the nature of the document, and information useful to readers such as an explanation of the *-notation for external citations.*
 
@@ -53,13 +53,12 @@ just build <container document>.tex
   Build the full book with `just build-master`; it retains the canonical
   `Glossary.tex` rather than using `CustomGlossary.tex`.
 
-- If you wish, add a bibliography using:
+- If you wish, add a bibliography and figure attribution list at the end of the document (before `\end{document}`) using the shared commands from `BookMacros.tex`:
 ```latex
-	\bibliography{NeuralNetworksCogsci}{}
-	\bibliographystyle{plain}
+	\figureAttributions
+	\bookReferences
 ```
-
-- Be sure to include `\listoffigures` which prints a figure attribution list.
+  These add the corresponding table-of-contents entries and print the figure list / bibliography (`NeuralNetworksCogsci.bib`, plain numeric style).
 
 # How To Create New Chapters
 
@@ -79,4 +78,6 @@ just format-glossary
 
 - When using `\caption` in the figure environment, be sure to include a bracketed sentence to be used in the figure attribution list.
 
-- For code references use `\texttt`
+- For code and file-name references use `\code{}` (defined in `BookMacros.tex`), e.g. `\code{README.md}`.
+
+- To reference any Simbrain UI menu, submenu, or menu item (not just the Simulations menu — this also covers menus like Insert, Network, etc.), use `\simref{}` (defined in `BookMacros.tex`) with the exact label, e.g. `\simref{Classical conditioning}`. 

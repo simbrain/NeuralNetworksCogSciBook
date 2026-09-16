@@ -1,94 +1,5 @@
-%
-% Master book document
-% 
-% Copy this and modify the \input commands at the bottom to create a custom book,
-% or to create a file to compile a single chapter
-%
-
-% Accessibility work in progress: enable tagged PDF output before loading the
-% class. The full book may expose unsupported legacy content while remediation
-% proceeds chapter by chapter; see ACCESSIBILITY.md.
-\DocumentMetadata{
-  lang=en-US,
-  testphase=phase-II
-}
-\documentclass[oneside]{book}
-\usepackage[pdftex]{graphicx}
-% natbib must be loaded with the numbers option: the bibliography style is
-% numeric (plain), and natbib's default author-year mode raises an error on
-% every clean build that -halt-on-error (used by the justfile and the release
-% workflow) turns fatal.
-\usepackage[numbers]{natbib}
-\usepackage{setspace,amssymb,amsmath,epstopdf,amsthm}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage{pifont}
-\usepackage{xr}
-\usepackage{listings}
-\usepackage[hidelinks]{hyperref}  % Likes to be the last class loaded
-\externaldocument[A-]{NeuralNetworksCogsci}
-
-% Use this for informative raster figures. Decorative images should be marked
-% as artifacts instead; see ACCESSIBILITY.md.
-\newcommand{\accessibleimage}[3][]{%
-  \includegraphics[#1,alt={#3}]{#2}%
-}
-
-% Use this for decorative graphics whose information is already supplied in
-% adjacent text. It prevents redundant screen-reader output.
-\newcommand{\accessibleartifact}[2][]{%
-  \includegraphics[#1,artifact]{#2}%
-}
-
-\def\ie{{\it i.e. }}
-\def\eg{{\it e.g. }}
-\def\real{{\bf R}}
-\newcommand{\code}{\texttt}
-
-%
-% Use this command to indicate glossary entries. Be sure some entry of the same name
-% exists in Glossary.tex. Use the optional argument when the displayed text differs
-% from the glossary entry, e.g. \glossary[activation]{activations}.
-%
-\renewcommand{\glossary}[2][]{\textbf{#2}}
-
-%
-% extref is a reference to a label that may or may not exist in the current subdocument. 
-% If it does, a regular reference is produced. If it is not found in the current subdocument,
-% a reference to the label in the master document is given, and a * is added to indicate this.
-% Note that this only works if the master document has been compiled
-%
-% Example (cf. Chapter \extef{ch_intro}) compiles to:
-% (cf. Chapter 1) 	If the chapter is in the subdocument
-% (cf. Chapter 1*) 	If the chapter is not in the subdocument
-%
-\makeatletter
-\newcommand{\extref}[1]{\@ifundefined{r@#1}{\ref{A-#1}$^*$}{\ref{#1}}}
-\makeatother
-
-%
-% Use this command to designate chapter authors. An optional second command indicates 
-% their relative contribution to the chapter. 
-%
-% Example: \chapterauthor{Scott Hotton, Chelsea Gordon, Jeff Yoshimi}{.5,.3,2}
-%
-% If the second argument is not used, it is assumed all chapter authors contributed equally. 
-%
-\makeatletter
-\newcommand{\chapterauthor}[2]{%
-  {\parindent0pt\vspace*{-25pt}%
-  \linespread{1.1}\large\scshape#1%
-  \par\nobreak\vspace*{35pt}}
-  \@afterheading%
-}
-\makeatother
-
-% Renaming ``List of Figures'' to  ``Figure Attributions''
-\renewcommand*\listfigurename{Figure Attributions}
-
-\setlength{\textwidth=6.5in}
-\setlength{\textheight=9.0in}
-\hoffset=-0.80in
-\voffset=-1.00in
+% Master book document. See README.md for how to create a custom container document.
+\input{BookMacros}
 
 \begin{document}
 
@@ -134,15 +45,7 @@
 \appendix
 \input{LogicGates}
 
-% Makes sure figure attributions are listed in table of contents
-\phantomsection 
-\addcontentsline{toc}{chapter}{Figure Attributions} 
-\listoffigures
-
-% Makes sure references are listed in table of contents
-\phantomsection 
-\addcontentsline{toc}{chapter}{References} 
-\bibliography{NeuralNetworksCogsci}{}
-\bibliographystyle{plain}
+\figureAttributions
+\bookReferences
 
 \end{document}
