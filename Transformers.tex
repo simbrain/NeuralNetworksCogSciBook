@@ -58,11 +58,11 @@ now outdated), Gemini (Bard), several Claude models (Anthropic;  semi
 open-source), Llama, LLama2 and LLama3 (Meta), and Alpaca (Stanford; open
 source). Most of these models can only be accessed online but some can be
 downloaded and run locally, further fine-tuned, etc. A list of LLMs ranked by
-how well they chat is here: \url{https://chat.lmsys.org/?leaderboard}.} We will
+how well they chat is here: \weburl{https://chat.lmsys.org/?leaderboard}.} We will
 sometimes refer simply to ``LLMs'' by which we mean transformer-based
 LLMs.\footnote{There are numerous high quality online resources for learning
 about LLMs. An excellent visual introduction is at this website:
-\url{https://poloclub.github.io/transformer-explainer/}. 3Blue1Brown is always
+\weburl{https://poloclub.github.io/transformer-explainer/}. 3Blue1Brown is always
 excellent on visual intuition and he has a
 \href{https://www.youtube.com/watch?v=wjZofJX0v4M&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi}{\underline{YouTube
 video}}. For a more technical walk through on building an LLM from scratch see
@@ -209,7 +209,7 @@ training set for GPT-3 was not all of Shakespeare, or just a bunch of math
 papers, but rather a large subset of the \emph{entire internet}, which included
 all of Wikipedia, a few compilations of books, and a web-scraped archive of the
 internet called ``Common Crawl''
-(\url{https://en.wikipedia.org/wiki/Common_Crawl}). See figure
+(\weburl{https://en.wikipedia.org/wiki/Common_Crawl}). See figure
 \ref{gptDatasets}. Similar datasets are used to train all frontier LLMs. If you've
 ever written anything online, there is a decent chance it is part of the
 training data of one of those models.
@@ -518,7 +518,7 @@ amounts of energy to run these models, especially when training them. There is a
 attempting to achieve similar performance with smaller models, some of which
 can be run on a  personal computer. For example, Gemma2B achieves performance
 similar to GPT-3.5 on some benchmarks with only 2 billion parameters. See
-\url{https://developers.googleblog.com/en/smaller-safer-more-transparent-advancing-responsible-ai-with-gemma/}.}
+\weburl{https://developers.googleblog.com/en/smaller-safer-more-transparent-advancing-responsible-ai-with-gemma/}.}
 Figure \ref{gptParams} also shows the values of several hyperparameters such as
 number of layers ($n_\text{layers}$), corresponding to representational depth,
 and number of heads ($n_\text{heads}$), corresponding to representational
@@ -530,7 +530,7 @@ same ideas are being used but on a larger scale.
 \begin{figure}[ht]
 \centering
 \accessibleimage[scale=.4]{./images/gpt3_params.png}{Table comparing GPT-3 model variants by number of parameters, layers, hidden units, heads, batch size, and learning rate. Parameter counts range from 125 million for GPT-3 Small to 175 billion for GPT-3.}
-\caption[\url{https://arxiv.org/abs/2005.14165}.]{Number of parameters and
+\caption[\weburl{https://arxiv.org/abs/2005.14165}.]{Number of parameters and
 values for some of the hyperparameters used in training different versions of
 GPT-3.
 }
@@ -545,15 +545,15 @@ veer off-topic. Today, the standard is 32,000 tokens, with the industry
 shifting to 128,000 tokens, which is about the length of a 250-page book. IBM
 just open-sourced on Hugging Face two Granite models with a 128,000-token
 window, and more are on their
-way.''\footnote{\url{https://research.ibm.com/blog/larger-context-window}.}
+way.''\footnote{\weburl{https://research.ibm.com/blog/larger-context-window}.}
 
 
 \section{The Transformer Architecture}\label{transformers}
 
 % Simbrain pic and discussion somewhere when it's ready
 
-% \footnote{Two excellent visualizations are \url{https://bbycroft.net/llm} and
-% \url{https://poloclub.github.io/transformer-explainer/}.}
+% \footnote{Two excellent visualizations are \weburl{https://bbycroft.net/llm} and
+% \weburl{https://poloclub.github.io/transformer-explainer/}.}
  
 We have thus far covered high-level features of how LLMs work, but have treated
 the transformer as a black box. The time has come to open up the box. How does
@@ -582,7 +582,7 @@ Again, we maintain the ``row processing'' perspective of section
 % Perhaps find a way to parse out the more difficult aspects of this
 The attention heads are where the contextual awareness occurs. Each token
 representation in a stack of inputs is compared to every previous one in the sequence. In our
-simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using matrices $\textbf{K}$ and $\textbf{Q}$, which stand for key and query. The flow of processing is illustrated in figure \ref{transformerBlockSimple}. The stacks of token representations entering the block are processed through the key and query matrices using matrix multiplication. The resulting stacks of key and query vectors are then compared to each other using a vector-comparison matrix.\footnote{A discussion of how vector comparison matrices are generated is in section \extref{vector_comparisons}; see in particular figure \extref{corrPlot}} We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.} This is a matrix of \glossary{attention scores}. Note that this matrix is computed on the fly, at inference time, and is thus represented slightly differently (with a lighter outline) in the figures in this section. It looks like a changing triangular representation in Simbrain, as information is processed through the network. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space?\footnote{We can think about the comparison of keys and queries as a kind of table lookup, where the query asks a kind of question, specifying what a given token is ``looking for'', and the key is a potential answer, ``advertising the kind of information it is looking for'' \cite{beckmann2025mechanistic}. Also see \url{https://e2eml.school/transformers.html}. The queries scan across past-token keys (due to the triangular mask that is used) and select information useful for the high-level task of predicting next tokens.} 
+simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using matrices $\textbf{K}$ and $\textbf{Q}$, which stand for key and query. The flow of processing is illustrated in figure \ref{transformerBlockSimple}. The stacks of token representations entering the block are processed through the key and query matrices using matrix multiplication. The resulting stacks of key and query vectors are then compared to each other using a vector-comparison matrix.\footnote{A discussion of how vector comparison matrices are generated is in section \extref{vector_comparisons}; see in particular figure \extref{corrPlot}} We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.} This is a matrix of \glossary{attention scores}. Note that this matrix is computed on the fly, at inference time, and is thus represented slightly differently (with a lighter outline) in the figures in this section. It looks like a changing triangular representation in Simbrain, as information is processed through the network. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space?\footnote{We can think about the comparison of keys and queries as a kind of table lookup, where the query asks a kind of question, specifying what a given token is ``looking for'', and the key is a potential answer, ``advertising the kind of information it is looking for'' \cite{beckmann2025mechanistic}. Also see \weburl{https://e2eml.school/transformers.html}. The queries scan across past-token keys (due to the triangular mask that is used) and select information useful for the high-level task of predicting next tokens.} 
 
 \begin{figure}[ht]
 \centering
@@ -1116,7 +1116,7 @@ would ever be possible in a machine, like speak fluent language and arguably
 pass the Turing Test.\footnote{An extensive and helpful review of philosophical
 issues through 2024 is \cite{milliere2024philosophical1,
 milliere2024philosophical2}. Multiple new papers on topics relating to AI
-appear each week at \url{philPapers.org} so the area is quite active.} That
+appear each week at \weburl{philPapers.org} so the area is quite active.} That
 this was done by a neural network has been seen by many as a decisive win for
 connectionism relative to the old debate about whether neural networks or
 symbolic architectures are best-suited to modeling cognition (see section
@@ -1324,7 +1324,7 @@ combination with curated data cleanup to good effect.} A gripping example of
 fine-tuning is the case of the late singer Lou Reed's wife creating a special
 LLM which was fine-tuned using ``a vast cache of Reed's writing, songs and
 interviews'', giving it a bit of his
-personality.\footnote{\url{https://tinyurl.com/yyd2hjh5}.}  Many fine-tuned
+personality.\footnote{\weburl{https://tinyurl.com/yyd2hjh5}.}  Many fine-tuned
 foundation models now exist, in biomedical, legal, and many other domains.
 % References
 

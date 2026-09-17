@@ -80,4 +80,6 @@ just format-glossary
 
 - For code and file-name references use `\code{}` (defined in `BookMacros.tex`), e.g. `\code{README.md}`.
 
+- For hyperlinks use `\weburl`
+
 - To reference any Simbrain UI menu, submenu, or menu item (not just the Simulations menu — this also covers menus like Insert, Network, etc.), use `\simref{}` (defined in `BookMacros.tex`) with the exact label, e.g. `\simref{Classical conditioning}`. 

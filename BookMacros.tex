@@ -55,6 +55,11 @@
 % (e.g. \simref{Actor critic}).
 \DeclareRobustCommand{\simref}[1]{\emph{#1}}
 
+% Use this command for all bare-URL references (e.g. \weburl{https://simbrain.net}),
+% instead of hyperref's \url directly. 
+\definecolor{weburlgray}{gray}{0.15}
+\DeclareRobustCommand{\weburl}[1]{\textcolor{weburlgray}{\url{#1}}}
+
 %
 % Use this command to indicate glossary entries. Be sure some entry of the same name
 % exists in Glossary.tex. Use the optional argument when the displayed text differs
