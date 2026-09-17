@@ -78,7 +78,7 @@ We can implement any of these functions in a neural network. The input layers wi
 
 NOT would just have two nodes. A 0 would produce a 1, and a 1 would produce a 0. This can be done using a binary output node with a bias (so that it is on, by default, above threshold), and a negative weight.
 
-XOR is harder because it requires a few layers of nodes (a point that is important when we talk about supervised learning), but basically it involves combining an OR gate to the output and an intermediate AND gate that inhibits the output. Examples of these are shown in Fig. \ref{logic_gates}.
+XOR is harder because it requires a few layers of nodes (a point that is important when we talk about supervised learning), but basically it involves combining an OR gate to the output and an intermediate AND gate that inhibits the output. Examples of these are shown in figure \ref{logic_gates}.
 
 \begin{figure}[h]
 \centering
@@ -89,7 +89,7 @@ XOR is harder because it requires a few layers of nodes (a point that is importa
 
 Boolean functions can also be combined, to produce things like (P AND (Q OR NOT R)). To see what the truth table looks like for this type of network, you can try an online resource like \weburl{http://web.stanford.edu/class/cs103/tools/truth-table-tool/}. Neural networks to implement this type of function are also not too difficult to make by combining together the other networks, e.g the output of an OR network is one of the two inputs to the AND network, to make (P AND (Q OR NOT R)).
 
-A complex example, in which sample sentences have been used instead of the boring propositional variables P, Q, R etc., is shown in Fig. \ref{logic_gates_ex}.
+A complex example, in which sample sentences have been used instead of the boring propositional variables P, Q, R etc., is shown in figure \ref{logic_gates_ex}.
 
 \begin{figure}[h]
 \centering

@@ -83,3 +83,5 @@ just format-glossary
 - For hyperlinks use `\weburl`
 
 - To reference any Simbrain UI menu, submenu, or menu item (not just the Simulations menu — this also covers menus like Insert, Network, etc.), use `\simref{}` (defined in `BookMacros.tex`) with the exact label, e.g. `\simref{Classical conditioning}`. 
+
+- When referring to figures, sections, and chapters in running text, write "figure", "section", and "chapter" lowercase (e.g. "as shown in figure 3.2", "see chapter 4"), never abbreviated ("Fig."). Capitalize only when the word is the first word of a sentence.

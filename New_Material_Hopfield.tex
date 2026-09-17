@@ -650,7 +650,7 @@ I_1 \\ I_2
    The dynamics on the state space of the neural network can be expressed with 
 a digraph where the vertices are the four states of the neural network and each
 vertex has exactly one directed edge pointing away from it.  This is shown in
-Fig. \ref{F:TwoNodeHopfield}.  The directed edge pointing away from a vertex 
+figure \ref{F:TwoNodeHopfield}.  The directed edge pointing away from a vertex 
 tells us what the subsequent state will be.
 
 \begin{figure}[ht]
@@ -727,7 +727,7 @@ y_1 \\ y_2
 \end{pmatrix} = 2 y_1 y_2 - I_1 y_1 - I_2 y_2
 \end{eqnarray*}
 The values of the potential function on the state space $\{0,1\}^2$ can be
-easily computed.  They are shown in Fig. \ref{F:discHoppot}.  The directed 
+easily computed.  They are shown in figure \ref{F:discHoppot}.  The directed 
 edges point to the subsequent state.  As can be seen from the figure the 
 potential function never increases with time.  And each fixed point is a 
 minimum of the potential although they are not always the only minima.
@@ -792,12 +792,12 @@ I_1 \\ I_2
 \end{equation}
 We can compute sequential update and stochastic update by composing these two 
 functions on the state space $\{0,1\}^2$.  The digraphs for these two functions 
-are shown in Fig.  \ref{F:TwoNodeHopfieldSingle}.  We can obtain the digraph 
-for $F_1$ by using the formula for $F_1$ or by redirecting the arrows in Fig. 
+are shown in figure  \ref{F:TwoNodeHopfieldSingle}.  We can obtain the digraph 
+for $F_1$ by using the formula for $F_1$ or by redirecting the arrows in figure 
 \ref{F:discHoppot} so that only $y_1$ changes.  This is shown on the left in
-Fig. \ref{F:TwoNodeHopfieldSingle}.  Similarly we can obtain the digraph for 
-$F_2$ from the formula or by redirecting the arrows in Fig. \ref{F:discHoppot} 
-so that only $y_2$ changes.  This is shown on the right in Fig.  
+figure \ref{F:TwoNodeHopfieldSingle}.  Similarly we can obtain the digraph for 
+$F_2$ from the formula or by redirecting the arrows in figure \ref{F:discHoppot} 
+so that only $y_2$ changes.  This is shown on the right in figure  
 \ref{F:TwoNodeHopfieldSingle}.
 
 \begin{figure}[ht]
@@ -816,7 +816,7 @@ is $(1,1)^T$ then the fixed points do not match the input.}
 \label{F:TwoNodeHopfieldSingle}
 \end{figure}
 
-  In addition Fig. \ref{F:TwoNodeHopfieldSingle} shows that $F_1$ and $F_2$ 
+  In addition figure \ref{F:TwoNodeHopfieldSingle} shows that $F_1$ and $F_2$ 
 never increase the value of the potential function $V(y_1,y_2)$.  So composing 
 them never increases the value of $V(y_1,y_2)$.  In this respect asynchronous
 update is like synchronous update.
@@ -886,9 +886,9 @@ I_1 \\ I_2
 \end{pmatrix}
  \right)
 \end{eqnarray*}
-The digraphs for these two functions are shown in Fig.  
+The digraphs for these two functions are shown in figure  
 \ref{F:TwoNodeHopfieldSequence}.  We can obtain the digraph for $F_{12}$ by
-seeing where states go in the digraph for $F_2$ in Fig. 
+seeing where states go in the digraph for $F_2$ in figure 
 \ref{F:TwoNodeHopfieldSingle} and then where those states go in the digraph for
 $F_1$.  To obtain the digraph for $F_{21}$ we look at where states go in the
 digraph for $F_1$ and then where those states go in the digraph for $F_2$.
@@ -923,8 +923,8 @@ section we will use a uniform probability function to make the selection.
 So the probability for each neuron being selected is $1/2$.  The functions 
 $F_1$ and $F_2$ are the update functions for neuron 1 and neuron 2 
 respectively.  To analyze stochastic update it is useful to combine the 
-digraphs for $F_1$ and $F_2$ in Fig. \ref{F:TwoNodeHopfieldSingle} into a
-single digraph.  This union of digraphs is shown in Fig. 
+digraphs for $F_1$ and $F_2$ in figure \ref{F:TwoNodeHopfieldSingle} into a
+single digraph.  This union of digraphs is shown in figure 
 \ref{F:TwoNodeHopfieldStochastic}.  
    
    The functions $F_1$ and $F_2$ have the same domain and range which is the
@@ -976,7 +976,7 @@ process.  As we said at the beginning of this section a Markov process is a
 stochastic process for which future states only depend on the present state.  A 
 Hopfield network with stochastic update is a Markov process.  The future states 
 of a Hopfield network only depend on the present state and how the neurons are 
-randomly selected to be updated.  Fig. \ref{F:TwoNodeHopfieldStochastic} shows 
+randomly selected to be updated.  Figure \ref{F:TwoNodeHopfieldStochastic} shows 
 the transition diagram for the Markov process in this example Hopfield network.
 
    There is a well developed theory for Markov processes but the Markov

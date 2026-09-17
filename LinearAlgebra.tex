@@ -383,7 +383,7 @@ The vector norm is denoted by double bars $|| \cdot ||$, which measures the ``le
 the square root of the dot product of the vector with itself: $||\mathbf{x}|| = 
 \sqrt{\mathbf{x} \bullet \mathbf{x}}$. For example, the norm of $(-3,4)$ is $\sqrt{(-3,4) \bullet (-3,4)}  = \sqrt{(-3)^2+4^2} = 5$ and the norm 
 of $(2,5)$ is $ \sqrt{(2,5) \bullet (2,5)} = \sqrt{2^2+5^2} =  \sqrt{29} \approx 5.385$. These vectors are 
-shown in the left panel of Fig. \ref{metricfig}. 
+shown in the left panel of figure \ref{metricfig}. 
 
 The process of normalizing a vector involves rescaling it so that its norm is 1 (see figure \ref{normalizeVectors}).\footnote{Other types of rescaling are discussed in chapter \extref{ch_data_science}.} When all the vectors in a set of vectors are normalized, they all lie on a hypersphere, and the main information they carry is the direction they point in. Here are some examples:
 \begin{description}
@@ -420,7 +420,7 @@ most commonly used metric is the Euclidean metric.
 
 For example, to compute the distance between $(-3,4)$ and $(2,5)$ we first compute the difference between them, 
 $(-3 -2,  4- 5) = (-5,-1)$ which is shown in the right 
-panel of Fig. \ref{metricfig}. We then take the norm of this difference, which is $ \sqrt{ (-5,-1) \bullet  (-5,-1)}  = \sqrt{(-5)^2+(-1)^2} 
+panel of figure \ref{metricfig}. We then take the norm of this difference, which is $ \sqrt{ (-5,-1) \bullet  (-5,-1)}  = \sqrt{(-5)^2+(-1)^2} 
 = \sqrt{26} \approx 5.099$.
 
 \begin{figure}[h]
@@ -441,7 +441,7 @@ giving us a sense of how far apart relevant vectors are, and thus how similar
 the states the vectors represent are to each other. Points nearby one another 
 in an input space correspond to similar inputs: similar smells, similar visual 
 inputs, similar words relative to a word embedding (chapter 
-\extref{ch_word_embeddings}), etc. (see Fig. \ref{nearfar}). Points nearby one 
+\extref{ch_word_embeddings}), etc. (see figure \ref{nearfar}). Points nearby one 
 another in a weight space are similar configurations of weights. These 
 interpretations are often emphasized in analyses of neural networks (for 
 example, see chapter \extref{ch_representations}), and in fact the spaces 
@@ -946,7 +946,7 @@ The same example can also be represented by a left multiplication, where we tran
 \label{matrixVectorProduct}
 \end{figure}
 
-Here's the example from Figure \ref{matrixVectorProduct} worked out:
+Here's the example from figure \ref{matrixVectorProduct} worked out:
 \[
   \begin{pmatrix}
     1 & 2 \\
@@ -1456,19 +1456,19 @@ This is a ``block matrix'' containing two blocks of non-zero values (correspondi
 
 \noindent
 \stepcounter{LinearAlgebraCounter}
-{\bf \theLinearAlgebraCounter.}  What is the dimensionality of the input space, hidden unit space, output space, weight space, and activation space in Fig. \ref{labelledNets} (Left)? 
+{\bf \theLinearAlgebraCounter.}  What is the dimensionality of the input space, hidden unit space, output space, weight space, and activation space in figure \ref{labelledNets} (Left)? 
 {\bf Answer:} 2-dimensional, 3-dimensional, 2-dimensional, 12-dimensional, and 7-dimensional.
 \bigskip
 
 \noindent
 \stepcounter{LinearAlgebraCounter}
-{\bf \theLinearAlgebraCounter.}  What is the dimensionality of the weight space and activation space in Fig. \ref{labelledNets} (Right)? 
+{\bf \theLinearAlgebraCounter.}  What is the dimensionality of the weight space and activation space in figure \ref{labelledNets} (Right)? 
 {\bf Answer:} 4-dimensional and 2-dimensional.
 \bigskip
 
 \noindent
 \stepcounter{LinearAlgebraCounter}
-{\bf \theLinearAlgebraCounter.}  What is the dimensionality of the weight space and activation space in Fig. \ref{sampleNetRecurrent}? 
+{\bf \theLinearAlgebraCounter.}  What is the dimensionality of the weight space and activation space in figure \ref{sampleNetRecurrent}? 
 {\bf Answer:} 3-dimensional and 3-dimensional.
 \bigskip
 
@@ -1511,7 +1511,7 @@ This is a ``block matrix'' containing two blocks of non-zero values (correspondi
 
 \noindent
 \stepcounter{LinearAlgebraCounter}
-{\bf \theLinearAlgebraCounter.}  What is the matrix representation of the weights in the network in Fig. \ref{sampleNetRecurrent}?
+{\bf \theLinearAlgebraCounter.}  What is the matrix representation of the weights in the network in figure \ref{sampleNetRecurrent}?
 {\bf Answer:}  
 \[
 \begin{pmatrix}
@@ -1524,7 +1524,7 @@ This is a ``block matrix'' containing two blocks of non-zero values (correspondi
 
 \noindent
 \stepcounter{LinearAlgebraCounter}
-{\bf \theLinearAlgebraCounter.}  What is the fan-in weight vector for node 2 in Fig. \ref{sampleNetRecurrent}?
+{\bf \theLinearAlgebraCounter.}  What is the fan-in weight vector for node 2 in figure \ref{sampleNetRecurrent}?
 {\bf Answer:}  $(-1)$. 
 \bigskip
 
@@ -1552,7 +1552,7 @@ $\begin{pmatrix}-10 & 10\end{pmatrix}\begin{pmatrix} 0.5 & -0.5  \\ -1 &  1\end{
 
 \noindent
 \refstepcounter{LinearAlgebraCounter}\label{linAlgPractice1}
-{\bf \theLinearAlgebraCounter.}  If the network in Fig. \ref{sampleNetRecurrent} has linear nodes and is given the activation vector $(a_1,a_2,a_3) = (1,1,1)$, what will its activation be in the next time step?
+{\bf \theLinearAlgebraCounter.}  If the network in figure \ref{sampleNetRecurrent} has linear nodes and is given the activation vector $(a_1,a_2,a_3) = (1,1,1)$, what will its activation be in the next time step?
 {\bf Answer:} 
 \[
   \begin{matrix}\begin{pmatrix}1 & 1 & 1\end{pmatrix}\\\mbox{}\end{matrix}
@@ -1569,7 +1569,7 @@ $\begin{pmatrix}-10 & 10\end{pmatrix}\begin{pmatrix} 0.5 & -0.5  \\ -1 &  1\end{
 
 \noindent
 \stepcounter{LinearAlgebraCounter}
-{\bf \theLinearAlgebraCounter.}  If the network in Fig. \ref{sampleNetRecurrent} has linear nodes and is given the activation vector $(a_1,a_2,a_3) = (-1,-1,2)$, what will its activation be in the next time step?
+{\bf \theLinearAlgebraCounter.}  If the network in figure \ref{sampleNetRecurrent} has linear nodes and is given the activation vector $(a_1,a_2,a_3) = (-1,-1,2)$, what will its activation be in the next time step?
 {\bf Answer:} 
 \[
   \begin{matrix}\begin{pmatrix}-1 & -1 & 2\end{pmatrix}\\\mbox{}\end{matrix}

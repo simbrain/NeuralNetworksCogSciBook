@@ -75,16 +75,16 @@ w_{1,2} &= 1.5 \\
 t &= 2  \\
 \epsilon &= .5
 \end{align*}
-With this information we can determine: (1) the output activation $a_2$ of the network (our ``forward pass''), (2) SSE, (3) the updated weight value at the next time step, which we designate $w_{1,2}'$, (4) the output activation $a_2'$, and (5) error at the next time step, SSE$'$. We can then repeat these steps and check to see that SSE is reduced over time, which moves us down the error surface for this task, which is shown in Fig. \ref{error_lms}.
+With this information we can determine: (1) the output activation $a_2$ of the network (our ``forward pass''), (2) SSE, (3) the updated weight value at the next time step, which we designate $w_{1,2}'$, (4) the output activation $a_2'$, and (5) error at the next time step, SSE$'$. We can then repeat these steps and check to see that SSE is reduced over time, which moves us down the error surface for this task, which is shown in figure \ref{error_lms}.
 
 (1) The network will produce a $1.5$ in response to an input of $1$, since the input activation is $1$, the weight is $1.5$, and $1 \cdot 1.5 = 1.5$ (we are, again, assuming output bias of 0 and slope of 1).
 
-(2) SSE for these simple networks and labeled datasets is very easy, since there is just one row, one target value, and one output value. That is,  SSE $= (t - a_2)^2$ or in this case $(2-1.5)^2 = .5^2 = .25$. Notice that this puts us at the point $(1.5,.25)$ in the graph in Fig. \ref{error_lms}.
+(2) SSE for these simple networks and labeled datasets is very easy, since there is just one row, one target value, and one output value. That is,  SSE $= (t - a_2)^2$ or in this case $(2-1.5)^2 = .5^2 = .25$. Notice that this puts us at the point $(1.5,.25)$ in the graph in figure \ref{error_lms}.
 
 \begin{figure}[h]
 \centering
 \accessibleimage[width=0.5\textwidth]{images/error_lms.png}{Parabolic sum-squared-error curve plotted against weight strength. Successive black points descend from weight 1.5 and error 0.25 toward the minimum near weight 2 and zero error.}
-\caption[Jeff Yoshimi.]{Gradient descent on the error surface for the LMS example discussed in Section \ref{lms_example}. As the LMS rule is applied the weight strength changes in a way that minimizes sum squared error.}
+\caption[Jeff Yoshimi.]{Gradient descent on the error surface for the LMS example discussed in section \ref{lms_example}. As the LMS rule is applied the weight strength changes in a way that minimizes sum squared error.}
 \label{error_lms}
 \end{figure}
 
@@ -104,7 +104,7 @@ So our new weight value is 1.75.
 
 (4) With this new weight, the network produces an output  $a_2' = 1 \cdot 1.75 = 1.75$.
 
-(5) The squared error is now $(2-1.75)^2=.25^2=.0625$, whereas before it was $.25$. So we have moved to the point $(1.75,.0625)$ in the graph  of the error surface in Fig. \ref{error_lms}. An improvement!  We have moved lower on the error curve; we have descended the error gradient.
+(5) The squared error is now $(2-1.75)^2=.25^2=.0625$, whereas before it was $.25$. So we have moved to the point $(1.75,.0625)$ in the graph  of the error surface in figure \ref{error_lms}. An improvement!  We have moved lower on the error curve; we have descended the error gradient.
 
 In subsequent time steps we get:
 
@@ -141,10 +141,10 @@ To understand what linear separability (and inseparability) are, recall that a c
 
 If a classification task can be solved using a decision boundary which is a line (or, in more than 2-dimensions, a plane or hyperplane), the classification problem is called a \glossary{linearly separable} problem. Figure \ref{F:decisionBoundaries} (Middle) shows a linearly separable problem. When we cannot properly separate the categories with a line (or hyperplane), as in figure \ref{F:decisionBoundaries} (Right), the problem is \glossary{linearly inseparable}; there is no way to draw a line which separates the 0's and 1's in that example. There is no linear decision boundary for that problem (though there are non-linear decision boundaries that perfectly separate the classes, like the wavy curve shown in the figure).\footnote{First, note that in the case shown, we could still fit a line to the problem and we'd just have some error. Second, we will see that while LMS cannot solve this task, since it uses linear decision boundaries, other supervised classification algorithms like backprop exist that can solve these types of non-linearly separable classification tasks.}
 
-The goal of supervised learning of classification tasks is to set the weights of a network so that the decision boundary properly separates the two classes. The values of the weights and the output bias are like knobs that, when turned, will change where the decision boundary is: it can be rotated around and moved up and down. We want to turn the knobs so that the two classes are properly separated.\footnote{Doing this amounts to minimizing error. When the decision boundary properly separates the two classes, SSE will be 0. If not, as in Fig. \ref{F:decisionBoundaries} (Right), there will be some error. What will SEE be in that case?}  However, LMS only allows linear decision boundaries. Other algorithms have more knobs, and can be used to create more complex decision boundaries and decision regions.
+The goal of supervised learning of classification tasks is to set the weights of a network so that the decision boundary properly separates the two classes. The values of the weights and the output bias are like knobs that, when turned, will change where the decision boundary is: it can be rotated around and moved up and down. We want to turn the knobs so that the two classes are properly separated.\footnote{Doing this amounts to minimizing error. When the decision boundary properly separates the two classes, SSE will be 0. If not, as in figure \ref{F:decisionBoundaries} (Right), there will be some error. What will SEE be in that case?}  However, LMS only allows linear decision boundaries. Other algorithms have more knobs, and can be used to create more complex decision boundaries and decision regions.
 % Footnote on more complex decision regions here, or somewhere else? And the interesting material on how with more layers we get more complex regions. See the code comments at the end of this section. Also see the videos on this, which contain useful summary. References to Lipman and to Bishop chapter 4, e.g. figure 4. I feel I have written this up before so I may have it in notes.
 
-Logic gates provide a convenient and historically important class of tasks that can be used to further illustrate these ideas. In appendix \extref{ch_logicgates} it is shown that logic gates can be represented as 2-1 feed-forward neural networks. Pairs of input nodes corresponding to statements P and Q connect to output nodes representing boolean combinations of truth values (0 for false, and 1 for true): P AND Q (true when both are true), P OR Q (true when at least one is true), and P XOR Q (true only when one is true). These can be depicted using the same kinds of classification plots as above (here using open dots for 0, and filled dots for 1). Fig. \ref{boolean_inputspace} shows the input space for the AND, OR and XOR logic gates. Note that AND and OR are linearly separable, and that XOR is not.
+Logic gates provide a convenient and historically important class of tasks that can be used to further illustrate these ideas. In appendix \extref{ch_logicgates} it is shown that logic gates can be represented as 2-1 feed-forward neural networks. Pairs of input nodes corresponding to statements P and Q connect to output nodes representing boolean combinations of truth values (0 for false, and 1 for true): P AND Q (true when both are true), P OR Q (true when at least one is true), and P XOR Q (true only when one is true). These can be depicted using the same kinds of classification plots as above (here using open dots for 0, and filled dots for 1). Figure \ref{boolean_inputspace} shows the input space for the AND, OR and XOR logic gates. Note that AND and OR are linearly separable, and that XOR is not.
 
 \begin{figure}[h]
 \centering
