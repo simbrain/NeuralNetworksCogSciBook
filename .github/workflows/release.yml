@@ -14,6 +14,9 @@
 # pointer, so
 #   https://github.com/simbrain/NeuralNetworksCogSciBook/releases/latest/download/NeuralNetworksCogsci.pdf
 # always serves the newest published PDF (a stable URL websites can link to).
+# Publishing also triggers publish-latest-pdf.yml, which copies the PDF to
+# Cloudflare R2 so it can be viewed in the browser (GitHub release assets are
+# served as downloads).
 
 name: Release
 
@@ -87,11 +90,11 @@ jobs:
 
       - name: Build PDF
         # Keep the latexmk invocation in sync with the `build` recipe in the
-        # justfile. The image is pinned to the frozen TeX Live 2025 release:
-        # the experimental \DocumentMetadata testphase=phase-II tagged-PDF
-        # setup breaks under TeX Live 2026's expanded math tagging (tagpdf
-        # "no open structure" errors in equation-heavy chapters). Bump the pin
-        # only after retesting the tagging pilot per ACCESSIBILITY.md.
+        # justfile. The image is TeX Live 2026: `latest` tracks the current
+        # TeX Live release (2026 until TeX Live 2027 ships in spring 2027).
+        # Switch it to the frozen `TL2026-historic` tag once Docker Hub
+        # publishes one, and retest the tagging pilot per ACCESSIBILITY.md
+        # before moving to a newer TeX Live.
         #
         # The extra_mem/pool/strings environment variables raise pdfTeX's
         # memory limits (kpathsea reads them at runtime): the tagged-PDF
@@ -104,7 +107,7 @@ jobs:
             -e max_strings=1000000 \
             -e hash_extra=1000000 \
             -e save_size=200000 \
-            texlive/texlive:TL2025-historic \
+            texlive/texlive:latest \
             latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' NeuralNetworksCogsci.tex
 
       - name: Upload PDF as workflow artifact

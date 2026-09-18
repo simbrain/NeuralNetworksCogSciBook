@@ -1,0 +1,114 @@
+# Publish-latest workflow: copies the newest published release's PDF to a
+# Cloudflare R2 bucket at a fixed key, so websites can link to a URL that
+# opens the book in the browser.
+#
+# Why R2 in addition to GitHub releases: GitHub serves release assets with
+# `Content-Disposition: attachment`, so linking to
+#   https://github.com/simbrain/NeuralNetworksCogSciBook/releases/latest/download/NeuralNetworksCogsci.pdf
+# always downloads the file. The R2 copy is uploaded with
+# `Content-Type: application/pdf` and `Content-Disposition: inline`, so the
+# same PDF opens in the browser's viewer when served from the bucket's public
+# custom domain (or r2.dev URL).
+#
+# Only the latest version is kept in R2: every run overwrites the single
+# object NeuralNetworksCogsci.pdf. Older versions stay available on the
+# GitHub releases page.
+#
+# Triggers:
+#   - automatically when a release is published (the draft created by
+#     release.yml is published on the releases page). Pre-releases and
+#     releases that are not marked "latest" are skipped.
+#   - manually (Actions tab -> "Publish latest PDF to R2" -> "Run workflow")
+#     to re-sync R2 from the current latest release, e.g. after first setting
+#     up the bucket.
+#
+# Required repository configuration (Settings -> Secrets and variables ->
+# Actions):
+#   Secrets:  R2_ACCOUNT_ID         Cloudflare account ID
+#             R2_ACCESS_KEY_ID      R2 API token's access key ID
+#             R2_SECRET_ACCESS_KEY  R2 API token's secret access key
+#             (create the token under R2 -> Manage R2 API Tokens with
+#             "Object Read & Write" scoped to the bucket)
+#   Variables: R2_BUCKET            bucket name
+#
+# The bucket must have public access enabled (custom domain or r2.dev) for
+# the URL to be linkable from a website.
+
+name: Publish latest PDF to R2
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve latest release
+        id: latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_TAG: ${{ github.event.release.tag_name }}
+          EVENT_PRERELEASE: ${{ github.event.release.prerelease }}
+        run: |
+          LATEST_TAG=$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)
+          echo "Latest published release: $LATEST_TAG"
+          if [ -n "$EVENT_TAG" ]; then
+            if [ "$EVENT_PRERELEASE" = "true" ]; then
+              echo "$EVENT_TAG is a pre-release; not publishing it to R2."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            if [ "$EVENT_TAG" != "$LATEST_TAG" ]; then
+              echo "$EVENT_TAG is not the latest release ($LATEST_TAG); not publishing it to R2."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "tag=$LATEST_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Download release PDF
+        if: steps.latest.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "${{ steps.latest.outputs.tag }}" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern NeuralNetworksCogsci.pdf \
+            --dir .
+          ls -l NeuralNetworksCogsci.pdf
+
+      - name: Upload to R2
+        if: steps.latest.outputs.skip == 'false'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          AWS_ENDPOINT_URL: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+          # Newer AWS CLI releases add CRC checksums to every upload by
+          # default, which R2's S3 API does not accept for streaming uploads.
+          AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+          AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
+          R2_BUCKET: ${{ vars.R2_BUCKET }}
+        run: |
+          for v in R2_BUCKET AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY; do
+            if [ -z "${!v}" ]; then
+              echo "$v is not configured; see the comment at the top of this workflow." >&2
+              exit 1
+            fi
+          done
+          if [ "$AWS_ENDPOINT_URL" = "https://.r2.cloudflarestorage.com" ]; then
+            echo "R2_ACCOUNT_ID is not configured; see the comment at the top of this workflow." >&2
+            exit 1
+          fi
+          aws s3 cp NeuralNetworksCogsci.pdf "s3://$R2_BUCKET/NeuralNetworksCogsci.pdf" \
+            --content-type application/pdf \
+            --content-disposition inline \
+            --cache-control "public, max-age=3600" \
+            --metadata "release-tag=${{ steps.latest.outputs.tag }}"
+          echo "Uploaded ${{ steps.latest.outputs.tag }} to s3://$R2_BUCKET/NeuralNetworksCogsci.pdf"

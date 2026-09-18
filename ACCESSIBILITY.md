@@ -52,6 +52,9 @@ Before describing a PDF as accessible:
 
 Treat tag-structure warnings as review items rather than automatic proof of a
 defect. Generated lists/links and matrix-heavy content warrant particular
-attention. `LinearAlgebra.tex` has a temporary paragraph-tagging suppression
-around legacy matrix material; do not remove it without retesting the full
-master and checking the resulting PDF.
+attention. `LinearAlgebra.tex` used to carry a paragraph-tagging suppression
+around legacy matrix material; TeX Live 2026's math tagging requires an open
+paragraph structure around every formula and fails with "there is no open
+structure on the stack" when paragraph tagging is off, so the suppression was
+removed and the chapter now builds with paragraph tagging on. Its `eqnarray`
+and hand-built matrices still warrant a dedicated tagged-math pass.
