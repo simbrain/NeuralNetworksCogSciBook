@@ -13,14 +13,16 @@ default:
 
 # Prepare and compile a container document using the existing authorship and
 # custom-glossary scripts, so its PDF has current metadata and glossary.
+# Uses the same enlarged pdfTeX memory as build-master, since tagged container
+# documents can also exhaust the default when serializing the parent tree.
 build document:
     {{python}} scripts/prepare_container_document.py {{document}} --use-custom-glossary
-    latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
+    extra_mem_top=50000000 extra_mem_bot=50000000 pool_size=20000000 max_strings=1000000 hash_extra=1000000 save_size=200000 latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
 
 # Backwards-compatible name for the container build recipe.
 prep document:
     {{python}} scripts/prepare_container_document.py {{document}} --use-custom-glossary
-    latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
+    extra_mem_top=50000000 extra_mem_bot=50000000 pool_size=20000000 max_strings=1000000 hash_extra=1000000 save_size=200000 latexmk -pdf -interaction=nonstopmode -halt-on-error -e '$max_repeat=9' {{document}}
 
 # Prepare and compile the master without replacing its canonical glossary.
 # The tagged master needs additional pdfTeX memory to serialize its parent tree

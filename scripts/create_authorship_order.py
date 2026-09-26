@@ -16,6 +16,10 @@ import operator
 
 CONTAINER_DOCUMENT = sys.argv[1]
 
+def remove_comments(text):
+    """Drop LaTeX comments so example or disabled author lines are not counted."""
+    return re.sub(r"(?<!\\)%.*", "", text)
+
 def remove_footnotes(text):
     """Exclude chapter attribution notes from names, including nested LaTeX."""
     pattern = re.compile(r"\\footnote\s*(?:\[[^\]]*\]\s*)?\{")
@@ -60,8 +64,7 @@ with open(CONTAINER_DOCUMENT, 'r') as textfile:
 book_authors = defaultdict(int) # Author to summed weightings
 for chapter in included_chapters:
     with open(chapter, 'r') as textfile:
-        text = remove_footnotes(textfile.read())
-        # TODO: Will this work on commented out \chapterauthor?
+        text = remove_footnotes(remove_comments(textfile.read()))
         # TODO: Allow for curly braces in the regex (e.g. {\''e} fails) 
         reg_author = re.compile(r"\\chapterauthor\{([^}]+)\}(\{[^}]+\})*")
         for match in re.findall(reg_author, text):
