@@ -10,7 +10,7 @@
 In this chapter, we review some basic concepts of linear algebra with an 
 emphasis on how they can be applied to the study of neural networks.\footnote{An abridged version of this chapter and chapter \extref{ch_act_functions} is available as ``Activation Functions and Linear Algebra'' (\code{ActFuncAndLinearAlgebra.tex}), which can be compiled as part of a custom document for teaching. See the repository's \code{README.md} for more information.} This can be viewed as a transition from the formal structure of single nodes and weights, to the formal structure of \emph{lists} and \emph{tables} of nodes and weights (and something even more general called a ``tensor''). In particular, we consider vectors, matrices, and tensors, which allow us to describe the behavior of groups of nodes and weights in a compact way.
 
-Linear algebra also facilitates a powerful geometric framework for \emph{visualizing} the structure and dynamics of a neural network. The properties of a set of inputs and whether they can be properly classified is an example of something that is more intuitively understandable when the input vectors are visualized as points in a space. The framework of linear algebra makes it possible to visualize the changing activations of a set of nodes, or the changing strengths of a set of weights, as a moving point in a space. This approach to thinking about neural networks uses \emph{dynamical systems theory}, discussed in chapter \extref{ch_dst}, and can be used to conceptualize many features of neural network models in an intuitive way.\footnote{For a quick demonstration of this way of visualizing network dynamics, try one of the simulations in the \simref{Recurrent networks} submenu of Simbrain's \simref{Simulations} menu. The dynamics of the network is visible in the projection component.}
+Linear algebra also facilitates a powerful geometric framework for \emph{visualizing} the structure and dynamics of a neural network. The properties of a set of inputs and whether they can be properly classified is an example of something that is more intuitively understandable when the input vectors are visualized as points in a space. The framework of linear algebra makes it possible to visualize the changing activations of a set of nodes, or the changing strengths of a set of weights, as a moving point in a space. This approach to thinking about neural networks uses \emph{dynamical systems theory}, discussed in chapter \extref{ch_dst}, and can be used to conceptualize many features of neural network models in an intuitive way.\footnote{For a quick demonstration of this way of visualizing network dynamics, try the Simbrain simulations under \simref{Recurrent networks}. The dynamics of the network is visible in the projection component.}
 
 % A lot of work goes into matrix product, a lot of setup, just setting up graphical conventions. This is consistent with the book and the simbrain approach. Extra work into how to be able to visualize activation flow.
 
@@ -25,7 +25,7 @@ multiplication that can be performed between a vector and a \glossary{scalar}. T
 multiplied with a vector. We will focus on the case where scalars are real numbers, like $2$, $-1.2$, or $5.9$. If the scalars are the set of real numbers, then the 
 vector space is called a {\em real vector space}. We will only work with real
 vector spaces. A more formal definition for a vector space is discussed in 
-Sect. \ref{S:LinearAlgebraAppendix}. 
+section \ref{S:LinearAlgebraAppendix}. 
 
 We will represent vectors as ordered lists of scalars.\footnote{ Many classes of mathematical objects satisfy the formal definition of a vector space, and thus many objects can be vectors. The ordered lists we consider here are an especially convenient type of vector.} Each of the scalars in the list is called a \glossary{component} 
 of the vector. A list with 2 components is called an {\em ordered pair}. A 
@@ -141,8 +141,8 @@ vector space are just lists of a billion numbers.
    Real vector spaces with more than 3 dimensions cannot be seen directly, but 
 objects in them can be \emph{projected} to lower-dimensional real vector spaces 
 where they can be visualized. We will discuss methods of projection from 
-spaces with more than 3 dimensions in Sect. \ref{S:dimReduction}.\footnote{Here
-again the simulations in the \simref{Recurrent networks} submenu of Simbrain's \simref{Simulations} menu are helpful.
+spaces with more than 3 dimensions in section \ref{S:dimReduction}.\footnote{Here
+again the Simbrain simulations under \simref{Recurrent networks} are helpful.
 When you run the simulation, a sequence of points in a 25-dimensional space 
 appears. Each point corresponds to a vector. If you hover the cursor over any
 one of the points, you will see the list of 25 numbers (the 25 activation levels
