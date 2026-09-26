@@ -42,7 +42,7 @@
 
 \item[Axon] The part of the neuron that carries outgoing signals to other neurons.
 
-\item[Backpropagation] (Synonym: Backprop) A supervised learning algorithm that can train the weights of a multi-layer network using gradient descent. Can be thought of as an extension of Least Mean Square methods for multi-layer networks.
+\item[Backpropagation] (Synonym: Backprop) A supervised learning algorithm that can train the weights of a multilayer network using gradient descent. Can be thought of as an extension of Least Mean Square methods for multilayer networks.
 
 \item[Bag of words] A representation method that associates a document with a vector of word frequencies, where each entry of the vector corresponds to a word and the value of the entry corresponds to the number of times that word occurs in the document. The underlying idea is that the word usage frequencies would capture the (semantic) content of a document. The order and grammatical information of the words in the document is disregarded, hence the term ``bag''.  Forms of document embedding, as contrasted with token or word embeddings, are more common with neural networks.
 
@@ -113,15 +113,15 @@ towards a given attractor.
 
 \item[Cosine similarity] A measure of similarity between two vectors based on the cosine of the angle between them. A dot product between normalized vectors. In neural networks, cosine similarity is often used to compare token embeddings or activation patterns, with values ranging from -1 (opposite directions) to 1 (same direction).
 
-\item[Cross talk] A phenomenon where training patterns interfere with one another when training a neural network to perform some task.
+\item[Crosstalk] A phenomenon where training patterns interfere with one another when training a neural network to perform some task.
 
 \item[Data cleaning] Removing, fixing, replacing, or otherwise dealing with bad data. Includes subsetting data, i.e. extracting rows or columns or removing rows or columns. One stage of data wrangling.
 
 \item[Data science]  An area of science and practice concerned with managing and analyzing datasets, often using tools of machine learning, including neural networks.
 
-\item[Dataset] Any table of numerical values that is used by a neural network, or that will be used by a neural network after pre-processing. (This is not a standard definition, but one stipulated in this text). Input, output, target, and training datasets are specific types of tables used in specific ways by neural networks.
+\item[Dataset] Any table of numerical values that is used by a neural network, or that will be used by a neural network after preprocessing. (This is not a standard definition, but one stipulated in this text). Input, output, target, and training datasets are specific types of tables used in specific ways by neural networks.
 
-\item[Data wrangling] (Synonyms: data munging, pre-processing) The process of transforming data into a form usable by a neural network. Encompasses obtaining, cleaning, imputing, coding, and rescaling data.
+\item[Data wrangling] (Synonyms: data munging, preprocessing) The process of transforming data into a form usable by a neural network. Encompasses obtaining, cleaning, imputing, coding, and rescaling data.
 
 \item[Decision boundary] In the context of a classification task, a hypersurface (e.g., in 2 dimensions, a line) that divides an input space into decision regions. Each decision region is associated with one possible output.
 
@@ -161,7 +161,7 @@ towards a given attractor.
 
 \item[Example] (Synonyms: instances, cases). Rows of a dataset. Used in phrases like input example, training example, etc., depending on which dataset we are considering.
 
-\item[Excitatory synapses] Synapses where an action potential in a presynaptic neuron triggers the release of neurotransmitters that then increase the likelihood of an action potential occurring in the postsynaptic neuron.
+\item[Excitatory synapses] Synapses where an action potential in a pre-synaptic neuron triggers the release of neurotransmitters that then increase the likelihood of an action potential occurring in the post-synaptic neuron.
 
 \item[Fan-in weight vector] The weight vector for all of the inputs to a node in a neural network.
 
@@ -169,7 +169,7 @@ towards a given attractor.
 
 \item[Feature] (Synonyms: attribute, property). A column of a dataset, often associated with a node of a neural network.
 
-\item[Feature-extraction]  Process of translating non-numerical data (e.g. text, images, audio files, DNA sequences) into a numerical format. % Using the hyphen because of the bug with overlap with "feature"
+\item[Feature extraction]  Process of translating non-numerical data (e.g. text, images, audio files, DNA sequences) into a numerical format. % Using the hyphen because of the bug with overlap with "feature"
 
 \item[Feature Map] A node layer that is the output of a convolutional layer, in which each activation is the result of a filter being multiplied (using the dot product) to one region of the input layer.
 
@@ -185,7 +185,7 @@ towards a given attractor.
 
 \item[Filter Bank] A set of filters. One kind of volume-to-volume layer in a convolutional neural network.
 
-\item[Fine-tuning] Additional training performed on a model with a relatively small learning rate to adapt it for a specific domain or task. Fine-tuning nudges the weights to better capture new domains while preserving the broad linguistic competence and background knowledge gained during pre-training. Giving base models personalities is commonly done with fine-tuning.
+\item[Fine-tuning] Additional training performed on a model with a relatively small learning rate to adapt it for a specific domain or task. Fine-tuning nudges the weights to better capture new domains while preserving the broad linguistic competence and background knowledge gained during pretraining. Giving base models personalities is commonly done with fine-tuning.
 
 \item[Firing rate] The number of spikes (action potentials) a neuron fires per unit time. Usually measured in hertz, that is, number of spikes per second. A higher firing rate corresponds to a more ``active'' neuron.
 
@@ -193,9 +193,9 @@ towards a given attractor.
 
 \item[Flatten] The process of converting a tensor with rank 3 or greater to a vector.  Allows the output of a convolutional layer to be sent to a standard feed-forward node layer.
 
-\item[Foundation models] Base models, often built by large companies, that then serve as a foundation for later stages of fine-tuning. Once the computationally expensive work of pre-training is complete, many different specialized model versions can be built from a good foundation model.
+\item[Foundation models] Base models, often built by large companies, that then serve as a foundation for later stages of fine-tuning. Once the computationally expensive work of pretraining is complete, many different specialized model versions can be built from a good foundation model.
 
-\item[Frontal lobe] Forward-most lobe of the brain whose many roles include decision-making, action planning, and executive control. Houses many important regions, including prefrontal cortex (PFC), orbitofrontal cortex (OFC), and motor cortex.
+\item[Frontal lobe] Forward-most lobe of the brain whose many roles include decision making, action planning, and executive control. Houses many important regions, including prefrontal cortex (PFC), orbitofrontal cortex (OFC), and motor cortex.
 
 \item[Generalization] The ability of a neural network to perform tasks that were not included in its training dataset. An example would be a network that was trained to identify 10 faces as male, and 10 as female, being able to perform well on (or ``generalize to'') new faces it has not seen before.
 
@@ -229,7 +229,7 @@ towards a given attractor.
 
 \item[Inference] Consideration of how a trained neural network responds to inputs, while keeping its weights fixed. This usage of ``inference'' derives from statistical inference, to describe the use of a trained model. When interacting with ChatGPT, it is performing inference. Contrasted with learning.  Closely related to performance, though performance has other meanings.
 
-\item[Inhibitory synapses] Synapses where an action potential in a presynaptic neuron triggers the release of neurotransmitters that then decrease the likelihood of an action potential occurring in the postsynaptic neuron.
+\item[Inhibitory synapses] Synapses where an action potential in a pre-synaptic neuron triggers the release of neurotransmitters that then decrease the likelihood of an action potential occurring in the post-synaptic neuron.
 
 \item[Initial condition] The state a dynamical system begins in.
 
@@ -284,7 +284,7 @@ towards a given attractor.
 
 %\item[Long Term Depression] (LTD) A  process by which the efficacy of a synapse is decreased after repeated use.
 
-\item[Long Term Potentiation] (LTP) A process by which the efficacy of a synapse is increased after repeated use. LTP is part of the basis of the Hebb rule.
+\item[Long-Term Potentiation] (LTP) A process by which the efficacy of a synapse is increased after repeated use. LTP is part of the basis of the Hebb rule.
 
 \item[Machine learning] The use of statistical techniques to produce artificial intelligence. Uses of neural networks as engineering devices are a kind of machine learning.
 
@@ -294,7 +294,7 @@ towards a given attractor.
 
 \item[Membrane potential] The voltage that results from the difference in the total charge of ions on either side of the cell membrane. A cell at rest typically has a resting membrane potential of -70 mV.
 
-\item[MLP]  An acronym for “Multi-Layer Perceptron”. A standard feed-forward neural network consisting of multiple layers of nodes trained using backprop. In the context of transformers, MLPs form one of the two main components of each transformer block (alongside attention heads), typically involving an upward projection to a larger hidden layer followed by a downward projection back to the residual stream dimension.  
+\item[MLP]  An acronym for “Multilayer Perceptron”. A standard feed-forward neural network consisting of multiple layers of nodes trained using backprop. In the context of transformers, MLPs form one of the two main components of each transformer block (alongside attention heads), typically involving an upward projection to a larger hidden layer followed by a downward projection back to the residual stream dimension.  
 
 %\item[Metabotropic]
 
@@ -327,7 +327,7 @@ towards a given attractor.
 
 %\item[Orbitofrontal cortex] Front-most region of prefrontal cortex associated with decision-making.
 
-\item[Orthogonal] Two vectors are orthogonal to each other if their dot product is zero. One-hot vectors are orthogonal. They are widely separated in input space and tend not to produce cross-talk in learning tasks.
+\item[Orthogonal] Two vectors are orthogonal to each other if their dot product is zero. One-hot vectors are orthogonal. They are widely separated in input space and tend not to produce crosstalk in learning tasks.
 
 \item[Output dataset] A dataset whose rows correspond to output vectors recorded from a neural network.
 
@@ -366,15 +366,15 @@ towards a given attractor.
 
 %\item[Post-training] The phase of model training that follows pre-training, where a base model is fine-tuned to produce a useful AI assistant. Post-training often cultivates the personalities and behaviors that users experience when interacting with chat models.
 
-\item[Prefrontal cortex] The front-most part of the frontal cortex, which is involved in executive function, decision-making, and planning. It is also thought to have an attractor-based structure that supports the operation of working memory.
+\item[Prefrontal cortex] The frontmost part of the frontal cortex, which is involved in executive function, decision making, and planning. It is also thought to have an attractor-based structure that supports the operation of working memory.
 
-\item[Pre-processing] The process of transforming data into a form usable by a neural network. Compare data-wrangling.
+\item[Preprocessing] The process of transforming data into a form usable by a neural network. Compare data wrangling.
 
 %\item[Point neurons]
 
 \item[Primary motor cortex] Strip in the motor cortex that houses a somatotopic map of the body and controls simple movement production.
 
-\item[Projection] A way of representing a group of points in a high-dimensional space in a lower dimensional space.
+\item[Projection] A way of representing a group of points in a high-dimensional space in a lower-dimensional space.
 
 \item[Prompting strategy] Techniques for crafting inputs to language models to elicit desired behaviors or outputs. Effective prompting strategies can significantly improve model performance on tasks by providing appropriate context, examples, or instructions. See chain of thought.
 
@@ -420,7 +420,7 @@ towards a given attractor.
 
 \item[Scalar multiplication] An operation used to ``rescale'' a vector. It takes a scalar and a vector and returns a vector with the same direction.
 
-\item[Self Organizing Map] (Acronym: SOM)  A network trained by unsupervised competitive learning, in which the layout of the output nodes corresponds to the layout of the input space.
+\item[Self-Organizing Map] (Acronym: SOM)  A network trained by unsupervised competitive learning, in which the layout of the output nodes corresponds to the layout of the input space.
 
 \item[Self-supervised learning] A form of supervised learning where targets or labels are not provided separately but are derived from the training data itself. This allows training data to be generated without explicit annotations. See auto-regression.
 
@@ -436,7 +436,7 @@ towards a given attractor.
 
 \item[Soma] (Synonym Cell body): the central part of a neuron, which the dendrites and axons connect to.
 
-\item[Somatosensory cortex] Front-most region of the parietal lobe that houses a somatotopic map of the body parts and processes tactile information from the body.
+\item[Somatosensory cortex] Frontmost region of the parietal lobe that houses a somatotopic map of the body parts and processes tactile information from the body.
 
 \item[Somatotopic map] A topographic map in the somatosensory cortex that is organized by areas of the body. Nearby regions of this area represent nearby parts of the body.
 
@@ -542,7 +542,7 @@ towards a given attractor.
 
 \item[Weighted Input] (Synonym: Net input) Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
 
-\item[Weight layer] A set of weights treated as a group. Often they are the collection of weights connecting one node layer to another, which can in turn be represented by a weight matrix. % Distinguish recurrent from feed forward case?
+\item[Weight layer] A set of weights treated as a group. Often they are the collection of weights connecting one node layer to another, which can in turn be represented by a weight matrix. % Distinguish recurrent from feed-forward case?
 
 \item[Weight space] The set of possible weight vectors for a given neural network.
 

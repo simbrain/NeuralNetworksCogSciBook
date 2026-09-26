@@ -283,7 +283,7 @@ absent, and use that knowledge to fix our training labels. For example, suppose 
 ``The red car stopped.''\\
 ``Alice ran home.''
 \end{quote}
-For each word in each sentence we know its part of speech (ignoring sub-word tokens for this example), and so we can extract a hidden-state vector corresponding to it, and train a linear probe to respond with the appropriate part of speech, classifying ``dog'' as a noun, ``bark'' as a verb, etc.  It is now hoped that this ``probe'' model will successfully generalize its
+For each word in each sentence we know its part of speech (ignoring subword tokens for this example), and so we can extract a hidden-state vector corresponding to it, and train a linear probe to respond with the appropriate part of speech, classifying ``dog'' as a noun, ``bark'' as a verb, etc.  It is now hoped that this ``probe'' model will successfully generalize its
 classifications to any future model activations.  In the example above, the noun node should activate whenever a noun token occurs, and similarly for the verb node, adjective node, etc.
 
 Probes in a transformer are
@@ -346,14 +346,14 @@ is an autoencoder, we can train it anywhere inside a network simply by training
 it to reconstruct the activations there. We tell the optimizer to prefer hidden
 unit activations that are sparse so that we learn a sparse embedding space.
 Figure \ref{saeSimbrain} illustrates the idea. Note the input and the output
-are the same---it's an auto-encoder---but we have trained the hidden unit
+are the same---it's an autoencoder---but we have trained the hidden unit
 activations to be sparse. It is these few active nodes that we now focus our
 interpretations on.
 
 \begin{figure}[ht]
 \centering
 \accessibleimage[scale=.5]{./images/saeSimbrain.png}{Sparse autoencoder network in Simbrain. Input activations feed a larger hidden layer with mostly inactive nodes, then reconstruct matching output activations; colored node disks indicate activation values.}
-\caption[Simbrain screenshot from Jeff Yoshimi.]{ A sparse auto-encoder takes
+\caption[Simbrain screenshot from Jeff Yoshimi.]{ A sparse autoencoder takes
       some input activations and maps them back to themselves (notice that the
       autoencoder is successfully reconstructing its input activations) through
       a hidden layer which gradient descent has tried to make as sparsely
@@ -410,7 +410,7 @@ that activation to blend that concept into behavior in new contexts
  retraining (this is also called ``steering''). With a large enough scaling
  factor, the model often fixates; a ``Golden Gate Bridge'' feature turns Claude
  into a Golden-Gate-Bridge obsessive, e.g. (see figure \ref{goldenGate}). This
- is all done without revealing the micro-anatomy: we know \emph{which}
+ is all done without revealing the microanatomy: we know \emph{which}
  activation directions matter, but not the underlying circuitry that produces
  them. As an analogy, this is more akin to model psychiatry (temporarily
  steering model behavior without training) than to model neurosurgery (mapping
@@ -585,7 +585,7 @@ previous sequences of tokens, both exactly and approximately
 \end{quote}
 
 Induction heads are exciting as they were one of the first windows into how
-models can intelligently \emph{learn} in-context. The trick, it seems, is to
+models can intelligently \emph{learn} in context. The trick, it seems, is to
 keep a lookout for key regularities in your context, and to redeploy that
 regularity later on, when the context is again right. Induction heads are also
 interesting as a relatively smooth evolutionary progression from ``more
