@@ -14,7 +14,7 @@ In chapter \extref{ch_lms_backprop}, we cover some of the main classes of algori
 % Use function approximation language from Deep Learning?
 % Wiki ``Supervised learning is the machine learning task of inferring a function from labeled training data''
 
-\section{Labeled datasets}\label{supervised_datasets}
+\section{Labeled Datasets}\label{supervised_datasets}
 
 With supervised learning, we tell the network what we want it to do. There is a teacher or trainer. Recall from chapter \extref{ch_data_science} that a \glossary{labeled dataset} for a supervised learning task consists of a pair of datasets: an input dataset and a target dataset. Both datasets contain the same number of rows.
 % Mention y_r as well.
@@ -286,7 +286,7 @@ We usually don't have a picture of an error surface. Still, we can use a program
  There is more to say here. A lot can go wrong, there are settings to adjust (like \emph{how far} you go at each iteration), etc. These details are studied in the mathematical field of optimization.
  % Point to another source, preferably open access
 
- \section{Expansion of these methods}
+ \section{Expansion of These Methods}
 
  This chapter has described some very general features of supervised learning. The history and details of how these are applied in particular cases is spelled out in subsequent chapters.  In chapter \extref{ch_lms_backprop} we see details of this type of algorithm for the case of a simple one-weight-layer network, and then we see how backprop allowed the algorithm to be generalized to feed-forward networks with more than one weight layer. The key was calculus: by figuring out how to update parameters to reduce error using calculus, a systematic method for applying gradient descent to more complex networks was found.
 

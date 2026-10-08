@@ -87,3 +87,11 @@ just format-glossary
   - Other menu paths use the same form, e.g. `\simref{Insert $>$ Network $>$ Competitive}`.
 
 - When referring to figures, sections, and chapters in running text, write "figure", "section", and "chapter" lowercase (e.g. "as shown in figure 3.2", "see chapter 4"), never abbreviated ("Fig."). Capitalize only when the word is the first word of a sentence.
+
+- Use title case for chapter, section, and subsection titles: capitalize all major words, and lowercase articles, coordinating conjunctions, and short prepositions unless they come first (e.g. "Oja's Rule and Dimensionality Reduction Networks", "Classification of Orbits").
+
+- Use US spelling (e.g. "labeled", not "labelled").
+
+- Give page numbers only for direct quotations (including figures reproduced from a book) and for further-reading pointers to specific pages of a long work (e.g. "see Levine \cite[p.~12]{levine2000introduction} for a useful summary"). Put them in the citation itself, `\cite[p.~1465]{kohonen1990self}`, rather than in the running text. A footnote that lists pages by topic can give them in the text after a single citation.
+
+- A term can be tagged with `\glossary` more than once in a chapter, e.g. where it is first introduced and again where it is formally defined, or when it reappears as a key idea in a later section. Don't tag passing mentions.

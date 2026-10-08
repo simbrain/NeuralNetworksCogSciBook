@@ -50,7 +50,7 @@ What about the meaning of words, or semantics? Since there isn't generally a cle
 
 The last traditional level of linguistics is pragmatics, which can be understood as the implicit rules for language use. It is often not the literal meaning of words (i.e., semantics), but rather the meaning behind the usage. For example, if you asked someone if they studied for the exam, and they said that they ``opened the textbook,'' you likely would understand that they mean that they didn't prepare well for the exam, even though their utterance does not literally mean that. Grice is a well-known philosopher in this area \cite{grice1957meaning, grice1975logic}, and there has been a recent trend in using Bayesian statistics to model this type of pragmatics through Rational Speech Acts \cite{goodman2016pragmatic}. Pragmatics has not been studied much in neural networks, but has become important with LLMs since they can have actual conversations (see section \extref{ch_transformers}), and it seems likely that in modern LLMs internal representation of pragmatic structures emerge.
 
-\section{Document embeddings}
+\section{Document Embeddings}
 
 Though our focus in this chapter will mostly be on vector representations of words, historically vector representations of whole documents are important, because they are in some cases simpler and provide a background for understanding word embeddings.
 
@@ -87,7 +87,7 @@ Latent semantic analysis (LSA) is used with a set of documents to analyze semant
 
 Researchers use these methods to calculate term frequencies in a given document or set of documents. The document embeddings can then be used to calculate document similarity, as with LSA. As we will see in the next section, these methods can also be adjusted and applied to the word level as well, allowing us to quantify word meaning as word embeddings. That is, the methods of document embeddings based on token occurrence and co-occurrence can be used to come up with word embedding techniques, and these word embeddings can be used to calculate how similar words are to each other.
 
-\section{Word embeddings}
+\section{Word Embeddings}
 
 We now move from document embeddings to word embeddings. In this approach, instead of associating documents with vectors, we associate words or tokens with vectors. The general idea is that the words are embedded (or placed) into a vector space, in which the semantic information is captured and represented by the relative distance to other words in this space. Words that have similar semantic information would be near each other, and those which are unrelated would be far apart.\footnote{Useful  background theory for word embeddings is in \cite{lenci2018distributional} and a review of different word embedding models is \cite{zaland2023comprehensive}.}
 
@@ -262,7 +262,7 @@ To get a sense for how this works, let's apply this pipeline to a sample documen
 My work is a matter of fundamental sounds, made as fully as possible. Even though they are fundamental, they bring rich aromatic hints of humor. If people want to have headaches among the overtones, let them. And provide their own aspirin. (Adapted from a letter from Samuel Beckett to Alan Schneider, 1957)
 \end{quote}
 
-\subsection{Sentence segmentation}
+\subsection{Sentence Segmentation}
 
 For sentence segmentation, the paragraph or document is segmented into sentences. This step is particularly important when using text that has been scanned using optical character recognition (OCR), where errors might occur. Our sample document would be segmented into four sentences (given that we are segmenting just on periods):
 
@@ -276,7 +276,7 @@ For sentence segmentation, the paragraph or document is segmented into sentences
     \item \textit{And provide their own aspirin.}
 \end{enumerate}
 
-\subsection{Word tokenization}
+\subsection{Word Tokenization}
 
 Once the document has been segmented into sentences, a tokenizer is used to split each sentence into its component words. This yields a list of lists of tokens, as in
 \begin{enumerate}
@@ -302,7 +302,7 @@ Following tokenization, the words/tokens are generally normalized to remove capi
     \item \textit{provide, aspirin}
 \end{enumerate}
 
-\subsection{Create the word embeddings}
+\subsection{Create the Word Embeddings}
 
 For a  basic word embedding algorithm, the label-context pair co-occurrences are tracked in a co-occurrence matrix. For the first sentence, we would start with ``work'' as the first target. Then, given a bidirectional window size of 2, the surrounding context would be ``matter'' and ``fundamental''. Therefore, the co-occurrence pairs would be [work, matter] and [work, fundamental]. We would then create a co-occurrence matrix, with targets on the rows, and context on the columns.  After processing the first sentence, the co-occurrence matrix can be seen in table \ref{exampleCoocmat}:
 

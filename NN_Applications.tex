@@ -7,7 +7,7 @@
 
 In this chapter we consider how neural networks as models are applied in various areas of engineering and science, with an emphasis on applications to cognitive science, given the scope of the book. Neural networks can be used as engineering tools designed to perform useful tasks, or as scientific models designed to help us understand the brain, cognition and behavior, or both at once. A goal of the chapter is to be able to look at a paper or discussion of a neural network and be able to classify it using a taxonomy presented below.
 
-\section{Engineering vs. Scientific applications}
+\section{Engineering vs. Scientific Applications}
 
 In practice, neural networks are applied in two main ways: (1) as engineering tools, and (2) as scientific models.\footnote{See the discussion of ``standards of intelligence'' in \cite{noelle2022artificial}. Models of idealized intelligence are what we are calling ``engineering'' models here, while psychologically realistic cognitive models are what we are calling ``neural networks as scientific models.''} The second category breaks down into three subcategories, as shown in figure \ref{typesNN}.
 
@@ -25,7 +25,7 @@ As we will see in section \ref{mixedCases}, this taxonomy is not always so neat,
 
 When classifying a network, remember to classify according to its \emph{role}. Sometimes this can be tricky. For example, consider the following article: ``Use of Neural Networks in Brain SPECT to Diagnose Alzheimer's Disease'' \cite{page1996use}. At first, this sounds like it might be a scientific model, since it mentions the brain and Alzheimer's. However, the article is actually about how neural networks can be used to determine whether a person has Alzheimer's. The neural network is not being used as a model of the brain or of Alzheimer's itself, but rather as an engineering tool to help diagnose Alzheimer's disease based on brain images.\footnote{A more advanced way to ask this question is to ask: how are the node activations and weight strengths being interpreted? Are they merely parameters in statistical models, or are they supposed to capture something real about neurons, or about concepts and their relations?}
 
-\section{Engineering uses of neural networks}\label{machineLearning}
+\section{Engineering Uses of Neural Networks}\label{machineLearning}
 
 % Other engineering uses: 
 % Fausett section 1.3
@@ -53,7 +53,7 @@ We will consider many of these applications in this book, but to understand what
 
 % TODO: Here or above in environment? why here? And make clear processing -> vector -> vector -> post-processing
 
-\section{Computational neuroscience}\label{computationalNeuroscience}
+\section{Computational Neuroscience}\label{computationalNeuroscience}
 
 We now turn to neural networks used as scientific models of the mind and brain.
 
@@ -89,7 +89,7 @@ neuron dynamics (micro) $\rightarrow$ network dynamics (meso) $\rightarrow$ brai
 % Maybe talk more about semantic memory and semantic network models, and contrast with other types of memory (many will not have taken intro cog-sci courses)
 Neural networks are also used as cognitive models, which behave like humans or animals, but don't try to model neuroscience in an exact way. We will call this \glossary{connectionism}.\footnote{``Connectionism'' is primarily a name for a historical movement (see section \extref{first_resurgence}).  But prototypical connectionist models were in fact neural network models of cognition, without an emphasis on detailed neuroscience, and so we retain the name. A detailed treatment of connectionism that tracks our usage here is given by Smolensky \cite{smolensky1988proper}.}  Such models are meant to {\em suggest} how a given task is accomplished by the brain---they are ``neurally plausible''---but they do not directly model the underlying neuroscience.
 
-As an example, consider the ``IAC'' or ``Interactive Activation and Competition'' network. A famous example of an IAC network is McClelland's model of knowledge of two fictional 1950s gangs, the Jets and Sharks from {\em West Side Story} \cite{mcclelland1981retrieving}.\footnote{For a video overview of this network in Simbrain, see \weburl{https://www.youtube.com/watch?v=Nw3TEDfugLs}. You can also run it in Simbrain via \emph{Simulation $>$ Psychology $>$ IAC Jets Sharks 5 People}; the simulation includes its own documentation.}
+As an example, consider the ``IAC'' or ``Interactive Activation and Competition'' network. A famous example of an IAC network is McClelland's model of knowledge of two fictional 1950s gangs, the Jets and Sharks from {\em West Side Story} \cite{mcclelland1981retrieving}.\footnote{For a video overview of this network in Simbrain, see \weburl{https://www.youtube.com/watch?v=Nw3TEDfugLs}. You can also run it in Simbrain via \simref{Psychology $>$ IAC Jets Sharks 5 People}; the simulation includes its own documentation.}
 
 \begin{figure}[h]
 \centering
@@ -146,7 +146,7 @@ We refer to these as \glossary{computational cognitive neuroscience} models, and
 
 From this standpoint, computational neuroscience and connectionism are two ends of a continuum or spectrum. We have computational neuroscience at one end, and connectionism at the other. All through the middle of this spectrum are models that try to model both biological data and psychological data at the same time. The goal is to understand how the circuits of the brain produce all the wealth and complexity of observable human and animal behavior. 
 
-\section{Mixed cases}
+\section{Mixed Cases}
 \label{mixedCases}
 
 Sometimes neural network models change their status. For example, a network that originated as a scientific model might later inform the development of an engineering tool. Conversely, sometimes an engineering tool ends up being useful as a scientific model. 

@@ -192,7 +192,7 @@ y_1 \\  y_2 \\ \vdots \\ y_N
 This quantity never increases and states chosen to be the attracting fixed 
 points are local minima for the appropriate inputs.
   
-\subsection{A discrete Hopfield network with two neurons}
+\subsection{A Discrete Hopfield Network with Two Neurons}
 
    In this section we present a simple example of a discrete Hopfield network
 with two neurons.  Many of the properties of Hopfield networks can be observed
@@ -339,7 +339,7 @@ I_1 \\ I_2
 \end{pmatrix}
 \end{equation*}
 
-\subsubsection{Synchronous update} 
+\subsubsection{Synchronous Update} 
 
 %\bigskip
 %\noindent
@@ -741,7 +741,7 @@ potential function is labeled next to each state.}
 \label{F:discHoppot}  
 \end{figure}
   
-\subsubsection{Asynchronous update}
+\subsubsection{Asynchronous Update}
 
    With asynchronous update we only update one neuron at a time in the neural 
 network.  The two types of asynchronous update, sequential and stochastic,
@@ -821,7 +821,7 @@ never increase the value of the potential function $V(y_1,y_2)$.  So composing
 them never increases the value of $V(y_1,y_2)$.  In this respect asynchronous
 update is like synchronous update.
 
-\subsubsection{Sequential update} 
+\subsubsection{Sequential Update} 
 
   With just two nodes there are just two possible sequences for the nodes.
 We either start with neuron $1$ and go to neuron $2$ or we start with neuron 
@@ -916,7 +916,7 @@ the state space.  If both inputs are $1$ the network will recognize the
 presence of just one of the objects.  Which object it detects depends on the 
 initial state and the order in which we update the neurons.
 
-\subsubsection{Stochastic update} 
+\subsubsection{Stochastic Update} 
 
    In stochastic update we select which neuron to update randomly.  In this 
 section we will use a uniform probability function to make the selection.  

@@ -1,7 +1,7 @@
 \chapter{New Material LMS and Backprop}
 \chapterauthor{Jeff Yoshimi}
 
-\subsection{Derivation of the LMS rule}
+\subsection{Derivation of the LMS Rule}
 
 The nice thing about LMS is we can directly interpret it in terms of Goldilocks.
 
@@ -97,7 +97,7 @@ Gradient descent then updates all parameters at once via
 \end{eqnarray*}
 In practice, we separately compute all these partial derivatives and just apply them separately to each weight and bias. But more abstractly, the whole collection of them ``points'' in some direction in the parameter space, and we are following that directional vector to find a way to go down to where error is lower.
 
-\section{Vector approach to LMS}
+\section{Vector Approach to LMS}
 
 In the scalar approach to LMS we multiply a single output error (target - output) by source activation. Now we have a vector of errors times a vector of source activations. But how to deal with indexing?  The algorithm is ultimately a variant on Hebb, so we already have a template for thinking about it (see the discussion of the vectorized Hebb rule)
 % Reference the new material on Hebb here
@@ -177,7 +177,7 @@ To incorporate bias updates and activation functions in the vectorized case, we 
 
 Where $\mathbf{n}_{\text{out}}$ is the vector of weighted inputs to the output layer, and $f'$ is applied elementwise. The intuition is the same as before: we scale our error corrections by how much the activation function is changing things. When the activation function is steep (large derivative), we make bigger weight changes. When it's flat (small derivative), we make smaller changes. For weights, we scale the error vector by the activation function derivatives, then take the outer product with input activations to get our weight update matrix. For biases, we simply scale the error vector by the derivatives—no need to consider input activations since biases don't depend on them.
 
-\subsection{Batch version of the rule}
+\subsection{Batch Version of the Rule}
 
 In many neural network implementations, computations are applied to batches of data. In this setup, inputs are not passed through a network as single column vectors, but whole batches are. This is more computationally efficient and leverages hardware optimization for matrix computations.  It thus helps to be able to think in terms of batches being processed.
 

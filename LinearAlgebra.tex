@@ -851,7 +851,7 @@ In the discussion of matrices (section \ref{weightMatrices}) we noted that there
 
 In each case below, this is a \emph{suggested} way of thinking about the matrix, a convention. A particular set of flow lines is shown, which corresponds to a forward pass through a layer, where inputs are transformed into outputs. This in turn corresponds to one kind of matrix multiplication, depending on the case. In section \ref{matrixProduct1}, we distinguish right and left multiplication. A forward pass through a source-target representation is a right multiplication (the matrix is on the right), while a forward pass through a target-source representation is a left multiplication (the matrix is on the left). But in each case information can also flow \emph{backwards}, which is what happens in backprop (chapter \extref{ch_lms_backprop}; think of errors flowing in the direction opposite to the flowlines), using the other kind of multiplication.\footnote{A backwards pass through a source-target representation is a left multiplication (the matrix is on the left), while a forward pass through a target-source representation is a right multiplication (the matrix is on the right).}
 
-\subsection{Source-target graphical conventions}
+\subsection{Source-Target Graphical Conventions}
 
    Figure \ref{sourceTargetConvention} shows how to think of a matrix in 
 source-target format as channeling information. A standard neural network representation is shown in
@@ -877,7 +877,7 @@ as shown in the right panel of figure \ref{sourceTargetConvention}.
 % % There used to be a simbrain pic here, but it was too much info. Once docs.simbrain.net is updated with more on this add pointers.
 % Figure \ref{sourceTargetSimbrain} shows how this looks in Simbrain. You are encouraged to imagine  the input activations being rotated and ``entering'' on the left (in Simbrain, you can also rotate the presentation of the input vector), and then ``exiting'' above. Depending on how you set things up in Simbrain you will have to imagine the input and output rotating and moving in various ways (in this example, the input must rotate and the output must move over to the right), but in general just mentally think of activations entering on the left and exiting above.
 
-\subsection{Target-source graphical conventions}
+\subsection{Target-Source Graphical Conventions}
 
 Figure \ref{targetSourceConvention} shows how to think of a matrix in target-source format as channeling information. We can think of the number of rows $m$ as corresponding to the number of outputs, and the number of columns $n$ as corresponding to the number of inputs. This is the exact same situation as above, but the different order of the indices creates a different shape for the matrix, and so we  think about things in this alternative way. 
 

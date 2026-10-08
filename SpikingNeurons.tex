@@ -30,7 +30,7 @@ What do we want out of a neuron model? The answer to this depends upon the quest
 \label{TSComp}
 \end{figure}
 
-\section{Level of abstraction}
+\section{Level of Abstraction}
 
 Neurons are intrinsically complex entities when high levels of detail are taken into account, and indeed many computational neuroscientists have made neuron models that capture most or all of the relevant features of the cell. This involves modeling membrane potentials and ion channel dynamics for many different parts of a neuron. Models that do this are known as \emph{multi-compartment models}. This is further complicated by the large variety of neurons and their morphological and electrochemical differences. Depending on the questions one is interested in modeling with this level of detail may be required.
 
@@ -56,7 +56,7 @@ The action potential is an all or nothing phenomena that almost always has the s
 
 % Discuss this with Zoe before re-integrating. This is a key distinction, since those investigating spiking neural networks (SNNs) almost always choose some variety of integrate-and-fire. Why be interested in membrane potentials if the spike times are roughly the same when looking at a network-level phenomenon? Especially when models like the \textbf{adaptive exponential integrate-and-fire model} have been shown to very closely mimic the spike times of more sophisticated \textbf{Hodgkin-Huxley} models, which also model voltage traces and ion channel dynamics? One answer is this: many integrate-and-fire models do not explicitly simulate a neuron's \textbf{refractory period}, this is an explicit parameter of these models and typically they are not allowed to fire or receive inputs for some number of milliseconds (typically 1-3) after generating a spike.
 
-\subsection{The Heaviside step function}
+\subsection{The Heaviside Step Function}
 
 The spiking threshold model is the simplest of all spiking models. In fact it is so simple that it doesn't even meet many of the criteria listed in figure \ref{NeuComp}. It focuses on only one aspect of a spiking neuron, namely the all or nothing response that occurs in response to exceeding a threshold. There are no internal dynamics.
 
@@ -140,7 +140,7 @@ Here all variables are the same as in the previous section. Notice that we will 
 
 %\subsection{Short-term plasticity}
 
-\section{Long-term plasticity}
+\section{Long-Term Plasticity}
 
 \subsection{Spike-Timing-Dependent Plasticity (STDP)}
 
