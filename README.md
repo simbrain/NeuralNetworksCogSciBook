@@ -49,7 +49,29 @@ just build <container document>.tex
   command, set `PYTHON` first (for example, `PYTHON=py just build book_103.tex`
   on Windows).
 
+  If a build is interrupted (for example by Ctrl-C or two compiles running at
+  once), it can leave truncated auxiliary files that make every later build
+  fail with errors unrelated to your edits. Run `just clean <container document>`
+  to remove them (the PDF is kept) and then rebuild. A failed build prints this
+  suggestion.
+
   `just prep <container document>.tex` remains an alias for this command.
+
+  `just compile <container document>` runs only the LaTeX step (no author or
+  glossary update), with SyncTeX output for editor/PDF sync.
+
+  **TeXShop and other editors.** The tagged PDF needs more pdfTeX memory than
+  the default, so an editor's plain `pdflatex` command fails with "TeX capacity
+  exceeded" and can leave a truncated `.aux` behind. In TeXShop, install the
+  provided engine once:
+  ```
+  cp scripts/BookBuild.engine ~/Library/TeXShop/Engines/
+  ```
+  (a copy, not a symlink, which TeXShop ignores; re-copy if the script changes),
+  restart TeXShop, then choose **BookBuild** in the typeset menu (or add
+  `% !TEX TS-program = BookBuild` as the first line of a container document).
+  It runs `just compile` and shows a macOS notification if the build fails.
+  Other editors should likewise be configured to run `just compile`.
   Build the full book with `just build-master`; it retains the canonical
   `Glossary.tex` rather than using `CustomGlossary.tex`.
 

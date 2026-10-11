@@ -1,0 +1,19 @@
+#!/bin/bash
+# TeXShop engine for this book. TeXShop's default LaTeX command runs plain
+# pdflatex, which runs out of memory on the tagged PDF and can leave a truncated
+# .aux file behind. This engine runs `just compile` instead (raised memory,
+# latexmk, SyncTeX) and posts a notification if the build fails.
+#
+# Install once:
+#   cp scripts/BookBuild.engine ~/Library/TeXShop/Engines/
+# (copy, not symlink: TeXShop ignores symlinked engines), then restart TeXShop.
+# Then choose "BookBuild" from the typeset menu in TeXShop, or put
+#   % !TEX TS-program = BookBuild
+# as the first line of a container document.
+
+export PATH="/Library/TeX/texbin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+if ! just compile "$1"; then
+  osascript -e "display notification \"See the TeXShop console. The PDF was not updated.\" with title \"Build failed: $1\" sound name \"Basso\""
+  exit 1
+fi
