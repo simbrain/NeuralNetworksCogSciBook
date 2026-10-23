@@ -84,6 +84,8 @@ Finally, these networks tend to oscillate. If you try multiple initial condition
 
 \section{Hopfield Networks}
 
+% Palimpsest example where new stuff is written on top of old stuff
+
 % Reference below. 
 A special type of recurrent, auto-associative, Hebbian network is a \glossary{Hopfield network}.\footnote{Hopfield networks are important historically. When John Hopfield, a physicist, introduced them in the early 1980s, it brought the existing engineering literature on neural networks and the formalisms in physics into greater contact with one another. Hopfield also made dynamical systems ideas such as energy functions and attractors central to neural network research \cite{hopfield1982neural}. For this work he was awarded the Nobel Prize in Physics in 2024 (shared with Geoffrey Hinton). There were precursors to Hopfield's work, in particular Amari \cite{amari1972learning}.}  Hopfield networks have no self-connections and their weights are always symmetrical ($w_{j,k} = w_{k,j}$ for every weight in the network). The symmetric weight matrices and the special way they are updated get rid of unwanted oscillations.
 % Footnote on what asynchronous or "random" update is.
