@@ -84,7 +84,7 @@ In a \glossary{classification task}, the network sorts inputs into categories. T
 \label{F:letter_classify}
 \end{figure}
 
-In a \glossary{regression task}, the network is trained on real-valued target values. This is simply the more general case of estimating a vector-valued function, where there are no constraints on how we interpret the outputs. If we train a network to predict the speed of a car (quarter-mile time) based on its fuel efficiency, engine size, and how many cylinders it has, we have a regression problem. We are not classifying cars into types, but predicting a numerical quantity about cars: their speed in a drag race.
+In a \glossary{regression task}, the network is trained on real-valued target values. This is simply the more general case of estimating a vector-valued function, where there are no constraints on how we interpret the outputs. If we train a network to predict the speed of a car (quarter-mile time) based on its fuel efficiency, engine size, and how many cylinders it has, we have a regression problem. We are not classifying cars into types, but predicting a numerical quantity about cars: their speed in a drag race. By contrast, if we trained a network to predict a car's country of origin (US, Europe, or Japan) from those same features, using a one-hot target as in section \extref{wrangling}, we would have a classification task.
 
 % (See Duda-Stork 1-d examples)
 % Emphasize that regression is closer to the concept of function approximation . Classification is a different conceptual game, and a bit easier to start with. Could use this as the running thread.
