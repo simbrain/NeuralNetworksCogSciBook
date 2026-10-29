@@ -112,7 +112,8 @@ def write_custom_glossary(entries, referenced_items):
             selected.append(entry)
             seen.add(entry)
     selected.sort(key=lambda entry: sort_key(ITEM_PATTERN.match(entry).group(1)))
-    output = "\\chapter*{Glossary}\n\\begin{description}\n\n"
+    # \chapter* is not listed in the table of contents, so add the entry explicitly.
+    output = "\\chapter*{Glossary}\n\\phantomsection\n\\addcontentsline{toc}{chapter}{Glossary}\n\\begin{description}\n\n"
     output += "\n\n".join(selected)
     output += "\n\\end{description}\n"
     (REPOSITORY_ROOT / "CustomGlossary.tex").write_text(output)
