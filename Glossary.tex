@@ -87,7 +87,7 @@ towards a given attractor.
 
 \item[Clamped weight] A weight that does not change during updating. Any local learning rule associated with the weight is ignored, and its strength stays the same.
 
-\item[Classification task] A supervised learning task in which each input vector is associated with one or more discrete  categories. An example would be classifying images of faces as male or female. When classification associates each input with one category only, a one-hot encoding is often used on the output layer.
+\item[Classification task] A supervised learning task in which the targets are binary values representing categories. Examples include classifying images as cats vs. dogs or smells as fish, Gouda, or Swiss. Targets are often one-hot encodings. The network's actual outputs can often be interpreted as the probability of category membership. Contrasted with regression tasks.
 
 \item[Column vector] A vector whose components are written in a column \eg $\displaystyle \begin{pmatrix} 2 \\ 1 \\ 3 \end{pmatrix}$.
 
@@ -390,7 +390,7 @@ towards a given attractor.
 
 \item[Recurrent network] A network whose nodes are interconnected in such a way that activity can flow in repeating cycles.
 
-\item[Regression task] A supervised learning task in which the goal is to create a network that produces outputs as close as possible to a set of target values. Targets are real-valued rather than binary (as they often are in classification tasks). An example would be predicting the exact price of a house based on its features.
+\item[Regression task] A supervised learning task in which the targets are real numbers representing quantities rather than categories, and the goal is to produce outputs as close as possible to those targets. Examples include predicting the price of a house based on its features and predicting test scores based on hours of study. Contrasted with classification tasks.
 
 \item[Reinforcement learning] A form of learning in which a system learns to take actions that maximize reward in the long run.   Actions that produce rewards, or actions that lead to actions that produce reward, are reinforced in such a way that agents learn to obtain rewards and avoid costly situations.  In humans, associated with circuits in the brain stem and basal ganglia.  Sometimes treated as a third form of learning alongside supervised and unsupervised learning.
 
