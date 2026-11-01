@@ -99,7 +99,7 @@ In general, the number of channels in a filter (see section \extref{sect_tensors
 
 \begin{figure}
 \centering
-\accessibleimage[width=1.0\textwidth]{images/filterDepth.png}{Diagram showing that a convolutional filter spans all the channels of its input volume. Two example filters each cover a stack of input channels and produce one two-dimensional output feature map.}
+\accessibleimage[width=1.0\textwidth]{images/filterChannels.pdf}{Diagram showing that a convolutional filter spans all the channels of its input volume. Two example filters each cover a stack of input channels and produce one two-dimensional output feature map.}
 \caption[Soraya Boza.]{Filters usually have the same number of channels as the input volume they are passed over. Shown are sample receptive fields for two filters, at one stage of a convolutional pass. Notice that the output of the operation is just a matrix, with one entry for each ``position'' of the filter inside the input volume. In practice, a bank of filters would be used, resulting in an output volume with more than one channel.}
 \label{filterChannels}
 \end{figure}
