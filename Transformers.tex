@@ -54,8 +54,7 @@ However, in this chapter we focus on transformer-based models of text
 generation like GPT.\footnote{There are many other models in this class. As of
 June 2024, this includes the OpenAI GPT series: GPT, GPT-2,
 GPT-3, GPT-4, and GPT-4o. It also includes BERT (Google's first LLM, which is
-now outdated), Gemini (Bard), several Claude models (Anthropic;  semi
-open-source), Llama, Llama 2 and Llama 3 (Meta), and Alpaca (Stanford; open
+now outdated), Gemini (Bard), several Claude models (Anthropic), Llama, Llama 2 and Llama 3 (Meta), and Alpaca (Stanford; open
 source). Most of these models can only be accessed online but some can be
 downloaded and run locally, further fine-tuned, etc. A list of LLMs ranked by
 how well they chat is here: \weburl{https://chat.lmsys.org/?leaderboard}.} We will
@@ -140,13 +139,13 @@ all the other networks discussed in this book, they are not just useful as
 engineered tools, but are highly relevant both to neuroscience and cognitive
 science, and seem to develop meaningful internal representations. 
 
-We start with preliminary discussion of how transformer-based LLMs are trained
+We start with in-context processing, and then discuss how transformer-based LLMs are trained
 using widely available text data, and how a special recursive trick can be used
 to make a feed-forward network---which only predicts next words---produce
 meaningful conversational outputs. We then discuss how the transformer
-architecture itself works. Finally, we consider how LLMs are utilized and
-evaluated and the relevance of these models to cognitive science, neuroscience
-and other areas, and consider the practical features of how they are built.
+architecture itself works. Finally, we consider the relevance of these models to
+cognitive science, neuroscience, and other areas, and the practical features of how
+they are used and built.
 Throughout our emphasis remains on the relevance of transformers to cognitive
 science.
 
@@ -175,7 +174,7 @@ Broadly speaking, this is referred to as \glossary{in-context learning}, though
 perhaps ``in-context processing'' is a better description for it. Even if in AI
 terms this is learning, in another sense it more resembles the human ability to
 process fresh information held in working or short-term memory. The working
-memory capacity of frontier LLMs (the most advanced large-scale models on the market, such as Claude and ChatGPT) is much larger than that of humans, and they don't seem to be restricted to juggling the classic 5 $\pm$ 2
+memory capacity of frontier LLMs (the most advanced large-scale models on the market, such as Claude and ChatGPT) is much larger than that of humans, and they don't seem to be restricted to juggling the classic 7 $\pm$ 2
 items of human working memory.\footnote{Of note is the discovery that merely giving an LLM a larger
 context window does not automatically give it a correspondingly large working
 memory. Though some frontier models can hold entire books inside their context,
@@ -255,8 +254,8 @@ LLMs like GPT use a special method (known as \glossary{auto-regression}) to
 take \emph{any passage of text} and convert it into a labeled dataset that can
 be used to train a neural network. The trick is, roughly, to treat the vector
 embeddings of a sequence of text tokens (minus the last token in the sequence)
-as one big input, and then to treat the vector embedding of the final token in
-the sequence as a target. That is, we predict the next token in a sequence from everything before it.
+as one big input, and then to treat the final token in
+the sequence, encoded as a one-hot vector over all possible tokens, as the target. That is, we predict the next token in a sequence from everything before it.
 We are still using supervised learning, as in chapter \extref{ch_supervised},
 associating inputs with targets or labels, but the targets are not provided
 separately and are instead right there in the training data. It's extremely
@@ -305,7 +304,7 @@ sequence size, embedding dimension; see section \extref{sect_tensors}).}
 
 \begin{figure}[ht]
 \centering
-\accessibleimage[scale=.45]{./images/contextWindow.png}{Context-window example for predicting the next token. Eleven rows list the tokens ``Hello how are you ? Good thank you .'' beside four-dimensional embedding vectors.}
+\accessibleimage[width=\textwidth]{./images/contextWindow.pdf}{Three training examples built from the text ``hello how are you ? good thank you''. Each row gives a growing sequence of input tokens and their four-dimensional embeddings, with the next token as a one-hot target.}
 \caption[Jeff Yoshimi]{How text sequences can be converted into training
 datasets using the method of auto-regression. A set of tokens is converted into
 vectors using a token embedding (the vectors shown are arbitrary, just to
@@ -323,7 +322,7 @@ is quite a bit larger. For example, the embedding dimension is over 12,000 for G
 
 \begin{figure}[ht]
 \centering
-\accessibleimage[scale=.45]{./images/contextWindowAsStack.png}{Two transformer steps for next-word prediction. The context ``Hello how are you?'' produces ``Good'', then the extended context produces ``thank''; each passes through a transformer to a next-token output.}
+\accessibleimage[scale=.45]{./images/contextWindowAsStack.png}{A context window of eleven rows listing the tokens ``hello how are you ? good thank you .'', with blank rows, beside a matrix of four-dimensional embedding vectors. Both occurrences of ``you'' have the same vector.}
 \caption[Jeff Yoshimi]{The context is associated with a matrix that can
 be thought of as a stack of vectors, one for each token. Notice that ``you''
 occurs twice and is associated with the same vector.
@@ -448,7 +447,7 @@ queue). This is intuitive in figures \ref{nextWordPrediction} and
 \ref{gptRecursedInputs}. In modern LLMs earlier context can be retrieved using a variety of context compression
 techniques.
 
-Context windows can be remarkably large. GPT-3 has a context window of about 2,000 tokens or about 6 pages of text, and early versions of GPT-4 had context windows of 32,000 tokens or about 72 pages of text.
+Context windows can be remarkably large. GPT-3 has a context window of about 2,000 tokens or about 4 pages of text, and early versions of GPT-4 had context windows of 32,000 tokens or about 64 pages of text. By the mid-2020s, some models had context windows of a million tokens or more.
 
 \begin{figure}[ht]
 \centering
@@ -494,7 +493,7 @@ tokens.
 
 Once we have a probability distribution over tokens, we select one of the most
 probable next tokens and that becomes the output. This is usually done by randomly
-sampling from the top $k$ most-probable next tokens.\footnote{There are other methods besides top-$k$. A greedy method picks the most probable token, but can lead to overly predictable outputs. Top-P samples only from tokens whose cumulative probability exceeds a given value, often somewhere in the range of 0.8 to 0.95.}
+sampling from the top $k$ most-probable next tokens.\footnote{There are other methods besides top-$k$. A greedy method picks the most probable token, but can lead to overly predictable outputs. Top-$p$ is like top-$k$, except that instead of a fixed number of tokens, it samples from however many of the most probable tokens it takes for their probabilities to add up to a given value $p$ (that is, for their cumulative probability to reach $p$), often somewhere in the range of 0.8 to 0.95.}
         
 The softmax temperature parameter can be used here (see section
 \extref{wta_softmax_section}): higher temperatures will add more probability to less likely tokens, making the output more
@@ -512,7 +511,7 @@ subvarieties as $n_\text{params}$. The released version of GPT-3 had 175
 billion weights and biases. By comparison, our XOR 2-2-1 network had 3 biases
 and 6 weights, or 9 parameters. A standard convolutional neural network might
 have millions of parameters. So this is just massively larger. Not
-surprisingly, these networks have gotten even larger. GPT-4 has about 1.76
+surprisingly, these networks have gotten even larger. GPT-4 reportedly has about 1.76
 trillion parameters.\footnote{It takes large server banks that consume huge
 amounts of energy to run these models, especially when training them. There is an active thread of research
 attempting to achieve similar performance with smaller models, some of which
@@ -538,14 +537,7 @@ GPT-3.
 \end{figure}
 
 The size of the context window is another hyperparameter not shown in the
-figure. According to IBM research, ``when ChatGPT made its debut nearly two
-years ago, its window maxed out at 4,000 tokens. If your conversation went over
-the 3,000-word chat-interface limit, the chatbot was likely to hallucinate and
-veer off-topic. Today, the standard is 32,000 tokens, with the industry
-shifting to 128,000 tokens, which is about the length of a 250-page book. IBM
-just open-sourced on Hugging Face two Granite models with a 128,000-token
-window, and more are on their
-way.''\footnote{\weburl{https://research.ibm.com/blog/larger-context-window}.}
+figure (see section \ref{recursiveTrick}).
 
 
 \section{The Transformer Architecture}\label{transformers}
@@ -576,13 +568,13 @@ includes an original prompt, its own response to that prompt, etc.; it includes
 the \emph{entire exchange} you've had up to the current point, so long
 as it fits in the context window. Each block combines one or more \glossary[attention head]{attention heads} with a standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).\footnote{MLP stands for multilayer perceptron, that is, a vanilla feed-forward network, and is a nod to the relevant history (section \extref{ageOfPerceptron}).}
 Again, we maintain the ``row processing'' perspective of section
-\extref{matrixMultiplication} throughout the discussion. That is, we treat the inputs to the transformer as a stack of vectors, each corresponding to one token in the context window. These stacks are processed one vector at a time through the attention heads, and then the results of all this attentional processing are passed through the block's MLP.
+\extref{matrixMultiplication} throughout the discussion. That is, we treat the inputs to the transformer as a stack of vectors, each corresponding to one token in the context window. In the attention heads these vectors are compared with each other, and then the results of all this attentional processing are passed through the block's MLP, one vector at a time.
 
 % More on normalization, "scaled dot product"
 % Perhaps find a way to parse out the more difficult aspects of this
 The attention heads are where the contextual awareness occurs. Each token
 representation in a stack of inputs is compared to every previous one in the sequence. In our
-simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using matrices $\textbf{K}$ and $\textbf{Q}$, which stand for key and query. The flow of processing is illustrated in figure \ref{transformerBlockSimple}. The stacks of token representations entering the block are processed through the key and query matrices using matrix multiplication. The resulting stacks of key and query vectors are then compared to each other using a vector-comparison matrix.\footnote{A discussion of how vector comparison matrices are generated is in section \extref{vector_comparisons}; see in particular figure \extref{corrPlot}.} We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.} This is a matrix of \glossary{attention scores}. Note that this matrix is computed on the fly, at inference time, and is thus represented slightly differently (with a lighter outline) in the figures in this section. It looks like a changing triangular representation in Simbrain, as information is processed through the network. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space?\footnote{We can think about the comparison of keys and queries as a kind of table lookup, where the query asks a kind of question, specifying what a given token is ``looking for'', and the key is a potential answer, ``advertising the kind of information it is looking for'' \cite{beckmann2025mechanistic}. Also see \weburl{https://e2eml.school/transformers.html}. The queries scan across past-token keys (due to the triangular mask that is used) and select information useful for the high-level task of predicting next tokens.} 
+simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using matrices $\textbf{K}$ and $\textbf{Q}$, which stand for key and query. The flow of processing is illustrated in figure \ref{transformerBlockSimple}. The stacks of token representations entering the block are processed through the key and query matrices using matrix multiplication. The resulting stacks of key and query vectors are then compared to each other using a vector-comparison matrix.\footnote{A discussion of how vector comparison matrices are generated is in section \extref{vector_comparisons}; see in particular figure \extref{corrPlot}.} We then use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.} The remaining values are then normalized. This is a matrix of \glossary{attention scores}. Note that this matrix is computed on the fly, at inference time, and is thus represented slightly differently (with a lighter outline) in the figures in this section. It looks like a changing triangular representation in Simbrain, as information is processed through the network. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space?\footnote{We can think about the comparison of keys and queries as a kind of table lookup, where the query asks a kind of question, specifying what a given token is ``looking for'', and the key is a potential answer, advertising ``the kind of information available at those positions'' \cite{beckmann2025mechanistic}. Also see \weburl{https://e2eml.school/transformers.html}. The queries scan across past-token keys (due to the triangular mask that is used) and select information useful for the high-level task of predicting next tokens.} 
 
 \begin{figure}[ht]
 \centering
@@ -804,7 +796,7 @@ and performances `on the fly' based on generalizations from prior experiences.''
 
 % Conflicted about this. Given the "false friend" situation with Searle, it's not clear whether this helps or hurts. 
 One way to make the debate vivid is via what Bender and colleagues call the
-``Octopus test'' \cite{bender2020climbing} (see figure \ref{octopusTest}),
+``octopus test'' \cite{bender2020climbing} (see figure \ref{octopusTest}),
 which goes like this: two English-speaking castaways communicate via telegraph
 across islands. A highly intelligent octopus intercepts their messages, learns
 their statistical patterns, and, ``feeling lonely'', inserts itself into the conversation.  The imaginary octopus is able to sustain simple chatbot-like interactions, but fails in responding to strange situations involving words referring to objects the octopus has never perceived.  Here is the test: could an LLM succeed in cases where the octopus fails?  Bender and colleagues argue that LLMs would fail such a test. They produce seemingly meaningful outputs based solely on statistical patterns, but don't truly understand the language or the concepts they appear to discuss, because they lack any grounding in the world.  Others, on the ``genuine intelligence'' side of the debate, would say that LLMs would pass the test, and could use their emergent abilities to appropriately answer questions that stump the octopus.
@@ -884,8 +876,8 @@ continuous scale from 1.0 (VERY NEGATIVE) to 9.0 (VERY POSITIVE), with the
 midpoint representing NEUTRAL.
 \end{quote}
 Figure \ref{humanVsLLM} shows these
-correlations on a list of 390 words, with some correlations approaching .9,
-which is very strong.  Here are some examples of mean ratings on the variable ``valence'', which shows how close humans and different LLMs are:
+correlations on a list of 390 words, with some correlations reaching .9 or higher,
+which is very strong.  Here are some examples of mean ratings on the variable ``valence'', which show how close humans and different LLMs can be, and how they sometimes diverge:
 
 \begin{center}
 \begin{minipage}{0.45\linewidth}
@@ -983,7 +975,7 @@ nets before them) and argued that they are not as intelligent as they appear,
 in light of their tendency to fail at reasoning tasks, especially those that
 require generalization and transfer of knowledge (compare the discussion of
 stochastic parrots and the octopus test above).  An example that went viral
-around 2023 was asking LLMs to  ``count the number of Rs in `strawberry' ''.  At
+around 2024 was asking LLMs to  ``count the number of Rs in `strawberry' ''.  At
 the time, they often failed at such purely symbolic tasks.  Mitchell,
 discussing these failures, concluded that ``Giving machines common sense will
 require imbuing them with the very basic `core,' perhaps innate, knowledge that
@@ -997,13 +989,13 @@ levels in standardized tests like the LSAT, the SAT, and the Bar exam taken by l
 do as well as humans in writing tests). See figure \ref{llmStandardExams}. Multiple studies
 also showed that LLMs could perform as well as or better than humans on
 analogical problems, including problems developed by Mitchell herself
-\cite{webb2023emergent}.  Mitchell has responded, noting  that transformers
+\cite{webb2023emergent} (figure \ref{llmAnalogy}).  Mitchell has responded, noting  that transformers
 perform well on simple analogies but that performance declines sharply on  more
-complex analogies \cite{lewis2025evaluating}. The topic remains live as of 2025.
+complex analogies \cite{lewis2025evaluating}. The topic remains live.
 In June 2025 a group at Apple published a paper whose title begins with ``The
 Illusion of Thinking'' \cite{shojaee2025illusion}, which claims that large
 reasoning models like LLMs ``face a complete accuracy collapse beyond
-certain complexities''. The charge was met days later in a response from Anthropic
+certain complexities''. The charge was met days later in a response credited to C. Opus (Anthropic's Claude Opus model) and A. Lawsen,
 called ``The illusion of the illusion of thinking'' \cite{opus2025illusion},
 which claimed that the Apple group's work ``primarily reflects experimental
 design limitations rather than fundamental reasoning failures'' and that when
@@ -1151,7 +1143,7 @@ manipulating information in a clever way---here based on a statistical
 aggregation of the internet---but they don't truly understand anything, and they
 are certainly not conscious \cite{hamid2023chatgpt}. In fact, some LLMs have
 themselves claimed that the Chinese Room argument (a famous form of the unusual
-realization argument) applies to them \cite{sep-chinese-room}!\footnote{It may seem that the Octopus Test, discussed above, just is a type of Chinese Room argument. However, the logic of the two thought experiments is different. Bender et al. claim that the octopus would ultimately \emph{fail} the Turing Test because it would not be able to extrapolate from its statistical observations. In this way one could think of the octopus setup as an imperfect Chinese Room, one that would fail for certain interactions. So, from Bender's standpoint, a Chinese Room (or Dneprov's stadium, etc.) could not be built to begin with. }
+realization argument) applies to them \cite{sep-chinese-room}!\footnote{It may seem that the octopus test, discussed above, just is a type of Chinese Room argument. However, the logic of the two thought experiments is different. Bender et al. claim that the octopus would ultimately \emph{fail} the Turing Test because it would not be able to extrapolate from its statistical observations. In this way one could think of the octopus setup as an imperfect Chinese Room, one that would fail for certain interactions. So, from Bender's standpoint, a Chinese Room (or Dneprov's stadium, etc.) could not be built to begin with. }
 
 However, others argue that LLMs do understand the meaning of the words they
 produce. Relying on findings presented above, Sogaard
@@ -1169,8 +1161,8 @@ Dreyfus \cite{dreyfus1992computers} is that no computer or neural network could
 ever have truly human capacities, because they were not raised in the real
 world and can only parrot back what they were programmed or trained to say, at
 best with moderate abilities to generalize beyond that (Bender and Koller's
-argument develops this idea with respect to LLMs and argue these considerations
-are why the octopus would pass the test). However, humans with their embodied
+argument develops this idea with respect to LLMs and argues these considerations
+are why the octopus would fail the test). However, humans with their embodied
 human existence develop an intuitive sense of the full context of the lived
 world. To show this, one of the authors (Yoshimi), who has regularly taught
 Dreyfus'  argument for many years, would have the class ask strange or unusual
@@ -1182,9 +1174,8 @@ iterations of LLMs like ChatGPT do just fine with such questions, suggesting
 that the old problem of background knowledge may have been resolved. 
 
 The recent success of LLMs in producing coherent and intelligent-seeming
-linguistic behavior has also revived the old debate about whether neural
-networks or symbolic architectures are best-suited to modeling cognition (see
-section \extref{cog_rev} as well as \cite{king2024large}). In 2023 Noam Chomsky
+linguistic behavior has also brought this old debate back to the forefront
+\cite{king2024large}. In 2023 Noam Chomsky
 (representing the symbolic approach) wrote a New York Times guest essay titled
 ``The False Promise of ChatGPT'' in which he claimed that statistical
 approaches to language like neural networks ``will degrade our science and
@@ -1318,8 +1309,7 @@ model, but there are various technical tricks that make this more
 efficient.\footnote{For example, LoRA (Low-Rank Adaptation), which adds a small
 number of trainable weights so that only a subset of parameters changes. This
 can be viewed as biasing the model toward a particular task without fully
-rewriting its knowledge. Models like DeepSeek have used techniques like LoRA in
-combination with curated data cleanup to good effect.} A gripping example of
+rewriting its knowledge.} A gripping example of
 fine-tuning is the case of the late singer Lou Reed's wife creating a special
 LLM which was fine-tuned using ``a vast cache of Reed's writing, songs and
 interviews'', giving it a bit of his
@@ -1331,9 +1321,10 @@ An important class of fine-tuning methods comprises such methods as
 ``instruction tuning'' or ``alignment tuning'',  among which one of the most
 influential is \glossary{reinforcement learning with human feedback} (RLHF).
 Instruction tuning exposes the model to curated examples of how it should
-respond to various prompts, often in the form of high-quality exchanges, including 
-exchanges ranked highly by human raters (you may have provided such data when 
-clicking a thumbs-up on a ChatGPT response).  These processes give LLMs
+respond to various prompts, often in the form of high-quality exchanges. In RLHF,
+human raters compare or rate model responses (you may have provided such data when 
+clicking a thumbs-up on a ChatGPT response), and the model is then trained using
+reinforcement learning to produce the kinds of responses people prefer.  These processes give LLMs
 their familiar personalities---for example, their tendency to be polite and helpful, 
 or their knowledge of when to stop talking (the ``when-to-shut-up
 circuit''). 
@@ -1395,13 +1386,14 @@ ask a mathematics question, behind the scenes it might add this to your query:
 
 % Reference
 In fact, this kind of strategy is behind what has been called the ``reasoning
-revolution'' in LLMs, which began around 2023. Earlier LLMs had serious trouble
+revolution'' in LLMs, which began around 2022 \cite{wei2022chain}. Earlier LLMs had serious trouble
 with reasoning tasks, as emphasized in critiques like those of Melanie Mitchell
-(see section \ref{llmsBehavioral}). However, simply by a special form of prompt
-injection, the systems can do much better.  For example, \glossary{chain of
+(see section \ref{llmsBehavioral}). However, simply by a special form of
+prompting, the systems can do much better.  For example, \glossary{chain of
 thought} encourages the model to articulate intermediate reasoning steps, which
 often improves its final answer. This was evident in the example above of
-telling the system to ``show all steps''. In this way, as the model is working
+telling the system to ``show all steps''. Later ``reasoning models'' were further trained,
+using reinforcement learning, to produce long chains of thought on their own. In this way, as the model is working
 through a problem, it feeds itself information, into its ``working memory'',
 that allows it to answer things.
 
@@ -1409,8 +1401,8 @@ This is close to an old idea in embodied cognitive science that we don't solve
 problems on our own, but only do so in the context of environmental artifacts.
 To take a classic example from the PDP volumes \cite{mcclelland1989explorations}, when solving a long division
 problem it is essential to have a piece of paper available where intermediate
-results can be written down. Without pen and paper could you compute 21 divided
-by 4.2? The paper is used to store intermediate results. It's not a special
+results can be written down. Without pen and paper could you compute 343 times
+822? The paper is used to store intermediate results. It's not a special
 brain circuit, it's a way of using environmental artifacts to help in a
 computation. In a similar way the LLM is spitting out results that then get
 fed back to it, which help it reason its way through problems.
@@ -1442,13 +1434,13 @@ routinely query the internet (modern systems give you a sense that they are doin
 this, flashing an image of the websites they are querying).
 
 Agentic LLMs can also be equipped to write and run code, executing commands and refining code repeatedly until a desired output is obtained.
-LLM software engineers are now commonplace in computer
-programming, in IDEs like Cursor. A user can ask for a particular function,
+By the mid-2020s, LLM coding assistants had become commonplace in computer
+programming, in tools like Cursor. A user can ask for a particular function,
 described in natural language, and the AI will generate the function and debug
 its code as runtime errors appear.
 
 Note that a special model does not necessarily have to be fine-tuned for this
-to work. Indeed, agentic systems today are usually general-purpose frontier
+to work. Indeed, agentic systems are usually built on general-purpose frontier
 LLMs, just set up with an appropriate system prompt and placed inside a
 software wrapper that will take the model's agentic output and respond to it accordingly. It is
 the \emph{LLM} that is doing all the heavy lifting here; if the transformer
