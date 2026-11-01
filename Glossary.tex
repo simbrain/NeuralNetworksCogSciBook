@@ -179,7 +179,7 @@ towards a given attractor.
 
 \item[Few-shot] A learning paradigm where a model or person performs a task after being shown only a few examples, without updating weights (this is typically a form of in-context learning). An example is learning what a new piece of slang like ``that’s fire’’ or ``that’s mid'' means after hearing just a few examples.
 
-\item[Filter] (Synonym: kernel) The set of weights in a convolutional layer. This is more or less the same thing as a convolutional layer, but it refers specifically to the weights, whereas ``convolution'' also refers to the process of passing the filter over the input activations.
+\item[Filter] The set of weights in a convolutional layer. A filter has one two-dimensional slice of weights, called a kernel, for each input channel. This is more or less the same thing as a convolutional layer, but it refers specifically to the weights, whereas ``convolution'' also refers to the process of passing the filter over the input activations.
 
 \item[Filter Bank] A set of filters. One kind of volume-to-volume layer in a convolutional neural network.
 
@@ -462,7 +462,7 @@ towards a given attractor.
 
 \item[Strength] A value associated with a weight. Has different interpretations depending on the context. It can, for example, represent the efficacy of a synapse, or an association between items in memory.
 
-\item[Stride] In a filter bank or pooling layer, the number of pixels the filter or kernel or pooling window is moved when it is scanned across its input.
+\item[Stride] In a filter bank or pooling layer, the number of pixels the filter or pooling window is moved when it is scanned across its input.
 
 %\item[Sum of Squared Error]
 

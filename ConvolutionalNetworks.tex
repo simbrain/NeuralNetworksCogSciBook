@@ -1,7 +1,6 @@
 \chapter{Convolutional Neural Networks}\label{ch_cnn}
 \chapterauthor{Jeff Yoshimi, Pierre Beckmann}{.7,.3}
 
-% IMPORTANT! Cohere the terminology and pictures here with Simbrain, especially filter banks, which we represent using a grid of filters and channels. See CNN_MatchRubiksCubeExampleFromBook.png.  Compare that with filterBank.png here.  Each row of the convolutional layer is one rubik's cube. That's why one slice of the output tensor highlights a row.  On the input side, the first slice from each row will be passed over the first slice of the input tensor, which is why columns are highlighted. Rows are filters (cubes) and columns are channels (one slice of a cube). the channel language is not used as much here
 % Maybe screenshots of the RGB collapsing thing could also helpe here
 
 % See Gaspar Begus. Argues that CNNs are more interpretable than transformers and has linked his models to auditory system
@@ -50,7 +49,7 @@ The key idea with a convolutional network is to use a special type of weight lay
 \end{figure}
 
 % Expand on weight sharing and add glossary item. Discuss the fact that this is not neurally realistic and ways to understand that.
-The set of weights in a convolutional layer is called a \glossary{filter} or \textbf{kernel}. The weights in a filter are scanned over the source layer to produce outputs. This is a new idea. Rather than a fixed set of weights in a fully connected weight layer, we have a small set of weights that are reused or shared during the scanning operation (this is also known as ``weight sharing'').
+The set of weights in a convolutional layer is called a \glossary{filter}. The weights in a filter are scanned over the source layer to produce outputs. This is a new idea. Rather than a fixed set of weights in a fully connected weight layer, we have a small set of weights that are reused or shared during the scanning operation (this is also known as ``weight sharing'').
 
  The source layer of a convolutional layer is often a 2d array, prototypically an input image, and so we can think of source layer activations as pixels and the source layer as a pixel array or input volume (even when the input is not an image, this language is useful). Filters are like small pixel patterns that we slide across the whole pixel array, which ``light up'' most when they are on top of a similar pixel pattern. The filter can be thought of as if it were moved from left to right and top to bottom of the pixel array. At each stage of the scanning process, it is multiplied by the patch or ``receptive field'' of the pixel array it is on top of. The receptive field refers to the region of the input that the filter is currently positioned over (the term is borrowed from neuroscience, where a neuron's receptive field is the region of the visual field or other sensory input that activates it; see chapter \extref{ch_neuro}).\footnote{To get a better feel for how this works videos are helpful. A good place  to start is with the first animated gif here: \weburl{https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks}. This video is also great: \weburl{https://youtu.be/KuXjwB4LzSA}. Also note that in practice this operation is done in parallel: separate processors handle each multiplication.} The multiplication is a dot product (see chapter \extref{ch_linear_algebra}), where each weight in the filter is multiplied by the corresponding activation of the pixel array, and the results are added together. Recall that the dot product computes something like a similarity score: the more the filter and the pixels match, the greater the dot product will be. Each dot product is used to populate one activation in the target layer. Thus, the convolutional layer computes a kind of \emph{sliding dot product} with the source activations, which highlights where the filter matches the pixel array.
 
@@ -63,7 +62,7 @@ The idea is illustrated in figures \ref{cnn_filter} and \ref{cnn_workedExample}.
 
 The output of a convolutional layer is called a \glossary{feature map}. In these examples, the filter is an edge detector, which detects edges at a $-45^\circ$ angle, that is, edges shaped like a backslash `\textbackslash'. In the resulting feature map, notice that the activation is highest when the filter is directly on top of the backslash shape in the happy face, but also produces some activation wherever it is on top of any kind of active pixel. Thus, the feature map gives a sense of where this kind of edge occurs in the input image.
 
-Again, this is totally different from the weight layers we have been studying throughout the book: there are no fixed connections at all. Instead it is like there is a little floating scanner (the filter or kernel) that gets passed over source layer activations to produce output activations.\footnote{As with ordinary weight layers, a bias is usually added to each dot product, and the result is passed through an activation function, typically ReLU (chapter \extref{ch_act_functions}). The examples and exercises in this chapter leave these steps out to keep the arithmetic simple.}
+Again, this is totally different from the weight layers we have been studying throughout the book: there are no fixed connections at all. Instead it is like there is a little floating scanner (the filter) that gets passed over source layer activations to produce output activations.\footnote{As with ordinary weight layers, a bias is usually added to each dot product, and the result is passed through an activation function, typically ReLU (chapter \extref{ch_act_functions}). The examples and exercises in this chapter leave these steps out to keep the arithmetic simple.}
 
 There is a performance advantage to these convolutional layers, thanks to the weight sharing. All that must be trained is (in the example shown in figure \ref{cnn_filter}) $3 \times 3=9$ weights, rather than the $81 \times 49 = 3969$ weights that would be required in a fully connected dense layer from the input layer to the feature map. This is a huge performance gain and part of what  made it possible with deep learning to train such large networks.
 
@@ -86,7 +85,7 @@ So far we have considered an artificial example where the input, filter, and fea
 
 %But the ``combing'' idea in figure \ref{filterComb} is just a way to ease you into thinking about how convolutions work in practice. Instead of thinking about sets of filters,
 
-We can now think about filters as volumes that act on other volumes, as in figure \ref{filterToVolume}. We imagine moving the filter ``through'' the input volume, top-to-bottom and left-to-right, and at each stage of this operation we dot the filter with the underlying receptive field. At each stage of this operation, the 27 cuboids in the Rubik's-cube-like filter are dotted with 27 components of the input volume, and all 27 products are added together. That gives us one entry in the output, which in this simple example is a matrix.
+We can now think about filters as volumes that act on other volumes, as in figure \ref{filterToVolume}. We imagine moving the filter ``through'' the input volume, top-to-bottom and left-to-right, and at each stage of this operation we dot the filter with the underlying receptive field. At each stage of this operation, the 27 cuboids in the Rubik's-cube-like filter are dotted with 27 components of the input volume, and all 27 products are added together. That gives us one entry in the output, which in this simple example is a matrix. The Rubik's cube is the filter, and each slice through it, which is applied to one channel of the input, is called a \textbf{kernel}. So this filter has three kernels.\footnote{In classic image processing, where both terms come from, a filter is usually a single two-dimensional kernel, applied to each channel of an image separately. As a result ``kernel'' and ``filter'' are often used interchangeably.}
 
 \begin{figure}
 \centering
@@ -95,14 +94,14 @@ We can now think about filters as volumes that act on other volumes, as in figur
 \label{filterToVolume}
 \end{figure}
 
-In general, the depth of a filter (more specifically, the number of channels in a rank-3 filter: see section \extref{sect_tensors}) matches the depth of the input volume. That way the filter can capture information from across all the channels. (This is not always shown in figures and can be quite confusing). Thus they only ``stride'' or move along the height and width dimensions.\footnote{This is not a necessary feature (filters with fewer channels than the input are possible and sometimes even useful), but it is pretty standard.} Figure \ref{filterDepth} makes the point with a variety of tensors. In each case, the receptive field of a filter at one stage of a convolution is shown ``inside'' the input volume, and as can be seen in each case, it spans the whole depth of the input.
+In general, the number of channels in a filter (see section \extref{sect_tensors}) matches the number of channels in the input volume. That way the filter can capture information from across all the channels. (This is not always shown in figures and can be quite confusing). Thus they only ``stride'' or move along the height and width dimensions.\footnote{This is not a necessary feature (filters with fewer channels than the input are possible and sometimes even useful), but it is pretty standard.} Figure \ref{filterChannels} makes the point with a variety of tensors. In each case, the receptive field of a filter at one stage of a convolution is shown ``inside'' the input volume, and as can be seen in each case, it spans all the channels of the input.
 % Pierre you mentioned applications with "sculptures" here
 
 \begin{figure}
 \centering
-\accessibleimage[width=1.0\textwidth]{images/filterDepth.png}{Diagram showing that a convolutional filter spans the full depth of its input volume. Two example filters each cover a stack of input channels and produce one two-dimensional output feature map.}
-\caption[Soraya Boza.]{Filters usually have a depth that matches the input volume they are passed over. Shown are sample receptive fields for two filters, at one stage of a convolutional pass. Notice that the output of the operation is just a matrix, with one entry for each ``position'' of the filter inside the input volume. In practice, a bank of filters would be used, resulting in an output volume with depth greater than one.}
-\label{filterDepth}
+\accessibleimage[width=1.0\textwidth]{images/filterDepth.png}{Diagram showing that a convolutional filter spans all the channels of its input volume. Two example filters each cover a stack of input channels and produce one two-dimensional output feature map.}
+\caption[Soraya Boza.]{Filters usually have the same number of channels as the input volume they are passed over. Shown are sample receptive fields for two filters, at one stage of a convolutional pass. Notice that the output of the operation is just a matrix, with one entry for each ``position'' of the filter inside the input volume. In practice, a bank of filters would be used, resulting in an output volume with more than one channel.}
+\label{filterChannels}
 \end{figure}
 
 Following the convention from chapter \extref{ch_linear_algebra}, tensor shapes are given in the order (channels, height, width). Recall that for matrices, height corresponds to the number of rows and width to the number of columns.
@@ -115,18 +114,18 @@ Both convolutional and pooling layers use a sliding window operation. Ignoring p
 
 The division here is integer division (rounding down), since the window can only fit an integer number of positions.\footnote{If the window doesn't divide evenly into the input, the remaining pixels at the edges are not included in the output (unless padding is added). With explicit rounding, the expression is $\text{Output Dimension} = \left\lfloor \frac{\text{Input Dimension} - \text{Window Dimension}}{\text{Stride}} \right\rfloor + 1$, where $\lfloor x \rfloor$ denotes the floor function, which rounds $x$ down to the nearest integer. For example, $\lfloor 29.5 \rfloor = 29$.} For a convolutional layer, the window is the filter. For a pooling layer, the window is the pooling window.
 
-In the example shown in figure \ref{filterToVolume} the input width is $6$, the filter width is $3$, and the stride (the amount it is moved for each step of a convolution) is $1$ so the output width is $((6-3)/1 + 1) = 4$. Same for the height.  The depth of the output  corresponds to the number of filters we have (more on this soon), and so far we have just considered a single filter, a single ``Rubik's cube''. We have one filter, so the output depth is one. So the output is $1 \times 4 \times 4$, a four-by-four matrix.
+In the example shown in figure \ref{filterToVolume} the input width is $6$, the filter width is $3$, and the stride (the amount it is moved for each step of a convolution) is $1$ so the output width is $((6-3)/1 + 1) = 4$. Same for the height.  The number of channels in the output corresponds to the number of filters we have (more on this soon), and so far we have just considered a single filter, a single ``Rubik's cube''. We have one filter, so the output has one channel. So the output is $1 \times 4 \times 4$, a four-by-four matrix.
 
 \section{Filter Banks (Representational Width)}
 
 % More on representational width. Link to transformers and multi-head attention
 
-In general, a convolutional layer will involve multiple filters, a \glossary{filter bank}, each of which produces a separate feature map.\footnote{It is helpful to think of a bank of distinct filters, each of which learns a different way of processing the input, but in practice filter banks are stored as rank-4 tensors. For example, in PyTorch, a bank of 96 filters each with shape $3 \times 11 \times 11$ would be stored as a single tensor with shape $(96, 3, 11, 11)$, where the dimensions represent (number of filters, input channels, height, width).} Figure \ref{filterBank} illustrates the idea. Each filter produces its own output, and the results are concatenated into a new output volume. That is, we just repeat the process discussed in figure \ref{filterToVolume} but do it separately for each filter. In this example, we get a bunch of matrix outputs and concatenate them into one output volume. That is why we said at the end of the last section that the depth of an output volume just corresponds to the number of filters we use.
+In general, a convolutional layer will involve multiple filters, a \glossary{filter bank}, each of which produces a separate feature map.\footnote{It is helpful to think of a bank of distinct filters, each of which learns a different way of processing the input, but in practice filter banks are stored as rank-4 tensors. For example, in PyTorch, a bank of 96 filters each with shape $3 \times 11 \times 11$ would be stored as a single tensor with shape $(96, 3, 11, 11)$, where the dimensions represent (number of filters, input channels, height, width). Simbrain displays a filter bank in this form, as a grid of kernels: each row is one filter (one of the cubes in figure \ref{filterBank}) and each column is one input channel.} Figure \ref{filterBank} illustrates the idea. Each filter produces its own output, and the results are concatenated into a new output volume. That is, we just repeat the process discussed in figure \ref{filterToVolume} but do it separately for each filter. In this example, we get a bunch of matrix outputs and concatenate them into one output volume. That is why we said at the end of the last section that the number of channels in an output volume just corresponds to the number of filters we use.
 
 \begin{figure}
 \centering
-\accessibleimage[width=0.5\textwidth]{images/filterBank}{Filter-bank diagram: five 3 by 3 by 3 filters are applied to a 6 by 6 by 3 input volume with stride one, producing a 5 by 4 by 4 output volume whose depth equals the number of filters.}
-\caption[Soraya Boza and Jeff Yoshimi.]{Result of applying a filter bank of 5 $3 \times 3 \times 3$ filters to a $6 \times 6 \times 3$ input volume with a stride of 1 to produce an output volume that is $5 \times 4 \times 4$. The output depth of $5$ comes from the number of filters in the bank; the output height and width come from the formula in the main text.}
+\accessibleimage[width=0.5\textwidth]{images/filterBank}{Filter-bank diagram: five 3 by 3 by 3 filters are applied to a 6 by 6 by 3 input volume with stride one, producing a 5 by 4 by 4 output volume whose number of channels equals the number of filters.}
+\caption[Soraya Boza and Jeff Yoshimi.]{Result of applying a filter bank of 5 $3 \times 3 \times 3$ filters to a $6 \times 6 \times 3$ input volume with a stride of 1 to produce an output volume that is $5 \times 4 \times 4$. The $5$ output channels come from the $5$ filters in the bank; the output height and width come from the formula in the main text.}
 \label{filterBank}
 \end{figure}
 
@@ -184,20 +183,22 @@ There are several kinds of volume-to-volume layer in a convolutional network. On
 \begin{figure}[h]
 \centering
 \accessibleimage[scale=.3]{./images/maxPooling.png}{Max-pooling example. A 2 by 2 window moves across an input matrix with stride two; the largest value from each window is retained in a smaller output matrix.}
-\caption[Jeff Yoshimi ]{The max pooling operation applied to a matrix input, producing a smaller output that retains the same core information. In this example the pool shape is $2 \times 2$ and the stride is 2, so the pooling window is scanned across the input in increments of 2. The maximum value in each pooling window is used to populate the output. Pooling operates only on the spatial dimensions (height and width), with no depth dimension.}
+\caption[Jeff Yoshimi ]{The max pooling operation applied to a matrix input, producing a smaller output that retains the same core information. In this example the pool shape is $2 \times 2$ and the stride is 2, so the pooling window is scanned across the input in increments of 2. The maximum value in each pooling window is used to populate the output. Pooling operates only on the spatial dimensions (height and width), not across channels.}
 \label{maxPooling}
 \end{figure}
 
 A \glossary{pooling layer} is useful when tensors start getting too big. The idea is to go from bigger to smaller tensors, to keep things more computationally manageable. But we must do it in a way that preserves important information. Here again we pass a window over the input and slide it left-to-right and top-to-bottom, but instead of multiplying or dotting, we apply one of two common pooling operations:
 
+\begin{quote}
 \begin{description}
 \item[Max pooling] In each window, the maximum number is taken and written to an output matrix.
 \item[Average pooling] The average value across a window is written to an output matrix.
 \end{description}
+\end{quote}
 The result of this operation is an output that is smaller than the input. These are sometimes called subsampling or downsampling methods. They are valuable in that they reduce the overall size of the network while preserving important structures.
 
 % There is an issue that "feature map" is overloaded both for 3d volumes and for slices of 3d volumes
-The pooling window has a \glossary{pool shape} consisting of height and width (e.g., $2 \times 2$ or $3 \times 3$), but no depth. We pass the pooling window over every feature map (every channel) separately. Thus pooling operations only slide in the spatial dimensions (height and width), not in the channel dimension. This preserves the distinct representations learned by each filter in the previous layer. Each channel represents a different learned feature, and we want to downsample each feature map independently rather than combining information across channels. (A subsequent convolutional layer can learn to combine information across channels.)
+The pooling window has a \glossary{pool shape} consisting of height and width (e.g., $2 \times 2$ or $3 \times 3$), but no channel dimension. We pass the pooling window over every feature map (every channel) separately. Thus pooling operations only slide in the spatial dimensions (height and width), not in the channel dimension. This preserves the distinct representations learned by each filter in the previous layer. Each channel represents a different learned feature, and we want to downsample each feature map independently rather than combining information across channels. (A subsequent convolutional layer can learn to combine information across channels.)
 
 As with convolutional layers, we can specify a stride for pooling operations. The general sliding window formula applies here as well, with the pooling window playing the role of the filter. The complete rule is in the box below.
 
@@ -209,7 +210,7 @@ Rule for pooling layer output shape
 \rule{\linewidth}{0.4pt}
 
 \smallskip
-Channels: Same as input channels (pooling preserves depth)
+Channels: Same as input channels
 \medskip
 
 Height: $\left( \frac{\text{Input Height} - \text{Pool Window Height}}{\text{Pool Stride}} \right) + 1$
@@ -239,7 +240,7 @@ The overall idea is to start with layers that learn these complex features, then
 
 \begin{figure}[h]
 \centering
-\accessibleimage[scale=.45]{./images/deepNetExample.png}{Example convolutional network pipeline showing an input volume followed by convolutional layers, pooling layers, and fully connected layers. The spatial dimensions shrink while feature depth increases before final outputs.}
+\accessibleimage[scale=.45]{./images/deepNetExample.png}{Example convolutional network pipeline showing an input volume followed by convolutional layers, pooling layers, and fully connected layers. The spatial dimensions shrink while the number of channels increases before final outputs.}
 \caption[Soraya Boza and Jeff Yoshimi ]{Sample deep network showing convolutional layers and pooling layers. You should try to apply the shape equations to convince yourself that the sizes make sense. }
 \label{deepNetExample}
 \end{figure}
