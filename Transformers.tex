@@ -55,7 +55,7 @@ generation like GPT.\footnote{There are many other models in this class. As of
 June 2024, this includes the OpenAI GPT series: GPT, GPT-2,
 GPT-3, GPT-4, and GPT-4o. It also includes BERT (Google's first LLM, which is
 now outdated), Gemini (Bard), several Claude models (Anthropic;  semi
-open-source), Llama, LLama2 and LLama3 (Meta), and Alpaca (Stanford; open
+open-source), Llama, Llama 2 and Llama 3 (Meta), and Alpaca (Stanford; open
 source). Most of these models can only be accessed online but some can be
 downloaded and run locally, further fine-tuned, etc. A list of LLMs ranked by
 how well they chat is here: \weburl{https://chat.lmsys.org/?leaderboard}.} We will
@@ -65,7 +65,7 @@ about LLMs. An excellent visual introduction is at this website:
 \weburl{https://poloclub.github.io/transformer-explainer/}. 3Blue1Brown is always
 excellent on visual intuition and he has a
 \href{https://www.youtube.com/watch?v=wjZofJX0v4M&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi}{\underline{YouTube
-video}}. For a more technical walk through on building an LLM from scratch see
+video}}. For a more technical walkthrough on building an LLM from scratch see
 \href{https://www.youtube.com/watch?v=kCc8FmEb1nY}{\underline{Karpathy's
 tutorial}}.}
 % GPT as a generic term means “Generative Pre-trained Transformer” (though it
@@ -157,10 +157,10 @@ science is only now being studied, so frequent updates to this chapter are expec
 
 Recall from the introduction (section \extref{performanceLearning}) that we distinguish between learning (updating parameters during training) and inference or performance (using those parameters to process inputs). In-context processing happens entirely at inference time, without any parameter updates.
 
-Thus far in the book we have focused on learning via updates to weight
+Thus far in the book we have focused on learning via updates to weights
 and biases, that is, learning via incremental updates to the parameters of a neural
 network. LLMs are no exception; they learn via updates to their billions or trillions of
-parameters. However, LLMs have a remarkable feature: an ability to process a great deal of information at inference time, in their \glossary{context window} or more concisely, their ``context''.\footnote{Usage has not stabilized yet, and these two terms (``context'' and ``context window'') are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of the power of LLMs. Without any weight training, they can reason their way through a problem or innovate a new idea.
+parameters. However, LLMs have a remarkable feature: an ability to process a great deal of information at inference time, in their \glossary{context window}, or more concisely, their ``context''.\footnote{Usage has not stabilized yet, and these two terms (``context'' and ``context window'') are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of the power of LLMs. Without any weight training, they can reason their way through a problem or innovate a new idea.
 
 The point is often made in terms of ``zero-shot'' and ``few-shot''
 learning. The word ``learning'' here is \emph{not} a reference to training weights, but rather how an LLM can do new things by combining its prior training with information in the context window.  They are ``learning'' in the same way  a person going to a new job can learn how to do something using instructions in their working memory together with their background knowledge. \glossary{Zero-shot} learning refers to the ability of transformers
@@ -294,13 +294,13 @@ table of input-target \emph{vector} pairs, which we can use to train a
 feed-forward neural network (see figure
 \ref{nextWordPrediction}).\footnote{Note that a longer word like ``university''
 would normally be broken up into multiple tokens: \texttt{un} and
-\texttt{iversity} is a typical tokenization for it, e.g. We are neglecting this
+\texttt{iversity} is a typical tokenization for it. We are neglecting this
 complication here to keep things simple. More on tokenization in chapter
 \extref{ch_word_embeddings}.} This table is a matrix where each row corresponds
 to the token embedding for one token; it has the shape (sequence size,
 embedding dimension) and it is the actual input to the neural network. The network transforms \emph{stacks} of vectors by
 weight matrices. In this way we continue to make use of the ``row processing'' perspective introduced in section \extref{matrixMultiplication}.\footnote{What is actually fed to the transformer is a batch of these
-token embedding matrixes, that is a rank-3 tensor with shape (batch size,
+token embedding matrices, that is, a rank-3 tensor with shape (batch size,
 sequence size, embedding dimension; see section \extref{sect_tensors}).}
 
 \begin{figure}[ht]
@@ -331,7 +331,7 @@ occurs twice and is associated with the same vector.
 \label{sequenceDim}
 \end{figure}
 
-Note that each token in the stack of token embeddings sent to the network is processed separately through its many layers, acquiring different meanings and context as they do.\footnote{Recall the discussion of matrix multiplication and the ``row processing'' perspective (section \extref{matrixMultiplication}), where we can view a matrix multiplication as taking a stack of $N$ row vectors on the left, multiplying them by a matrix on the right, to produce another stack of $N$ row vectors, each of which has been \emph{separately processed} by the matrix on the right.  These ideas apply here.  In fact, with the exception of the self-attention matrix (which considers all the relationships between tokens), all other processing in an LLM operates separately on each token's representation. As a result, we can separately track the transformations a token's vector representation goes through as it makes its way through a network.  We will return to this idea below when we discuss the ``residual stream''.} For example, consider the word ``you'' in figure \ref{nextWordPrediction}. This is the same word repeated twice, so at the input level, it is associated with the same vector embedding, in this case $(1,2,5,6)$.\footnote{This is not quite right, since something called a positional encoding is often added even at the input level. But even when these positional encodings are removed the points made here apply.} But as the two tokens are processed through the network, their representation will change, reflecting their different positions and functions in the sentence.
+Note that each token in the stack of token embeddings sent to the network is processed separately through its many layers, acquiring different meanings and context as it does.\footnote{Recall the discussion of matrix multiplication and the ``row processing'' perspective (section \extref{matrixMultiplication}), where we can view a matrix multiplication as taking a stack of $N$ row vectors on the left, multiplying them by a matrix on the right, to produce another stack of $N$ row vectors, each of which has been \emph{separately processed} by the matrix on the right.  These ideas apply here.  In fact, with the exception of the self-attention matrix (which considers all the relationships between tokens), all other processing in an LLM operates separately on each token's representation. As a result, we can separately track the transformations a token's vector representation goes through as it makes its way through a network.  We will return to this idea below when we discuss the ``residual stream''.} For example, consider the word ``you'' in figure \ref{sequenceDim}. This is the same word repeated twice, so at the input level, it is associated with the same vector embedding, in this case $(1,2,5,6)$.\footnote{This is not quite right, since something called a positional encoding is often added even at the input level. But even when these positional encodings are removed the points made here apply.} But as the two tokens are processed through the network, their representation will change, reflecting their different positions and functions in the sentence.
 % Residual stream as a "cumulative computational workspace" (Pierre paper)
 
 % We can picture the residual stream as a big shared whiteboard that every
@@ -389,7 +389,7 @@ do is predict next words.
 The answer is by using what we can call the ``recursive trick''. This trick
 allows us to take a feed-forward network that only predicts next words and use
 it to produce streams of text output. We feed
-a network a set of inputs corresponding to string of text, and it produces an
+a network a set of inputs corresponding to a string of text, and it produces an
 output corresponding to the predicted next token. That output is then appended
 to the previous input, and this longer input is now fed back to the network.
 This process is repeated to produce a stream of text outputs. This technique
@@ -483,7 +483,7 @@ occur next. However, classification can here be seen as serving as a \emph{proxy
 Our actual task is to predict a set of probabilities over next tokens. The
 output of an LLM is a set of probabilities over next tokens. The
 interesting thing is that by \emph{trying} to perfectly classify next tokens
-(an impossible task), we end up with good probabilities, which is exactly we're
+(an impossible task), we end up with good probabilities, which is exactly what we're
 after. Here is a way to think of it. If the model was trained to 100\% accuracy
 on the classification task, then it would always generate the same sentences
 from the same prompts (because it would assign one unique token to the current
@@ -494,7 +494,7 @@ tokens.
 
 Once we have a probability distribution over tokens, we select one of the most
 probable next tokens and that becomes the output. This is usually done by randomly
-sampling from the top $k$ most-probable next tokens.\footnote{There are other methods besides top-K. A greedy method picks the most probable method, but can lead to overly predictable outputs. Top-P samples only from tokens whose cumulative probability exceeds a given value, often somewhere in the range of 0.8 to 0.95.}
+sampling from the top $k$ most-probable next tokens.\footnote{There are other methods besides top-$k$. A greedy method picks the most probable token, but can lead to overly predictable outputs. Top-P samples only from tokens whose cumulative probability exceeds a given value, often somewhere in the range of 0.8 to 0.95.}
         
 The softmax temperature parameter can be used here (see section
 \extref{wta_softmax_section}): higher temperatures will add more probability to less likely tokens, making the output more
@@ -502,14 +502,14 @@ random or ``creative''.  Lower temperatures produce more sharply peaked probabil
 
 \subsection{Parameters and Hyperparameters}
 
-To get a more concrete sense of the scale and structure of an LLM, we can consider their \glossary{hyperparameters}
-Recall that parameters are primarily weights and biases (i.e values that are updated during training) while
+To get a more concrete sense of the scale and structure of an LLM, we can consider their \glossary{hyperparameters}.
+Recall that parameters are primarily weights and biases (i.e., values that are updated during training) while
 hyperparameters are values that determine the structure of a network but that
 are not updated during training.
 
 Figure \ref{gptParams} shows the  number of parameters for a range of GPT-3
 subvarieties as $n_\text{params}$. The released version of GPT-3 had 175
-billion weights and biases. By comparison, our xor 2-2-1 network had 3 biases
+billion weights and biases. By comparison, our XOR 2-2-1 network had 3 biases
 and 6 weights, or 9 parameters. A standard convolutional neural network might
 have millions of parameters. So this is just massively larger. Not
 surprisingly, these networks have gotten even larger. GPT-4 has about 1.76
@@ -574,7 +574,7 @@ to the network as input. With training, these blocks learn to find long-range
 dependencies between different parts of a context. Recall that the context
 includes an original prompt, its own response to that prompt, etc.; it includes
 the \emph{entire exchange} you've had up to the current point, so long
-as it fits in the context window. Each block combines one or more \glossary[attention head]{attention heads} with a standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).\footnote{MLP stands for multilayer perceptron, that is, a vanilla feed-forward network, and is a nod to the relevant history (section \extref{ageOfPerceptron})}
+as it fits in the context window. Each block combines one or more \glossary[attention head]{attention heads} with a standard feed-forward network or MLP (see figure \ref{transformerBlockSimple}).\footnote{MLP stands for multilayer perceptron, that is, a vanilla feed-forward network, and is a nod to the relevant history (section \extref{ageOfPerceptron}).}
 Again, we maintain the ``row processing'' perspective of section
 \extref{matrixMultiplication} throughout the discussion. That is, we treat the inputs to the transformer as a stack of vectors, each corresponding to one token in the context window. These stacks are processed one vector at a time through the attention heads, and then the results of all this attentional processing are passed through the block's MLP.
 
@@ -582,18 +582,18 @@ Again, we maintain the ``row processing'' perspective of section
 % Perhaps find a way to parse out the more difficult aspects of this
 The attention heads are where the contextual awareness occurs. Each token
 representation in a stack of inputs is compared to every previous one in the sequence. In our
-simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using matrices $\textbf{K}$ and $\textbf{Q}$, which stand for key and query. The flow of processing is illustrated in figure \ref{transformerBlockSimple}. The stacks of token representations entering the block are processed through the key and query matrices using matrix multiplication. The resulting stacks of key and query vectors are then compared to each other using a vector-comparison matrix.\footnote{A discussion of how vector comparison matrices are generated is in section \extref{vector_comparisons}; see in particular figure \extref{corrPlot}} We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.} This is a matrix of \glossary{attention scores}. Note that this matrix is computed on the fly, at inference time, and is thus represented slightly differently (with a lighter outline) in the figures in this section. It looks like a changing triangular representation in Simbrain, as information is processed through the network. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space?\footnote{We can think about the comparison of keys and queries as a kind of table lookup, where the query asks a kind of question, specifying what a given token is ``looking for'', and the key is a potential answer, ``advertising the kind of information it is looking for'' \cite{beckmann2025mechanistic}. Also see \weburl{https://e2eml.school/transformers.html}. The queries scan across past-token keys (due to the triangular mask that is used) and select information useful for the high-level task of predicting next tokens.} 
+simple example, of ``hello how are you?'', ``are'' is compared to ``hello'', ``how'', and itself.\footnote{It is not compared to future tokens ``you'' and ``?'', due to a causal mask, as discussed below.} These comparisons are done using matrices $\textbf{K}$ and $\textbf{Q}$, which stand for key and query. The flow of processing is illustrated in figure \ref{transformerBlockSimple}. The stacks of token representations entering the block are processed through the key and query matrices using matrix multiplication. The resulting stacks of key and query vectors are then compared to each other using a vector-comparison matrix.\footnote{A discussion of how vector comparison matrices are generated is in section \extref{vector_comparisons}; see in particular figure \extref{corrPlot}.} We then normalize these values and use a ``triangular'' or ``causal mask'' to remove entries that compare current tokens to future tokens.\footnote{That would amount to a kind of cheating given that we are trying to predict future tokens and don't want to use future information to do that.} This is a matrix of \glossary{attention scores}. Note that this matrix is computed on the fly, at inference time, and is thus represented slightly differently (with a lighter outline) in the figures in this section. It looks like a changing triangular representation in Simbrain, as information is processed through the network. These scores reflect the  degree to which vector representations of tokens should be taken to be similar to each other for the purposes of a given head in a given layer of such a network. In geometric terms, to what extent should those tokens  be represented facing in the same direction in the embedding space?\footnote{We can think about the comparison of keys and queries as a kind of table lookup, where the query asks a kind of question, specifying what a given token is ``looking for'', and the key is a potential answer, ``advertising the kind of information it is looking for'' \cite{beckmann2025mechanistic}. Also see \weburl{https://e2eml.school/transformers.html}. The queries scan across past-token keys (due to the triangular mask that is used) and select information useful for the high-level task of predicting next tokens.} 
 
 \begin{figure}[ht]
 \centering
 \accessibleimage[scale=.25]{./images/transformerBlockResidualStream.png}{Transformer-block schematic. A residual stream rises through an attention head and an MLP; each component reads from the stream and adds its output back into it. The attention head contains key, query, and value inputs.}
-\caption[Jeff Yoshimi and Pierre Beckman, with consultation from Tim Meyer.]{(Left) One transformer
+\caption[Jeff Yoshimi and Pierre Beckmann, with consultation from Tim Meyer.]{(Left) One transformer
 block, with a single attention head. The matrix (or tensor) of activations input to
 the block is processed by three matrices: $\textbf{K}$, $\textbf{Q}$, and
 $\textbf{V}$.  $\textbf{K}$ and $\textbf{Q}$ are used to generate a
 matrix of self-attention scores. Since the scores are generated on the fly at inference time, they are shown with a lighter shade of gray. These scores are used to filter the value vectors that result when the input is processed through $\textbf{V}$. The MLP
 typically involves a hidden node layer with a nonlinear activation function, that is larger than the input (hence the up
-projection and down projection). A residual connection (or skip connection) connects the input to the attention block with its output, and another one connects the input to the MLP with its output. (Right) It can be useful to think of the residual connections as forming a single residual stream (the straight vertical line), which the attention heads and MLP read to and write from.}
+projection and down projection). A residual connection (or skip connection) connects the input to the attention block with its output, and another one connects the input to the MLP with its output. (Right) It can be useful to think of the residual connections as forming a single residual stream (the straight vertical line), which the attention heads and MLP read from and write to.}
 \label{transformerBlockSimple}
 \end{figure}
 
@@ -615,7 +615,7 @@ dimension is the embedding dimension (for a graphical introduction to these idea
 here is that rather than transforming information completely from one layer to
 the next,  the layers just produce ``deltas'' on a single stream of
 information, which can thus be thought of as a residual stream, an informational bus that is updated via deltas.} This is the
-perspective shown in the right panel of \ref{transformerBlockSimple}, and it's
+perspective shown in the right panel of figure \ref{transformerBlockSimple}, and it's
 a crucial perspective, because it means we can think of all the attention heads and MLPs in the network as operating on a single space. Think of a single flow of items flowing along a long central belt on an assembly line, being picked up and processed in different ways. The attention heads ``take the products off the belt'' and the MLPs modify them. As a stack of token representations moves upwards through the
 residual stream, it is progressively enriched by the focusing and curating operations of the attention heads and by the addition of learned information via the MLPs.\footnote{Since we can think of these as reads and writes, this
 also means that we can think in a more algorithmic or symbolic way about what
@@ -627,12 +627,12 @@ this topic in the discussion of philosophy at the end of this chapter).}
 \subsection{Representational Depth and Width Revisited} 
 
 We can get a useful lens on what LLMs learn by returning to the concepts of
-representational width and representational depth introduced in chapter \extref{ch_intro}.  Roughly speaking, representational width corresponds to the representational capacity of a neural network at one stage of processing, and representational depth corresponds to the presences of many processing layers.
+representational width and representational depth introduced in chapter \extref{ch_intro}.  Roughly speaking, representational width corresponds to the representational capacity of a neural network at one stage of processing, and representational depth corresponds to the presence of many processing layers.
  
 Representational width here corresponds to the use of a
 ``multi-head'' attention mechanism. This allows the network to pay attention to
 different features of the token representations coming to it through the
-residual stream (see figure \ref{multipleHeads}). The residual stream is projected into several lower-dimensional heads, each processing the input in parallel, and then projected back up to the residual stream and combined. For example, a 9-dimensional embedding might be split into three 3-dimensional heads.\footnote{Most implementations use an even split: the dimensionality of each head is often the embedding dimension divided by the number of heads}
+residual stream (see figure \ref{multipleHeads}). The residual stream is projected into several lower-dimensional heads, each processing the input in parallel, and then projected back up to the residual stream and combined. For example, a 9-dimensional embedding might be split into three 3-dimensional heads.\footnote{Most implementations use an even split: the dimensionality of each head is often the embedding dimension divided by the number of heads.}
 Multi-headed attention, in letting the
 network use \emph{multiple} ways to scan over the context for relevance, is a
 bit like convolutional networks (section \extref{convolutionalLayer})
@@ -706,7 +706,7 @@ architectural design lies in giving a network both lots of structural latitude
 to learn the links it needs to \emph{while also} having an architecture that can
 efficiently train at scale.
 
-We can summarize these ideas with extended quotes from one of the author's papers \cite{beckmann2025mechanistic}. Think of the attention heads as being specialized to find and route information that is relevant at a given stage of processing:
+We can summarize these ideas with extended quotes from one of the authors' papers \cite{beckmann2025mechanistic}. Think of the attention heads as being specialized to find and route information that is relevant at a given stage of processing:
 \begin{quote}
 The fundamental job of an attention head is to retrieve relevant information from the residual streams of previous tokens and integrate it into the residual stream embodying the model’s evolving understanding of the current token... without context, ``bank'' might be taken to refer to a financial institution, but the nearby occurrence of ``water,'' ``mud,'' and ``fish'' indicates that the correct interpretation in this context is ``riverbank''... One attention head might specialize in retrieving adjective information. Its query might implicitly ask: ``What properties are being ascribed to the main subject?'' while its keys would advertise tokens that happen to be adjectives. These tokens would then get a strong match and the attention head would assign a strong attention score to them... This mechanism allows an LLM to figure out which features are most relevant for interpreting the current token in its particular context and to dynamically differentiate it from other contexts.
 \end{quote}
@@ -714,10 +714,10 @@ Again, recall that information might \emph{not} be focused on for many layers of
 
 The MLPs take whatever the attention heads decide is important at a given layer (based on matches between keys and queries) and then enrich that information with associative information stored in the weights and biases of the MLPs. This is what classical feed-forward networks were so good at: building up these associative memory systems, as we have seen throughout much of the book. So it's like this old connectionist idea of an associative memory has been given this specific role in this stage of processing.\footnote{This is comparable to traditional ``dense'' feed-forward networks playing a role in the final layer of a CNN; see chapter \extref{ch_cnn}.} Beckmann and Queloz continue:
 \begin{quote}
-While attention heads are crucial for gathering and routing contextually relevant information, the multilayer perceptron (MLP) layers, which follow the attention layers in each transformer block, play an equally vital role in deepening conceptual understanding. If attention heads are about identifying and carrying over relevant information across residual streams, MLP layers perform computations within the current token’s residual stream. They are largely about processing, refining, and enriching the information present in that stream... More precisely, MLPs can be seen as performing two functions. On the one hand, they combine the diverse pieces of information retrieved by attention layers. For instance, once an attention head has brought features for ``Golden Gate'' and ``Bridge'' into the current token’s stream, an MLP layer must combine these distinct features to activate a higher-level ``Golden Gate Bridge' feature more strongly. On the other hand, MLPs augment the resulting combination with associated knowledge recalled from the model’s learned parameters
+While attention heads are crucial for gathering and routing contextually relevant information, the multilayer perceptron (MLP) layers, which follow the attention layers in each transformer block, play an equally vital role in deepening conceptual understanding. If attention heads are about identifying and carrying over relevant information across residual streams, MLP layers perform computations within the current token’s residual stream. They are largely about processing, refining, and enriching the information present in that stream... More precisely, MLPs can be seen as performing two functions. On the one hand, they combine the diverse pieces of information retrieved by attention layers. For instance, once an attention head has brought features for ``Golden Gate'' and ``Bridge'' into the current token’s stream, an MLP layer must combine these distinct features to activate a higher-level ``Golden Gate Bridge'' feature more strongly. On the other hand, MLPs augment the resulting combination with associated knowledge recalled from the model’s learned parameters
 \end{quote}
 
-In this way, the journey of a token's representation is a process of refinement and enrichment through many processing layers until at the final layer it is an extremely rich representation that packs in enough information to predict a next token, like ``Golden gate bridge in the context of a discussion of its history, in a conversation that is regarding it as beautiful, in the last position of a noun phrase that would normally be followed by a verb.''
+In this way, the journey of a token's representation is a process of refinement and enrichment through many processing layers until at the final layer it is an extremely rich representation that packs in enough information to predict a next token, like ``Golden Gate Bridge in the context of a discussion of its history, in a conversation that is regarding it as beautiful, in the last position of a noun phrase that would normally be followed by a verb.''
 
 \section{LLMs and the Cognitive Sciences}\label{llm_cogsci}
 
@@ -733,7 +733,7 @@ engineering applications (see chapter \extref{ch_applications}). They are
 interesting for the obvious reason that they are in some sense the best
 cognitive models produced to date. They have arguably passed the Turing Test,
 producing grammatically and semantically coherent language and responding to
-questions in a flexible and often creative ways.\footnote{A review of the
+questions in flexible and often creative ways.\footnote{A review of the
 literature on whether they pass the Turing Test is \cite{jones2024does}. We are
 planning to add more information on this topic in a future release.} But it is
 not known exactly \emph{how} they do it. This creates an interesting situation.
@@ -743,9 +743,9 @@ how they work. It's the same strange situation first mentioned in chapter
 \extref{ch_mechinterp}. It's as if we discovered something new in nature and
 are trying to determine how it works, so we have to  reverse engineer
 it.\footnote{In fact, this happened  to some extent before with neural
-networks. Something similar happened with CNN's (chapter \extref{ch_cnn}), but
-with CNN's it was much easier to  run simulations on a personal computer, and
-the interpretability issues were easier to make progress on.BERT was developed
+networks. Something similar happened with CNNs (chapter \extref{ch_cnn}), but
+with CNNs it was much easier to  run simulations on a personal computer, and
+the interpretability issues were easier to make progress on. BERT was developed
 at Google to meet engineering needs, but soon drew the interest of
 psychologists and linguists given its surprising effectiveness in language
 tasks. In fact it gave rise to the field of  ``BERTology''
@@ -773,9 +773,9 @@ have to be frequently updated.
 
 \subsection{Stochastic Parrot or Genuine Intelligence?}\label{stochasticParrot}
 
-At a high-level, the main debate about LLMs is this: are they just
+At a high level, the main debate about LLMs is this: are they just
 regurgitating what they were trained on, like a stochastic parrot, or are they
-genuinely intelligent?\footnote{There is no agreed-upon definition for “genuine intelligence”, but it is a helpful blanket designation for what many parties to the debate are looking for.} 
+genuinely intelligent?\footnote{There is no agreed-upon definition for ``genuine intelligence'', but it is a helpful blanket designation for what many parties to the debate are looking for.} 
 
 % Discuss weak vs strong AI
 % Discuss generalization vs Chomskian generativity or something along those lines
@@ -787,7 +787,7 @@ compress and then recall information contained in their training data
 as applied to LLMs is due to Emily Bender and colleagues
 \cite{bender2021dangers}, in which it is claimed that current LLMs are
 ``stochastic parrots'' that capture nothing more than mere co-occurrence
-probabilities (in fact, the title of the paper includes a Parrot emoji). As they say ``an LM is a system for
+probabilities (in fact, the title of the paper includes a parrot emoji). As they say ``an LM is a system for
 haphazardly stitching together sequences of linguistic forms it has observed in
 its vast training data, according to probabilistic information about how they
 combine, but without any reference to meaning: a stochastic parrot'' \cite[p.~617]{bender2021dangers}.  If
@@ -799,7 +799,7 @@ Another metaphor is that of a blurry JPEG of the internet
 JPEG compresses an image. On this conception, LLMs are just giant statistical
 models, which can compress information but that fail to be an interesting model of cognition.
 
-Others argue that LLMs are doing more than recalling patterns from their training data. For example,  \cite{kello2026contextual}, describe LLMs as using in-context learning (section \ref{inContext}) to ``assemble context-dependent functions
+Others argue that LLMs are doing more than recalling patterns from their training data. For example, Kello et al. \cite{kello2026contextual} describe LLMs as using in-context learning (section \ref{inContext}) to ``assemble context-dependent functions
 and performances `on the fly' based on generalizations from prior experiences.'' On this view, LLMs are doing the same kind of computations humans do: soft-assembling information in response to situations and producing emergent genuine intelligence in the process. In fact the entire field of mechanistic interpretability (chapter \extref{ch_mechinterp}) is focused on identifying the ``programs'', ``algorithms'', or ``circuits'' encoded in LLMs.\footnote{This is not to say everyone in the field of mechanistic interpretability endorses the ``genuine intelligence'' view; however we suspect many in the area are in fact motivated by the view that LLMs do something more than statistical extrapolation.}
 
 % Conflicted about this. Given the "false friend" situation with Searle, it's not clear whether this helps or hurts. 
@@ -875,7 +875,7 @@ dillion2023can}.
 
 Much of this work has related LLM behavior to known psycholinguistic effects.
 For example, LLMs rate words very similarly to how humans rate them, on a wide range of variables including arousal, concreteness, dominance, familiarity, gender association, imageability, and valence \cite{trott2024augment,
-kello2024emergent}. As an example of these variables are queried (both in humans and LLMs), here is how valence is defined:
+kello2024emergent}. As an example of how these variables are queried (both in humans and LLMs), here is how valence is defined:
 \begin{quote}
 a measure of value or worth. A word is NEGATIVE if it represents something
 considered bad, whereas a word is POSITIVE if it represents something
@@ -932,10 +932,10 @@ variability), the better LLMs are able to match human behavior.}
 \label{humanVsLLM}
 \end{figure}
 
-Additionally, Cai et al. (2023) reported that LLMs appear to mimic human
+Additionally, Cai et al. \cite{cai2023do} reported that LLMs appear to mimic human
 linguistic biases, such as sound-shape association (e.g., the ``kiki-bouba''
 effect, in which arbitrary shapes are associated with specific nonsense words;
-for example ``kiki'' is mapped to a more spikey structure and ``bouba'' to a
+for example ``kiki'' is mapped to a more spiky structure and ``bouba'' to a
 rounder one), sound-gender association (e.g., novel names ending in a vowel
 compared to a consonant tend to be judged as more feminine sounding), semantic
 and syntactic priming, and semantic illusion (e.g., noticing fewer errors in
@@ -973,7 +973,7 @@ predict relative geographic distances between cities \cite{lietard2021do}.
 Christiansen et al. report that LLMs organize concepts in ways that correlate
 with human conceptual structures \cite{christiansen2023large}. These findings
 collectively suggest that LLM representations are not ``empty symbols'' as in
-traditional computer programs (see the discussion in
+traditional computer programs (see the discussion in section
 \extref{classicalAIComparison}). Instead, they are content-rich and structured
 similarly to human mental representations.
 
@@ -1000,14 +1000,14 @@ analogical problems, including problems developed by Mitchell herself
 \cite{webb2023emergent}.  Mitchell has responded, noting  that transformers
 perform well on simple analogies but that performance declines sharply on  more
 complex analogies \cite{lewis2025evaluating}. The topic remains live as of 2025.
-In June 2024 a group at Apple published a paper whose title begins with ``The
+In June 2025 a group at Apple published a paper whose title begins with ``The
 Illusion of Thinking'' \cite{shojaee2025illusion}, which claims that large
 reasoning models like LLMs ``face a complete accuracy collapse beyond
 certain complexities''. The charge was met days later in a response from Anthropic
 called ``The illusion of the illusion of thinking'' \cite{opus2025illusion},
 which claimed that the Apple group's work ``primarily reflects experimental
 design limitations rather than fundamental reasoning failures'' and that when
-controlling for these errors that LLMs can succeed on reasoning tasks reported
+controlling for these errors LLMs can succeed on reasoning tasks reported
 as failures in \cite{shojaee2025illusion}.
 
 \begin{figure}[ht]
@@ -1095,7 +1095,7 @@ the internal activation patterns of an LLM. Note that the color gradient is only
 Prediction tends to be strongest for activations in the middle layers of LLMs
 \cite{caucheteux2022brains}, but the details remain unclear (see
 \cite{schrimpf2021neural}, figure 2C), and this work will probably be best
-pursued along side work in mechanistic interpretability (chapter
+pursued alongside work in mechanistic interpretability (chapter
 \extref{ch_mechinterp}), where studies suggest that attention heads located
 early in the model's forward pass tend to deal with syntactic features,
 composing these into semantic features in the middle of the forward pass, and
@@ -1126,7 +1126,7 @@ of the book: neural networks and cognitive science.
 % Other questions: Turing Test, are they conscious, do they have world models,
 % and AI ethics
 
-First, there is an old debate about whether passing the Turing Test sufficient
+First, there is an old debate about whether passing the Turing Test is sufficient
 to conclude that a system really understands anything. Doubts about the ability
 of machines to understand language have a long history, and there is a whole
 class of arguments to the effect that a system can't understand the meanings of
@@ -1168,14 +1168,14 @@ Another long-standing argument against machine intelligence due to Hubert
 Dreyfus \cite{dreyfus1992computers} is that no computer or neural network could
 ever have truly human capacities, because they were not raised in the real
 world and can only parrot back what they were programmed or trained to say, at
-best with moderate abilities to generalize beyond that (Bender and Keller's
-argument develop this idea with respect to LLMs and argue these considerations
+best with moderate abilities to generalize beyond that (Bender and Koller's
+argument develops this idea with respect to LLMs and argue these considerations
 are why the octopus would pass the test). However, humans with their embodied
 human existence develop an intuitive sense of the full context of the lived
 world. To show this, one of the authors (Yoshimi), who has regularly taught
 Dreyfus'  argument for many years, would have the class ask strange or unusual
 questions to AI systems and chatbots of earlier years, like ``What would happen
-if a penguin were to juggle alligators.'' The systems invariably struggled to
+if a penguin were to juggle alligators?'' The systems invariably struggled to
 say anything meaningful (though some chatbots did pretty well using tricks,
 like pretending to be a teenager saying ``lol who cares''). But current
 iterations of LLMs like ChatGPT do just fine with such questions, suggesting
@@ -1191,7 +1191,7 @@ approaches to language like neural networks ``will degrade our science and
 debase our ethics by incorporating into our technology a fundamentally flawed
 conception of language and knowledge'' \cite{chomsky2023noam}. The essay echoes
 many decades of research on his part arguing against statistical learning
-theory and behaviorist or empiricists approaches to language. 
+theory and behaviorist or empiricist approaches to language. 
 
 The old debate went something like this. According to the symbolic approach,
 stimuli activate symbols which can be rearranged and composed in arbitrary
@@ -1201,7 +1201,7 @@ vast, indefinite expressive power. Neural networks only learn statistical
 associations, and are thus brittle. They cannot combine and recombine symbols
 to produce arbitrary responses to queries and to think in arbitrarily complex
 ways. As Chomsky says, echoing the stochastic parrot and octopus arguments,
-Chat GPT is ``a lumbering statistical engine for pattern matching, gorging on
+ChatGPT is ``a lumbering statistical engine for pattern matching, gorging on
 hundreds of terabytes of data and extrapolating the most likely conversational
 response or most probable answer to a scientific question.''
 % Citations above
@@ -1238,12 +1238,12 @@ a  symbolic system, reading and writing representations to the residual stream.
 We are not yet aware of someone making this argument in print, but it's just a
 matter of time.\footnote{Consider these quotes from
 \cite{elhage2021mathematical}: ``Both the attention and MLP layers each
-``read'' their input from the residual stream (by performing a linear
-projection), and then ``writ'' their result to the residual stream by adding a
+`read' their input from the residual stream (by performing a linear
+projection), and then `write' their result to the residual stream by adding a
 linear projection back in... We generally think of the residual stream as a
 communication channel, since it doesn't do any processing itself and all layers
 communicate through it... some MLP neurons and attention heads may perform a
-kind of ``memory management'' role, clearing residual stream dimensions set by
+kind of `memory management' role, clearing residual stream dimensions set by
 other layers by reading in information and writing out the negative version...
 The fundamental action of attention heads is moving information. They read
 information from the residual stream of one token, and write it to the residual
@@ -1333,7 +1333,7 @@ influential is \glossary{reinforcement learning with human feedback} (RLHF).
 Instruction tuning exposes the model to curated examples of how it should
 respond to various prompts, often in the form of high-quality exchanges, including 
 exchanges ranked highly by human raters (you may have provided such data when 
-clicking a thumbs-up on a chatGPT response).  These processes give LLMs
+clicking a thumbs-up on a ChatGPT response).  These processes give LLMs
 their familiar personalities---for example, their tendency to be polite and helpful, 
 or their knowledge of when to stop talking (the ``when-to-shut-up
 circuit''). 
@@ -1360,7 +1360,7 @@ the scenes other information is added.
 
 For example, at the very start of a session a whole
 block of text called the \glossary{system prompt} is prepended. This preamble might look
-something like this
+something like this:
 
 \begin{quote}
 You are a helpful, honest, and friendly assistant.\\
@@ -1403,7 +1403,7 @@ thought} encourages the model to articulate intermediate reasoning steps, which
 often improves its final answer. This was evident in the example above of
 telling the system to ``show all steps''. In this way, as the model is working
 through a problem, it feeds itself information, into its ``working memory'',
-that it can allow it to answer things.
+that allows it to answer things.
 
 This is close to an old idea in embodied cognitive science that we don't solve
 problems on our own, but only do so in the context of environmental artifacts.
@@ -1412,7 +1412,7 @@ problem it is essential to have a piece of paper available where intermediate
 results can be written down. Without pen and paper could you compute 21 divided
 by 4.2? The paper is used to store intermediate results. It's not a special
 brain circuit, it's a way of using environmental artifacts to help in a
-computation. In a similar way the LLMs is spitting out results that then get
+computation. In a similar way the LLM is spitting out results that then get
 fed back to it, which help it reason its way through problems.
 
 % Bring out more of the  connection between framing and embodied cognition, and
@@ -1435,13 +1435,13 @@ fed back to it, which help it reason its way through problems.
 A final trend to note is the advent of \glossary{agentic systems}, wherein an
 LLM delegates subtasks to external software or to other LLM instances. The idea
 is that an LLM does not just churn out a text response, but is rather empowered
-to \emph{do} things. It can, for example send a query to the
+to \emph{do} things. It can, for example, send a query to the
 internet. The result of this query can be fed back into the LLM, and it
 can then make a more informed response. For example, it can gather information about events that occurred after it was trained. This is probably familiar to you. LLMs will
 routinely query the internet (modern systems give you a sense that they are doing
 this, flashing an image of the websites they are querying).
 
-Agenetic LLMs can also be equipped to write and run code, executing commands and refining code repeatedly until a desired output is obtained.
+Agentic LLMs can also be equipped to write and run code, executing commands and refining code repeatedly until a desired output is obtained.
 LLM software engineers are now commonplace in computer
 programming, in IDEs like Cursor. A user can ask for a particular function,
 described in natural language, and the AI will generate the function and debug
@@ -1451,10 +1451,10 @@ Note that a special model does not necessarily have to be fine-tuned for this
 to work. Indeed, agentic systems today are usually general-purpose frontier
 LLMs, just set up with an appropriate system prompt and placed inside a
 software wrapper that will take the model's agentic output and respond to it accordingly. It is
-the \emph{LLM} that is doing all the heavy-lifting here; if the transformer
+the \emph{LLM} that is doing all the heavy lifting here; if the transformer
 were unable to write Python, or unable to write coherent notes to itself, etc.,
 then no toolset would fix that deficiency. What we are doing with agentic
-wrappers is just giving the model tools that is either already knows how to use
+wrappers is just giving the model tools that it either already knows how to use
 or is able to learn to use in context. To the extent that models beat Pokemon,
 write novel code, etc., it is a glimmer of their general competence with
 arbitrary tools and interfaces shining through.
