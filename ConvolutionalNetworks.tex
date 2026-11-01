@@ -235,7 +235,7 @@ Another thing we can do, usually in the final layers of a deep CNN, is to ``flat
 
 In this way, we can convert whatever high-rank tensor we have into a vector, and thereby get back into the world of  traditional neural networks focused on in much of the book.  Then we just do things as we've done before.  We can ``couple'' our complex convolutional layers into a standard feed-forward network.  In this context, weight layers are sometimes called ``fully connected'' or ``dense'' weight layers to contrast them with convolutional weight layers.
 
-The overall idea is to start with layers that learn these complex features, then to compress these representations with subsampling, and finally to present the results to the final layers, which are the kinds of standard feed-forward networks discussed in earlier chapters (for example, chapter \extref{ch_supervised}).
+The overall idea is to start with layers that learn these complex features, then to compress these representations with subsampling, and finally to present the results to the final layers, which are the kinds of standard feed-forward networks discussed in earlier chapters (for example, chapter \extref{ch_supervised}).\footnote{The Simbrain simulation \simref{Vision $>$ CNN simple demo} trains a small network of this kind, with two convolutional layers, max pooling, flattening, and a dense output layer, to classify simple line patterns. A similar network is trained on handwritten digits in \simref{Backprop $>$ CNN MNIST}.}
 
 \begin{figure}[h]
 \centering

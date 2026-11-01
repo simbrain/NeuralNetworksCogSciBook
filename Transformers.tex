@@ -54,7 +54,8 @@ However, in this chapter we focus on transformer-based models of text
 generation like GPT.\footnote{There are many other models in this class, including
 OpenAI's GPT series, Google's Gemini, Anthropic's Claude, and Meta's Llama.
 Most of these models can only be accessed online but some can be
-downloaded and run locally, further fine-tuned, etc. A list of LLMs ranked by
+downloaded and run locally, further fine-tuned, etc. The Simbrain simulation
+\simref{Language $>$ (Beta) Pretrained language model (LFM2.5)} runs one such model locally. A list of LLMs ranked by
 how well they chat is here: \weburl{https://lmarena.ai/leaderboard}.} We will
 sometimes refer simply to ``LLMs'' by which we mean transformer-based
 LLMs.\footnote{There are numerous high quality online resources for learning
@@ -495,7 +496,7 @@ sampling from the top $k$ most-probable next tokens.\footnote{There are other me
         
 The softmax temperature parameter can be used here (see section
 \extref{wta_softmax_section}): higher temperatures will add more probability to less likely tokens, making the output more
-random or ``creative''.  Lower temperatures produce more sharply peaked probability distributions, making the output more predictable.
+random or ``creative''.  Lower temperatures produce more sharply peaked probability distributions, making the output more predictable.\footnote{Temperature and sampling strategies can be explored in the Simbrain simulation \simref{Language $>$ Tiny language model}.}
 
 \subsection{Parameters and Hyperparameters}
 
@@ -554,7 +555,7 @@ the things we've seen about other neural networks still apply here. The
 transformer is a kind of deep feed-forward network, which uses a huge amount of
 training data. But the key innovation is that, within each ``layer'', the
 transformer can develop many forms of context representation which relate all
-the tokens in a context to each other.
+the tokens in a context to each other.\footnote{The Simbrain simulation \simref{Language $>$ Tiny language model} is a small GPT-style transformer in which the residual stream, attention heads, and weight matrices can all be viewed as text is processed and as the model is trained.}
 
 \subsection{Transformer Blocks and the Residual Stream}\label{transformerBlocks}
 
@@ -1359,7 +1360,7 @@ Do not make things up.
 
 This sets the whole tone of a conversation.  So when you query the system ``Tell me about the history of Bulgaria'' what is
 actually sent in to the neural network is the whole system prompt plus your
-user prompt.
+user prompt.\footnote{In the Simbrain simulation \simref{Language $>$ (Beta) Pretrained language model (LFM2.5)}, all the tokens in the model's context window are visible, including the system prompt and other tokens usually hidden in a chat.}
 % \footnote{As well as other information that distinguishes you from the system. Much of this is hidden. The mechanics of this is handled via special tokens and other structures. For a sense of how this works search ``chatml'', which is ChatGPT's markup language.}
 % User prompts can ``prime'' the model to act in particular ways, even
 % overriding system-level instructions (as seen in jailbreaks).
