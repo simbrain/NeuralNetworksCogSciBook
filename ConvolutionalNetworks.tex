@@ -129,35 +129,19 @@ In general, a convolutional layer will involve multiple filters, a \glossary{fil
 \label{filterBank}
 \end{figure}
 
-To summarize, the complete output shape for a convolutional layer is computed as follows:
-
-\medskip
-\begin{center}
-\fbox{\begin{minipage}{0.75\textwidth}
-Rule for convolutional layer output shape
-
-\rule{\linewidth}{0.4pt}
-
-\smallskip
-Channels: Number of filters in the filter bank
-
-\medskip
-
-Height: $\left( \frac{\text{Input Height} - \text{Filter Height}}{\text{Stride}} \right) + 1$
-
-Width: $\left( \frac{\text{Input Width} - \text{Filter Width}}{\text{Stride}} \right) + 1$
-\end{minipage}}
-\end{center}
-\medskip
-
-\noindent
-Suppose an input volume has shape $3 \times 64 \times 64$. We apply a filter bank with 32 filters, each of shape $3 \times 5 \times 5$, using stride 2. The output shape is:
-\begin{itemize}
-\item Channels: 32
-\item Height: $(64 - 5) / 2 + 1 = 59 / 2 + 1 = 29 + 1 = 30$
-\item Width: $(64 - 5) / 2 + 1 = 30$
-\end{itemize}
-So the output shape is $32 \times 30 \times 30$.
+To summarize, the output shape of a convolutional layer is:
+\begin{alignat*}{2}
+&\text{Channels} &&= \text{number of filters}\\
+&\text{Height} &&= \frac{\text{input height} - \text{filter height}}{\text{stride}} + 1\\
+&\text{Width} &&= \frac{\text{input width} - \text{filter width}}{\text{stride}} + 1
+\end{alignat*}
+For example, suppose an input volume has shape $3 \times 64 \times 64$, and we apply a filter bank with 32 filters, each of shape $3 \times 5 \times 5$, using stride 2. Then:
+\begin{alignat*}{2}
+&\text{Channels} &&= 32\\
+&\text{Height} &&= \frac{64 - 5}{2} + 1 = 29 + 1 = 30\\
+&\text{Width} &&= \frac{64 - 5}{2} + 1 = 30
+\end{alignat*}
+Here $59/2$ is rounded down to 29. So the output shape is $32 \times 30 \times 30$.
 
 Each feature map in a filter bank learns differently via gradient descent to represent the input. Thus we get different ways of representing the input. This generalizes the concept of the \glossary{representational width} of a layer (section \extref{structureNets}) to CNNs. Just as more nodes makes a regular node layer of a feed-forward network more powerful, so too do more filters make a convolutional layer more powerful. Rather than learning just one way to represent inputs, a bank of filters can learn multiple complementary ways to represent inputs.
 
@@ -200,33 +184,18 @@ The result of this operation is an output that is smaller than the input. These 
 % There is an issue that "feature map" is overloaded both for 3d volumes and for slices of 3d volumes
 The pooling window has a \glossary{pool shape} consisting of height and width (e.g., $2 \times 2$ or $3 \times 3$), but no channel dimension. We pass the pooling window over every feature map (every channel) separately. Thus pooling operations only slide in the spatial dimensions (height and width), not in the channel dimension. This preserves the distinct representations learned by each filter in the previous layer. Each channel represents a different learned feature, and we want to downsample each feature map independently rather than combining information across channels. (A subsequent convolutional layer can learn to combine information across channels.)
 
-As with convolutional layers, we can specify a stride for pooling operations. The general sliding window formula applies here as well, with the pooling window playing the role of the filter. The complete rule is in the box below.
-
-\medskip
-\begin{center}
-\fbox{\begin{minipage}{0.75\textwidth}
-Rule for pooling layer output shape
-
-\rule{\linewidth}{0.4pt}
-
-\smallskip
-Channels: Same as input channels
-\medskip
-
-Height: $\left( \frac{\text{Input Height} - \text{Pool Window Height}}{\text{Pool Stride}} \right) + 1$
-
-Width: $\left( \frac{\text{Input Width} - \text{Pool Window Width}}{\text{Pool Stride}} \right) + 1$
-\end{minipage}}
-\end{center}
-\medskip
-
-\noindent
-Suppose an input volume has shape $16 \times 60 \times 60$. We apply max pooling with pool shape $2 \times 2$ and stride 2. The output shape is:
-\begin{itemize}
-\item Channels: 16
-\item Height: $(60 - 2) / 2 + 1 = 58 / 2 + 1 = 29 + 1 = 30$
-\item Width: $(60 - 2) / 2 + 1 = 30$
-\end{itemize}
+As with convolutional layers, we can specify a stride for pooling operations. The general sliding window formula applies here as well, with the pooling window playing the role of the filter. The output shape of a pooling layer is:
+\begin{alignat*}{2}
+&\text{Channels} &&= \text{number of input channels}\\
+&\text{Height} &&= \frac{\text{input height} - \text{pool window height}}{\text{pool stride}} + 1\\
+&\text{Width} &&= \frac{\text{input width} - \text{pool window width}}{\text{pool stride}} + 1
+\end{alignat*}
+For example, suppose an input volume has shape $16 \times 60 \times 60$, and we apply max pooling with pool shape $2 \times 2$ and stride 2. Then:
+\begin{alignat*}{2}
+&\text{Channels} &&= 16\\
+&\text{Height} &&= \frac{60 - 2}{2} + 1 = 29 + 1 = 30\\
+&\text{Width} &&= \frac{60 - 2}{2} + 1 = 30
+\end{alignat*}
 So the output shape is $16 \times 30 \times 30$. An example of the max pooling operation itself is shown in figure \ref{maxPooling}.
 
 
