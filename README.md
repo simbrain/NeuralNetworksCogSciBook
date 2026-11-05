@@ -121,10 +121,4 @@ just format-glossary
 
 ## Releases
 
-Requires the `gh` CLI.
-
-1. Commit and push. The release builds `origin/main`.
-2. Run `just release`. This builds the PDF on GitHub and creates a draft release with the next version number (e.g. v2026.3). Use `just release 2026.3` to set the version yourself.
-3. Check the PDF and edit the notes on the releases page, then publish there or with `just release-publish v2026.3`.
-
-If the build fails, fix, push, and run `just release` again. If the draft has a problem, run `just release-delete v2026.3` first so the version number can be reused. More details are in the header of `.github/workflows/release.yml`.
+See `just release`.
