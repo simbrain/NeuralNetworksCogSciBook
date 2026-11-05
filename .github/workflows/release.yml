@@ -37,7 +37,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Full history and tags: needed to compute the next version and to
           # generate release notes against the previous tag.
@@ -115,7 +115,7 @@ jobs:
       - name: Upload PDF as workflow artifact
         # Backup copy attached to the workflow run itself, useful if the
         # draft release is discarded.
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: NeuralNetworksCogsci-${{ steps.version.outputs.version }}
           path: NeuralNetworksCogsci.pdf
