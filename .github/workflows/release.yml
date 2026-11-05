@@ -1,7 +1,9 @@
 # Release workflow: builds the master book PDF and creates a draft GitHub
 # release with the PDF attached.
 #
-# Triggered manually (Actions tab -> Release -> "Run workflow"). The version
+# Triggered manually (Actions tab -> Release -> "Run workflow", or `just
+# release` locally). To re-run for the same version, first delete both the
+# draft release and its tag (`just release-delete <tag>`). The version
 # is CalVer (Year.N): by default the workflow looks at existing v<year>.*
 # tags and picks the next N (first release of a new year becomes <year>.1).
 # The computed version is substituted for the CURRENT_RELEASE placeholder in

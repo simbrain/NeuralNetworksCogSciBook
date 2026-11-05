@@ -59,3 +59,30 @@ check-stranded-glossary:
 # Alphabetize the canonical master glossary after editing it.
 format-glossary:
     {{python}} scripts/create_custom_glossary.py --format
+
+# Run the Release workflow (builds PDF, creates draft release); version defaults to next Year.N
+release version="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    git fetch --quiet origin main
+    warn=""
+    [ -n "$(git status --porcelain)" ] && warn="${warn}- uncommitted changes\n"
+    [ -n "$(git log origin/main..HEAD --oneline)" ] && warn="${warn}- unpushed commits\n"
+    if [ -n "$warn" ]; then
+        printf "Warning: the release builds origin/main, which won't include your:\n${warn}"
+        read -r -p "Continue anyway? [y/N] " ok
+        [ "$ok" = y ] || exit 1
+    fi
+    gh workflow run release.yml {{ if version != "" { "-f version=" + version } else { "" } }}
+    sleep 5
+    gh run watch $(gh run list --workflow=release.yml --limit 1 --json databaseId -q '.[0].databaseId')
+    echo "Edit the notes on the releases page, then publish there or with: just release-publish <tag>"
+
+# Publish a draft release, e.g. just release-publish v2026.3
+release-publish tag:
+    gh release edit {{tag}} --draft=false
+
+# Delete a release and its tag so the workflow can be re-run, e.g. just release-delete v2026.3
+release-delete tag:
+    gh release delete {{tag}} --cleanup-tag --yes
+    -git tag -d {{tag}}

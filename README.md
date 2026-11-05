@@ -118,3 +118,13 @@ just format-glossary
 - Give page numbers only for direct quotations (including figures reproduced from a book) and for further-reading pointers to specific pages of a long work (e.g. "see Levine \cite[p.~12]{levine2000introduction} for a useful summary"). Put them in the citation itself, `\cite[p.~1465]{kohonen1990self}`, rather than in the running text. A footnote that lists pages by topic can give them in the text after a single citation.
 
 - A term can be tagged with `\glossary` more than once in a chapter, e.g. where it is first introduced and again where it is formally defined, or when it reappears as a key idea in a later section. Don't tag passing mentions.
+
+## Releases
+
+Requires the `gh` CLI.
+
+1. Commit and push. The release builds `origin/main`.
+2. Run `just release`. This builds the PDF on GitHub and creates a draft release with the next version number (e.g. v2026.3). Use `just release 2026.3` to set the version yourself.
+3. Check the PDF and edit the notes on the releases page, then publish there or with `just release-publish v2026.3`.
+
+If the build fails, fix, push, and run `just release` again. If the draft has a problem, run `just release-delete v2026.3` first so the version number can be reused. More details are in the header of `.github/workflows/release.yml`.
