@@ -107,7 +107,9 @@ towards a given attractor.
 
 %\item[Controlled process] A cognitive process that requires attention for its execution, and is relatively slow. Examples include solving math problems, doing homework, or performing an unusual task that you have not practiced.
 
-\item[Convolutional layer] A special kind of weight layer where a set of weights (a ``filter'') is scanned over a previous node layer to produce activations in a target layer. This is related to the mathematical operation of convolution.
+\item[Convolutional layer] A special kind of weight layer where small sets of weights (filters) are scanned over a previous node layer to produce activations in a target layer. This is related to the mathematical operation of convolution.
+
+\item[Convolutional neural network] (CNN) A neural network that includes convolutional layers, usually along with pooling layers and dense layers. CNNs are widely used to process images.
 
 \item[Cortical blindness] Neurological impairment caused by damage to the occipital lobe that results in blindness or inability to see. This can occur without any damage to the eyes.
 
@@ -132,6 +134,8 @@ towards a given attractor.
 \item[Dendrite] The part of the neuron that receives signals from other neurons.
 
 %\item[Dendritic spine] Small outgrowths on the end of a dendritic branch where the receptors to which neurotransmitters attach can be found.
+
+\item[Dense layer] (Synonym: fully connected layer) A weight layer that connects every node in a source layer to every node in a target layer.
 
 \item[Dimension] In the context of neural networks and vector spaces, the number of components in a vector or the number of features in a representation. For example, a word embedding might have 300 dimensions, meaning it associates words with 300-component vectors. More formally, the number of vectors in a basis for a vector space. This equals the number of components the vectors have. Examples: the line is a 1-dimensional vector space; the plane is a 2-dimensional vector space.
 
@@ -179,9 +183,9 @@ towards a given attractor.
 
 \item[Few-shot] A learning paradigm where a model or person performs a task after being shown only a few examples, without updating weights (this is typically a form of in-context learning). An example is learning what a new piece of slang like ``that’s fire’’ or ``that’s mid'' means after hearing just a few examples.
 
-\item[Filter] The set of weights in a convolutional layer. A filter has one two-dimensional slice of weights, called a kernel, for each input channel. This is more or less the same thing as a convolutional layer, but it refers specifically to the weights, whereas ``convolution'' also refers to the process of passing the filter over the input activations.
+\item[Filter] A set of weights that is scanned over the input of a convolutional layer to produce one feature map. A filter has one two-dimensional slice of weights for each input channel. The term refers specifically to the weights, whereas ``convolution'' also refers to the process of passing the filter over the input activations.
 
-\item[Filter Bank] A set of filters. One kind of volume-to-volume layer in a convolutional neural network.
+\item[Filter Bank] The set of filters in a convolutional layer. Each filter produces one channel of the output volume, so the number of filters equals the number of output channels. One kind of volume-to-volume layer in a convolutional neural network.
 
 \item[Fine-tuning] Additional training performed on a model with a relatively small learning rate to adapt it for a specific domain or task. Fine-tuning nudges the weights to better capture new domains while preserving the broad linguistic competence and background knowledge gained during pretraining. Giving base models personalities is commonly done with fine-tuning.
 
@@ -430,6 +434,8 @@ towards a given attractor.
 
 \item[Skip connection] (Synonym: residual connection) A connection between two nonadjacent layers of a feed-forward network that carries an activation vector past at least one intervening hidden layer. Skip connections are an important part of transformer architectures where they are part of a structure called the ``residual stream.''
 
+% \item[Slice] The part of a tensor obtained by fixing one or more of its indices and letting the rest vary. Fixing the channel index of a volume gives one matrix, a single channel. Fixing the row index of a matrix gives a row vector.
+
 \item[Softmax] An activation function which normalizes inputs so that its activations in a layer can be interpreted as a probability distribution. Each activation is between 0 and 1 and the sum over all the activations in a softmax layer is 1.
 
 \item[Soma] (Synonym Cell body): the central part of a neuron, which the dendrites and axons connect to.
@@ -541,6 +547,8 @@ towards a given attractor.
 \item[Weighted Input] (Synonym: Net input) Dot product of an input vector and a fan-in weight vector, plus a bias term. Notated $n_i$ for neuron $i$.
 
 \item[Weight layer] A set of weights treated as a group. Often they are the collection of weights connecting one node layer to another, which can in turn be represented by a weight matrix. % Distinguish recurrent from feed-forward case?
+
+\item[Weight sharing] The reuse of one set of weights at many locations, as when a filter in a convolutional layer is scanned across its input. It greatly reduces the number of weights that must be learned.
 
 \item[Weight space] The set of possible weight vectors for a given neural network.
 

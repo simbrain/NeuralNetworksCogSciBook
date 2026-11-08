@@ -100,6 +100,8 @@ just format-glossary
 
 - When using `\caption` in the figure environment, be sure to include a bracketed sentence to be used in the figure attribution list.
 
+- Figures drawn by script live in `scripts/` and write SVG, PDF, and PNG to `images/`. Use grayscale unless color adds information, light gray grid lines, normal-weight labels, and the minimum labels needed. The CNN chapter figures share this style through `scripts/cnn_figure_style.py`.
+
 - For code and file-name references use `\code{}` (defined in `BookMacros.tex`), e.g. `\code{README.md}`.
 
 - For hyperlinks use `\weburl`
