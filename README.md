@@ -84,6 +84,8 @@ just build <container document>.tex
 
 # How To Create New Chapters
 
+- By default, open a chapter with a short introduction without a heading that sets up the chapter and previews its sections, followed by the first `\section`. This is a default, not a rule.
+
 - Indicate authorship using `\chapterauthor`.
 	<!-- Add parameters indicating author weight -->
 
