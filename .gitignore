@@ -16,3 +16,7 @@ __pycache__/
 Book_124.tex
 CustomGlossary.tex
 GradNN.tex
+# Editor swap and backup files
+*.swp
+*.swo
+*~
