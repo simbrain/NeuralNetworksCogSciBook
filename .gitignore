@@ -20,3 +20,5 @@ GradNN.tex
 *.swp
 *.swo
 *~
+# SyncTeX temporary files
+*.synctex(busy)
