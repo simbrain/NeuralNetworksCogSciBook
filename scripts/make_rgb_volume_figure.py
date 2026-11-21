@@ -8,11 +8,8 @@ of true RGB.
 
 Usage: python3 scripts/make_rgb_volume_figure.py [outdir]   (default: images)
 """
-import sys
 from matplotlib.colors import to_rgb
-from cnn_figure_style import U, DS, new_fig, finish, box, poly, sign, label
-
-OUT = sys.argv[1] if len(sys.argv) > 1 else "images"
+from figure_style import U, DS, new_fig, finish, box, poly, sign, label
 
 RED, GREEN, BLUE, YELLOW = "#c44e52", "#55a868", "#4c72b0", "#dcc13a"   # muted; yellow = red + green
 
@@ -74,4 +71,4 @@ for k, (color, name) in enumerate(CHANNEL_COLORS):
     x += W + 0.3
 
 ax.autoscale_view()
-finish(fig, ax, OUT, "rgbVolume")
+finish(fig, ax, "rgbVolume")

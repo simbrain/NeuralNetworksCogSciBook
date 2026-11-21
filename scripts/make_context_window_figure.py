@@ -4,10 +4,9 @@ Embeddings match images/contextWindowAsStack.png (figure sequenceDim).
 Targets are one-hot over the seven-token vocabulary:
 hello, how, are, you, ?, good, thank.
 """
-import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+from figure_style import save
 
 emb = {"hello": (1, 2, 1, 2), "how": (2, 1, 9, 8), "are": (7, 3, 5, 8),
        "you": (1, 2, 5, 6), "?": (1, 1, 2, 0), "good": (2, 8, 2, 5),
@@ -61,6 +60,4 @@ blank = vec((0, 0, 0, 0))
 emb_rows = [r + [blank] * (ncols - len(r)) for r in emb_rows]
 table(2.0, emb_rows, [onehot(t) for t in targets], 11)
 
-for ext in ("svg", "pdf", "png"):
-    fig.savefig(f"images/contextWindow.{ext}", dpi=300 if ext == "png" else None,
-                bbox_inches="tight", pad_inches=0.05)
+save(fig, "contextWindow", pad=0.05)

@@ -11,12 +11,9 @@ Prints the computed feature maps.
 
 Usage: python3 scripts/make_convolution_figure.py [outdir]   (default: images)
 """
-import sys
 import numpy as np
-from cnn_figure_style import U, DS, new_fig, finish, box, line, gray, outline_cells, SMILEY, BACKSLASH, SLASH, \
+from figure_style import U, DS, new_fig, finish, box, line, gray, outline_cells, SMILEY, BACKSLASH, SLASH, \
     convolve
-
-OUT = sys.argv[1] if len(sys.argv) > 1 else "images"
 
 fills = lambda a, vmax: [[gray(v, vmax) for v in row] for row in a]
 LINK = dict(color="0.6", lw=0.6)
@@ -54,7 +51,7 @@ panel(ax, 0.0, BACKSLASH, depth=True, numbers=False)
 panel(ax, 9 * U + DS + 0.6, BACKSLASH, depth=False, numbers=True)
 row_labels(ax)
 ax.autoscale_view()
-finish(fig, ax, OUT, "cnnConvolution")
+finish(fig, ax, "cnnConvolution")
 
 # cnnConvolutionSlash: backslash and slash filters side by side, numbers shown
 fig, ax = new_fig((6.2, 6.2))
@@ -62,4 +59,4 @@ panel(ax, 0.0, BACKSLASH, depth=False, numbers=True)
 panel(ax, 9 * U + DS + 0.6, SLASH, depth=False, numbers=True)
 row_labels(ax)
 ax.autoscale_view()
-finish(fig, ax, OUT, "cnnConvolutionSlash")
+finish(fig, ax, "cnnConvolutionSlash")

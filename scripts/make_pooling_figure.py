@@ -7,10 +7,7 @@ row and column fit no window and are shown in light gray. Prints the pooled outp
 
 Usage: python3 scripts/make_pooling_figure.py [outdir]   (default: images)
 """
-import sys
-from cnn_figure_style import U, new_fig, finish, box, line, gray, outline_cells, SMILEY, BACKSLASH, convolve
-
-OUT = sys.argv[1] if len(sys.argv) > 1 else "images"
+from figure_style import U, new_fig, finish, box, line, gray, outline_cells, SMILEY, BACKSLASH, convolve
 
 FMAP = convolve(SMILEY, BACKSLASH)                 # 7x7
 P = 2                                              # pool size; windows do not overlap
@@ -50,6 +47,6 @@ for y, t in [(Y_IN + n * U / 2, "Feature\nMap"), (Y_OUT + N * U / 2, "Pooled\nOu
     ax.text(-0.15, y, t, fontsize=11, ha="right", va="center", color="0.1")
 
 ax.autoscale_view()
-finish(fig, ax, OUT, "maxPooling")
+finish(fig, ax, "maxPooling")
 for r in POOLED:
     print(r)

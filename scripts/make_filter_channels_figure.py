@@ -1,6 +1,6 @@
 """Generate images/filterChannels.{svg,pdf,png} (figure filterChannels in ConvolutionalNetworks.tex).
 
-Redraw of filterDepth.png (Soraya Boza), in the shared style of cnn_figure_style.py.
+Redraw of filterDepth.png (Soraya Boza), in the shared style of figure_style.py.
 Left: 3x4x8 input (wide and short), 3x3x3 filter, 2x6 output.
 Right: 16x2x2 input, 16x1x1 filter, 2x2 output.
 In each, the shaded receptive field runs through every channel of the input.
@@ -8,10 +8,8 @@ Every object, depth included, is centered on one horizontal line (Y), as are the
 
 Usage: python3 scripts/make_filter_channels_figure.py [outdir]   (default: images)
 """
-import sys
-from cnn_figure_style import U, DS, new_fig, finish, box, sign
+from figure_style import U, DS, new_fig, finish, box, sign
 
-OUT = sys.argv[1] if len(sys.argv) > 1 else "images"
 corner = lambda n: [["white"] * (n - 1) + ["0.6"]] + [["white"] * n] * (n - 1)
 
 fig, ax = new_fig((10, 2.8))
@@ -35,4 +33,4 @@ sign(ax, FX + 1.7, Y, "=")
 box(ax, FX + 2.0, mid(2), 2, 2, 1, ds=0, fills=corner(2))
 
 ax.autoscale_view()
-finish(fig, ax, OUT, "filterChannels")
+finish(fig, ax, "filterChannels")

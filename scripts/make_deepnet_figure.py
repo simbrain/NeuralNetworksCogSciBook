@@ -1,18 +1,15 @@
 """Generate images/deepNetExample.{svg,pdf,png} (figure deepNetExample in ConvolutionalNetworks.tex).
 
-Redraw of an image by Soraya Boza and Jeff Yoshimi, in the shared style of cnn_figure_style.py.
+Redraw of an image by Soraya Boza and Jeff Yoshimi, in the shared style of figure_style.py.
 An AlexNet-like pipeline: input 3x227x227 -> 96 filters (3x11x11, stride 4) -> 3x3 max pooling (stride 2)
 -> 120 filters (96x3x3, stride 3) -> flatten -> dense layer with 3 nodes. Boxes are schematic, not to
 scale. Output shapes are computed with the sliding-window formula and checked against the labels.
 
 Usage: python3 scripts/make_deepnet_figure.py [outdir]   (default: images)
 """
-import sys
 import math
 from matplotlib.patches import Circle
-from cnn_figure_style import new_fig, finish, poly, TOP_FACE, SIDE_FACE, EDGE
-
-OUT = sys.argv[1] if len(sys.argv) > 1 else "images"
+from figure_style import new_fig, finish, poly, TOP_FACE, SIDE_FACE, EDGE
 
 
 def out_size(n, window, stride):
@@ -95,4 +92,4 @@ for i, (xm, text) in enumerate(OPS):
     ax.text(xc, OP_TOP, text, **OP_FONT)
 
 ax.autoscale_view()
-finish(fig, ax, OUT, "deepNetExample")
+finish(fig, ax, "deepNetExample")

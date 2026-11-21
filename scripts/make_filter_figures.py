@@ -1,6 +1,6 @@
 """Generate the filter and filter bank figures in ConvolutionalNetworks.tex.
 
-Redraws of images by Soraya Boza, in the shared style of cnn_figure_style.py.
+Redraws of images by Soraya Boza, in the shared style of figure_style.py.
 
   filterToVolume  3x6x6 input, one 3x3x3 filter, 4x4 output
   filterComb      same, with the input channels and the filter's slices pulled apart
@@ -8,10 +8,7 @@ Redraws of images by Soraya Boza, in the shared style of cnn_figure_style.py.
 
 Usage: python3 scripts/make_filter_figures.py [outdir]   (default: images)
 """
-import sys
-from cnn_figure_style import U, DS, new_fig, finish, box, sign, label, pointer
-
-OUT = sys.argv[1] if len(sys.argv) > 1 else "images"
+from figure_style import U, DS, new_fig, finish, box, sign, label, pointer
 
 # filterToVolume ---------------------------------------------------------------
 fig, ax = new_fig((7, 2.6))
@@ -24,7 +21,7 @@ label(ax, fx + 0.375, fy - 0.12, "Filter")
 sign(ax, 4.1, 0.75, "=")
 box(ax, 4.45, 0.25, 4, 4, 1, ds=0, fills=[["white"] * 3 + ["0.6"]] + [["white"] * 4] * 3)
 label(ax, 4.95, 0.13, "Output")
-finish(fig, ax, OUT, "filterToVolume", (-0.1, 5.55), (-0.45, 1.95))
+finish(fig, ax, "filterToVolume", (-0.1, 5.55), (-0.45, 1.95))
 
 # filterComb -------------------------------------------------------------------
 GAP = 0.15
@@ -39,7 +36,7 @@ label(ax, 3.12, 0.25, "Filter")
 sign(ax, 4.45, 0.75, "=")
 box(ax, 4.9, 0.25, 4, 4, 1, ds=0, fills=[["white"] * 3 + ["0.6"]] + [["white"] * 4] * 3)
 label(ax, 5.4, 0.13, "Output")
-finish(fig, ax, OUT, "filterComb", (-0.1, 6.0), (-0.45, 1.85))
+finish(fig, ax, "filterComb", (-0.1, 6.0), (-0.45, 1.85))
 
 # filterBank -------------------------------------------------------------------
 STEP = 1.3
@@ -57,4 +54,4 @@ sign(ax, 4.3, mid, "=")
 oy = mid - (1.0 + 5 * DS) / 2
 box(ax, 4.7, oy, 4, 4, 5)
 label(ax, 5.2, oy - 0.12, "Output Volume")
-finish(fig, ax, OUT, "filterBank", (-0.1, 6.5), (-0.15, top_y + 0.75 + 3 * DS + 0.1))
+finish(fig, ax, "filterBank", (-0.1, 6.5), (-0.15, top_y + 0.75 + 3 * DS + 0.1))
