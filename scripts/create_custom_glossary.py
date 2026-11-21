@@ -10,6 +10,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parent.parent
 MAIN_GLOSSARY_FILE = REPOSITORY_ROOT / "Glossary.tex"
 ITEM_PATTERN = re.compile(r"(?m)^\s*\\item\[([^]]+)\]")
 GLOSSARY_PATTERN = re.compile(r"\\glossary(?:\[([^\]]+)\])?\{([^}]+)\}")
+COMMENT_PATTERN = re.compile(r"(?<!\\)%.*")
 
 
 def read_file(file_path):
@@ -37,13 +38,12 @@ def find_chapters(container_document):
 
 
 def find_glossary_items(files):
+    """Collect \\glossary terms, including tags that break across lines."""
     items = set()
     for file in files:
-        for line in read_file(file).splitlines():
-            if line.lstrip().startswith("%"):
-                continue
-            for key, display_text in GLOSSARY_PATTERN.findall(line):
-                items.add((key or display_text).strip())
+        text = "\n".join(COMMENT_PATTERN.sub("", line) for line in read_file(file).splitlines())
+        for key, display_text in GLOSSARY_PATTERN.findall(text):
+            items.add(" ".join((key or display_text).split()))
     return items
 
 

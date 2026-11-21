@@ -18,6 +18,8 @@
 
 \item[Agentic systems] AI systems (usually LLMs) that can take actions to achieve objectives, such as searching the internet or executing code.
 
+%\item[AI alignment] The field concerned with ensuring that the goals and behavior of artificial intelligence systems, such as large language models, are compatible with human goals and values.
+
 \item[Anterograde amnesia] A type of memory loss or amnesia caused by brain damage in the hippocampus, where the ability to create new fact-based or declarative memories is compromised after the injury.
 
 \item[Antipattern] Intuitively, the antipattern of a pattern $p$ is the pattern formed by ``flipping'' every value in $p$.  For a binary pattern we swap 0's and 1's. For a bipolar pattern we swap -1's and 1's. Examples: the antipattern of $(0,1,0)$ is  $(1,0,1)$. The antipattern of $(-1,1,-1)$ is  $(1,-1,1)$. Antipatterns are a kind of spurious memory.
@@ -77,7 +79,7 @@ towards a given attractor.
 
 \item[Cerebral cortex] The outer layer of the brain characterized by its structural folding (gyri and sulci); underlies complex behavior and intelligence in higher animals.
 
-%\item[Chain of thought] A prompting technique that encourages language models to produce intermediate reasoning steps when solving problems, which often improves their final answers. By prompting models to ``think step by step'' or ``show all steps,'' the model outputs text which is then fed back into its context window. This technique is often implemented through hidden prompt injections (like ``show all steps'' for math questions) rather than being explicitly requested by users.
+\item[Chain of thought] A prompting technique that encourages language models to produce intermediate reasoning steps when solving problems, which often improves their final answers. By prompting models to ``think step by step'' or ``show all steps,'' the model outputs text which is then fed back into its context window. This technique is often implemented through hidden prompt injections (like ``show all steps'' for math questions) rather than being explicitly requested by users.
 
 \item[Chaotic dynamical system] A type of dynamical system in which the future behavior of the system is hard to predict. Such systems have sensitive dependence on initial conditions. Compare the ``butterfly effect.''
 
@@ -276,7 +278,7 @@ towards a given attractor.
 
 \item[Linearly separable] A classification task can be solved using a decision boundary that is a line (or, in more than 2-dimensions, a plane or hyperplane).
 
-%\item[Linear representation hypothesis] The hypothesis that internal representations or features in neural networks are best understood as directions in activation space. The orientation of a vector encodes conceptual meaning while its magnitude captures the strength or presence of that feature.
+\item[Linear representation hypothesis] The hypothesis that internal representations or features in neural networks are best understood as directions in activation space. The orientation of a vector encodes conceptual meaning while its magnitude captures the strength or presence of that feature.
 
 \item[Localist representation] A representation scheme where activation of individual neurons indicates the presence of an object. Example: activation of neuron 25 indicates the presence of my grandmother.
 
@@ -382,6 +384,8 @@ towards a given attractor.
 
 \item[Proposition] (Synonyms Statement, sentence): an expression that can be true or false.
 
+%\item[Prosaic alignment] Alignment research focused on existing machine learning systems, such as large language models. Contrasted with superintelligent alignment.
+
 \item[Prosopagnosia] An impairment in recognizing faces that results from damage to particular regions of the ventral stream.
 
 %\item[Rate-coding]
@@ -398,7 +402,7 @@ towards a given attractor.
 
 \item[Reinforcement learning] A form of learning in which a system learns to take actions that maximize reward in the long run.   Actions that produce rewards, or actions that lead to actions that produce reward, are reinforced in such a way that agents learn to obtain rewards and avoid costly situations.  In humans, associated with circuits in the brain stem and basal ganglia.  Sometimes treated as a third form of learning alongside supervised and unsupervised learning.
 
-\item[Reinforcement learning with human feedback] (Acronym: RLHF) A technique for training language models where human evaluators provide feedback on outputs, which is then used to train a reward model that guides further optimization via reinforcement learning. Typically involves three stages: supervised fine-tuning on demonstrations, training a reward model from human preference comparisons, and using reinforcement learning to optimize the language model against the reward model. RLHF is commonly used in post-training to align language models with human preferences and values, making them more helpful, harmless, and honest. This technique was crucial in transforming base models into chat models with coherent personalities.
+\item[Reinforcement learning from human feedback] (Acronym: RLHF) A technique for training language models where human evaluators provide feedback on outputs, which is then used to train a reward model that guides further optimization via reinforcement learning. Typically involves three stages: supervised fine-tuning on demonstrations, training a reward model from human preference comparisons, and using reinforcement learning to optimize the language model against the reward model. RLHF is commonly used in post-training to align language models with human preferences and values, making them more helpful, harmless, and honest. This technique was crucial in transforming base models into chat models with coherent personalities.
 
 \item[ReLU] A linear activation function that is clipped at  0. Its activation is 0 for weighted inputs less than or equal to 0, and it is equal to weighted inputs otherwise. It is a popular activation function for deep networks. Note that ``relu'' is short for ``rectified linear unit''.
 
@@ -474,6 +478,10 @@ towards a given attractor.
 
 \item[Subspace] Any subset of a vector space that also happens to satisfy the definition of a vector space. The sum of any two vectors in a subspace is in the subspace and any scalar multiple of a vector in a subspace is in the subspace.
 
+%\item[Superintelligence] An AI system whose intelligence greatly exceeds that of humans across most domains.
+
+%\item[Superintelligent alignment] (Synonym: Ambitious alignment) The more speculative problem of aligning future AI systems that may be far more capable than humans. Contrasted with prosaic alignment.
+
 \item[Superposition] A property of neural networks whereby a single set of nodes can encode many representations using overlapping patterns of activity.  For example, a set of 3 nodes might encode 20 patterns. Closely related to distributed representations. 
 
 %\item[Supervised Recurrent Networks]
@@ -487,6 +495,8 @@ towards a given attractor.
 \item[System prompt] Instructions or context provided to a chat model that establish its role, personality, and behavioral guidelines for a conversation. System prompts are generally hidden from the user, and are processed ``behind the scenes''.
 
 \item[Target dataset] A dataset whose rows correspond to target outputs we'd like a neural network to produce for corresponding input vectors. For classification tasks, a set of \emph{class labels}.
+
+%\item[Technical AI alignment] The part of AI alignment that develops concrete methods for getting AI systems to pursue intended goals, such as reinforcement learning from human feedback and interpretability research.
 
 \item[Temporal lobe] Lobe forward of the occipital lobe and below the parietal and frontal lobes. This region is involved primarily in processing semantic information about what things are and factual information, and also houses several important language areas.
 
@@ -528,7 +538,7 @@ towards a given attractor.
 
 \item[Vector] Ordered list of numbers ($n$-tuple of numbers). The numbers in a vector are its components. In many cases a vector represents a point. For example: $(2,2)$ is a vector with two components, which represents a point in a plane.
 
-%\item[Vector addition] (Synonym: Vector sum) Two vectors with the same number of components can be added (or summed) by adding their corresponding components. Example: $(1,2) + (3,4) = (4,6)$.
+\item[Vector addition] (Synonym: Vector sum) Two vectors with the same number of components can be added (or summed) by adding their corresponding components. Example: $(1,2) + (3,4) = (4,6)$.
 
 \item[Vector space] A collection of vectors, all of which have the same number of components. For example, the plane is a collection of vectors, all of which have two components. (Note that this is an  informal definition; to be a vector space, a set of vectors must meet further requirements as well).
 
@@ -560,7 +570,7 @@ towards a given attractor.
 
 \item[Zero-shot] The ability of a model or person to perform a task without having seen any specific examples of that task in the context. Zero-shot performance demonstrates that the model has learned generalizable capabilities that transfer to novel situations. Examples include being able to say what will happen if an armload of glassware is dropped or whether a toddler could win an olympic medal.
 
-\item[Zipser's dictum] A term used in this book for the observation that training a neural network on the right task can produce realistic representations, even when the network and its learning algorithm are not biologically realistic. Named for David Zipser, who noted that hidden units trained by biologically implausible algorithms often develop response properties resembling those of real neurons.
+\item[Zero vector] A vector whose components are all $0$. Adding the zero vector to any vector produces the same vector.
 
-%\item[Zero vector] A vector whose components are all $0$. Adding the zero vector to any vector produces the same vector.
+\item[Zipser's dictum] A term used in this book for the observation that training a neural network on the right task can produce realistic representations, even when the network and its learning algorithm are not biologically realistic. Named for David Zipser, who noted that hidden units trained by biologically implausible algorithms often develop response properties resembling those of real neurons.
 \end{description}
