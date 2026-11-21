@@ -55,7 +55,7 @@ into capable systems without fully understanding them. Without first fully
 understanding English semantics, we nonetheless have successfully created
 neural networks that speak English! (Compare the discussion of neural network
 analysis in chapter \extref{ch_applications} and of analysis of transformers in
-section \extref{llm_cogsci}). Mechanistic interpretation is thus sometimes
+chapter \extref{ch_llm_cogsci}). Mechanistic interpretation is thus sometimes
 described as a form of reverse engineering, responding to this un-understood
 accomplishment. An influential paper on the topic describes mechanistic
 interpretability as
@@ -75,8 +75,8 @@ brain that we have complete, transparent access to. One might think of
 mechinterp as ``speedrunning'' neuroscience. Despite their
 inscrutability, the ``programs'' executed by a transformer are far easier to
 scientifically investigate than animal models or human brains are. (Hence the
-intensive interest in LLMs in cognitive science; see section
-\extref{llm_cogsci}).
+intensive interest in LLMs in cognitive science; see chapter
+\extref{ch_llm_cogsci}).
 
 % (I like this but where to put?)  Middle ground between black box ML and white
 % box computer program.
@@ -91,12 +91,13 @@ which extends back to the PDP revolution of the 1980s and 1990s (see chapter
 neural networks are in many ways biologically unrealistic (for example, the
 brain does not seem to use backprop), they can still be used to identify
 processing ideas and motifs that are demonstrably similar to those found in
-human brains \cite{zipser1992identification}. In chapter
+human brains. This is Zipser's dictum (section \extref{zipserDictum})
+\cite{zipser1992identification}. In chapter
 \extref{ch_representations} in particular, we saw how a range of
-network-internal representations could be meaningfully interpreted. In SRNs,
-vowels and consonants correspond to regions of the hidden unit spaces of a
-network trained to predict the next phonemes; grammatical and semantic
-categories correspond to regions of hidden unit space when the SRN is trained
+network-internal representations could be meaningfully interpreted. In NETtalk,
+vowels and consonants correspond to regions of the hidden unit space of a
+network trained to read text aloud; grammatical and semantic
+categories correspond to regions of hidden unit space when an SRN is trained
 to predict the next word in a sequence. We also saw in multiple chapters that
 hidden unit activations of trained neural networks often provide a strong match
 to neural activations in the brain, often better than the best prior models
@@ -251,7 +252,7 @@ space \cite{hoogland2025lossland, bushnaq2024degeneracy}.
 
 % Add logit lens 
 
-\subsection{Linear Probes}
+\subsection{Linear Probes}\label{linearProbes}
 
 % Brief summary of main methods: single unit, multi-unit, local field potential 
 In animal brains, electrode probes are used to ``eavesdrop'' on neuronal
@@ -290,7 +291,10 @@ Probes in a transformer are
 trained using supervised learning (chapter \extref{ch_supervised}). Probes can
 be used when we know in advance what feature we are looking for inside a model
 and already know how to operationalize that feature's presence using training
-labels. Probes can be trained using any classifier architecture, but if a probe
+labels. A probe can also be trained to predict a continuous value rather than
+a category, for example a place's latitude and longitude (section
+\extref{llmConceptualKnowledge}) or a pattern of brain activity (section
+\extref{encodingDecoding}). Probes can be trained using any classifier architecture, but if a probe
 is specifically a ``linear'' probe, its classification is a linear function of
 the activations: it is a simple network with linear nodes and a single layer of
 weights. When a linear probe is successful, it picks out a direction in the
@@ -384,7 +388,7 @@ available. If fewer units are available, the SAE's training will prioritize
 capturing the ``most active'' concepts, ignoring niche concepts that come up
 only rarely.
 
-\subsection{Activation Addition}
+\subsection{Activation Addition}\label{activationAddition}
 
 % Rename to "steering"? 
 
@@ -447,7 +451,7 @@ steering of model behavior.
 % can swap layers around and it will often still; work; damage is mild. An
 % interesting play on the old graceful degradation idea.
 
-\subsection{Ablations}
+\subsection{Ablations}\label{ablations}
 % Some other methods include activation patching ablating,  causal tracing, and
 % interchange intervention.
 In neuroscience, ablation (``lesion'') studies are an important tool for
@@ -545,7 +549,7 @@ MLPs (\cite{nanda2023progress}, section 4.1).
 % will, after sufficient training, converge to possessing that Sierpiński
 % triangle (Shai et al. 2024).
 
-\subsection{Induction Heads}
+\subsection{Induction Heads}\label{inductionHeads}
 
 An early success was the identification of
 attention head activation patterns as semantically meaningful. Helpfully, the

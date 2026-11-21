@@ -1,0 +1,227 @@
+\chapter{LLMs in Practice}\label{ch_llms_practice}
+% Authorship weights are provisional. If the base/chat model and post-training material from AI_Alignment.tex is merged in (see comment below), David Udell should likely be listed first.
+\chapterauthor{Jeff Yoshimi, David Udell}{.5, .5}
+
+
+% Not yet in the master document (like AI_Alignment.tex). Plan: merge in the
+% following from AI_Alignment.tex, leaving alignment proper (prosaic and
+% superintelligence alignment) there:
+%   Base Models and Chat Models (AI_Alignment.tex, section starting line 162)
+%   Pre-Training vs. Post-Training (overlaps the first section below)
+%   Reasoning Models (overlaps the chain-of-thought material in Prompt Engineering)
+% Then add: anatomy of the context window (system prompt, turns, chain of
+% thought, tool calls), tool-call formats, and harnesses.
+
+% Most chat models have special tokens and meta-data. After all the model needs to know what was said by a human user vs what it said itself, and much more. It must be able to send out directions to external tools and be able to search the internet etc. OpenAI has a very comment format for this.  JSON is what is often used. Thus the model learns to spit out json, and then that is interpreted by the program.
+
+% Discuss harnesses, including learned ones. Example https://pi.dev/.  Describe how to set one up and run it using paid tokens. This can be useful. Maybe post a link to a simple example on github.
+
+% A fun example of a prompting strategy is caveman mode to save tokens. . https://github.com/JuliusBrussee/caveman/blob/main/README.md  
+
+This chapter discusses how LLMs are used as functional systems in a technical stack (a collection of components and
+technologies used together in a working production system).  It's one thing to
+know what an LLM is in terms of matrices, etc.  But it is a separate thing to
+know how to integrate an LLM into a running system that people can interact
+with.  There are many practical matters to address.
+
+Even though these are practical issues that have emerged around building
+effective LLMs, with virtually no thought given to cognitive science, we've
+seen that historically it is not uncommon for engineering tools to end up being
+relevant to cognitive science. That trend continues here. Though there was
+little published discussion of them as of the mid-2020s, all of the topics discussed here are relevant to
+cognitive science and to understanding how minds work. 
+
+\section{Pretraining, Post-Training, and Fine-Tuning}
+
+Most LLMs are built on top of \glossary{foundation models} that have been
+pretrained on vast amounts of data, which generally include some subset of the entire internet (see
+section \extref{internetese}). This pretraining gives them broad linguistic
+competence and general background knowledge, arguably solving the problem of
+``background knowledge'' (section \extref{llmPhilosophy}). However, to adapt a
+model for a specific domain---for example, to build a system that can analyze a
+set of legal documents---it must be further trained on a smaller, targeted corpus.
+
+\glossary{Fine-tuning} involves additional training with a relatively small
+learning rate, slightly nudging the weights to better capture the new domain.
+This can be expensive and computationally heavy if done across the entire
+model, but there are various technical tricks that make this more
+efficient.\footnote{For example, LoRA (Low-Rank Adaptation), which adds a small
+number of trainable weights so that only a subset of parameters changes. This
+can be viewed as biasing the model toward a particular task without fully
+rewriting its knowledge.} A gripping example of
+fine-tuning is the case of the late singer Lou Reed's wife creating a special
+LLM which was fine-tuned using ``a vast cache of Reed's writing, songs and
+interviews'', giving it a bit of his
+personality.\footnote{\weburl{https://tinyurl.com/yyd2hjh5}.}  By the mid-2020s, many fine-tuned
+foundation models existed, in biomedical, legal, and many other domains.
+% References
+
+An important class of fine-tuning methods comprises such methods as 
+``instruction tuning'' or ``alignment tuning'',  among which one of the most
+influential is \glossary{reinforcement learning from human feedback} (RLHF).
+Instruction tuning exposes the model to curated examples of how it should
+respond to various prompts, often in the form of high-quality exchanges. In RLHF,
+human raters compare or rate model responses (you may have provided such data when 
+clicking a thumbs-up on a ChatGPT response), and the model is then trained using
+reinforcement learning to produce the kinds of responses people prefer.  These processes give LLMs
+their familiar personalities---for example, their tendency to be polite and helpful, 
+or their knowledge of when to stop talking (the ``when-to-shut-up
+circuit''). 
+% These topics are discussed further in the chapter on value alignment \extref{ch_ai_alignment}.
+% TODO: Add link to that chapter when we have it. Lupyan notes, esp on what
+% GPT3 was like and the role of fine tuning Reference back to Elman and staged
+% learning.  Also the Cowan and activated long term working memory Intuitive
+% idea of things you know deeply in your bones from way back vs more recently
+% learned
+
+\section{Prompt Engineering} 
+
+We saw in section \extref{inContext} that in-context learning is like reasoning in working memory,
+which can be contrasted with training the billions of parameters of a model,
+either initially when training a foundation model or later in fine-tuning.
+There is another approach to processing in a transformer model that is not
+quite a form of learning, but that still impacts its ability to process
+information.  The chat system can in various ways add to or manipulate the text that flows through the
+transformer. 
+
+Suppose you enter a query into ChatGPT. This is often called a \glossary{user prompt}, the thing you ask the
+system about. However, that is not what is actually fed to the network. Behind
+the scenes other information is added.  
+
+For example, at the very start of a session a whole
+block of text called the \glossary{system prompt} is prepended. This preamble might look
+something like this:
+
+\begin{quote}
+You are a helpful, honest, and friendly assistant.\\
+You answer clearly and politely.\\
+If you don't know something, say so.\\
+Do not make things up.
+\end{quote}
+
+This sets the whole tone of a conversation.  So when you query the system ``Tell me about the history of Bulgaria'', what is
+actually sent in to the neural network is the whole system prompt plus your
+user prompt.\footnote{In the Simbrain simulation \simref{Language $>$ (Beta) Pretrained language model (LFM2.5)}, all the tokens in the model's context window are visible, including the system prompt and other tokens usually hidden in a chat.}
+% \footnote{As well as other information that distinguishes you from the system. Much of this is hidden. The mechanics of this is handled via special tokens and other structures. For a sense of how this works search ``chatml'', which is ChatGPT's markup language.}
+% User prompts can ``prime'' the model to act in particular ways, even
+% overriding system-level instructions (as seen in jailbreaks).
+
+But the idea does not end there. Depending on what you say in your prompt,
+other extra information can be added, some of it behind the scenes and
+invisible to the user, and much of it conditional on what you ask. That is, a
+system (external to the neural network) can detect the nature of the prompt and
+dynamically add extra instructions into the prompt before sending it to the
+model. This is encoded in a \glossary{prompting strategy}. For example, if you
+ask a mathematics question, behind the scenes it might add this to your query:
+``When answering math questions, show all steps and use LaTeX formatting.''
+% Prompt injection. Prompt orchestration.  What are the right terms here? There
+% are lightweight and heavyweight forms of prompt adjustment. Simply rewriting
+% your input is one way; using tools like LangChain to programmatically slot in
+% user queries, context, and examples is a more structured approach. This has
+% led to the emergence of ``LLM orchestration,'' which involves managing not
+% just the prompt itself but the whole lifecycle of interaction—storing memory
+% between sessions, structuring context, and choosing what background
+% information to include.
+
+% Reference
+In fact, this kind of strategy is behind what has been called the ``reasoning
+revolution'' in LLMs, which began around 2022 \cite{wei2022chain}. Earlier LLMs had serious trouble
+with reasoning tasks, as emphasized in critiques like those of Melanie Mitchell
+(see section \extref{llmReasoning}). However, simply by a special form of
+prompting, the systems can do much better.  For example, \glossary{chain of
+thought} encourages the model to articulate intermediate reasoning steps, which
+often improves its final answer. This was evident in the example above of
+telling the system to ``show all steps''. Later ``reasoning models'' were further trained,
+using reinforcement learning, to produce long chains of thought on their own. In this way, as the model is working
+through a problem, it feeds itself information, into its ``working memory'',
+that allows it to answer things.
+
+This is close to an old idea in embodied cognitive science that we don't solve
+problems on our own, but only do so in the context of environmental artifacts.
+To take a classic example from the PDP volumes \cite{rumelhart1986schemata}, when solving a long multiplication
+problem it is essential to have a piece of paper available where intermediate
+results can be written down. Without pen and paper could you compute 343 times
+822? The paper is used to store intermediate results. It's not a special
+brain circuit; it's a way of using environmental artifacts to help in a
+computation. In a similar way the LLM is spitting out results that then get
+fed back to it, which help it reason its way through problems.
+
+% Bring out more of the  connection between framing and embodied cognition, and
+% how we can’t put everything in our minds at once and so we need to work
+% closely with external artifacts, often making a to-do list or breaking a
+% prompt down in the subparts or talking to someone and having a debate as in
+% debate based reasoning so there’s a lot of cognitive significance here it’s
+% not just about the brain. It’s about how the brain and artifacts interact.
+% Can ask gpt for examples.  For example how you ask a question 
+
+%These days quite a bit of this happens, and you can see it on systems like ChatGPT when it flashes information about what it's thinking about.
+ 
+% Multi-hop reasoning https://arxiv.org/abs/2403.09629 "Chain of Thought" it
+% prompts itself
+
+\section{Agentic Systems}
+
+% David: you said keywords here are "wrapper" and "scaffold."
+
+A final trend to note is the advent of \glossary{agentic systems}, wherein an
+LLM delegates subtasks to external software or to other LLM instances. The idea
+is that an LLM does not just churn out a text response, but is rather empowered
+to \emph{do} things. It can, for example, send a query to the
+internet. The result of this query can be fed back into the LLM, and it
+can then make a more informed response. For example, it can gather information about events that occurred after it was trained. This is probably familiar to you. LLM-based systems
+often query the internet (many give you a sense that they are doing
+this, flashing an image of the websites they are querying).
+
+Agentic LLMs can also be equipped to write and run code, executing commands and refining code repeatedly until a desired output is obtained.
+By the mid-2020s, LLM coding assistants had become commonplace in computer
+programming, in tools like Cursor. A user can ask for a particular function,
+described in natural language, and the AI will generate the function and debug
+its code as runtime errors appear.
+
+Note that a special model does not necessarily have to be fine-tuned for this
+to work. Indeed, agentic systems are usually built on general-purpose frontier
+LLMs, just set up with an appropriate system prompt and placed inside a
+software wrapper that will take the model's agentic output and respond to it accordingly. It is
+the \emph{LLM} that is doing all the heavy lifting here; if the transformer
+were unable to write Python, or unable to write coherent notes to itself, etc.,
+then no toolset would fix that deficiency. What we are doing with agentic
+wrappers is just giving the model tools that it either already knows how to use
+or is able to learn to use in context. To the extent that models beat Pok\'emon,
+write novel code, etc., it is a glimmer of their general competence with
+arbitrary tools and interfaces shining through.
+
+%just set up with an appropriate system prompt and placed inside a
+%software wrapper that will take the model's written source code (or whatever
+%special text it is outputting) and respond to that output accordingly. It is
+%the \emph{LLM} that is doing all the heavy-lifting here; if the transformer
+%were unable to write Python, or unable to leave coherent notes to itself, etc.,
+%then no toolset would fix that deficiency. What we are doing with agentic
+%wrappers is just giving the model tools that is either already knows how to use
+%or is able to learn to use in context. To the extent that models beat Pokemon,
+%write novel code, etc., it is a glimmer of their general competence with
+%arbitrary tools and interfaces shining through.
+
+
+% Society of mind Ron Sun: https://arxiv.org/abs/2410.20037 Mixture of Experts 
+
+% Rags. Semantically encode a document. (ref to that chapter) Finds similar
+% things from your corpus. Fills those semantically similar things into anther
+% slot. So rather than filing up a giant context window, can selectively sample
+% from it and the RAG will fill that.
+% https://en.wikipedia.org/wiki/Retrieval-augmented_generation. Do a semantic
+% encoding of your entire corpus. everything you want it to reference. Like a
+% library of pdfs. Run a prelim system that goes through a datbase of pdfs and
+% codes up each chunk in terms of what it's about. Then when you load your
+% model it fits within a context window all the information that is as close as
+% possible to your query. A way to fill the context window with relevant
+% material when your overall corpus is too big to fit in the context menu. 
+
+% See Millier part 2, 3.1.2. ‘Agent’ systems
+% https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
+% You can see this working in claude 2.7. Shows itself writing the code to call
+% out to a console log what's in that document on the internet. LLM takes the
+% task, breaks it up and sends bit of the task to different agents. LLM is
+% instructed to take your task, decompose it, and pass those to different
+% agents. Tim has a cool example of a simulated hospital:
+% https://arxiv.org/html/2405.02957v3 The relevance here is to the old cogsci
+% debates of merging AI and Connectionism.
