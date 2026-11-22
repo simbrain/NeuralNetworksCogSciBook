@@ -159,6 +159,62 @@ fed back to it, which help it reason its way through problems.
 % Multi-hop reasoning https://arxiv.org/abs/2403.09629 "Chain of Thought" it
 % prompts itself
 
+\section{Special Tokens and Harnesses}\label{specialTokens}
+
+As noted in section \extref{recursiveTrick}, the context window of a chat model
+contains special tokens that are usually hidden in a chat interface. Here is
+roughly what a short conversation looks like to the network, in the format used
+by the LFM2 models (which is similar to the ChatML format used by OpenAI):
+
+\begin{quote}
+\texttt{<|startoftext|><|im\_start|>system}\\
+\texttt{You are a helpful assistant.<|im\_end|>}\\
+\texttt{<|im\_start|>user}\\
+\texttt{hello how are you?<|im\_end|>}\\
+\texttt{<|im\_start|>assistant}\\
+\texttt{good thank you. how are you?<|im\_end|>}
+\end{quote}
+
+Each special token, such as \texttt{<|im\_start|>}, is a single token in the
+model's vocabulary with its own embedding, just like a word. But it has a
+control meaning rather than an ordinary linguistic one. \texttt{<|im\_start|>}
+opens a message and is followed by a role (system, user, or assistant), and
+\texttt{<|im\_end|>} closes the message. Other special tokens mark tool calls
+and their results, and in some models the start and end of a chain of thought.
+Different model families use different formats, known as chat templates.
+
+A base model has no particular use for these tokens. A chat model learns to use
+them during fine-tuning, by being trained on many conversations written in this
+format. It learns, for example, that after \texttt{<|im\_start|>assistant} it
+should write a reply and then produce \texttt{<|im\_end|>}.
+
+Special tokens are what allow the network to be embedded in a larger piece of
+software, often called a \emph{harness}. The harness formats the conversation
+using the chat template, runs the recursive trick, and watches what the model
+produces. When the model produces \texttt{<|im\_end|>}, the harness stops
+generating, shows the reply without the special tokens, and waits for the user.
+When the model produces a tool call, the harness runs the tool and appends the
+result, wrapped in its own special tokens, to the context. The network itself
+only ever predicts next tokens. Turn taking, the hidden system prompt, and the
+use of tools are all handled by the harness reading and writing special
+tokens.\footnote{In the Simbrain simulation
+\simref{Language $>$ (Beta) Pretrained language model (LFM2.5)}, these special
+tokens are visible in the context window, and a color theme can be used to
+distinguish user text, model text, system text, and tool activity.}
+
+There is a cognitive science analog here. Minsky argued that the mind is a
+``society'' of many simpler agents \cite{minsky1986society}, and Marcus
+describes it as a \emph{kluge}, a haphazard collection of special-purpose
+systems assembled over the course of evolution \cite{marcus2008kluge}. On
+views like these, no single system does all the work. In a similar way, the
+trained transformer discussed in chapter \extref{ch_transformers}, and probed
+for its cognitive relevance in chapter \extref{ch_llm_cogsci}, is just one part
+of a larger system, which includes a harness and the tools it manages. Many of
+the components of a real harness are not psychologically realistic at all, but
+the coarse-grained point stands: in both cases, intelligent behavior comes from
+many systems working together, of which any single learning system is only one
+part.
+
 \section{Agentic Systems}
 
 % David: you said keywords here are "wrapper" and "scaffold."

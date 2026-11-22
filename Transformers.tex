@@ -14,8 +14,6 @@
 
 % In what sense did we "build a thing we don't understand"? Well, we can't point at a working transformer and say "this is the language circuit",  "this is the syntax circuit." We can't actually tell you down to the wiring how it accomplishes what it does. Where is San Francisco stored and how is it called up and put together with knowledge about dancing in answering a question about dance studios in SF?
 
-% Need a new image showing a context window and how it's broken up into user inputs, model responses, chain of thought, and maybe mentioning hidden tokens
-
 % Explore features! (But for mechinterp?)
 % https://www.neuronpedia.org/search-explanations/?q=cup 
 
@@ -36,8 +34,8 @@
 % queries), and then within these hallucinations as a type (perhaps: LLM
 % outputs that are convincing but factually incorrect). Ref to \extref{evaluatingNN}
 
-In their most familiar form, a \glossary{large language model} (LLM) based on the
-\glossary{transformer architecture} generates text responses to text inputs by
+A \glossary{large language model} (LLM) based on the
+\glossary{transformer architecture} typically generates text responses to text inputs by
 repeatedly predicting the next word or token in a sequence.\footnote{The
 concept of token is introduced in chapter \extref{ch_word_embeddings}.
 Following practice introduced there we will vacillate between ``token'', which
@@ -47,12 +45,12 @@ large datasets of everyday text, like text from the internet, which is easily
 available. As noted in section \extref{age_generative_ai}, it is common to
 equate ``transformer'' with ``LLM'', but the two concepts are distinct. The
 transformer is a neural network architecture, while an LLM is any model
-of language generation trained on a large dataset. An LLM can be built
+of language generation trained on a large dataset.
+In this chapter we focus on transformer-based models of text
+generation like GPT.\footnote{An LLM can be built
 out of something besides transformers, and transformers can generate non-linguistic data. For example, by the mid-2020s some state-of-the-art image classification
 models were transformer based, and OpenAI's video
-generation model Sora (2024) ran on a transformer architecture.
-However, in this chapter we focus on transformer-based models of text
-generation like GPT.\footnote{There are many other models in this class, including
+generation model Sora (2024) ran on a transformer architecture. Transformer-based LLMs include
 OpenAI's GPT series, Google's Gemini, Anthropic's Claude, and Meta's Llama.
 Most of these models can only be accessed online but some can be
 downloaded and run locally, further fine-tuned, etc. The Simbrain simulation
@@ -148,16 +146,16 @@ chapter on how LLMs are used in practice (post-training, prompting, and agentic
 systems) is planned for a future release.
 
 Changes in this area are rapid, and the relevance of these areas to cognitive
-science only began to be studied in the early 2020s, so frequent updates to this chapter are expected.
+science only began to be studied in the early 2020s, so frequent updates to these chapters are expected.
 
 \section{In-Context Processing}\label{inContext}
 
-Recall from the introduction (section \extref{performanceLearning}) that we distinguish between learning (updating parameters during training) and inference or performance (using those parameters to process inputs). In-context processing happens entirely at inference time, without any parameter updates.
-
-Thus far in the book we have focused on learning via updates to weights
-and biases, that is, learning via incremental updates to the parameters of a neural
-network. LLMs are no exception; they learn via updates to their billions or trillions of
-parameters. However, LLMs have a remarkable feature: an ability to process a great deal of information at inference time, in their \glossary{context window}, or more concisely, their ``context''.\footnote{Usage has not stabilized yet, and these two terms (``context'' and ``context window'') are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of the power of LLMs. Without any weight training, they can reason their way through a problem or innovate a new idea.
+Thus far in the book we have focused on learning via incremental updates to the
+weights and biases of a neural network. LLMs are no exception; they learn via updates to their billions or trillions of
+parameters. However, LLMs have a remarkable feature: an ability to process a great deal of information at inference time, in their \glossary{context window}, or more concisely, their ``context''.\footnote{Usage has not stabilized yet, and these two terms (``context'' and ``context window'') are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} Recall from the introduction (section
+\extref{performanceLearning}) that inference (or performance) means using
+learned parameters to process inputs, as opposed to updating those parameters
+during training. In-context processing happens entirely at inference time. This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of the power of LLMs. Without any weight training, they can reason their way through a problem or innovate a new idea.
 
 The point is often made in terms of ``zero-shot'' and ``few-shot''
 learning. The word ``learning'' here is \emph{not} a reference to training weights, but rather how an LLM can do new things by combining its prior training with information in the context window.  They are ``learning'' in the same way  a person going to a new job can learn how to do something using instructions in their working memory together with their background knowledge. \glossary{Zero-shot} learning refers to the ability of transformers
@@ -173,12 +171,13 @@ perhaps ``in-context processing'' is a better description for it. Even if in AI
 terms this is learning, in another sense it more resembles the human ability to
 process fresh information held in working or short-term memory. The working
 memory capacity of frontier LLMs (the most advanced large-scale models on the market, such as Claude and ChatGPT) is much larger than that of humans, and they don't seem to be restricted to juggling the classic 7 $\pm$ 2
-items of human working memory.\footnote{Of note is the discovery that merely giving an LLM a larger
+items of human working memory. As of 2026, frontier LLMs effectively had a
+working memory hundreds or thousands of pages long.\footnote{Of note is the discovery that merely giving an LLM a larger
 context window does not automatically give it a correspondingly large working
 memory. Though some frontier models can hold entire books inside their context,
 their attention is spread thin over such a large context and their ability to
 successfully cite information will not work as well as it does in a more
-reasonably sized context.}
+reasonably sized context \cite{liu2024lost}.}
 % Some have said that LLMs have anterograde amnesia.  See Karpathye.
 %  Also working memory, and framing effects, and how the
 % way you currently think of something separately from your existing conceptual
@@ -194,29 +193,26 @@ LLMs, and so we turn to that now.
 
 % Another approach to describing this. There is a kind of I (JKY) sometimes have, like what if I hundreds of years to study everything. Well, this is kind of what such a person would be like.  Except they did in a month with a very large brain and an insane force-feeding regimen.
 
-In section \extref{languageModelsRecurrent}, we saw how recurrent neural
-networks trained on example text can learn to speak in a way that reflects the
-statistical properties of the training data. A network trained on Shakespeare
-will start to speak fake Shakespeare, a network trained on real math can
-generate fake math, etc. Large language models using transformers do the same
-thing, just much better. The architecture is better suited to the
-task, as we will see, and they can be efficiently trained on far larger
-datasets (hence ``large'' being added on to ``language model''). In fact, the
-training set for GPT-3 was not all of Shakespeare, or just a bunch of math
-papers, but rather a large subset of the \emph{entire internet}, which included
-all of Wikipedia, a few compilations of books, and a web-scraped archive of the
-internet called ``Common Crawl''
-(\weburl{https://en.wikipedia.org/wiki/Common_Crawl}). See figure
-\ref{gptDatasets}. Similar datasets are used to train all frontier LLMs. If you've
-ever written anything online, there is a decent chance it is part of the
-training data of one of those models.
+LLMs are trained on an enormous amount of text. The training set for GPT-3 was
+a large subset of the \emph{entire internet}, which included all of Wikipedia,
+several compilations of books, and a web-scraped archive of the internet called
+``Common Crawl'' (\weburl{https://en.wikipedia.org/wiki/Common_Crawl}). See
+figure \ref{gptDatasets}. Similar datasets are used to train all frontier LLMs.
+If you've ever written anything online, there is a decent chance it is part of
+the training data of one of those models.\footnote{Language models have a
+longer history. In section \extref{languageModelsRecurrent} we saw how
+recurrent networks trained on example text learn to produce text with the
+statistical properties of that text: a network trained on Shakespeare produces
+fake Shakespeare, and one trained on math papers produces fake math.
+Transformers do the same thing much better, partly because the architecture is
+better suited to the task, and partly because they can be efficiently trained on
+far larger datasets (hence the ``large'' in ``large language model'').}
 
-Since all of Shakespeare is on the internet, as well as discussions of every
-topic of human endeavor from physics to history, plus plenty of gossip and
-random content about popular culture and everything else, these models can talk
-about all of these things. They can statistically generalize from that training
-data, which encompasses much of recorded human knowledge. In a sense, after an
-extensive period practicing, these models successfully speak ``internetese''.
+The internet contains discussions of every topic of human endeavor, from physics
+to history, along with plenty of gossip and popular culture. Since LLMs are
+trained on all of this, they can talk about all of it, statistically
+generalizing from training data that encompasses much of recorded human
+knowledge. In a sense, they learn to speak ``internetese''.
 
 \begin{figure}[ht]
 \centering
@@ -227,13 +223,19 @@ Wikipedia, though lots of scanned books are also included.}
 \label{gptDatasets}
 \end{figure}
 
-The results are impressive. The text frontier models produce is no longer
-obviously fake in the way the examples from section
-\extref{languageModelsRecurrent} were. In some cases these models arguably pass
-the \glossary{Turing Test}, a long-standing test for artificial general
-intelligence: over text chat, some models can pass for human to a human
-questioner. Whether LLMs truly pass the Turing Test is a matter of ongoing
-controversy \cite{jones2024does}; we discuss this further in section \extref{llmPhilosophy}.
+But internetese is a strange language. In fact a raw model trained in this way, what is also known as a
+\glossary{base model}, does not answer questions or hold conversations at all. It
+continues text the way that text might continue on the internet. Give it a
+question and it might reply like a Redditor, then shift into the tone of a
+Wikipedia article, then invent a comment thread or a website footer full of
+links to pages that don't exist. Its tone and persona keep changing, because
+it is not one speaker but a statistical model of millions of them. This is what
+raw internetese sounds like. 
+
+Base models only become the butler-like chatbots we are familiar with after a further process known as \glossary{fine-tuning}, which turns a base model into a \glossary{chat model} that answers
+questions, follows instructions, and knows when to stop talking. This process involves further refinement of weights using special techniques, and targeted human feedback. It's a kind of finishing school for wild and crazy base models. This step is
+essential to producing a usable conversational
+partner. Fine-tuning is discussed in chapter \extref{ch_llms_practice}.
 
 \section{Training Using Next-Word Prediction}
 
@@ -248,18 +250,17 @@ targets are endogenous to the training data itself.\footnote{This insight is not
 
 % What is actually done is that multiple training examples are created from a given piece of text. We slide this window across the entire sequence so that each token predicts the one that follows it.
 Each sequence is used to predict the next item in that sequence.
-LLMs like GPT use a special method (known as \glossary{auto-regression}) to
-take \emph{any passage of text} and convert it into a labeled dataset that can
-be used to train a neural network. The trick is, roughly, to treat the vector
-embeddings of a sequence of text tokens (minus the last token in the sequence)
+LLMs like GPT take \emph{any passage of text} and convert it into a labeled
+dataset that can be used to train a neural network, by predicting each next
+token from the tokens before it (\glossary{auto-regression}). The trick is, roughly, to treat the vector
+embeddings (chapter \extref{ch_word_embeddings}) of a sequence of text tokens (minus the last token in the sequence)
 as one big input, and then to treat the final token in
 the sequence, encoded as a one-hot vector over all possible tokens, as the target. That is, we predict the next token in a sequence from everything before it.
 We are still using supervised learning, as in chapter \extref{ch_supervised},
 associating inputs with targets or labels, but the targets are not provided
 separately and are instead right there in the training data. It's extremely
-convenient!  This is called \glossary{self-supervised learning}.\footnote{Self-supervised learning 
-is any form of learning where targets can be created using only the input signal. Auto-regression is the more 
-specific method where the model predicts each next token in a sequence from the tokens that came before it.}
+convenient!  This is called \glossary{self-supervised learning}.\footnote{Self-supervised learning
+is any form of learning where targets can be created using only the input signal. Auto-regression means predicting each item in a sequence from the items that came before it. The two concepts are closely related but distinct. We can have auto-regression without self-supervision: an image captioning model generates captions autoregressively, one word at a time, but is trained on captions written by people, so its training is supervised in the ordinary sense. We can also have self-supervision without auto-regression: a BERT-style model hides a word in the middle of a sentence and predicts it using the words after it as well as the words before it, so it is not predicting each word from earlier words only. LLMs like GPT are both self-supervised and autoregressive.}
 Self-supervised training can be used to generate a labeled dataset
 from any text document. We no longer have the difficulty of creating
 ``ground-truth'' labels, as the term ``supervised learning'' may imply. In
@@ -280,31 +281,28 @@ From this excerpt, we create a bunch of training examples, a list of
 input/target pairings. For example, ``The University of'' is used to predict ``California'', and ``The University of California, Merced is a public'' is used to predict ``land''.\footnote{In training, this is just one long sequence where the target
 sequence is a version of the input shifted one token to the left.}
 
-Technically, the transformer itself does not directly input or output text
-tokens. Each token in the input is first turned into a vector using a word
-embedding matrix (chapter \extref{ch_word_embeddings}). The target is also
-vector encoded, but as an output instead of as an input: the target becomes a
-one-hot encoding vector over all possible tokens, where all entries in the
+The network itself does not directly process text tokens; they must first be converted into a numerical format. Each token in the input is turned into a vector using a word or token embedding (the two terms are synonymous; see chapter \extref{ch_word_embeddings}). The target is also
+a vector, but it is not an embedding. Instead it is a
+one-hot vector over all possible tokens, where all entries in the
 vector are 0 except for the actual next token's entry, which is 1. (We discuss
-this further in section \ref{llmOutput}.) In this way we process text into a
-table of input-target \emph{vector} pairs, which we can use to train a
-feed-forward neural network (see figure
+this further in section \ref{llmOutput}.) In this way text data is converted into input-target vector pairs, which we can use to train a feed-forward neural network (see figure
 \ref{nextWordPrediction}).\footnote{Note that a longer word like ``university''
 would normally be broken up into multiple tokens: \texttt{un} and
 \texttt{iversity} is a typical tokenization for it. We are neglecting this
 complication here to keep things simple. More on tokenization in chapter
-\extref{ch_word_embeddings}.} This table is a matrix where each row corresponds
-to the token embedding for one token; it has the shape (sequence size,
-embedding dimension) and it is the actual input to the neural network. The network transforms \emph{stacks} of vectors by
-weight matrices. In this way we continue to make use of the ``row processing'' perspective introduced in section \extref{matrixMultiplication}.\footnote{What is actually fed to the transformer is a batch of these
+\extref{ch_word_embeddings}.}  
+
+So, the input to a network is generated by taking all the tokens in the context window and producing a vector for each one using the embedding. We will think of this in terms of a matrix, as in figure \ref{nextWordPrediction}, where each row corresponds
+to the token embedding for one token. This input has the \glossary{shape} (sequence size,
+embedding dimension). It is a direct numerical representation of the context window. It is useful to think of it as a stack of vectors, one for each token in context. The network then transforms these stacks of vectors.\footnote{What is actually fed to the transformer is a batch of these
 token embedding matrices, that is, a rank-3 tensor with shape (batch size,
 sequence size, embedding dimension; see section \extref{sect_tensors}).}
 
 \begin{figure}[ht]
 \centering
-\accessibleimage[width=\textwidth]{./images/contextWindow.pdf}{Three training examples built from the text ``hello how are you ? good thank you''. Each row gives a growing sequence of input tokens and their four-dimensional embeddings, with the next token as a one-hot target.}
+\accessibleimage[width=.85\textwidth]{./images/contextWindow.pdf}{Three training examples built from the text ``hello how are you ? good thank you''. Each row gives a growing sequence of input tokens and their four-dimensional embeddings, with the next token as a one-hot target.}
 \caption[Jeff Yoshimi]{How text sequences can be converted into training
-datasets using the method of auto-regression. A set of tokens is converted into
+datasets using the method of auto-regression. A sequence of tokens is converted into
 vectors using a token embedding (the vectors shown are arbitrary, just to
 illustrate the idea); by stacking these vectors we get an input matrix.
 The next token in the sequence is encoded as a target using a one-hot encoding
@@ -316,19 +314,21 @@ the question mark).}
 The word embeddings in figure \ref{nextWordPrediction} and figure
 \ref{sequenceDim} are 4-dimensional (each token is associated with an array of
 4 numbers, a vector in a 4d space). In practice, this ``embedding dimension''
-is quite a bit larger. For example, the embedding dimension is over 12,000 for GPT-3 (see figure \ref{gptParams}).
+is quite a bit larger. For example, the embedding dimension is over 12,000 for GPT-3 (see figure \ref{gptParams}).\footnote{Bigger is not always better here. Since the embedding dimension affects the size of most weight matrices in the network, by 2026 there was a movement toward smaller embedding dimensions for efficiency. For example, DeepSeek-V3 (2024) had far more parameters than GPT-3 (671 billion) but an embedding dimension of about 7,000.}
 
 \begin{figure}[ht]
 \centering
-\accessibleimage[scale=.45]{./images/contextWindowAsStack.png}{A context window of eleven rows listing the tokens ``hello how are you ? good thank you .'', with blank rows, beside a matrix of four-dimensional embedding vectors. Both occurrences of ``you'' have the same vector.}
+\accessibleimage[scale=.33]{./images/contextWindowAsStack.png}{A context window of eleven rows listing the tokens ``hello how are you ? good thank you .'', with blank rows, beside a matrix of four-dimensional embedding vectors. Both occurrences of ``you'' have the same vector.}
 \caption[Jeff Yoshimi]{The context is associated with a matrix that can
 be thought of as a stack of vectors, one for each token. Notice that ``you''
-occurs twice and is associated with the same vector.
+occurs twice and is associated with the same vector. However, as these vectors
+are processed through the network, their representations will change in a way
+that distinguishes the two uses.
 }
 \label{sequenceDim}
 \end{figure}
 
-Note that each token in the stack of token embeddings sent to the network is processed separately through its many layers, acquiring different meanings and context as it does.\footnote{Recall the discussion of matrix multiplication and the ``row processing'' perspective (section \extref{matrixMultiplication}), where we can view a matrix multiplication as taking a stack of $N$ row vectors on the left, multiplying them by a matrix on the right, to produce another stack of $N$ row vectors, each of which has been \emph{separately processed} by the matrix on the right.  These ideas apply here.  In fact, with the exception of the self-attention matrix (which considers all the relationships between tokens), all other processing in an LLM operates separately on each token's representation. As a result, we can separately track the transformations a token's vector representation goes through as it makes its way through a network.  We will return to this idea below when we discuss the ``residual stream''.} For example, consider the word ``you'' in figure \ref{sequenceDim}. This is the same word repeated twice, so at the input level, it is associated with the same vector embedding, in this case $(1,2,5,6)$.\footnote{This is not quite right, since something called a positional encoding is often added even at the input level. But even when these positional encodings are removed the points made here apply.} But as the two tokens are processed through the network, their representation will change, reflecting their different positions and functions in the sentence.
+Each token in the stack of token embeddings sent to the network is processed separately through its many layers, acquiring different meanings and context as it does.\footnote{Recall the discussion of matrix multiplication and the ``row processing'' perspective (section \extref{matrixMultiplication}), where we can view a matrix multiplication as taking a stack of $N$ row vectors on the left, multiplying them by a matrix on the right, to produce another stack of $N$ row vectors, each of which has been \emph{separately processed} by the matrix on the right.  These ideas apply here.  In fact, with the exception of the self-attention matrix (which considers all the relationships between tokens), all other processing in an LLM operates separately on each token's representation. As a result, we can separately track the transformations a token's vector representation goes through as it makes its way through a network.  We will return to this idea below when we discuss the ``residual stream''.} For example, consider the word ``you'' in figure \ref{sequenceDim}. This is the same word repeated twice, so at the input level, it is associated with the same vector embedding, in this case $(1,2,5,6)$.\footnote{This is not quite right, since something called a positional encoding is often added even at the input level. But even when these positional encodings are removed the points made here apply.} But as the two tokens are processed through the network, their representation will change, reflecting their different positions and functions in the sentence.
 % Residual stream as a "cumulative computational workspace" (Pierre paper)
 
 % We can picture the residual stream as a big shared whiteboard that every
@@ -364,16 +364,17 @@ Note that each token in the stack of token embeddings sent to the network is pro
   
 \section{How Conversations Are Generated Using Next-Token Predictions}\label{recursiveTrick}
 
+The inner workings of a transformer are complex, so we are easing into the
+topic by treating the network as a black box. We have seen what goes into it:
+stacks of token embeddings. In this section we consider how a network that only
+predicts next tokens can produce whole conversations, what comes out of it, and
+its hyperparameters, which give a sense of its scale and structure. With these
+in place, it will be easier to open the box in section \ref{transformers}.
+
 \subsection{The Recursive Trick}
 
-% Pictures needed for recursion trick and context window. E.g take second
-% figure in this chapter and add some arrows or numbers showing how to generate
-% sequences. Clarify somewehere that padding is not usually used at the end of
-% a context window. The stacks of vectors and self-attention matrix can be
-% variable-sized depending on the length of the current chat. This is missing.
-
 One confusing thing about figure \ref{nextWordPrediction} is that we go from a
-large input covering a whole set of tokens to a single token as output. So
+large input covering a whole sequence of tokens to a single token as output. So
 great, we can predict single words. But how do we go from single words to
 generating long text outputs, or having conversations? In fact, in hearing
 about generative AI as ``next-word prediction'' machines, you may have
@@ -383,35 +384,20 @@ do is predict next words.
 % More discussion of special tokens like end-of-sequence is probably needed,
 % and maybe further up. The network itself is feedforward, but its interaction
 % with an environment is recursive.
-The answer is by using what we can call the ``recursive trick''. This trick
-allows us to take a feed-forward network that only predicts next words and use
-it to produce streams of text output. We feed
-a network a set of inputs corresponding to a string of text, and it produces an
-output corresponding to the predicted next token. That output is then appended
-to the previous input, and this longer input is now fed back to the network.
-This process is repeated to produce a stream of text outputs. This technique
-can be used to generate unending sequences of text from any
-prompt.\footnote{Notice that this is a kind of recurrence, and arguably this
-makes LLMs used in this way a kind of recurrent network. Outputs are fed back
-in as part of inputs. However, the outputs are text that must be converted back
-to text inputs, which are then vector encoded. In fact, recurrent networks were
-originally used for text processing, as we saw in chapter
-\extref{ch_supervised_recurrent}, but it turns out that fancy feed-forward
-networks used in this way outperform them. (In those cases, a vector
-representation of each token in the sequence would be presented separately:
-``hello'', ``how'', ``are'', ``you'', ``?'').} The prompt is our input, and
+The answer is what we can call the ``recursive trick'': take the network's
+output, append it to the input, and feed the result back in. Then repeat.
+That's it! We feed the network a sequence of tokens, and it predicts the next
+token. That token is appended to the input, and this longer input is fed back
+to the network, which predicts another token, and so on. This technique can be
+used to generate unending sequences of text from any prompt. The prompt is our input, and
 then answers are generated using the recursive trick. Text will continue to be
 generated until a special end-of-sequence token is reached.
 %\footnote{For more on the post-training that enables ChatGPT and other frontier models to carry on a conversation with a human-like persona, see \extref{ch_ai_alignment}.}
 % Also RLAIF — Reinforcement Learning from AI Feedback
 
-So this gets us one response. But then you type a new question. That
-\emph{entire question} is appended to the \emph{entire past conversation}
-including both what you and GPT have said so far.
-
 Suppose, for example, we want to ask a network ``hello how are you?'' The input
-to the network is the whole sentence $\{$``hello'', ``how'', ``are'', ``you'',
-``?''$\}$. Let's  not worry about the vector embeddings, and just see the
+to the network is the whole sequence (``hello'', ``how'', ``are'', ``you'',
+``?''). Let's  not worry about the vector embeddings, and just see the
 general idea, as shown in figure \ref{gptRecursedInputs}. Notice that the
 initial prompt is the initial input, but then the prompt \emph{and} the first
 word of the response are used as the next input, and this process can be
@@ -419,7 +405,7 @@ repeated until a response is written out.
   
 \begin{figure}[ht]
 \centering
-\accessibleimage[scale=.7]{./images/gptRecursedInputs.png}{Autoregressive GPT process. A context window of tokens and embeddings enters stacked transformer blocks to predict a next token; the predicted token is added to the context and the process repeats.}
+\accessibleimage[scale=.55]{./images/gptRecursedInputs.png}{Autoregressive GPT process. A context window of tokens and embeddings enters stacked transformer blocks to predict a next token; the predicted token is added to the context and the process repeats.}
 \caption[Jeff Yoshimi]{A schematic view of how ``conversations'' are generated
 from feed-forward networks in systems like ChatGPT. The output at one time is
 concatenated to the input at that time, and that is then used as the input at
@@ -428,24 +414,70 @@ the next time step. This process is repeated to generate a full response.
 \label{gptRecursedInputs}
 \end{figure}
 
+So this gets us one response. But then you type a new question. That
+\emph{entire question} is appended to the \emph{entire past conversation}
+including both what you and the model have said so far. This growing record of
+the conversation is the context window discussed in section \ref{inContext}.
+Everything the model processes ``in context'' is this one sequence of tokens
+(figure \ref{chatContext}).
+
+\begin{figure}[ht]
+\centering
+\accessibleimage[width=.85\textwidth]{./images/chatContext.pdf}{A large box labeled context window contains four turns of a conversation stacked in order: user ``hello how are you?'', model ``good thank you. how are you?'', user ``good thank you.'', and a model turn showing only a cursor. Model turns are shaded gray. An arrow leads to a stack of four-dimensional token embeddings, one row per token, grouped by turn with thin outlines; repeated tokens have identical rows.}
+\caption[Jeff Yoshimi]{A conversation in a context window. The user's prompts
+and the model's responses (gray) form a single sequence of tokens. On the right
+is the input the network actually receives: a stack of token embeddings, one
+row per token, with the same embeddings as figure \ref{sequenceDim}. The model's
+next response is about to be generated using the recursive trick. Special
+tokens, which mark the turns, are left out for simplicity.}
+\label{chatContext}
+\end{figure}
+
+How does the model know when to stop and let you talk? The context window
+contains more than the words you see. It also contains \emph{special tokens},
+which are usually hidden in a chat interface. Special tokens mark the start of
+a document, the start and end of each turn, who is speaking (the user, the
+model, or the system), and other structure such as requests to use tools. When
+the model generates an end-of-turn token, the software running the model (often
+called a \emph{harness}) stops generating, displays the response, and waits for
+your next message. It then wraps your message in the appropriate special tokens,
+appends it to the context, and starts the recursive trick again. Chat models
+learn to use these tokens during fine-tuning (section \ref{internetese}), which
+trains them on conversations formatted with special tokens. Special tokens and
+harnesses are discussed further in section \extref{specialTokens}.\footnote{In
+the Simbrain simulation
+\simref{Language $>$ (Beta) Pretrained language model (LFM2.5)}, all tokens in the context window are visible, including special
+tokens like \texttt{<|im\_start|>} and \texttt{<|im\_end|>}, which open and
+close each turn.}
+
 Of course, as we keep doing this, the inputs to the network get larger and
 larger. There must be some limit to how far we can go, right? The answer is
-yes. An LLM's hyperparameters include a context window value: the
-maximum length of context that the LLM will read. At the start of a chat
-instance, the context starts small, with only an initial prompt. In the course of a dialog,
-the prompts from a person and the responses from the LLM are both included
-until the context window is filled. Thus, if the context window is large
-enough, whole series of back and forth conversations can be processed. All the
-prompts and responses up to the current point are included as part of the input, and
-then the LLM uses the recursive trick to generate new responses that are
-sensitive to everything that's been discussed thus far. When the length of the
-context grows larger than the context window value, text can simply be dropped from
-the start of the context, to fit (from a computer science standpoint, this is a
-queue). This is intuitive in figures \ref{nextWordPrediction} and
-\ref{gptRecursedInputs}. Many LLMs can also retrieve earlier context using a variety of context compression
-techniques.
+yes. An LLM's hyperparameters include a context window size: the
+maximum number of tokens the LLM will read. This is the capacity of the
+``working memory'' discussed in section \ref{inContext}. At the start of a
+chat, the context is small, containing only an initial prompt. It grows as the
+prompts from a person and the responses from the LLM are added.\footnote{Figures
+\ref{nextWordPrediction} and \ref{sequenceDim} fill out the input with zeros
+or blank rows, as if the network always took an input of a fixed size. This
+kind of zero \emph{padding} is sometimes used in training, so that sequences of
+different lengths can be grouped into batches, with the padded positions masked
+out so they have no effect. But when an LLM generates text there is no padding.
+The input matrix has one row for each token in the context so far, and it grows
+by one row with each new token. The Simbrain simulation
+\simref{Language $>$ Tiny language model} does use zero padding, which makes
+the growth easy to see: its matrices have a fixed number of rows, and they fill
+up one row at a time as text is generated.} So long as the conversation fits, all the
+prompts and responses up to the current point are included as part of the
+input, and the LLM uses the recursive trick to generate new responses that are
+sensitive to everything that's been discussed thus far. When the conversation
+grows larger than the context window, something has to give. The simplest
+approach is to drop text from the start of the context (from a computer science
+standpoint, this is a queue). Many systems instead
+\emph{compact} the context, replacing older parts of the conversation with a
+summary, or store information outside the context and retrieve it when
+needed.
 
-Context windows can be remarkably large. GPT-3 has a context window of about 2,000 tokens or about 4 pages of text, and early versions of GPT-4 had context windows of 32,000 tokens or about 64 pages of text. By the mid-2020s, some models had context windows of a million tokens or more.
+Again, context windows can be remarkably large. GPT-3 has a context window of about 2,000 tokens or about 4 pages of text, and early versions of GPT-4 had context windows of 32,000 tokens or about 64 pages of text. By the mid-2020s, some models had context windows of a million tokens or more.
 
 \begin{figure}[ht]
 \centering
@@ -468,61 +500,67 @@ The first step in a transformer is to embed inputs, converting all the tokens in
  layer does the opposite of what the embedding layer does. Rather than converting from tokens to activations, it converts from activations to tokens, and is thus a ``de-embedding'' layer.
 
 % Cohere with simbrain
-The output of an LLM is often a \glossary{softmax} layer with thousands of outputs, one for each token, which indicates how probable each possible token is given all
-the prompts and responses in the context window so far.\footnote{The
-targets used to train the network are one-hot encodings with a single ``hot''
-number (the number 1) corresponding to the predicted next word (on one-hot
-encodings, see section \extref{wrangling}). When target data are binary one-hot
-encoded labels, the task given a network is a classification task (section
-\extref{classificationRegression}). Thus transformers are technically
-classifiers, which classify input texts according to what word is likely to
-occur next. However, classification can here be seen as serving as a \emph{proxy task}.
-Our actual task is to predict a set of probabilities over next tokens, and
-that is what an LLM outputs. The
-interesting thing is that by \emph{trying} to perfectly classify next tokens
-(an impossible task), we end up with good probabilities, which is exactly what we're
-after. Here is a way to think of it. If the model was trained to 100\% accuracy
-on the classification task, then it would always generate the same sentences
-from the same prompts (because it would assign one unique token to the current
-input). But then it could not generate new instances of text.} 
- See figure \ref{transformerOverview} for an example of how this might
-look for our simple example, where the output vocabulary just contains 7
-tokens. 
+The output of an LLM is a \glossary{softmax} layer (section
+\extref{wta_softmax_section}) with one output for each token in the vocabulary.
+In our simple example the vocabulary contains just 7 tokens. The targets used in
+training are one-hot vectors over these 7 tokens (figure
+\ref{nextWordPrediction}). But the outputs the network actually produces are
+probability distributions over them (figure \ref{transformerOverview}). They say
+how likely each token is to come next, given all the prompts and responses in
+the context window so far, and given the patterns in the training data. The
+error on the training data can never go to zero, because the same context is
+followed by different tokens in different places in the training data. The best
+the network can do is learn how probable each token is in a given context, and
+that is exactly what we want.\footnote{Since the targets are one-hot encodings
+(section \extref{wrangling}), the task given the network is technically a
+classification task (section \extref{classificationRegression}), classifying
+input texts according to what token is likely to occur next. However,
+classification here serves as a \emph{proxy task}. By \emph{trying} to
+perfectly classify next tokens, the network ends up producing good
+probabilities, which is what we are actually after.}
 
-Once we have a probability distribution over tokens, we select one of the most
-probable next tokens and that becomes the output. This is usually done by randomly
-sampling from the top $k$ most-probable next tokens.\footnote{There are other methods besides top-$k$. A greedy method picks the most probable token, but can lead to overly predictable outputs. Top-$p$ is like top-$k$, except that instead of a fixed number of tokens, it samples from however many of the most probable tokens it takes for their probabilities to add up to a given value $p$ (that is, for their cumulative probability to reach $p$), often somewhere in the range of 0.8 to 0.95.}
-        
+Once we have a probability distribution over tokens, one of the most probable
+tokens is randomly selected, and that becomes the output.\footnote{There are
+several ways to do this. A greedy method always picks the most probable token,
+but this can lead to overly predictable outputs. Top-$k$ sampling randomly
+samples from the $k$ most probable tokens. Top-$p$ sampling samples from
+however many of the most probable tokens it takes for their probabilities to
+add up to a given value $p$, often somewhere in the range of 0.8 to 0.95.}
+
 The softmax temperature parameter can be used here (see section
 \extref{wta_softmax_section}): higher temperatures will add more probability to less likely tokens, making the output more
 random or ``creative''.  Lower temperatures produce more sharply peaked probability distributions, making the output more predictable.\footnote{Temperature and sampling strategies can be explored in the Simbrain simulation \simref{Language $>$ Tiny language model}.}
 
 \subsection{Parameters and Hyperparameters}
 
-To get a more concrete sense of the scale and structure of an LLM, we can consider its \glossary{hyperparameters}.
-Recall that parameters are primarily weights and biases (i.e., values that are updated during training) while
-hyperparameters are values that determine the structure of a network but that
-are not updated during training.
+To get a more concrete sense of the scale and structure of an LLM, we can
+consider its \glossary{hyperparameters}. Recall that hyperparameters are values
+that determine the structure of a network or how it is trained, but that are
+not themselves updated during training. Figure \ref{gptParams} shows several of
+them for different versions of GPT-3, including the number of layers
+($n_\text{layers}$), corresponding to representational depth, the number of
+heads ($n_\text{heads}$), corresponding to representational width, the size of
+the token embedding ($d_\text{model}$), and the learning rate and batch size.
+The size of the context window (section \ref{recursiveTrick}) is another
+hyperparameter, though it is not shown in the figure. Notice that these are all concepts we have seen in one way or another (often
+directly) in earlier chapters. This is remarkable. The same ideas used to train
+tiny networks, where we can see every weight and every activation, are being
+used here on a massively larger scale.
 
-Figure \ref{gptParams} shows the  number of parameters for a range of GPT-3
-subvarieties as $n_\text{params}$. The released version of GPT-3 had 175
-billion weights and biases. By comparison, our XOR 2-2-1 network had 3 biases
-and 6 weights, or 9 parameters. A standard convolutional neural network might
-have millions of parameters. So this is just massively larger. Not
-surprisingly, later networks were even larger. GPT-4 (2023) reportedly had about 1.76
-trillion parameters.\footnote{It takes large server banks that consume huge
+Just how much larger is shown in the column labeled $n_\text{params}$, the
+number of parameters, that is, the total number of weights and biases, which
+\emph{are} updated during training. This number is not set directly. It follows
+from hyperparameters like the number of layers and the size of the token
+embedding. The released version of GPT-3 had 175 billion parameters. Compare
+the XOR network of section \extref{sect_xor_remap}, with 9 parameters, or the
+three-object detector of chapter \extref{ch_intro}, with about 50. A standard
+convolutional network might have millions. Later networks were even larger:
+GPT-4 (2023) reportedly had about 1.76 trillion parameters.\footnote{It takes large server banks that consume huge
 amounts of energy to run these models, especially when training them. There is an active thread of research
 attempting to achieve similar performance with smaller models, some of which
 can be run on a  personal computer. For example, Gemma 2B achieves performance
 similar to GPT-3.5 on some benchmarks with only 2 billion parameters. See
 \weburl{https://developers.googleblog.com/en/smaller-safer-more-transparent-advancing-responsible-ai-with-gemma/}.}
-Figure \ref{gptParams} also shows the values of several hyperparameters such as
-number of layers ($n_\text{layers}$), corresponding to representational depth,
-and number of heads ($n_\text{heads}$), corresponding to representational
-width. The size of the token embedding  $d_\text{model}$ is also shown, as
-are the learning rate and batch size. Notice that these are all concepts we
-have seen in one way or another (often directly) in earlier chapters. All the
-same ideas are being used but on a larger scale.
 
 \begin{figure}[ht]
 \centering
@@ -533,9 +571,6 @@ GPT-3.
 }
 \label{gptParams}
 \end{figure}
-
-The size of the context window is another hyperparameter not shown in the
-figure (see section \ref{recursiveTrick}).
 
 
 \section{The Transformer Architecture}\label{transformers}
