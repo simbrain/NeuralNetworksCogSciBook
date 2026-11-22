@@ -136,58 +136,20 @@ all the other networks discussed in this book, they are not just useful as
 engineered tools, but are highly relevant both to neuroscience and cognitive
 science, and seem to develop meaningful internal representations. 
 
-We start with in-context processing, and then discuss how transformer-based LLMs are trained
-using widely available text data, and how a special recursive trick can be used
-to make a feed-forward network---which only predicts next words---produce
-meaningful conversational outputs. We then discuss how the transformer
-architecture itself works. The relevance of these models to cognitive science,
-neuroscience, and philosophy is the topic of chapter \extref{ch_llm_cogsci}. A
-chapter on how LLMs are used in practice (post-training, prompting, and agentic
-systems) is planned for a future release.
+The inner workings of a transformer are complex, so we begin by treating the
+network as a black box. We discuss how transformer-based LLMs are trained using
+widely available text data, how a special recursive trick can be used to make a
+feed-forward network---which only predicts next words---produce meaningful
+conversations, and how those conversations unfold in a context window that acts
+like a working memory. After considering the network's outputs and
+hyperparameters, we open the box and discuss how the transformer architecture
+itself works. The relevance of these models to cognitive science, neuroscience,
+and philosophy is the topic of chapter \extref{ch_llm_cogsci}, and how LLMs are
+used in practice (post-training, prompting, and agentic systems) is the topic of
+chapter \extref{ch_llms_practice}.
 
 Changes in this area are rapid, and the relevance of these areas to cognitive
 science only began to be studied in the early 2020s, so frequent updates to these chapters are expected.
-
-\section{In-Context Processing}\label{inContext}
-
-Thus far in the book we have focused on learning via incremental updates to the
-weights and biases of a neural network. LLMs are no exception; they learn via updates to their billions or trillions of
-parameters. However, LLMs have a remarkable feature: an ability to process a great deal of information at inference time, in their \glossary{context window}, or more concisely, their ``context''.\footnote{Usage has not stabilized yet, and these two terms (``context'' and ``context window'') are often used interchangeably. However, sometimes ``context window'' is used to emphasize the \emph{size} (in number of tokens) of the context.} Recall from the introduction (section
-\extref{performanceLearning}) that inference (or performance) means using
-learned parameters to process inputs, as opposed to updating those parameters
-during training. In-context processing happens entirely at inference time. This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of the power of LLMs. Without any weight training, they can reason their way through a problem or innovate a new idea.
-
-The point is often made in terms of ``zero-shot'' and ``few-shot''
-learning. The word ``learning'' here is \emph{not} a reference to training weights, but rather how an LLM can do new things by combining its prior training with information in the context window.  They are ``learning'' in the same way  a person going to a new job can learn how to do something using instructions in their working memory together with their background knowledge. \glossary{Zero-shot} learning refers to the ability of transformers
-to perform some novel tasks without any examples given in the context window. \glossary{Few-shot}
-learning refers to their ability to perform novel tasks just based on a few examples being given in the context window. This is sometimes possible just based on a single demonstration, which is called \glossary{one-shot learning} (a subcase of few-shot learning).  As an example of zero-shot learning, an LLM can be given a review like ``This cake was delicious'' and asked if it is positive or
-negative, and correctly answer that it's positive. As an example of few-shot learning, an LLM can be given examples of a new type of character in a game and asked to classify some new ones. It can do these things
-even though none of its weights or biases have been updated. This marked an important advance in the capabilities of 
-neural networks. Indeed, one of the first papers to describe GPT-3 was titled ``Language
-Models are Few-Shot Learners.''
-
-Broadly speaking, this is referred to as \glossary{in-context learning}, though
-perhaps ``in-context processing'' is a better description for it. Even if in AI
-terms this is learning, in another sense it more resembles the human ability to
-process fresh information held in working or short-term memory. The working
-memory capacity of frontier LLMs (the most advanced large-scale models on the market, such as Claude and ChatGPT) is much larger than that of humans, and they don't seem to be restricted to juggling the classic 7 $\pm$ 2
-items of human working memory. As of 2026, frontier LLMs effectively had a
-working memory hundreds or thousands of pages long.\footnote{Of note is the discovery that merely giving an LLM a larger
-context window does not automatically give it a correspondingly large working
-memory. Though some frontier models can hold entire books inside their context,
-their attention is spread thin over such a large context and their ability to
-successfully cite information will not work as well as it does in a more
-reasonably sized context \cite{liu2024lost}.}
-% Some have said that LLMs have anterograde amnesia.  See Karpathye.
-%  Also working memory, and framing effects, and how the
-% way you currently think of something separately from your existing conceptual
-% apparatus can impact your behaviors.
-
-% Maybe promote the email below or use it in the cog-sci section of the chapter
-In-context learning is a capability of neural networks that, as of the mid-2020s, had only begun to
-be explored, especially as it relates to cognitive science.\footnote{An old critique of neural networks, going back to the 1980s, was that while humans can learn things in a single trial, neural networks could not \cite{schneider1988structure}. Decades later, transformers have shown that neural networks \emph{can} learn things in a single trial, albeit in networks that are in many ways different from the human brain. As of the mid-2020s it was not known how psychologically or neurally realistic these forms of learning are in LLMs.} Having said that,
-traditional parameter-based learning is still the basis of much of the power of
-LLMs, and so we turn to that now.
 
 \section{Learning to Speak Internetese}\label{internetese}
 
@@ -197,7 +159,8 @@ LLMs are trained on an enormous amount of text. The training set for GPT-3 was
 a large subset of the \emph{entire internet}, which included all of Wikipedia,
 several compilations of books, and a web-scraped archive of the internet called
 ``Common Crawl'' (\weburl{https://en.wikipedia.org/wiki/Common_Crawl}). See
-figure \ref{gptDatasets}. Similar datasets are used to train all frontier LLMs.
+figure \ref{gptDatasets}. Similar datasets are used to train all frontier LLMs (the most advanced
+large-scale models, such as Claude and ChatGPT).
 If you've ever written anything online, there is a decent chance it is part of
 the training data of one of those models.\footnote{Language models have a
 longer history. In section \extref{languageModelsRecurrent} we saw how
@@ -362,16 +325,7 @@ Each token in the stack of token embeddings sent to the network is processed sep
 % the word embedding for ``Hello'' (which was $(8,8,6,1)$ for the sample
 % embedding in figure \ref{nextWordPrediction}).
   
-\section{How Conversations Are Generated Using Next-Token Predictions}\label{recursiveTrick}
-
-The inner workings of a transformer are complex, so we are easing into the
-topic by treating the network as a black box. We have seen what goes into it:
-stacks of token embeddings. In this section we consider how a network that only
-predicts next tokens can produce whole conversations, what comes out of it, and
-its hyperparameters, which give a sense of its scale and structure. With these
-in place, it will be easier to open the box in section \ref{transformers}.
-
-\subsection{The Recursive Trick}
+\section{The Recursive Trick}\label{recursiveTrick}
 
 One confusing thing about figure \ref{nextWordPrediction} is that we go from a
 large input covering a whole sequence of tokens to a single token as output. So
@@ -417,9 +371,12 @@ the next time step. This process is repeated to generate a full response.
 So this gets us one response. But then you type a new question. That
 \emph{entire question} is appended to the \emph{entire past conversation}
 including both what you and the model have said so far. This growing record of
-the conversation is the context window discussed in section \ref{inContext}.
-Everything the model processes ``in context'' is this one sequence of tokens
-(figure \ref{chatContext}).
+the conversation is the model's \glossary{context window}, or more concisely,
+its ``context''.\footnote{Usage has not stabilized yet, and these two terms
+(``context'' and ``context window'') are often used interchangeably. However,
+sometimes ``context window'' is used to emphasize the \emph{size} (in number of
+tokens) of the context.} Everything the model processes ``in context'' is this
+one sequence of tokens (figure \ref{chatContext}).
 
 \begin{figure}[ht]
 \centering
@@ -453,8 +410,8 @@ close each turn.}
 Of course, as we keep doing this, the inputs to the network get larger and
 larger. There must be some limit to how far we can go, right? The answer is
 yes. An LLM's hyperparameters include a context window size: the
-maximum number of tokens the LLM will read. This is the capacity of the
-``working memory'' discussed in section \ref{inContext}. At the start of a
+maximum number of tokens the LLM will read. As we will see in section
+\ref{inContext}, this is something like the capacity of a working memory. At the start of a
 chat, the context is small, containing only an initial prompt. It grows as the
 prompts from a person and the responses from the LLM are added.\footnote{Figures
 \ref{nextWordPrediction} and \ref{sequenceDim} fill out the input with zeros
@@ -477,26 +434,62 @@ standpoint, this is a queue). Many systems instead
 summary, or store information outside the context and retrieve it when
 needed.
 
-Again, context windows can be remarkably large. GPT-3 has a context window of about 2,000 tokens or about 4 pages of text, and early versions of GPT-4 had context windows of 32,000 tokens or about 64 pages of text. By the mid-2020s, some models had context windows of a million tokens or more.
+Context windows can be remarkably large. GPT-3 has a context window of about 2,000 tokens or about 4 pages of text, and early versions of GPT-4 had context windows of 32,000 tokens or about 64 pages of text. By the mid-2020s, some models had context windows of a million tokens or more.
 
-\begin{figure}[ht]
-\centering
-\accessibleimage[scale=.2]{./images/TransformerOverview.png}{Transformer overview: a context window passes through an embedding layer and stacked transformer blocks to a softmax output. Each block contains multiple attention heads followed by an MLP.} \; \; \;
-\accessibleimage[scale=.2]{./images/TransformerOverview2.png}{Transformer overview with a GPT model-size table. The network maps a context window through embeddings, repeated transformer blocks, and softmax output; the table lists GPT-3 variants with parameter counts and training settings.}
-\caption[Jeff Yoshimi]{A first look at the process of a conversation unfolding
-through a network, showing the stack of word embeddings associated with the
-context, the transformer blocks, and the softmax output. Note that the
-most active output is associated with a token that is added to the context
-window on the next time step. Shown are two time steps. On the left the network
-has output a response of ``Good'' in response to the query, and that output is
-placed in the context using the recursive trick.
-}
-\label{transformerOverview}
-\end{figure}
+\section{In-Context Processing}\label{inContext}
 
-\subsection{Softmax Outputs}\label{llmOutput}
+Thus far in the book we have focused on learning via incremental updates to the
+weights and biases of a neural network. LLMs are no exception; they learn via updates to their billions or trillions of
+parameters. However, LLMs have a remarkable feature: an ability to process a great deal of information at inference time, in their context window. Recall from the introduction (section
+\extref{performanceLearning}) that inference (or performance) means using
+learned parameters to process inputs, as opposed to updating those parameters
+during training. In-context processing happens entirely at inference time. This is a bit like a working memory system, which processes information and can come up with novel insights without making any updates to weights. This is the basis for much of the power of LLMs. Without any weight training, they can reason their way through a problem or innovate a new idea.
 
-The first step in a transformer is to embed inputs, converting all the tokens in a conversation into a matrix of inputs, as we've seen. The next step is to transform these inputs using a series of transformer blocks, which are discussed in the next section. When all the processing is done, the final step is to convert vectors back to predicted next tokens. Thus the final
+This is often called \glossary{in-context learning}, though perhaps
+``in-context processing'' is a better description. The word ``learning'' here
+is \emph{not} a reference to training weights, but rather to how an LLM can do
+new things by combining its prior training with information in the context
+window. It learns in the same way a person starting a new job can learn how to
+do something using instructions held in working memory together with their
+background knowledge. A classic example is \glossary{few-shot} learning, where
+an LLM performs a novel task based on just a few examples given in the context
+window. For example, an LLM can be given examples of a new type of character in
+a game and asked to classify some new ones. It can do this even though none of
+its weights or biases have been updated.\footnote{When only a single example is
+given, this is called \glossary{one-shot learning}. When no examples are given
+and the model performs a task based on instructions alone, this is called
+\glossary{zero-shot} learning. For example, an LLM can be given a review like
+``This cake was delicious'' and asked if it is positive or negative, and
+correctly answer that it's positive. Zero-shot use is now the usual way people
+interact with chat models.} This marked an important advance in the
+capabilities of neural networks.\footnote{This addresses an old critique of neural
+networks, going back to the 1980s: that while humans can learn things in a
+single trial, neural networks could not \cite{schneider1988structure}.
+Transformers show that neural networks can do this, albeit in networks quite
+different from the brain. How psychologically or neurally realistic this form
+of learning is had only begun to be explored by the mid-2020s (chapter
+\extref{ch_llm_cogsci}). For some discussion of the context window as a kind of
+working memory, see \cite{yoshimi2026phenomenology}.} Indeed, one of the first papers to describe
+GPT-3 was titled ``Language Models are Few-Shot Learners.''
+
+Although AI researchers call this a form of ``learning'', from the standpoint of cognitive science it's more like processing information in working memory. But if we take this analogy seriously, then LLMs are like systems with vastly inhuman working memory.  Human working memory holds only a handful of items at once (the
+classic 7 $\pm$ 2). As of 2026, frontier LLMs could hold hundreds or thousands of pages in their context. That's like a person being able to hold a whole book in memory in the same way they can hold a phone number in working memory.\footnote{How much
+of its context a model can actively make use of at once is a separate
+question. Relevant here is the discovery that merely giving an LLM a larger
+context window does not automatically give it a correspondingly large working
+memory. Though some frontier models can hold entire books inside their context,
+their attention is spread thin over such a large context and their ability to
+successfully cite information will not work as well as it does in a more
+reasonably sized context \cite{liu2024lost}.}
+% Some have said that LLMs have anterograde amnesia.  See Karpathye.
+%  Also working memory, and framing effects, and how the
+% way you currently think of something separately from your existing conceptual
+% apparatus can impact your behaviors.
+
+% Maybe promote the email below or use it in the cog-sci section of the chapter
+\section{Softmax Outputs}\label{llmOutput}
+
+The first step in a transformer is to embed inputs, converting all the tokens in a conversation into a matrix of inputs, as we've seen. The next step is to transform these inputs using a series of transformer blocks, which are discussed in section \ref{transformers}. When all the processing is done, the final step is to convert vectors back to predicted next tokens. Thus the final
  layer does the opposite of what the embedding layer does. Rather than converting from tokens to activations, it converts from activations to tokens, and is thus a ``de-embedding'' layer.
 
 % Cohere with simbrain
@@ -519,6 +512,21 @@ classification here serves as a \emph{proxy task}. By \emph{trying} to
 perfectly classify next tokens, the network ends up producing good
 probabilities, which is what we are actually after.}
 
+\begin{figure}[ht]
+\centering
+\accessibleimage[scale=.2]{./images/TransformerOverview.png}{Transformer overview: a context window passes through an embedding layer and stacked transformer blocks to a softmax output. Each block contains multiple attention heads followed by an MLP.} \; \; \;
+\accessibleimage[scale=.2]{./images/TransformerOverview2.png}{Transformer overview with a GPT model-size table. The network maps a context window through embeddings, repeated transformer blocks, and softmax output; the table lists GPT-3 variants with parameter counts and training settings.}
+\caption[Jeff Yoshimi]{A first look at the process of a conversation unfolding
+through a network, showing the stack of word embeddings associated with the
+context, the transformer blocks, and the softmax output. Note that the
+most active output is associated with a token that is added to the context
+window on the next time step. Shown are two time steps. On the left the network
+has output a response of ``Good'' in response to the query, and that output is
+placed in the context using the recursive trick.
+}
+\label{transformerOverview}
+\end{figure}
+
 Once we have a probability distribution over tokens, one of the most probable
 tokens is randomly selected, and that becomes the output.\footnote{There are
 several ways to do this. A greedy method always picks the most probable token,
@@ -531,7 +539,7 @@ The softmax temperature parameter can be used here (see section
 \extref{wta_softmax_section}): higher temperatures will add more probability to less likely tokens, making the output more
 random or ``creative''.  Lower temperatures produce more sharply peaked probability distributions, making the output more predictable.\footnote{Temperature and sampling strategies can be explored in the Simbrain simulation \simref{Language $>$ Tiny language model}.}
 
-\subsection{Parameters and Hyperparameters}
+\section{Parameters and Hyperparameters}
 
 To get a more concrete sense of the scale and structure of an LLM, we can
 consider its \glossary{hyperparameters}. Recall that hyperparameters are values
