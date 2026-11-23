@@ -164,7 +164,8 @@ fed back to it, which help it reason its way through problems.
 As noted in section \extref{recursiveTrick}, the context window of a chat model
 contains special tokens that are usually hidden in a chat interface. Here is
 roughly what a short conversation looks like to the network, in the format used
-by the LFM2 models (which is similar to the ChatML format used by OpenAI):
+by Liquid AI's small open LFM2 models, which is similar to OpenAI's ChatML
+format:
 
 \begin{quote}
 \texttt{<|startoftext|><|im\_start|>system}\\
@@ -176,7 +177,7 @@ by the LFM2 models (which is similar to the ChatML format used by OpenAI):
 \end{quote}
 
 Each special token, such as \texttt{<|im\_start|>}, is a single token in the
-model's vocabulary with its own embedding, just like a word. But it has a
+model's vocabulary with its own embedding, just like an ordinary token. But it has a
 control meaning rather than an ordinary linguistic one. \texttt{<|im\_start|>}
 opens a message and is followed by a role (system, user, or assistant), and
 \texttt{<|im\_end|>} closes the message. Other special tokens mark tool calls
@@ -189,7 +190,7 @@ format. It learns, for example, that after \texttt{<|im\_start|>assistant} it
 should write a reply and then produce \texttt{<|im\_end|>}.
 
 Special tokens are what allow the network to be embedded in a larger piece of
-software, often called a \emph{harness}. The harness formats the conversation
+software, the harness (section \extref{recursiveTrick}). The harness formats the conversation
 using the chat template, runs the recursive trick, and watches what the model
 produces. When the model produces \texttt{<|im\_end|>}, the harness stops
 generating, shows the reply without the special tokens, and waits for the user.
@@ -198,8 +199,7 @@ result, wrapped in its own special tokens, to the context. The network itself
 only ever predicts next tokens. Turn taking, the hidden system prompt, and the
 use of tools are all handled by the harness reading and writing special
 tokens.\footnote{In the Simbrain simulation
-\simref{Language $>$ (Beta) Pretrained language model (LFM2.5)}, these special
-tokens are visible in the context window, and a color theme can be used to
+\simref{Language $>$ (Beta) Pretrained language model (LFM2.5)}, a color theme can be used to
 distinguish user text, model text, system text, and tool activity.}
 
 There is a cognitive science analog here. Minsky argued that the mind is a
@@ -234,14 +234,14 @@ programming, in tools like Cursor. A user can ask for a particular function,
 described in natural language, and the AI will generate the function and debug
 its code as runtime errors appear.
 
-Note that a special model does not necessarily have to be fine-tuned for this
+Note that a model does not need task-specific fine-tuning for this
 to work. Indeed, agentic systems are usually built on general-purpose frontier
 LLMs, just set up with an appropriate system prompt and placed inside a
-software wrapper that will take the model's agentic output and respond to it accordingly. It is
+harness that will take the model's agentic output and respond to it accordingly. It is
 the \emph{LLM} that is doing all the heavy lifting here; if the transformer
 were unable to write Python, or unable to write coherent notes to itself, etc.,
 then no toolset would fix that deficiency. What we are doing with agentic
-wrappers is just giving the model tools that it either already knows how to use
+harnesses is just giving the model tools that it either already knows how to use
 or is able to learn to use in context. To the extent that models beat Pok\'emon,
 write novel code, etc., it is a glimmer of their general competence with
 arbitrary tools and interfaces shining through.

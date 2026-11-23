@@ -42,7 +42,7 @@ arrow(ax, (0.75, 1.05), (1.4, 0.85))
 
 # LLM, with one layer boxed and linked to its patterns.
 nx, ny = 1.85, 2.45
-layers = [(ny, 4), (ny + 0.4, 3), (ny + 0.8, 4)]
+layers = [(ny, 4), (ny + 0.4, 5), (ny + 0.8, 4)]
 xs = network(ax, nx, layers)
 hy = layers[1][0]
 _, hx1 = layer_box(ax, xs[1], hy, 0.12, 0.06)

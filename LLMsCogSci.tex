@@ -19,14 +19,10 @@ how they work. It's the same strange situation first mentioned in chapter
 \extref{ch_applications} and taken up further in chapter
 \extref{ch_mechinterp}. It's as if we discovered something new in nature and
 are trying to determine how it works, so we have to  reverse engineer
-it.\footnote{In fact, this happened  to some extent before with neural
-networks. Something similar happened with CNNs (chapter \extref{ch_cnn}), but
-with CNNs it was much easier to  run simulations on a personal computer, and
-the interpretability issues were easier to make progress on. BERT, an earlier
-transformer model, was developed at Google to meet engineering needs, but soon drew the interest of
-psychologists and linguists given its surprising effectiveness in language
-tasks. In fact it gave rise to the field of  ``BERTology''
-\cite{rogers2020primer}.}
+it.\footnote{Something similar happened before with CNNs (chapter
+\extref{ch_cnn}), but with CNNs it was much easier to run simulations on a
+personal computer, and the interpretability issues were easier to make progress
+on.}
 
 As a result of these features of LLMs, a huge ecosystem of analysis has grown
 up around them, and they are intensively studied across all of the cognitive
@@ -74,7 +70,7 @@ combine, but without any reference to meaning: a stochastic parrot'' \cite[p.~61
 this is true, then LLMs do not offer a cognitive model of human intelligence,
 but may still be useful as a sort of repository for population-level
 statistical trends in human behavior.
-Another metaphor is that of a blurry JPEG of the internet
+Another metaphor is that of a blurry JPEG of the web
 \cite{chiang2023jpeg}. Take the whole internet, and compress it in the way a
 JPEG compresses an image. On this conception, LLMs are just giant statistical
 models, which can compress information but fail to be an interesting model of cognition.
@@ -91,8 +87,8 @@ problems, such as adding hours on a clock face, where 9 plus 5 hours is 2
 problems, getting them all right while doing poorly on new problems, which is
 just what a stochastic parrot would do. With much more training, performance on
 new problems suddenly rose to nearly perfect (on testing and generalization,
-see section \extref{generalization}). Nanda et al. looked inside one of these
-networks and found that it had learned a general method for this kind of
+see section \extref{generalization}). Nanda et al. looked inside a network of this
+kind and found that it had learned a general method for this kind of
 arithmetic \cite{nanda2023progress}.\footnote{Each number is represented as
 a rotation around a circle, and two numbers are added by combining their
 rotations (figure \extref{toyModelAddition}).} The network first memorizes,
@@ -129,15 +125,15 @@ error on new problems falls from very high to nearly zero.}
 \label{grokking}
 \end{figure}
 
-The rest of the chapter considers evidence that LLMs are more than stochastic
-parrots: the linguistic and conceptual structure they learn, their behavior as
+The rest of the chapter considers evidence for and against the view that LLMs
+are stochastic parrots: the linguistic and conceptual structure they learn, their behavior as
 experimental subjects and on reasoning tasks (section \ref{llmsBehavioral}),
 and the relation between their internal states and activity in the brain
 (section \ref{llmNeuro}). We return to
 the debate in its philosophical form at the end of the chapter (section
 \ref{llmPhilosophy}).
 
-\section{LLMs and Behavioral Sciences}\label{llmsBehavioral}
+\section{LLMs, Psychology, and Linguistics}\label{llmsBehavioral}
 
 % See Papadimitriou talk notes
 % See Owen / polpyony slide 3 or 4. TOM etc.
@@ -164,8 +160,12 @@ the debate in its philosophical form at the end of the chapter (section
 
 \subsection{Linguistic Structure and the Layers of an LLM}\label{llmLinguisticStructure}
 
-BERT, an early transformer model, attracted interest from
-linguists and psychologists. Despite lacking any explicit
+BERT, an early transformer model developed at Google to meet engineering
+needs, soon attracted interest from linguists and psychologists, giving rise to
+the field of ``BERTology'' \cite{rogers2020primer}.\footnote{BERT is trained
+to fill in masked words anywhere in a sentence rather than to predict the next
+token, but similar probing methods have been applied to both kinds of model.}
+Despite lacking any explicit
 knowledge of grammar, it learned many aspects of syntax, including subject-verb
 agreement, reflexive pronouns, and hierarchical sentence structure
 \cite{goldberg2019assessing, linzen2021syntactic, tenney2019bert}. For example,
@@ -210,8 +210,8 @@ questioned, and results vary across models and languages. Some studies find
 linguistic information spread across neurons throughout the network rather than
 concentrated in particular layers.
 
-The full toolkit of mechanistic interpretability is now being used to study how
-processing unfolds across the layers of LLMs. Besides probes, which read from
+By the mid-2020s, the full toolkit of mechanistic interpretability was being
+used to study how processing unfolds across the layers of LLMs. Besides probes, which read from
 the network, this includes methods that intervene on it, such as activation
 addition, which changes activations to steer the network's behavior (section
 \extref{activationAddition}), and ablations, which remove parts of the network
@@ -272,7 +272,7 @@ Some have even argued that LLMs could substitute for human participants in
 future psychological research \cite{aher2023using, dillion2023can}.
 
 Much of this work has related LLM behavior to known psycholinguistic effects.
-For example, LLMs rate words very similarly to how humans rate them, on a wide range of variables including arousal, concreteness, dominance, familiarity, gender association, imageability, and valence \cite{trott2024augment,
+For example, LLMs rate words very similarly to how humans rate them, on a wide range of variables including concreteness, familiarity, gender association, imageability, and valence \cite{trott2024augment,
 kello2024emergent}. As an example of how these variables are queried (both in humans and LLMs), here is how valence is defined:
 \begin{quote}
 a measure of value or worth. A word is NEGATIVE if it represents something
@@ -293,7 +293,7 @@ reach 0.9 or higher, which is very strong.  Here are some examples of mean ratin
 ``affair''\\[6pt]
 \begin{tabular}{@{}lr@{}}
 \textbf{Model} & \textbf{Score}\\\hline
-Human & 2.438\\
+Human & 2.44\\
 GPT-3.5 & 3.98\\
 GPT-4 & 4.05\\
 GPT-4o & 3.10\\
@@ -306,7 +306,7 @@ Gemini 1.5 & 3.80\\
 ``bead''\\[6pt] 
 \begin{tabular}{@{}lr@{}}
 \textbf{Model} & \textbf{Score}\\\hline
-Human & 5.394\\
+Human & 5.39\\
 GPT-3.5 & 5.35\\
 GPT-4 & 5.30\\
 GPT-4o & 5.38\\
@@ -327,7 +327,7 @@ dominance, and humorousness, which the authors argue is because these variables
 are more ambiguous in meaning (consistent with greater variability in human
 ratings, not shown). In later analyses, the authors show that the
 correspondence between human and LLM ratings on these variables tracks human
-inter-rater reliability: The more agreement in human ratings (i.e., lower
+inter-rater reliability: the more agreement in human ratings (i.e., lower
 variability), the better LLMs are able to match human behavior. If the LLMs'
 ratings had no relation to people's, the points in each plot would form a
 shapeless cloud, the fitted lines would be flat, and the correlations would be
@@ -336,7 +336,7 @@ near 0. Instead, the points fall close to rising lines.}
 \end{figure}
 
 Another study that treats LLMs as experimental subjects is that of Cai et al.
-\cite{cai2023do}, who ran LLMs through a range of classic psycholinguistic
+\cite{cai2023do}, who ran two LLMs, ChatGPT and Vicuna, through a range of classic psycholinguistic
 experiments, using materials from earlier studies with people, and found that
 LLMs mimic many human linguistic biases. One is the ``kiki-bouba'' effect
 (figure \ref{kikiBouba}). When people are shown a spiky shape and a round shape
@@ -344,9 +344,10 @@ and asked which is ``kiki'' and which is ``bouba'', most say the spiky shape is
 ``kiki'' and the round one is ``bouba''. ``Kiki'' and ``bouba'' are made-up
 words. The LLMs were also given made-up words, such as ``tuhkeetee'', that
 people had judged to sound round or spiky, and asked to guess whether each
-referred to a round or a spiky shape. Like people, they called round-sounding
-words ``round'' more often than spiky-sounding ones. For ChatGPT, the
-proportion of ``round'' answers for each word correlated with people's at 0.85.
+referred to a round or a spiky shape. Like people, ChatGPT called round-sounding
+words ``round'' more often than spiky-sounding ones, and the
+proportion of ``round'' answers for each word correlated with people's at 0.85
+(Vicuna showed a much weaker effect).
 
 The LLMs showed other human biases as well. People tend to hear made-up names
 that end in a vowel as more feminine than names that end in a consonant. When
@@ -359,8 +360,8 @@ just used the second structure is more likely to use it again in the next
 sentence, saying ``showed his hand to the nurse'' rather than ``showed the
 nurse his hand''. The LLMs did the same: after finishing one sentence with the
 ``to'' structure, they were more likely to finish the next sentence with it
-too. Finally, ChatGPT fell for some of the same semantic illusions as
-people. Asked ``Snoopy is the black and white cat in what famous Charles Schulz
+too. Finally, ChatGPT appeared to fall for some of the same semantic illusions as
+people, though this effect was less robust. Asked ``Snoopy is the black and white cat in what famous Charles Schulz
 comic strip?'', people often miss the error (Snoopy is a dog), because ``cat''
 is close in meaning to ``dog''. ChatGPT missed errors like this more often than
 errors involving words further in meaning, like ``mouse''.
@@ -375,7 +376,7 @@ errors involving words further in meaning, like ``mouse''.
 These studies do not always reveal similarities. Sometimes differences emerge.
 For example, LLMs don't
 always seem to exhibit a preference for efficient language use, such as selecting the
-shorter of two synonymous words, e.g.,  ``math'' versus ``mathematics''  \cite{cai2023do} (in contrast,  \cite{RyskinEtAl2025EfficientAudienceDesign} found evidence for efficient language use in LLMs on an audience design task).
+shorter of two synonymous words, e.g.,  ``math'' versus ``mathematics''  \cite{cai2023do} (in contrast, Ryskin et al. \cite{RyskinEtAl2025EfficientAudienceDesign} found evidence for efficient language use in LLMs on an audience design task).
 Similarly,  LLMs did not appear to resolve syntactic ambiguity in accordance
 with efficient signal use, seen in humans. For example, humans have a tendency
 to interpret ambiguous modifying expressions such as ``with the leash'' in
@@ -485,11 +486,7 @@ reasoning. Melanie Mitchell studied early transformer architectures (and deep
 nets before them) and argued that they are not as intelligent as they appear,
 in light of their tendency to fail at reasoning tasks, especially those that
 require generalization and transfer of knowledge (compare the discussion of
-stochastic parrots above).  An example that went viral
-around 2024 was asking LLMs to  ``count the number of Rs in `strawberry' ''.  At
-the time, they often failed at simple tasks like this, which rely on
-commonsense knowledge about things like the letters in words.  Mitchell,
-discussing these failures, concluded that ``Giving machines common sense will
+stochastic parrots above).  Mitchell concluded that ``Giving machines common sense will
 require imbuing them with the very basic `core,' perhaps innate, knowledge that
 human infants possess about space, time, causality, and the nature of inanimate
 objects and other living agents, the ability to abstract from particulars to
@@ -503,9 +500,10 @@ levels in standardized tests like the LSAT, the SAT, and the bar exam taken by l
 do as well as humans in writing tests). See figure \ref{llmStandardExams}. Multiple studies
 also showed that LLMs could perform as well as or better than humans on
 analogical problems, including problems developed by Mitchell herself
-\cite{webb2023emergent} (figure \ref{llmAnalogy}).  Mitchell has responded, noting  that transformers
-perform well on simple analogies but that performance declines sharply on  more
-complex analogies \cite{lewis2025evaluating}. The debate was still active in
+\cite{webb2023emergent} (figure \ref{llmAnalogy}).  Mitchell has responded, noting that performance
+declines sharply on counterfactual variants of these problems, such as letter
+analogies using a permuted alphabet, where human performance holds steady
+\cite{lewis2025evaluating}. The debate was still active in
 2025.\footnote{In June 2025 a group at Apple published a paper whose title begins with ``The
 Illusion of Thinking'' \cite{shojaee2025illusion}, which claims that large
 reasoning models ``face a complete accuracy collapse beyond
@@ -563,7 +561,7 @@ researchers have used transformer-based LLMs since the early 2020s to understand
 brains process language, using the methods for comparing networks and brains
 described in section \extref{compareNetsBrains}. Several groups have compared
 the activation patterns in an LLM as it processes a text with patterns of brain
-activity in a person reading the same text \cite{pasquiou2022neural,
+activity in a person reading or listening to the same text \cite{pasquiou2022neural,
 schrimpf2021neural, caucheteux2022brains}.
 
 At first this seems almost absurd. How could an artificial network predict what
@@ -578,8 +576,9 @@ network in the figure is serving as an icon here; a real LLM is a transformer
 with many layers (chapter \extref{ch_transformers}). The LLM's states and
 the brain's states need not resemble each other. What matters is that the
 relations among them are similar: words that produce similar patterns in the
-LLM also produce similar patterns in the brain. If the LLM layer put ``red''
-near ``bed'' just because they are spelled alike, the predictions would fail.
+LLM also produce similar patterns in the brain. The brain's language network groups words largely by meaning, so if the LLM
+layer put ``red'' near ``bed'' just because they are spelled alike, the
+predictions would fail.
 
 \begin{figure}[ht]
 \centering
@@ -590,9 +589,10 @@ fragment produces a pattern of activation in one layer of the LLM. A probe, a
 small network with one output node, is trained to predict the activity recorded
 at one site in the brain from these patterns. Probes trained for different
 sites do a better or worse job, depending on the site. Right: how well probes trained on GPT2-xl predict fMRI activity at
-each site in one participant's left hemisphere, from worse (dark red) to better (yellow). Gray areas are not
-language-responsive (in separate studies, they did not respond more to
-sentences than to non-words) and were not scored. If the LLM's activations carried no
+each site in one participant's left hemisphere, from worse (dark red) to better (yellow). Gray areas were not
+scored. A separate scan of the same person, called a \emph{localizer}, showed
+that they are not language-responsive: they did not respond more to sentences
+than to strings of non-words. If the LLM's activations carried no
 information about these areas, every colored spot would be dark red. Instead
 many are yellow: activity in parts of the brain's language network can be
 predicted from an LLM.}
@@ -617,11 +617,10 @@ on one dataset much of the match could be explained by simple features of the
 text, such as how long each sentence is \cite{feghhi2024what}.
 
 Which parts of an LLM best match the brain? Prediction tends to be strongest
-for the middle layers \cite{caucheteux2022brains}. Recall that the earliest
-layers of an LLM mostly encode properties of individual words, and that the
-last layers settle on a prediction of the next token (section
-\ref{llmLinguisticStructure}). If any part of an LLM does something like what
-the brain's language network does, it seems to be the layers in between, where
+for the middle layers \cite{caucheteux2022brains}. Recall that lower layers of
+an LLM encode surface features of words, middle layers encode syntax, and upper
+layers encode more semantic features (section \ref{llmLinguisticStructure}). If any part of an LLM does something like what
+the brain's language network does, it seems to be these middle layers, where
 syntax and meaning are built up. Exactly which layers correspond to which brain
 areas remains unclear.
 
@@ -694,7 +693,7 @@ would ever be possible in a machine, like speak fluent language and arguably
 pass the Turing Test.\footnote{An extensive and helpful review of philosophical
 issues through 2024 is \cite{milliere2024philosophical1,
 milliere2024philosophical2}. Multiple new papers on topics relating to AI
-appear each week at \weburl{philPapers.org}.} For this book, the central
+appear each week at \weburl{PhilPapers.org}.} For this book, the central
 question is how much neural networks are like minds and brains. That question
 runs through every chapter, and LLMs bring it into sharp focus. Are they
 stochastic parrots (section \ref{stochasticParrot}), or do they do something
@@ -771,10 +770,8 @@ that of the human mind.\footnote{A philosophical argument that LLMs could, with
 some additions relating to agency, produce genuine understanding is in
 \cite{borg2025llms}.}
 
-Recall that in-practice arguments are different. They do not say that a
-computer could never understand or be conscious. They say that computers,
-including LLMs, will not \emph{in fact} be able to do what people do.
-A long-standing in-practice argument
+In-practice arguments, by contrast, concern what computers will in fact be
+able to do. A long-standing in-practice argument
 against machine intelligence, due to Hubert Dreyfus
 \cite{dreyfus1992computers}, is that no computer or neural network could ever
 have truly human capacities, because they were not raised in the real world and
@@ -792,7 +789,7 @@ say anything meaningful (though some chatbots did pretty well using tricks,
 like pretending to be a teenager saying ``lol who cares''). But by the
 mid-2020s, LLMs like ChatGPT did just fine with such questions, suggesting
 that the old problem of background knowledge may have been resolved, though
-whether LLMs generalize as well as people do is still debated.\footnote{For
+whether LLMs generalize as well as people do remained debated in the mid-2020s.\footnote{For
 an argument, drawing on Dreyfus and Husserl, that LLMs offer a plausible
 account of how people draw effortlessly on unconscious background knowledge
 when using language, see \cite{yoshimi2026phenomenology}.}
@@ -803,7 +800,7 @@ back to the forefront \cite{king2024large}. On the symbolic view, people
 combine and recombine symbols according to innate rules, such as the rules of
 grammar, and this is what gives language its vast expressive power. Networks
 that only learn statistical associations should not be able to do this. Noam
-Chomsky, echoing the stochastic parrot view, called ChatGPT ``a lumbering
+Chomsky and colleagues, echoing the stochastic parrot view, called ChatGPT ``a lumbering
 statistical engine for pattern matching, gorging on hundreds of terabytes of
 data'' \cite{chomsky2023noam}. The obvious reply is that LLMs do in fact produce
 novel, well-formed language on any topic. Defenders of the symbolic view reply
@@ -834,7 +831,7 @@ check, but it is far too long for any person to have read, and the mathematical
 community has not yet accepted it.\footnote{See
 \weburl{https://www.science.org/content/article/ai-may-have-solved-math-s-greatest-mystery-can-humans-understand-answer}.}
 If the claim holds up, what should we make of it? Did the AI understand the
-mathematics? Is the AI a superintelligence, with an understanding beyond what any human
+mathematics? Is the AI a \glossary{superintelligence}, with an understanding beyond what any human
 could reach? Questions like these, about how much neural networks
 are like minds, run through this whole book, and LLMs have made them more
 pressing than ever.

@@ -48,7 +48,7 @@ arrow(ax, (0.45, 1.2), (1.35, 0.8))
 
 # Network, with its hidden layer boxed and linked to its patterns.
 nx, ny = 1.25, 2.45
-layers = [(ny, 4), (ny + 0.4, 3), (ny + 0.8, 2)]
+layers = [(ny, 4), (ny + 0.4, 5), (ny + 0.8, 2)]
 xs = network(ax, nx, layers)
 hy = layers[1][0]
 _, hx1 = layer_box(ax, xs[1], hy, 0.12, 0.06)
